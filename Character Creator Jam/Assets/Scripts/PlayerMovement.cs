@@ -6,12 +6,10 @@ public class PlayerMovement : MonoBehaviour {
     public CharacterController controller;
     public float speed = 12f;
     public Vector3 velocity;
-    public float gravity = -9.8f;
+    private float gravity = -9.8f;
     public float gravityMultiplier = 2f;
 
-    public Transform groundCheck;
-    public float groundDistence = .4f;
-    public LayerMask groundMask;
+    public GroundChecker groundChecker;
     public bool isGrounded;
     public float jumpHeight = 3f;
 
@@ -29,7 +27,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void Awake()
     {
-        gravity *= gravityMultiplier;
+        gravity = -9.8f * gravityMultiplier;
     }
 
     private void OnApplicationFocus(bool focus)
@@ -47,11 +45,7 @@ public class PlayerMovement : MonoBehaviour {
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, minAngle, maxAngle);//Cant over rotate
         cameraBasisObject.transform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);//apply clamp
 
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistence, groundMask);
-        if (isGrounded && velocity.y < 0)
-        {
-            velocity.y = -2f;
-        }
+        isGrounded = groundChecker.inGround;
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         Vector3 move = transform.right * x + transform.forward * z;
