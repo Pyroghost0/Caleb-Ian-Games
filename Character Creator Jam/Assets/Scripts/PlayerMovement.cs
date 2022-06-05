@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour {
     public float mouseVirticalSensitivity = 100f;
     public float minAngle = -10f;
     public float maxAngle = 30f;
-    private float verticalLookRotation = 0f;
+    private float verticalLookRotation = 10f;
     public GameObject cameraBasisObject;
 
     void Start()
@@ -50,11 +50,20 @@ public class PlayerMovement : MonoBehaviour {
         float z = Input.GetAxis("Vertical");
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            if (Input.GetButtonDown("Jump"))
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            }
+            else if (velocity.y < 0) {
+                velocity.y = -1f;
+            }
         }
-        velocity.y += gravity * Time.deltaTime;
+        else
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
         controller.Move(velocity * Time.deltaTime);
     }
 }

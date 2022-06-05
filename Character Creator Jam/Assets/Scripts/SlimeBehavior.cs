@@ -22,23 +22,21 @@ public class SlimeBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!groundChecker.inGround)
-        {
-            rigidbody.velocity += gravity * Time.deltaTime;
-        }
+        rigidbody.velocity += gravity * Time.deltaTime;
     }
 
     IEnumerator ConstantJump()
     {
+        yield return new WaitUntil(() => (groundChecker.inGround));
         while (true)
         {
-            if (!groundChecker.inGround)
-            {
-                yield return new WaitUntil(() => (groundChecker.inGround));
-            }
+            Vector3 jumpForce = Random.Range(3.5f, 4.5f) * ((new Vector3(player.player.transform.position.x - gameObject.transform.position.x, 0, player.player.transform.position.z - gameObject.transform.position.z).normalized) + (Random.Range(2.5f, 3.25f) * Vector3.up));
+            rigidbody.AddForce(jumpForce, ForceMode.Impulse);
+            yield return new WaitForSeconds(.3f);
+            yield return new WaitUntil(() => (groundChecker.inGround));
             rigidbody.velocity = Vector3.zero;
-            yield return new WaitForSeconds(Random.Range(.5f, 1f));
-            rigidbody.AddForce(3f * (new Vector3(player.player.transform.position.x - gameObject.transform.position.x, 0, player.player.transform.position.z - gameObject.transform.position.z).normalized + (3 * Vector3.up)), ForceMode.Impulse);
+            //rigidbody.AddForce(-jumpForce, ForceMode.Impulse);
+            yield return new WaitForSeconds(Random.Range(.2f, .4f));
         }
     }
 }
