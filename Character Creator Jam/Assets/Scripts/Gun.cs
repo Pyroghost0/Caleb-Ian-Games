@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    public float slime;
+    public float amountOfSlime;
+
     public GameObject centerRay;
     public GameObject[] middleRays;
     public GameObject[] outerRays;
+    public float suckDistence = 25f;
+    public float suckPower = .6f;
+    public GameObject suckSpot;
+    public bool isSucking = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,14 +30,27 @@ public class Gun : MonoBehaviour
 
         if (Input.GetMouseButton(1))//Right Click
         {
+            List<GameObject> slimes = new List<GameObject> { };
+            List<float> slimeSuckPower = new List<float> { };
+            isSucking = true;
+
+
+            //Center
             Ray center = new Ray(transform.position, centerRay.transform.position - transform.position);
             RaycastHit centerHit;
             Physics.Raycast(center, out centerHit);
             if (centerHit.collider != null && centerHit.collider.CompareTag("Slime"))
             {
+                float distence = (centerHit.collider.gameObject.transform.position - transform.position).magnitude;
+                if (distence < suckDistence)
+                {
+                    slimes.Add(centerHit.collider.gameObject);
+                    slimeSuckPower.Add(suckDistence - distence);
+                }
                 //Debug.Log("Start: " + center.origin +  ", End: " + centerHit.point + ", Name: " + centerHit.collider.name);
-                Debug.DrawRay(center.origin, centerRay.transform.position - transform.position, Color.red);
+                //Debug.DrawRay(center.origin, centerRay.transform.position - transform.position, Color.red);
             }
+            //Middle Circle
             for (int i = 0; i < middleRays.Length; i++)
             {
                 Ray middle = new Ray(transform.position, middleRays[i].transform.position - transform.position);
@@ -40,10 +58,34 @@ public class Gun : MonoBehaviour
                 Physics.Raycast(middle, out middleHit);
                 if (middleHit.collider != null && middleHit.collider.CompareTag("Slime"))
                 {
+                    float distence = (middleHit.collider.gameObject.transform.position - transform.position).magnitude;
+                    if (distence < suckDistence)
+                    {
+                        int slimeNum = -1;
+                        for (int j = 0; j < slimes.Count; j++)
+                        {
+                            if (slimes[j] == middleHit.collider.gameObject)
+                            {
+                                slimeNum = j;
+                                break;
+                            }
+                        }
+                        if (slimeNum == -1)
+                        {
+                            slimes.Add(middleHit.collider.gameObject);
+                            slimeSuckPower.Add(.8f * (suckDistence - distence));
+                        }
+                        else
+                        {
+                            slimeSuckPower[slimeNum] += .8f * (suckDistence - distence);
+                        }
+                    }
+
                     //Debug.Log("Start: " + center.origin +  ", End: " + centerHit.point + ", Name: " + centerHit.collider.name);
-                    Debug.DrawRay(middle.origin, middleRays[i].transform.position - transform.position, Color.red);
+                    //Debug.DrawRay(middle.origin, middleRays[i].transform.position - transform.position, Color.red);
                 }
             }
+            //Outer Circle
             for (int i = 0; i < outerRays.Length; i++)
             {
                 Ray outer = new Ray(transform.position, outerRays[i].transform.position - transform.position);
@@ -51,10 +93,51 @@ public class Gun : MonoBehaviour
                 Physics.Raycast(outer, out outerHit);
                 if (outerHit.collider != null && outerHit.collider.CompareTag("Slime"))
                 {
+                    float distence = (outerHit.collider.gameObject.transform.position - transform.position).magnitude;
+                    if (distence < suckDistence)
+                    {
+                        int slimeNum = -1;
+                        for (int j = 0; j < slimes.Count; j++)
+                        {
+                            if (slimes[j] == outerHit.collider.gameObject)
+                            {
+                                slimeNum = j;
+                                break;
+                            }
+                        }
+                        if (slimeNum == -1)
+                        {
+                            slimes.Add(outerHit.collider.gameObject);
+                            slimeSuckPower.Add(.5f * (suckDistence - distence));
+                        }
+                        else
+                        {
+                            slimeSuckPower[slimeNum] += .5f * (suckDistence - distence);
+                        }
+                    }
+
                     //Debug.Log("Start: " + center.origin +  ", End: " + centerHit.point + ", Name: " + centerHit.collider.name);
-                    Debug.DrawRay(outer.origin, outerRays[i].transform.position - transform.position, Color.red);
+                    //Debug.DrawRay(outer.origin, outerRays[i].transform.position - transform.position, Color.red);
                 }
             }
+
+            //Suck
+            for (int i = 0; i < slimes.Count; i++)
+            {
+                Vector3 direction = (transform.position - slimes[i].transform.position).normalized;
+                slimes[i].GetComponent<Rigidbody>().AddForce(slimeSuckPower[i] * direction * suckPower, ForceMode.Force);
+            }
         }
+
+        if (Input.GetMouseButtonUp(1))//Right Click
+        {
+            isSucking = false;
+        }
+
+    }
+
+    public void SuckedSlime()
+    {
+
     }
 }

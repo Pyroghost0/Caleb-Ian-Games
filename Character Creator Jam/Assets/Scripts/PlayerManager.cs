@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 public class PlayerManager : MonoBehaviour
 {
     public GameObject player;
+    public Gun gun;
     public string loadedPlayerScene = "Player";
+    
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +22,8 @@ public class PlayerManager : MonoBehaviour
             {
                 Debug.LogError("Unable to load player " + loadedPlayerScene);
             }
+            player = GameObject.FindGameObjectWithTag("Player");
         }
+        gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
     }
 }
