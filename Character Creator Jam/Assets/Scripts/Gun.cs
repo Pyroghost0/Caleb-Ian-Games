@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    public float amountOfSlime;
+    public float amountOfSlime = 50f;
+    public GameObject player;
+    public GameObject bulletPrefab;
 
     public GameObject centerRay;
     public GameObject[] middleRays;
@@ -25,7 +27,18 @@ public class Gun : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))//Left Click
         {
-
+            float power = 0f;
+            if (amountOfSlime > 50f)
+            {
+                power = 10f;
+            }
+            else
+            {//50 = 10 lost, 25 = 5 lost, 5 = 1 lost
+                power = amountOfSlime / 5f;
+            }
+            amountOfSlime -= power;
+            power += 4f;
+            Instantiate(bulletPrefab, transform.position, player.transform.rotation).transform.localScale *= (power / 14f);
         }
 
         if (Input.GetMouseButton(1))//Right Click
@@ -138,6 +151,13 @@ public class Gun : MonoBehaviour
 
     public void SuckedSlime()
     {
-
+        if (amountOfSlime < 50f)
+        {
+            amountOfSlime += 10f;
+        }
+        else
+        {//50 = 10 gained, 75 = 5 gained, 95 = 1 gained
+            amountOfSlime += (100f - amountOfSlime) / 5f;
+        }
     }
 }

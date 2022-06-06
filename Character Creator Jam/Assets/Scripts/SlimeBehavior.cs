@@ -13,6 +13,7 @@ public class SlimeBehavior : MonoBehaviour
     private Gun gun;
     private GameObject suckSpot;
     private bool sucked = false;
+    public float damage = 30f;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +46,14 @@ public class SlimeBehavior : MonoBehaviour
             rigidbody.velocity = Vector3.zero;
             //rigidbody.AddForce(-jumpForce, ForceMode.Impulse);
             yield return new WaitForSeconds(Random.Range(.2f, .4f));
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.collider.CompareTag("Player") && !sucked)
+        {
+            player.GetComponent<PlayerStatus>().TakeDamage(damage);
         }
     }
 
