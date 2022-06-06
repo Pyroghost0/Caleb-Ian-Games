@@ -14,6 +14,7 @@ public class SlimeBehavior : MonoBehaviour
     private GameObject suckSpot;
     private bool sucked = false;
     public float damage = 30f;
+    public float knockback = 15f;
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +54,7 @@ public class SlimeBehavior : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player") && !sucked)
         {
-            player.GetComponent<PlayerStatus>().TakeDamage(damage);
+            player.GetComponent<PlayerStatus>().TakeDamage(damage, transform.position, knockback);
         }
     }
 
@@ -61,7 +62,7 @@ public class SlimeBehavior : MonoBehaviour
     {
         if (other.gameObject == suckSpot && gun.isSucking &&!sucked)
         {
-            Debug.Log("Slime Destroyed");
+            //Debug.Log("Slime Destroyed");
             sucked = true;
             gun.SuckedSlime();
             Destroy(gameObject);

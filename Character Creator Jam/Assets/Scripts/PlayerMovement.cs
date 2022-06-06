@@ -49,7 +49,6 @@ public class PlayerMovement : MonoBehaviour {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(move * speed * Time.deltaTime);
         if (isGrounded)
         {
             if (Input.GetButtonDown("Jump"))
@@ -57,14 +56,14 @@ public class PlayerMovement : MonoBehaviour {
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
             else if (velocity.y < 0) {
-                velocity.y = -1f;
+                velocity.y = -1;
             }
         }
         else
         {
             velocity.y += gravity * Time.deltaTime;
         }
-        controller.Move(velocity * Time.deltaTime);
+        controller.Move(((move * speed) + velocity) * Time.deltaTime);
     }
 }
 
