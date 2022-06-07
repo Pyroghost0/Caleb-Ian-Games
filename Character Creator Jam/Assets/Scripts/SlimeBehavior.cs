@@ -15,6 +15,7 @@ public class SlimeBehavior : MonoBehaviour
     private bool sucked = false;
     public float damage = 30f;
     public float knockback = 15f;
+    public float health = 25f;
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +48,19 @@ public class SlimeBehavior : MonoBehaviour
             rigidbody.velocity = Vector3.zero;
             //rigidbody.AddForce(-jumpForce, ForceMode.Impulse);
             yield return new WaitForSeconds(Random.Range(.2f, .4f));
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            health -= other.GetComponent<Bullet>().power * 25;
+            Destroy(other.gameObject);
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

@@ -28,4 +28,12 @@ public class Bullet : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         Destroy(gameObject);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Ground") || other.CompareTag("Wall"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
