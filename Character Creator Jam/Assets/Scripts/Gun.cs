@@ -43,13 +43,13 @@ public class Gun : MonoBehaviour
 
         if (Input.GetMouseButton(1))//Right Click
         {
-            List<GameObject> slimes = new List<GameObject> { };
+            List<GameObject> suckedObjects = new List<GameObject> { };
             List<float> slimeSuckPower = new List<float> { };
             isSucking = true;
 
 
             //Center
-            Ray center = new Ray(transform.position, centerRay.transform.position - transform.position);
+            Ray center = new Ray(suckSpot.transform.position, centerRay.transform.position - transform.position);
             RaycastHit centerHit;
             Physics.Raycast(center, out centerHit);
             if (centerHit.collider != null && centerHit.collider.CompareTag("Slime"))
@@ -57,7 +57,7 @@ public class Gun : MonoBehaviour
                 float distence = (centerHit.collider.gameObject.transform.position - transform.position).magnitude;
                 if (distence < suckDistence)
                 {
-                    slimes.Add(centerHit.collider.gameObject);
+                    suckedObjects.Add(centerHit.collider.gameObject);
                     slimeSuckPower.Add(suckDistence - distence);
                 }
                 //Debug.Log("Start: " + center.origin +  ", End: " + centerHit.point + ", Name: " + centerHit.collider.name);
@@ -66,7 +66,7 @@ public class Gun : MonoBehaviour
             //Middle Circle
             for (int i = 0; i < middleRays.Length; i++)
             {
-                Ray middle = new Ray(transform.position, middleRays[i].transform.position - transform.position);
+                Ray middle = new Ray(suckSpot.transform.position, middleRays[i].transform.position - transform.position);
                 RaycastHit middleHit;
                 Physics.Raycast(middle, out middleHit);
                 if (middleHit.collider != null && middleHit.collider.CompareTag("Slime"))
@@ -75,9 +75,9 @@ public class Gun : MonoBehaviour
                     if (distence < suckDistence)
                     {
                         int slimeNum = -1;
-                        for (int j = 0; j < slimes.Count; j++)
+                        for (int j = 0; j < suckedObjects.Count; j++)
                         {
-                            if (slimes[j] == middleHit.collider.gameObject)
+                            if (suckedObjects[j] == middleHit.collider.gameObject)
                             {
                                 slimeNum = j;
                                 break;
@@ -85,7 +85,7 @@ public class Gun : MonoBehaviour
                         }
                         if (slimeNum == -1)
                         {
-                            slimes.Add(middleHit.collider.gameObject);
+                            suckedObjects.Add(middleHit.collider.gameObject);
                             slimeSuckPower.Add(.8f * (suckDistence - distence));
                         }
                         else
@@ -101,7 +101,7 @@ public class Gun : MonoBehaviour
             //Outer Circle
             for (int i = 0; i < outerRays.Length; i++)
             {
-                Ray outer = new Ray(transform.position, outerRays[i].transform.position - transform.position);
+                Ray outer = new Ray(suckSpot.transform.position, outerRays[i].transform.position - transform.position);
                 RaycastHit outerHit;
                 Physics.Raycast(outer, out outerHit);
                 if (outerHit.collider != null && outerHit.collider.CompareTag("Slime"))
@@ -110,9 +110,9 @@ public class Gun : MonoBehaviour
                     if (distence < suckDistence)
                     {
                         int slimeNum = -1;
-                        for (int j = 0; j < slimes.Count; j++)
+                        for (int j = 0; j < suckedObjects.Count; j++)
                         {
-                            if (slimes[j] == outerHit.collider.gameObject)
+                            if (suckedObjects[j] == outerHit.collider.gameObject)
                             {
                                 slimeNum = j;
                                 break;
@@ -120,7 +120,7 @@ public class Gun : MonoBehaviour
                         }
                         if (slimeNum == -1)
                         {
-                            slimes.Add(outerHit.collider.gameObject);
+                            suckedObjects.Add(outerHit.collider.gameObject);
                             slimeSuckPower.Add(.5f * (suckDistence - distence));
                         }
                         else
@@ -135,10 +135,10 @@ public class Gun : MonoBehaviour
             }
 
             //Suck
-            for (int i = 0; i < slimes.Count; i++)
+            for (int i = 0; i < suckedObjects.Count; i++)
             {
-                Vector3 direction = (transform.position - slimes[i].transform.position).normalized;
-                slimes[i].GetComponent<Rigidbody>().AddForce(slimeSuckPower[i] * direction * suckPower, ForceMode.Force);
+                Vector3 direction = (transform.position - suckedObjects[i].transform.position).normalized;
+                suckedObjects[i].GetComponent<Rigidbody>().AddForce(slimeSuckPower[i] * direction * suckPower, ForceMode.Force);
             }
         }
 

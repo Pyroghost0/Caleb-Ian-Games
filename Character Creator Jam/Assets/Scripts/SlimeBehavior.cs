@@ -16,6 +16,7 @@ public class SlimeBehavior : MonoBehaviour
     public float damage = 30f;
     public float knockback = 15f;
     public float health = 25f;
+    public SlimeSpawner slimeSpawner;
 
     // Start is called before the first frame update
     void Start()
@@ -74,10 +75,11 @@ public class SlimeBehavior : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject == suckSpot && gun.isSucking &&!sucked)
+        if (other.gameObject == suckSpot && gun.isSucking && !sucked)
         {
             //Debug.Log("Slime Destroyed");
             sucked = true;
+            slimeSpawner.SlimeDeath();
             gun.SuckedSlime();
             Destroy(gameObject);
         }
