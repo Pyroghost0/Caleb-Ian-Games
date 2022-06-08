@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        power = transform.localScale.x / .35f;
+        power = transform.localScale.x / .75f;
         lifeTime *= power;
         movement = Vector3.forward * power * 75f;
         StartCoroutine(DieInSeconds(lifeTime));

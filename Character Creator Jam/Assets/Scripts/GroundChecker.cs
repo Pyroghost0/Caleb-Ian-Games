@@ -10,7 +10,7 @@ public class GroundChecker : MonoBehaviour
     private void OnTriggerStay(Collider collider)
     {
         //Debug.Log(collider.name + ", " + collider.gameObject.layer);
-        if (collider.gameObject.layer == 8)
+        if (collider.gameObject.layer == 8 || collider.gameObject.layer == 10)
         {
             inGround = true;
         }
@@ -18,7 +18,7 @@ public class GroundChecker : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == 8)
+        if (other.gameObject.layer == 8 || other.gameObject.layer == 10)
         {
             inGround = false;
         }

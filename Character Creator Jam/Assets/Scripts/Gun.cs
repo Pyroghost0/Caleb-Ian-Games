@@ -7,6 +7,7 @@ public class Gun : MonoBehaviour
     public float amountOfSlime = 50f;
     public GameObject player;
     public GameObject bulletPrefab;
+    public GameObject cameraBasisObject;
 
     public GameObject centerRay;
     public GameObject[] middleRays;
@@ -38,7 +39,8 @@ public class Gun : MonoBehaviour
             }
             amountOfSlime -= power;
             power += 4f;
-            Instantiate(bulletPrefab, transform.position, player.transform.rotation).transform.localScale *= (power / 14f);
+            Quaternion rotation = Quaternion.Euler(cameraBasisObject.transform.rotation.eulerAngles.x - 5f, cameraBasisObject.transform.rotation.eulerAngles.y, cameraBasisObject.transform.rotation.eulerAngles.z);
+            Instantiate(bulletPrefab, transform.position, rotation).transform.localScale *= (power / 14f);
         }
 
         if (Input.GetMouseButton(1))//Right Click

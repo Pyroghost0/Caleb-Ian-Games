@@ -7,17 +7,12 @@ public class TutorialTriggerWalls : MonoBehaviour
     public bool isSlimeTriggerWall = false;
     public SlimeSpawner slimeSpawner;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool isTargetObject = false;
+    private bool gateMoved = false;
+    public GameObject gateWall;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public bool isFinalTriggerWall = false;
+    public GameObject ground;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -32,6 +27,37 @@ public class TutorialTriggerWalls : MonoBehaviour
             {
                 StartCoroutine(KillSlimeInSeconds(other.gameObject, 2.5f));
             }
+        }
+
+        else if (isTargetObject)
+        {
+            if (other.CompareTag("Bullet") && !gateMoved)
+            {
+                gateMoved = true;
+                StartCoroutine(MoveGateUp());
+                Destroy(other.gameObject);
+            }
+        }
+
+        else if (isFinalTriggerWall)
+        {
+            if (other.CompareTag("Player"))
+            {
+                other.GetComponent<PlayerStatus>().invincible = false;
+                other.GetComponent<PlayerMovement>().groundChecker.inGround = false;
+                ground.SetActive(false);
+            }
+        }
+    }
+
+    IEnumerator MoveGateUp()
+    {
+        float timer = 0f;
+        while (timer < 2.5f)
+        {
+            yield return new WaitForFixedUpdate();
+            timer += Time.deltaTime;
+            gateWall.transform.position += Vector3.up * 8f / 2.5f *Time.deltaTime;
         }
     }
 
