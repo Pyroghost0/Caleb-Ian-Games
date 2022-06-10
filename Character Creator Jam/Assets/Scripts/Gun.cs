@@ -54,7 +54,7 @@ public class Gun : MonoBehaviour
             Ray center = new Ray(suckSpot.transform.position, centerRay.transform.position - transform.position);
             RaycastHit centerHit;
             Physics.Raycast(center, out centerHit);
-            if (centerHit.collider != null && centerHit.collider.CompareTag("Slime"))
+            if (centerHit.collider != null && centerHit.collider.gameObject.layer == 9)
             {
                 float distence = (centerHit.collider.gameObject.transform.position - transform.position).magnitude;
                 if (distence < suckDistence)
@@ -71,7 +71,7 @@ public class Gun : MonoBehaviour
                 Ray middle = new Ray(suckSpot.transform.position, middleRays[i].transform.position - transform.position);
                 RaycastHit middleHit;
                 Physics.Raycast(middle, out middleHit);
-                if (middleHit.collider != null && middleHit.collider.CompareTag("Slime"))
+                if (middleHit.collider != null && middleHit.collider.gameObject.layer == 9)
                 {
                     float distence = (middleHit.collider.gameObject.transform.position - transform.position).magnitude;
                     if (distence < suckDistence)
@@ -106,7 +106,7 @@ public class Gun : MonoBehaviour
                 Ray outer = new Ray(suckSpot.transform.position, outerRays[i].transform.position - transform.position);
                 RaycastHit outerHit;
                 Physics.Raycast(outer, out outerHit);
-                if (outerHit.collider != null && outerHit.collider.CompareTag("Slime"))
+                if (outerHit.collider != null && outerHit.collider.gameObject.layer == 9)
                 {
                     float distence = (outerHit.collider.gameObject.transform.position - transform.position).magnitude;
                     if (distence < suckDistence)

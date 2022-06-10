@@ -2049,6 +2049,15 @@ MonoBehaviour:
   invincible: 0
   invincibleTime: 2
   healthBar: {fileID: 58453054}
+  selfEquipment:
+  - {fileID: 4460932189441006760}
+  - {fileID: 4435646343380363853}
+  - {fileID: 2488455908866915636}
+  equipmentPrefabs:
+  - {fileID: 1457537799933373062, guid: cf802e02023f07444ab23c3cc6b2ea89, type: 3}
+  - {fileID: 6478482933384405136, guid: 2069975ba3152624b80c347953388d4c, type: 3}
+  - {fileID: 5947789644317979031, guid: 0f0de511b65570f4dbfd5326b711f3ca, type: 3}
+  equipedEquipment: 000000
 --- !u!4 &1396442014
 Transform:
   m_ObjectHideFlags: 0
@@ -4170,9 +4179,9 @@ Transform:
   m_LocalPosition: {x: 0, y: -0.55, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
-  - {fileID: 6342061511637476780}
   - {fileID: 3000160320635446169}
   - {fileID: 7597313566011273851}
+  - {fileID: 6342061511637476780}
   - {fileID: 6381036398373544009}
   - {fileID: 5378606893880148103}
   - {fileID: 5847801512628633357}
@@ -4272,7 +4281,7 @@ Transform:
   m_LocalScale: {x: 19.375069, y: 19.375069, z: 19.375069}
   m_Children: []
   m_Father: {fileID: 2685973843529431105}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &3058706294469447903
 Transform:
@@ -5336,11 +5345,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2488455908866915636}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 18.79635, y: 18.79635, z: 18.79635}
   m_Children: []
   m_Father: {fileID: 2685973843529431105}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6342516287568977369
 GameObject:
@@ -5882,7 +5891,7 @@ Transform:
   m_LocalScale: {x: 18.79635, y: 18.79635, z: 18.79635}
   m_Children: []
   m_Father: {fileID: 2685973843529431105}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &7623421377471427728
 Transform:

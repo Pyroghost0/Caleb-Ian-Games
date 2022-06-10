@@ -13,6 +13,10 @@ public class PlayerStatus : MonoBehaviour
     private float rectHealth;
     private CharacterController characterController;
 
+    public GameObject[] selfEquipment;
+    public GameObject[] equipmentPrefabs;
+    public bool[] equipedEquipment;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +29,98 @@ public class PlayerStatus : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void Equip(Equipment equipment)
+    {
+        if (equipment.clothingType == "Head")
+        {
+            int somethingElseEquiped = -1;
+            for (int i = 0; i < equipedEquipment.Length; i+=3)
+            {
+                if (equipedEquipment[i])
+                {
+                    somethingElseEquiped = i;
+                    break;
+                }
+            }
+            if (somethingElseEquiped > -1)
+            {
+                equipedEquipment[somethingElseEquiped] = false;
+                selfEquipment[somethingElseEquiped].SetActive(false);
+                Quaternion rotation = Quaternion.Euler(equipmentPrefabs[somethingElseEquiped].gameObject.transform.rotation.eulerAngles.x, equipmentPrefabs[somethingElseEquiped].gameObject.transform.rotation.eulerAngles.y, gameObject.transform.rotation.eulerAngles.z);
+                GameObject oldEquipment = Instantiate(equipmentPrefabs[somethingElseEquiped], equipment.gameObject.transform.position, rotation);
+                StartCoroutine(DelayReequiping(oldEquipment));
+            }
+            if (equipment.clothingStyle == "Mech")
+            {
+                equipedEquipment[0] = true;
+                selfEquipment[0].SetActive(true);
+            }
+        }
+
+
+        else if (equipment.clothingType == "Body")
+        {
+            int somethingElseEquiped = -1;
+            for (int i = 1; i < equipedEquipment.Length; i += 3)
+            {
+                if (equipedEquipment[i])
+                {
+                    somethingElseEquiped = i;
+                    break;
+                }
+            }
+            if (somethingElseEquiped > -1)
+            {
+                equipedEquipment[somethingElseEquiped] = false;
+                selfEquipment[somethingElseEquiped].SetActive(false);
+                Quaternion rotation = Quaternion.Euler(equipmentPrefabs[somethingElseEquiped].gameObject.transform.rotation.eulerAngles.x, equipmentPrefabs[somethingElseEquiped].gameObject.transform.rotation.eulerAngles.y, gameObject.transform.rotation.eulerAngles.z);
+                GameObject oldEquipment = Instantiate(equipmentPrefabs[somethingElseEquiped], equipment.gameObject.transform.position, rotation);
+                StartCoroutine(DelayReequiping(oldEquipment));
+            }
+            if (equipment.clothingStyle == "Mech")
+            {
+                equipedEquipment[1] = true;
+                selfEquipment[1].SetActive(true);
+            }
+        }
+
+
+        else if (equipment.clothingType == "Legs")
+        {
+            int somethingElseEquiped = -1;
+            for (int i = 2; i < equipedEquipment.Length; i += 3)
+            {
+                if (equipedEquipment[i])
+                {
+                    somethingElseEquiped = i;
+                    break;
+                }
+            }
+            if (somethingElseEquiped > -1)
+            {
+                equipedEquipment[somethingElseEquiped] = false;
+                selfEquipment[somethingElseEquiped].SetActive(false);
+                Quaternion rotation = Quaternion.Euler(equipmentPrefabs[somethingElseEquiped].gameObject.transform.rotation.eulerAngles.x, equipmentPrefabs[somethingElseEquiped].gameObject.transform.rotation.eulerAngles.y, gameObject.transform.rotation.eulerAngles.z);
+                GameObject oldEquipment = Instantiate(equipmentPrefabs[somethingElseEquiped], equipment.gameObject.transform.position, rotation);
+                StartCoroutine(DelayReequiping(oldEquipment));
+            }
+            if (equipment.clothingStyle == "Mech")
+            {
+                equipedEquipment[2] = true;
+                selfEquipment[2].SetActive(true);
+            }
+        }
+
+        Destroy(equipment.gameObject);
+    }
+
+    IEnumerator DelayReequiping(GameObject equipment)
+    {
+        equipment.layer = 2;//Ignore Raycast
+        yield return new WaitForSeconds(1f);
+        equipment.layer = 9;//Suckable Object
     }
 
     public void TakeDamage(float damage, Vector3 direction, float knockback)
