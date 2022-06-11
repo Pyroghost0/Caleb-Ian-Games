@@ -62,12 +62,18 @@ public class PlayerMovement : MonoBehaviour {
             else if (velocity.y < 0) {
                 velocity.y = -1;
             }
+            controller.Move(velocity * Time.deltaTime);
         }
         else
         {
+            float prevHeight = transform.position.y;
             velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+            if (velocity.y > 0 && transform.position.y == prevHeight)
+            {
+                velocity.y *= -.3f;
+            }
         }
-        controller.Move(velocity * Time.deltaTime);
     }
 }
 

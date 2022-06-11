@@ -63,16 +63,15 @@ public class Gun : MonoBehaviour
                     slimeSuckPower.Add(suckDistence - distence);
                 }
             }
-            if (centerHit.collider != null)
+            /*if (centerHit.collider != null)
             {
                 Debug.Log("Start: " + center.origin +  ", End: " + centerHit.point + ", Name: " + centerHit.collider.name);
                 Debug.DrawRay(center.origin, centerRay.transform.position - suckSpot.transform.position, Color.red);
-            }
+            }*/
             //Middle Circle
             for (int i = 0; i < middleRays.Length; i++)
             {
                 Ray middle = new Ray(suckSpot.transform.position, middleRays[i].transform.position - suckSpot.transform.position);
-                Debug.Log(middle.direction);
                 RaycastHit middleHit;
                 Physics.Raycast(middle, out middleHit);
                 if (middleHit.collider != null && middleHit.collider.gameObject.layer == 9)
@@ -100,11 +99,11 @@ public class Gun : MonoBehaviour
                         }
                     }
                 }
-                if (middleHit.collider != null)
+                /*if (middleHit.collider != null)
                 {
                     Debug.Log("Start: " + center.origin + ", End: " + middleHit.point + ", Name: " + middleHit.collider.name);
                     Debug.DrawRay(center.origin, middleRays[i].transform.position - suckSpot.transform.position, Color.red);
-                }
+                }*/
             }
             //Outer Circle
             for (int i = 0; i < outerRays.Length; i++)

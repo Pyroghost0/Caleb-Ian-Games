@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject player;
     public Gun gun;
     public string loadedPlayerScene = "Player";
-    
+    public GameObject firstCheckpoint;
 
     // Start is called before the first frame update
     void Start()
@@ -25,5 +25,6 @@ public class PlayerManager : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Player");
         }
         gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
+        player.GetComponent<PlayerStatus>().currentSpawnPosition = firstCheckpoint;
     }
 }

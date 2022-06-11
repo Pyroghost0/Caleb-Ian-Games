@@ -16,8 +16,11 @@ public class PlayerStatus : MonoBehaviour
     public GameObject[] selfEquipment;
     public GameObject[] equipmentPrefabs;
     public bool[] equipedEquipment;
+    public GameObject[] emptyEquipment;
     private PlayerMovement playerMovement;
     private Gun gun;
+
+    public GameObject currentSpawnPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -27,12 +30,6 @@ public class PlayerStatus : MonoBehaviour
         characterController = gameObject.GetComponent<CharacterController>();
         playerMovement = gameObject.GetComponent<PlayerMovement>();
         gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Equip(Equipment equipment)
@@ -52,6 +49,7 @@ public class PlayerStatus : MonoBehaviour
             {
                 Dequip(somethingElseEquiped, equipment.gameObject.transform.position);
             }
+            emptyEquipment[0].SetActive(false);
             if (equipment.clothingStyle == "Mech")
             {
                 gun.suckDistence *= 1.5f;
@@ -76,6 +74,7 @@ public class PlayerStatus : MonoBehaviour
             {
                 Dequip(somethingElseEquiped, equipment.gameObject.transform.position);
             }
+            emptyEquipment[1].SetActive(false);
             if (equipment.clothingStyle == "Mech")
             {
                 gun.suckPower *= 1.5f;
@@ -100,6 +99,7 @@ public class PlayerStatus : MonoBehaviour
             {
                 Dequip(somethingElseEquiped, equipment.gameObject.transform.position);
             }
+            emptyEquipment[2].SetActive(false);
             if (equipment.clothingStyle == "Mech")
             {
                 playerMovement.jumpHeight *= 2f;
@@ -172,5 +172,13 @@ public class PlayerStatus : MonoBehaviour
         rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
         yield return new WaitForSeconds(invincibleTime);
         invincible = false;
+    }
+
+    public void Respawn()
+    {
+        characterController.enabled = false;
+        gameObject.transform.position = currentSpawnPosition.transform.position;
+        gameObject.transform.rotation = currentSpawnPosition.transform.rotation;
+        characterController.enabled = true;
     }
 }

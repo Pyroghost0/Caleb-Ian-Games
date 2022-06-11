@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
-    public string clothingType;//"Head, "Body," or "Legs"   **Needs capital letter**
-    public string clothingStyle;//"Deer", "Mech", "Baker," or "POTUS"   **Needs capital letter(s)**
+    public string clothingType;//"Head", "Body", or "Legs"   **Needs capital letter**
+    public string clothingStyle;//"Deer", "Mech", "Baker", or "POTUS"   **Needs capital letter(s)**
 
     private PlayerManager playerManager;
     private PlayerStatus player;
