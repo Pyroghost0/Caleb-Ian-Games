@@ -51,29 +51,33 @@ public class Gun : MonoBehaviour
 
 
             //Center
-            Ray center = new Ray(suckSpot.transform.position, centerRay.transform.position - transform.position);
+            Ray center = new Ray(suckSpot.transform.position, centerRay.transform.position - suckSpot.transform.position);
             RaycastHit centerHit;
             Physics.Raycast(center, out centerHit);
             if (centerHit.collider != null && centerHit.collider.gameObject.layer == 9)
             {
-                float distence = (centerHit.collider.gameObject.transform.position - transform.position).magnitude;
+                float distence = (centerHit.collider.gameObject.transform.position - suckSpot.transform.position).magnitude;
                 if (distence < suckDistence)
                 {
                     suckedObjects.Add(centerHit.collider.gameObject);
                     slimeSuckPower.Add(suckDistence - distence);
                 }
-                //Debug.Log("Start: " + center.origin +  ", End: " + centerHit.point + ", Name: " + centerHit.collider.name);
-                //Debug.DrawRay(center.origin, centerRay.transform.position - transform.position, Color.red);
+            }
+            if (centerHit.collider != null)
+            {
+                Debug.Log("Start: " + center.origin +  ", End: " + centerHit.point + ", Name: " + centerHit.collider.name);
+                Debug.DrawRay(center.origin, centerRay.transform.position - suckSpot.transform.position, Color.red);
             }
             //Middle Circle
             for (int i = 0; i < middleRays.Length; i++)
             {
-                Ray middle = new Ray(suckSpot.transform.position, middleRays[i].transform.position - transform.position);
+                Ray middle = new Ray(suckSpot.transform.position, middleRays[i].transform.position - suckSpot.transform.position);
+                Debug.Log(middle.direction);
                 RaycastHit middleHit;
                 Physics.Raycast(middle, out middleHit);
                 if (middleHit.collider != null && middleHit.collider.gameObject.layer == 9)
                 {
-                    float distence = (middleHit.collider.gameObject.transform.position - transform.position).magnitude;
+                    float distence = (middleHit.collider.gameObject.transform.position - suckSpot.transform.position).magnitude;
                     if (distence < suckDistence)
                     {
                         int slimeNum = -1;
@@ -95,20 +99,22 @@ public class Gun : MonoBehaviour
                             slimeSuckPower[slimeNum] += .8f * (suckDistence - distence);
                         }
                     }
-
-                    //Debug.Log("Start: " + center.origin +  ", End: " + centerHit.point + ", Name: " + centerHit.collider.name);
-                    //Debug.DrawRay(middle.origin, middleRays[i].transform.position - transform.position, Color.red);
+                }
+                if (middleHit.collider != null)
+                {
+                    Debug.Log("Start: " + center.origin + ", End: " + middleHit.point + ", Name: " + middleHit.collider.name);
+                    Debug.DrawRay(center.origin, middleRays[i].transform.position - suckSpot.transform.position, Color.red);
                 }
             }
             //Outer Circle
             for (int i = 0; i < outerRays.Length; i++)
             {
-                Ray outer = new Ray(suckSpot.transform.position, outerRays[i].transform.position - transform.position);
+                Ray outer = new Ray(suckSpot.transform.position, outerRays[i].transform.position - suckSpot.transform.position);
                 RaycastHit outerHit;
                 Physics.Raycast(outer, out outerHit);
                 if (outerHit.collider != null && outerHit.collider.gameObject.layer == 9)
                 {
-                    float distence = (outerHit.collider.gameObject.transform.position - transform.position).magnitude;
+                    float distence = (outerHit.collider.gameObject.transform.position - suckSpot.transform.position).magnitude;
                     if (distence < suckDistence)
                     {
                         int slimeNum = -1;
@@ -130,16 +136,18 @@ public class Gun : MonoBehaviour
                             slimeSuckPower[slimeNum] += .5f * (suckDistence - distence);
                         }
                     }
-
-                    //Debug.Log("Start: " + center.origin +  ", End: " + centerHit.point + ", Name: " + centerHit.collider.name);
-                    //Debug.DrawRay(outer.origin, outerRays[i].transform.position - transform.position, Color.red);
                 }
+                /*if (outerHit.collider != null)
+                {
+                    Debug.Log("Start: " + center.origin + ", End: " + outerHit.point + ", Name: " + outerHit.collider.name);
+                    Debug.DrawRay(center.origin, outerRays[i].transform.position - suckSpot.transform.position, Color.red);
+                }*/
             }
 
             //Suck
             for (int i = 0; i < suckedObjects.Count; i++)
             {
-                Vector3 direction = (transform.position - suckedObjects[i].transform.position).normalized;
+                Vector3 direction = (suckSpot.transform.position - suckedObjects[i].transform.position).normalized;
                 suckedObjects[i].GetComponent<Rigidbody>().AddForce(slimeSuckPower[i] * direction * suckPower, ForceMode.Force);
             }
         }

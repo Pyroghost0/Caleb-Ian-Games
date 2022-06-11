@@ -48,7 +48,11 @@ public class PlayerMovement : MonoBehaviour {
         isGrounded = groundChecker.inGround;
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+        float magnitude = Mathf.Sqrt(x*x + z*z);
+        x *= Mathf.Abs(x) / magnitude;
+        z *= Mathf.Abs(z) / magnitude;
         Vector3 move = transform.right * x + transform.forward * z;
+        controller.Move(move * speed * Time.deltaTime);
         if (isGrounded)
         {
             if (Input.GetButtonDown("Jump"))
@@ -63,7 +67,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             velocity.y += gravity * Time.deltaTime;
         }
-        controller.Move(((move * speed) + velocity) * Time.deltaTime);
+        controller.Move(velocity * Time.deltaTime);
     }
 }
 

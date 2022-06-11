@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ground") || other.CompareTag("Wall"))
+        if (other.gameObject.layer >= 11 || other.gameObject.layer == 8)
         {
             Destroy(gameObject);
         }
