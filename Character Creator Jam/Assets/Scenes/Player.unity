@@ -1187,9 +1187,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 2.35
+  m_Height: 2.7
   m_Direction: 2
-  m_Center: {x: -0.25, y: 0, z: -0.65}
+  m_Center: {x: -0.25, y: 0, z: -0.5}
 --- !u!1 &560382055
 GameObject:
   m_ObjectHideFlags: 0
@@ -2490,8 +2490,8 @@ MonoBehaviour:
   jumpHeight: 5
   mouseHorizontalSensitivity: 1600
   mouseVirticalSensitivity: 400
-  minAngle: 0
-  maxAngle: 30
+  minAngle: -60
+  maxAngle: 45
   cameraBasisObject: {fileID: 560382055}
 --- !u!136 &1396442010
 CapsuleCollider:

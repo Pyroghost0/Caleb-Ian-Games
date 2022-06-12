@@ -17,6 +17,7 @@ public class SlimeBehavior : MonoBehaviour
     public float knockback = 15f;
     public float health = 25f;
     public SlimeSpawner slimeSpawner;
+    private float maxDistenceFromPlayer = 70f+10f;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,7 @@ public class SlimeBehavior : MonoBehaviour
         gun = playerManager.gun;
         suckSpot = gun.suckSpot;
         gravity = Vector3.down * 9.8f * gravityMultiplier;
+        maxDistenceFromPlayer = slimeSpawner.spawnDistence;
         StartCoroutine(ConstantJump());
     }
 
@@ -41,9 +43,17 @@ public class SlimeBehavior : MonoBehaviour
         while (true)
         {
             yield return new WaitUntil(() => (groundChecker.inGround));
-            Vector3 xzDirection = new Vector3(player.transform.position.x - gameObject.transform.position.x, 0, player.transform.position.z - gameObject.transform.position.z).normalized;
-            Vector3 jumpForce = Random.Range(3.5f, 4.5f) * (xzDirection + (Random.Range(2.5f, 3.25f) * Vector3.up));
-            rigidbody.AddForce(jumpForce, ForceMode.Impulse);
+            if ((player.transform.position - transform.position).magnitude < maxDistenceFromPlayer)
+            {
+                Vector3 xzDirection = new Vector3(player.transform.position.x - gameObject.transform.position.x, 0, player.transform.position.z - gameObject.transform.position.z).normalized;
+                Vector3 jumpForce = Random.Range(3.5f, 4.5f) * (xzDirection + (Random.Range(2.5f, 3.25f) * Vector3.up));
+                rigidbody.AddForce(jumpForce, ForceMode.Impulse);
+            }
+            else
+            {
+                slimeSpawner.SlimeDeath();
+                Destroy(gameObject);
+            }
             yield return new WaitForSeconds(.3f);
             yield return new WaitUntil(() => (groundChecker.inGround));
             rigidbody.velocity = Vector3.zero;
