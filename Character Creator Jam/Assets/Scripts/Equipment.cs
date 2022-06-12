@@ -24,7 +24,7 @@ public class Equipment : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject == suckSpot && gun.isSucking && !sucked)
+        if (other.gameObject == suckSpot && gun.isSucking && !sucked && gameObject.layer != 2)
         {
             sucked = true;
             player.Equip(this);

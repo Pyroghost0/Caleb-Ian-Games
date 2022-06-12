@@ -17,6 +17,7 @@ public class PlayerStatus : MonoBehaviour
     public GameObject[] equipmentPrefabs;
     public bool[] equipedEquipment;
     public GameObject[] emptyEquipment;
+    public float slimeJumpStrengthMultiplier = 1f;
     private PlayerMovement playerMovement;
     private Gun gun;
 
@@ -52,9 +53,15 @@ public class PlayerStatus : MonoBehaviour
             emptyEquipment[0].SetActive(false);
             if (equipment.clothingStyle == "Mech")
             {
-                gun.suckDistence *= 1.5f;
+                gun.suckDistence *= 2;
                 equipedEquipment[0] = true;
                 selfEquipment[0].SetActive(true);
+            }
+            else if (equipment.clothingStyle == "Deer")
+            {
+                slimeJumpStrengthMultiplier = .82f;
+                equipedEquipment[3] = true;
+                selfEquipment[3].SetActive(true);
             }
         }
 
@@ -77,9 +84,15 @@ public class PlayerStatus : MonoBehaviour
             emptyEquipment[1].SetActive(false);
             if (equipment.clothingStyle == "Mech")
             {
-                gun.suckPower *= 1.5f;
+                gun.suckPower *= 2;
                 equipedEquipment[1] = true;
                 selfEquipment[1].SetActive(true);
+            }
+            else if (equipment.clothingStyle == "Deer")
+            {
+                gun.powerMultiplier *= 2f;
+                equipedEquipment[4] = true;
+                selfEquipment[4].SetActive(true);
             }
         }
 
@@ -106,6 +119,12 @@ public class PlayerStatus : MonoBehaviour
                 equipedEquipment[2] = true;
                 selfEquipment[2].SetActive(true);
             }
+            else if (equipment.clothingStyle == "Deer")
+            {
+                playerMovement.speed *= 1.5f;
+                equipedEquipment[5] = true;
+                selfEquipment[5].SetActive(true);
+            }
         }
         Destroy(equipment.gameObject);
     }
@@ -116,15 +135,28 @@ public class PlayerStatus : MonoBehaviour
         selfEquipment[id].SetActive(false);
         if (id == 0)
         {//Mech Helmet
-            gun.suckDistence /= 1.5f;
+            gun.suckDistence /= 2f;
         }
         else if (id == 1)
         {//Mech Body
-            gun.suckPower /= 1.5f;
+            gun.suckPower /= 2f;
         }
         else if (id == 2)
         {//Mech Legs
             playerMovement.jumpHeight /= 2f;
+        }
+
+        else if (id == 4)
+        {//Deer Helmet
+            slimeJumpStrengthMultiplier = 1f;
+        }
+        else if (id == 5)
+        {//Deer Body
+            gun.powerMultiplier /= 2f;
+        }
+        else if (id == 6)
+        {//Deer Legs
+            playerMovement.speed /= 1.5f;
         }
         Quaternion rotation = Quaternion.Euler(equipmentPrefabs[id].gameObject.transform.rotation.eulerAngles.x, equipmentPrefabs[id].gameObject.transform.rotation.eulerAngles.y, gameObject.transform.rotation.eulerAngles.z);
         GameObject oldEquipment = Instantiate(equipmentPrefabs[id], position, rotation);

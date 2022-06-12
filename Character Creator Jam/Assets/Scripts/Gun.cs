@@ -16,6 +16,7 @@ public class Gun : MonoBehaviour
     public float suckPower = .6f;
     public GameObject suckSpot;
     public bool isSucking = false;
+    public float powerMultiplier = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +41,7 @@ public class Gun : MonoBehaviour
             amountOfSlime -= power;
             power += 4f;
             Quaternion rotation = Quaternion.Euler(cameraBasisObject.transform.rotation.eulerAngles.x - 5f, cameraBasisObject.transform.rotation.eulerAngles.y, cameraBasisObject.transform.rotation.eulerAngles.z);
-            Instantiate(bulletPrefab, transform.position, rotation).transform.localScale *= (power / 14f);
+            Instantiate(bulletPrefab, transform.position, rotation).transform.localScale *= (powerMultiplier * power / 14f);
         }
 
         if (Input.GetMouseButton(1))//Right Click

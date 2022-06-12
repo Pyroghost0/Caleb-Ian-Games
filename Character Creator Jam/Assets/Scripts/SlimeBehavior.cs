@@ -6,18 +6,26 @@ public class SlimeBehavior : MonoBehaviour
 {
     private Rigidbody rigidbody;
     public GroundChecker groundChecker;
-    public float gravityMultiplier = 3f;
     private Vector3 gravity;
     private PlayerManager playerManager;
     public GameObject player;
+    private PlayerStatus playerStatus;
     private Gun gun;
     private GameObject suckSpot;
     private bool sucked = false;
-    public float damage = 30f;
-    public float knockback = 15f;
-    public float health = 25f;
     public SlimeSpawner slimeSpawner;
     private float maxDistenceFromPlayer = 70f+10f;
+
+    public float gravityMultiplier = 3f;
+    public float damage = 30f;
+    public float knockback = 25f;
+    public float health = 25f;
+    public float averageJumpHeightStrength = 3.5f;
+    public float averageJumpStrength = 5f;
+    private float averageJumpHeightStrengthMin = 4f;
+    private float averageJumpHeightStrengthMax = 4f;
+    private float averageJumpStrengthMin = 5f;
+    private float averageJumpStrengthMax = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -25,10 +33,15 @@ public class SlimeBehavior : MonoBehaviour
         rigidbody = gameObject.GetComponent<Rigidbody>();
         playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
         player = playerManager.player;
+        playerStatus = player.GetComponent<PlayerStatus>();
         gun = playerManager.gun;
         suckSpot = gun.suckSpot;
         gravity = Vector3.down * 9.8f * gravityMultiplier;
         maxDistenceFromPlayer = slimeSpawner.spawnDistence;
+        averageJumpHeightStrengthMin = averageJumpHeightStrength * .75f;
+        averageJumpHeightStrengthMax = averageJumpHeightStrength * 1.25f;
+        averageJumpStrengthMin = averageJumpStrength * .9f;
+        averageJumpStrengthMax = averageJumpStrength * 1.11f;
         StartCoroutine(ConstantJump());
     }
 
@@ -46,8 +59,8 @@ public class SlimeBehavior : MonoBehaviour
             if ((player.transform.position - transform.position).magnitude < maxDistenceFromPlayer)
             {
                 Vector3 xzDirection = new Vector3(player.transform.position.x - gameObject.transform.position.x, 0, player.transform.position.z - gameObject.transform.position.z).normalized;
-                Vector3 jumpForce = Random.Range(3.5f, 4.5f) * (xzDirection + (Random.Range(2.5f, 3.25f) * Vector3.up));
-                rigidbody.AddForce(jumpForce, ForceMode.Impulse);
+                Vector3 jumpForce = Random.Range(averageJumpStrengthMin, averageJumpStrengthMax) * (xzDirection + (Random.Range(averageJumpHeightStrengthMin, averageJumpHeightStrengthMax) * Vector3.up));
+                rigidbody.AddForce(jumpForce * playerStatus.slimeJumpStrengthMultiplier, ForceMode.Impulse);
             }
             else
             {

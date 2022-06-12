@@ -1187,9 +1187,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 2.7
+  m_Height: 3
   m_Direction: 2
-  m_Center: {x: -0.25, y: 0, z: -0.5}
+  m_Center: {x: -0.25, y: 0, z: -0.25}
 --- !u!1 &560382055
 GameObject:
   m_ObjectHideFlags: 0
@@ -2528,11 +2528,17 @@ MonoBehaviour:
   - {fileID: 4460932189441006760}
   - {fileID: 4435646343380363853}
   - {fileID: 2488455908866915636}
+  - {fileID: 906626628}
+  - {fileID: 1141161290}
+  - {fileID: 112360941}
   equipmentPrefabs:
   - {fileID: 1457537799933373062, guid: cf802e02023f07444ab23c3cc6b2ea89, type: 3}
   - {fileID: 6478482933384405136, guid: 2069975ba3152624b80c347953388d4c, type: 3}
   - {fileID: 5947789644317979031, guid: 0f0de511b65570f4dbfd5326b711f3ca, type: 3}
-  equipedEquipment: 000000
+  - {fileID: 1457537799933373062, guid: 3f1ae30a084bab341937051a17f80b80, type: 3}
+  - {fileID: 6478482933384405136, guid: 5e233c70884ee90409aae5622524859a, type: 3}
+  - {fileID: 5947789644317979031, guid: 584e7160b2f2ae0449a8d7779bbc2c05, type: 3}
+  equipedEquipment: 000000000000
   emptyEquipment:
   - {fileID: 1573124382}
   - {fileID: 5092183378030239233}

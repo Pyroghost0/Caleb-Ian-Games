@@ -44,6 +44,7 @@ public class TutorialTriggerWalls : MonoBehaviour
             if (other.CompareTag("Player"))
             {
                 other.GetComponent<PlayerStatus>().invincible = false;
+                other.GetComponent<PlayerStatus>().invincibleTime = .25f;
                 other.GetComponent<PlayerMovement>().groundChecker.inGround = false;
                 ground.SetActive(false);
             }
