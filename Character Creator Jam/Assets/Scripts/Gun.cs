@@ -8,6 +8,7 @@ public class Gun : MonoBehaviour
     public GameObject player;
     public GameObject bulletPrefab;
     public GameObject cameraBasisObject;
+    public Animator reticleAnimation;
 
     public GameObject centerRay;
     public GameObject[] middleRays;
@@ -29,6 +30,7 @@ public class Gun : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))//Left Click
         {
+            reticleAnimation.SetTrigger("Shoot");
             float power = 0f;
             if (amountOfSlime > 50f)
             {
@@ -46,6 +48,7 @@ public class Gun : MonoBehaviour
 
         if (Input.GetMouseButton(1))//Right Click
         {
+            reticleAnimation.SetBool("Suck", true);
             List<GameObject> suckedObjects = new List<GameObject> { };
             List<float> slimeSuckPower = new List<float> { };
             isSucking = true;
@@ -154,6 +157,7 @@ public class Gun : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1))//Right Click
         {
+            reticleAnimation.SetBool("Suck", false);
             isSucking = false;
         }
 

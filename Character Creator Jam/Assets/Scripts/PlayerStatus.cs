@@ -187,7 +187,9 @@ public class PlayerStatus : MonoBehaviour
         float timer = 0f;
         while (timer < 1f)
         {
+            characterController.enabled = true;
             characterController.Move(((1f - timer) / 1f) * movement * Time.deltaTime);
+            characterController.enabled = false;
             yield return new WaitForFixedUpdate();
             timer += Time.deltaTime;
         }
@@ -211,6 +213,5 @@ public class PlayerStatus : MonoBehaviour
         characterController.enabled = false;
         gameObject.transform.position = currentSpawnPosition.transform.position;
         gameObject.transform.rotation = currentSpawnPosition.transform.rotation;
-        characterController.enabled = true;
     }
 }

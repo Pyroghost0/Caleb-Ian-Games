@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
-    public CharacterController controller;
+    private CharacterController controller;
+    private Rigidbody rigidbody;
     public float speed = 12f;
     public Vector3 velocity;
     private float gravity = -9.8f;
@@ -22,6 +23,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void Start()
     {
+        controller = gameObject.GetComponent<CharacterController>();
+        rigidbody = gameObject.GetComponent<Rigidbody>();
         GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player = gameObject;
     }
 
@@ -52,7 +55,9 @@ public class PlayerMovement : MonoBehaviour {
         x *= Mathf.Abs(x) / magnitude;
         z *= Mathf.Abs(z) / magnitude;
         Vector3 move = transform.right * x + transform.forward * z;
+        controller.enabled = true;
         controller.Move(move * speed * Time.deltaTime);
+        controller.enabled = false;
         if (isGrounded)
         {
             if (Input.GetButtonDown("Jump"))
@@ -60,20 +65,22 @@ public class PlayerMovement : MonoBehaviour {
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
             else if (velocity.y < 0) {
-                velocity.y = -1;
+                velocity.y = 0f;
             }
-            controller.Move(velocity * Time.deltaTime);
+            rigidbody.velocity = velocity;
         }
         else
         {
             float prevHeight = transform.position.y;
             velocity.y += gravity * Time.deltaTime;
-            controller.Move(velocity * Time.deltaTime);
+            /*controller.Move(velocity * Time.deltaTime);
             if (velocity.y > 0 && transform.position.y == prevHeight)
             {
                 velocity.y *= -.3f;
-            }
+            }*/
+            rigidbody.velocity += Vector3.up * gravity * Time.deltaTime;
         }
+        
     }
 }
 
