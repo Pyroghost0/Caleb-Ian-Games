@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour {
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
             else if (velocity.y < 0) {
-                velocity.y = 0f;
+                velocity.y = -1f;
             }
             rigidbody.velocity = velocity;
         }
