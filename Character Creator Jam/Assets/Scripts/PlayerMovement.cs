@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
     private CharacterController controller;
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody rigidbody;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
     public float speed = 12f;
-    public Vector3 velocity;
+    private Vector3 velocity;
     private float gravity = -9.8f;
     public float gravityMultiplier = 2f;
 
@@ -71,14 +73,14 @@ public class PlayerMovement : MonoBehaviour {
         }
         else
         {
-            float prevHeight = transform.position.y;
-            velocity.y += gravity * Time.deltaTime;
+            //float prevHeight = transform.position.y;
             /*controller.Move(velocity * Time.deltaTime);
             if (velocity.y > 0 && transform.position.y == prevHeight)
             {
                 velocity.y *= -.3f;
             }*/
             rigidbody.velocity += Vector3.up * gravity * Time.deltaTime;
+            velocity = rigidbody.velocity;
         }
         
     }

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SlimeBehavior : MonoBehaviour
 {
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody rigidbody;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
     public GroundChecker groundChecker;
     private Vector3 gravity;
     private PlayerManager playerManager;
