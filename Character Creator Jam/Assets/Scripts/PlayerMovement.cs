@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour {
     public float gravityMultiplier = 2f;
 
     public GroundChecker groundChecker;
+    public bool touchingBounce = false;
     public bool isGrounded;
     public float jumpHeight = 3f;
 
@@ -49,17 +50,23 @@ public class PlayerMovement : MonoBehaviour {
         verticalLookRotation -= mouseY;
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, minAngle, maxAngle);//Cant over rotate
         cameraBasisObject.transform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);//apply clamp
-
         isGrounded = groundChecker.inGround;
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-        float magnitude = Mathf.Sqrt(x*x + z*z);
-        x *= Mathf.Abs(x) / magnitude;
-        z *= Mathf.Abs(z) / magnitude;
-        Vector3 move = transform.right * x + transform.forward * z;
-        controller.enabled = true;
-        controller.Move(move * speed * Time.deltaTime);
-        controller.enabled = false;
+        if (!touchingBounce || isGrounded)
+        {
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+            float magnitude = Mathf.Sqrt(x * x + z * z);
+            x *= Mathf.Abs(x) / magnitude;
+            z *= Mathf.Abs(z) / magnitude;
+            Vector3 move = transform.right * x + transform.forward * z;
+            controller.enabled = true;
+            controller.Move(move * speed * Time.deltaTime);
+            controller.enabled = false;
+        }
+        else
+        {
+            isGrounded = false;
+        }
         if (isGrounded)
         {
             if (Input.GetButtonDown("Jump"))
