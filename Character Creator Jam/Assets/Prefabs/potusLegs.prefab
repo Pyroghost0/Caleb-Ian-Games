@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5947789644317979024}
   - component: {fileID: 5947789644317979027}
   m_Layer: 9
-  m_Name: mechLegs
+  m_Name: potusLegs
   m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 5947789644317979031}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 56, y: 56, z: 56}
+  m_LocalScale: {x: 300, y: 300, z: 300}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -54,10 +54,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a160d698c13f54e48b94106928ccc70b, type: 2}
-  - {fileID: 2100000, guid: 430e609e20f9ae84eb4d97f0f512e349, type: 2}
-  - {fileID: 2100000, guid: 9b0b60d1cff252a4592f8f52d4b299f3, type: 2}
-  - {fileID: 2100000, guid: 74fe956ff28cf5f41b51b955c3926053, type: 2}
+  - {fileID: 2100000, guid: e31bc31938f4aa144bc1eb6b36cf150b, type: 2}
+  - {fileID: 2100000, guid: cbf8f153698753243af56acaaec0a26f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,7 +84,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5947789644317979031}
-  m_Mesh: {fileID: -4744112355838185819, guid: 41d7228730d178445890f207557f49c2, type: 3}
+  m_Mesh: {fileID: 1530253702001195315, guid: 41d7228730d178445890f207557f49c2, type: 3}
 --- !u!54 &5947789644317979025
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -114,8 +112,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02576334, y: 0.0152493995, z: 0.05413166}
-  m_Center: {x: 0, y: 0.0009436387, z: 0.026984956}
+  m_Size: {x: 0.0037799021, y: 0.0034788537, z: 0.010145306}
+  m_Center: {x: 0, y: 0, z: 0.004991784}
 --- !u!114 &5947789644317979027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,4 +127,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clothingType: Legs
-  clothingStyle: Mech
+  clothingStyle: POTUS

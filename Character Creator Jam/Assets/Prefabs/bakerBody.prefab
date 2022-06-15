@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5947789644317979031
+--- !u!1 &6478482933384405136
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5947789644317979026}
-  - component: {fileID: 5947789644317979029}
-  - component: {fileID: 5947789644317979028}
-  - component: {fileID: 5947789644317979025}
-  - component: {fileID: 5947789644317979024}
-  - component: {fileID: 5947789644317979027}
+  - component: {fileID: 6478482933384405141}
+  - component: {fileID: 6478482933384405142}
+  - component: {fileID: 6478482933384405143}
+  - component: {fileID: 6478482933384405146}
+  - component: {fileID: 6478482933384405147}
+  - component: {fileID: 6478482933384405140}
   m_Layer: 9
-  m_Name: mechLegs
+  m_Name: bakerBody
   m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5947789644317979026
+--- !u!4 &6478482933384405141
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5947789644317979031}
+  m_GameObject: {fileID: 6478482933384405136}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 56, y: 56, z: 56}
+  m_LocalScale: {x: 50, y: 50, z: 50}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
---- !u!23 &5947789644317979029
+--- !u!23 &6478482933384405142
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5947789644317979031}
+  m_GameObject: {fileID: 6478482933384405136}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -54,10 +54,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a160d698c13f54e48b94106928ccc70b, type: 2}
   - {fileID: 2100000, guid: 430e609e20f9ae84eb4d97f0f512e349, type: 2}
-  - {fileID: 2100000, guid: 9b0b60d1cff252a4592f8f52d4b299f3, type: 2}
-  - {fileID: 2100000, guid: 74fe956ff28cf5f41b51b955c3926053, type: 2}
+  - {fileID: 2100000, guid: fb8e792092c062c469dea63cb16f0294, type: 2}
+  - {fileID: 2100000, guid: abcc57fd30a8c654f89d005ed6474f61, type: 2}
+  - {fileID: 2100000, guid: 05273b93f41572f438c38667114a3e58, type: 2}
+  - {fileID: 2100000, guid: 38fae20381d4f0840959a04d2cfc1e4f, type: 2}
+  - {fileID: 2100000, guid: a6f0e6df2be088747bba9d1fb4a5dbfa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,21 +81,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &5947789644317979028
+--- !u!33 &6478482933384405143
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5947789644317979031}
-  m_Mesh: {fileID: -4744112355838185819, guid: 41d7228730d178445890f207557f49c2, type: 3}
---- !u!54 &5947789644317979025
+  m_GameObject: {fileID: 6478482933384405136}
+  m_Mesh: {fileID: 7960569354483855303, guid: 41d7228730d178445890f207557f49c2, type: 3}
+--- !u!54 &6478482933384405146
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5947789644317979031}
+  m_GameObject: {fileID: 6478482933384405136}
   serializedVersion: 2
   m_Mass: 1.5
   m_Drag: 1.5
@@ -103,30 +105,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &5947789644317979024
+--- !u!65 &6478482933384405147
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5947789644317979031}
+  m_GameObject: {fileID: 6478482933384405136}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02576334, y: 0.0152493995, z: 0.05413166}
-  m_Center: {x: 0, y: 0.0009436387, z: 0.026984956}
---- !u!114 &5947789644317979027
+  m_Size: {x: 0.061103076, y: 0.019695072, z: 0.026368849}
+  m_Center: {x: 0, y: -0.00080362556, z: 0.06313314}
+--- !u!114 &6478482933384405140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5947789644317979031}
+  m_GameObject: {fileID: 6478482933384405136}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 700c18c8e331b45409df390138449ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clothingType: Legs
-  clothingStyle: Mech
+  clothingType: Body
+  clothingStyle: Baker
