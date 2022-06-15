@@ -20,7 +20,12 @@ public class PlayerStatus : MonoBehaviour
     public float slimeJumpStrengthMultiplier = 1f;
     private PlayerMovement playerMovement;
     private Gun gun;
+    public bool takeKnockback = true;
+    public float defenceMultiplier = 1f;
+    public bool survivedDeathOnce = false;
+    public bool passiveRegeneration = false;
 
+    public bool isTutorial = false;
     public GameObject currentSpawnPosition;
 
     // Start is called before the first frame update
@@ -63,6 +68,19 @@ public class PlayerStatus : MonoBehaviour
                 equipedEquipment[3] = true;
                 selfEquipment[3].SetActive(true);
             }
+            else if (equipment.clothingStyle == "Baker")
+            {
+                passiveRegeneration = true;
+                StartCoroutine(PassiveRegeneration());
+                equipedEquipment[6] = true;
+                selfEquipment[6].SetActive(true);
+            }
+            else if (equipment.clothingStyle == "POTUS")
+            {
+                //Escape Death Once
+                equipedEquipment[9] = true;
+                selfEquipment[9].SetActive(true);
+            }
         }
 
 
@@ -93,6 +111,18 @@ public class PlayerStatus : MonoBehaviour
                 gun.powerMultiplier *= 2f;
                 equipedEquipment[4] = true;
                 selfEquipment[4].SetActive(true);
+            }
+            else if (equipment.clothingStyle == "Baker")
+            {
+                invincibleTime *= 4f;
+                equipedEquipment[7] = true;
+                selfEquipment[7].SetActive(true);
+            }
+            else if (equipment.clothingStyle == "POTUS")
+            {
+                defenceMultiplier *= 1.5f;
+                equipedEquipment[10] = true;
+                selfEquipment[10].SetActive(true);
             }
         }
 
@@ -125,6 +155,19 @@ public class PlayerStatus : MonoBehaviour
                 equipedEquipment[5] = true;
                 selfEquipment[5].SetActive(true);
             }
+            else if (equipment.clothingStyle == "Baker")
+            {
+                maxHealth *= 1.5f;
+                health *= 1.5f;
+                equipedEquipment[8] = true;
+                selfEquipment[8].SetActive(true);
+            }
+            else if (equipment.clothingStyle == "POTUS")
+            {
+                takeKnockback = false;
+                equipedEquipment[11] = true;
+                selfEquipment[11].SetActive(true);
+            }
         }
         Destroy(equipment.gameObject);
     }
@@ -146,17 +189,44 @@ public class PlayerStatus : MonoBehaviour
             playerMovement.jumpHeight /= 2f;
         }
 
-        else if (id == 4)
+        else if (id == 3)
         {//Deer Helmet
             slimeJumpStrengthMultiplier = 1f;
         }
-        else if (id == 5)
+        else if (id == 4)
         {//Deer Body
             gun.powerMultiplier /= 2f;
         }
-        else if (id == 6)
+        else if (id == 5)
         {//Deer Legs
             playerMovement.speed /= 1.5f;
+        }
+
+        else if (id == 6)
+        {//Baker Helmet
+            passiveRegeneration = false;
+        }
+        else if (id == 7)
+        {//Baker Body
+            invincibleTime /= 4f;
+        }
+        else if (id == 8)
+        {//Baker Legs
+            maxHealth /= 1.5f;
+            health /= 1.5f;
+        }
+
+        else if (id == 9)
+        {//POTUS Helmet
+            //Escape Death Once;
+        }
+        else if (id == 10)
+        {//POTUS Body
+            defenceMultiplier /= 1.5f;
+        }
+        else if (id == 11)
+        {//POTUS Legs
+            takeKnockback = true;
         }
         Quaternion rotation = Quaternion.Euler(equipmentPrefabs[id].gameObject.transform.rotation.eulerAngles.x, equipmentPrefabs[id].gameObject.transform.rotation.eulerAngles.y, gameObject.transform.rotation.eulerAngles.z);
         GameObject oldEquipment = Instantiate(equipmentPrefabs[id], position, rotation);
@@ -177,8 +247,11 @@ public class PlayerStatus : MonoBehaviour
             invincible = true;
             direction.y = transform.position.y;
             direction = (transform.position - direction).normalized;
-            StartCoroutine(Knockback(direction * knockback));
-            StartCoroutine(UpdateHealthBar(-damage));
+            if (takeKnockback)
+            {
+                StartCoroutine(Knockback(direction * knockback));
+            }
+            StartCoroutine(UpdateHealthBar(-damage / defenceMultiplier));
         }
     }
 
@@ -195,21 +268,82 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
-    public void HealHealth(float health)
+    IEnumerator PassiveRegeneration()
     {
-        health += health;
+        while (passiveRegeneration)
+        {
+            yield return new WaitForSeconds(1f);
+            if (!invincible)
+            {
+                HealHealth(1f);
+            }
+        }
+    }
+
+    public void HealHealth(float addedHealth)
+    {
+        health += addedHealth;
+        rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
     }
     
     IEnumerator UpdateHealthBar(float healthChange)
     {
-        health += healthChange;
-        rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
-        yield return new WaitForSeconds(invincibleTime);
-        invincible = false;
+        if (health + healthChange <= 0)
+        {
+            Debug.Log("Dead");
+            if (isTutorial)
+            {
+
+            }
+            else
+            {
+                if (equipedEquipment[9] && !survivedDeathOnce)
+                {
+                    survivedDeathOnce = true;
+                    yield return new WaitForSeconds(invincibleTime);
+                    invincible = false;
+                }
+                else
+                {
+                    float timer = 0f;
+                    healthChange = -health;
+                    while (timer < 1f)
+                    {
+                        health += healthChange * Time.deltaTime;
+                        rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
+                        yield return new WaitForFixedUpdate();
+                        timer += Time.deltaTime;
+                    }
+                    //health = 0f;
+                    //rectHealthBar.sizeDelta = new Vector2(0f, rectHealthBar.rect.height);
+                    invincible = false;
+                    Respawn();
+                }
+            }
+        }
+        else
+        {
+            float timer = 0f;
+            float originalHealth = health;
+            float invincibleTimeWhenHit = invincibleTime;
+            while (timer < invincibleTimeWhenHit)
+            {
+                health += healthChange * Time.deltaTime / invincibleTimeWhenHit;
+                rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
+                yield return new WaitForFixedUpdate();
+                timer += Time.deltaTime;
+            }
+            health = originalHealth + healthChange;
+            rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
+            invincible = false;
+        }
     }
 
     public void Respawn()
     {
+        survivedDeathOnce = false;
+        health = maxHealth;
+        rectHealthBar.sizeDelta = new Vector2(rectHealth, rectHealthBar.rect.height);
         characterController.enabled = false;
         gameObject.transform.position = currentSpawnPosition.transform.position;
         gameObject.transform.rotation = currentSpawnPosition.transform.rotation;
