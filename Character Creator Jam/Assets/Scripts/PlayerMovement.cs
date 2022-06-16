@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour {
     public bool touchingBounce = false;
     public bool isGrounded;
     public float jumpHeight = 3f;
+    private Vector3 move;
 
     public float mouseHorizontalSensitivity = 400f;
     public float mouseVirticalSensitivity = 100f;
@@ -51,14 +52,21 @@ public class PlayerMovement : MonoBehaviour {
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, minAngle, maxAngle);//Cant over rotate
         cameraBasisObject.transform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);//apply clamp
         isGrounded = groundChecker.inGround;
-        if (!touchingBounce || isGrounded)
+
+        if (groundChecker.onIce)
+        {
+            controller.enabled = true;
+            controller.Move(move * speed * Time.deltaTime);
+            controller.enabled = false;
+        }
+        else if (!touchingBounce || isGrounded)
         {
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
             float magnitude = Mathf.Sqrt(x * x + z * z);
             x *= Mathf.Abs(x) / magnitude;
             z *= Mathf.Abs(z) / magnitude;
-            Vector3 move = transform.right * x + transform.forward * z;
+            move = transform.right * x + transform.forward * z;
             controller.enabled = true;
             controller.Move(move * speed * Time.deltaTime);
             controller.enabled = false;
@@ -67,6 +75,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             isGrounded = false;
         }
+
         if (isGrounded)
         {
             if (Input.GetButtonDown("Jump"))

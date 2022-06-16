@@ -5,6 +5,7 @@ using UnityEngine;
 public class GroundChecker : MonoBehaviour
 {
     public bool inGround;
+    public bool onIce;
     //public LayerMask groundLayer;
 
     private void OnTriggerStay(Collider collider)
@@ -14,6 +15,10 @@ public class GroundChecker : MonoBehaviour
         {
             inGround = true;
         }
+        if (collider.gameObject.layer == 13)
+        {
+            onIce = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -21,6 +26,10 @@ public class GroundChecker : MonoBehaviour
         if (other.gameObject.layer >=8 && other.gameObject.layer != 11)
         {
             inGround = false;
+        }
+        if (other.gameObject.layer == 13)
+        {
+            onIce = false;
         }
     }
 }
