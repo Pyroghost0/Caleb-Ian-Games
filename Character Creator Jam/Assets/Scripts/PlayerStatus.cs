@@ -273,9 +273,16 @@ public class PlayerStatus : MonoBehaviour
         while (passiveRegeneration)
         {
             yield return new WaitForSeconds(1f);
-            if (!invincible)
+            if (!invincible && health < maxHealth)
             {
-                HealHealth(1f);
+                if (health +1f < maxHealth)
+                {
+                    HealHealth(1f);
+                }
+                else
+                {
+                    HealHealth(maxHealth-health);
+                }
             }
         }
     }
@@ -347,5 +354,11 @@ public class PlayerStatus : MonoBehaviour
         characterController.enabled = false;
         gameObject.transform.position = currentSpawnPosition.transform.position;
         gameObject.transform.rotation = currentSpawnPosition.transform.rotation;
+        GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
+        for (int i = 0; i < slimes.Length; i++)
+        {
+            slimes[i].GetComponent<SlimeBehavior>().slimeSpawner.SlimeDeath();
+            Destroy(slimes[i]);
+        }
     }
 }

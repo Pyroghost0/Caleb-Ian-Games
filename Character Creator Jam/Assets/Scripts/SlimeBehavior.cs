@@ -90,16 +90,12 @@ public class SlimeBehavior : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerStay(Collider other)
     {
-        if (collision.collider.CompareTag("Player") && !sucked)
+        if (other.CompareTag("Player") && !sucked)
         {
             player.GetComponent<PlayerStatus>().TakeDamage(damage, transform.position, knockback);
         }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
         if (other.gameObject == suckSpot && gun.isSucking && !sucked)
         {
             //Debug.Log("Slime Destroyed");
