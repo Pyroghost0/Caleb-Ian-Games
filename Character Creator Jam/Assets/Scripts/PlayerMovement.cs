@@ -55,6 +55,15 @@ public class PlayerMovement : MonoBehaviour {
 
         if (groundChecker.onIce)
         {
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+            float magnitude = Mathf.Sqrt(x * x + z * z);
+            if (magnitude != 0)
+            {
+                x *= Mathf.Abs(x) / magnitude;
+                z *= Mathf.Abs(z) / magnitude;
+            }
+             move += ((transform.right * x + transform.forward * z) - move) * Time.deltaTime / 2f;
             controller.enabled = true;
             controller.Move(move * speed * Time.deltaTime);
             controller.enabled = false;
@@ -64,8 +73,11 @@ public class PlayerMovement : MonoBehaviour {
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
             float magnitude = Mathf.Sqrt(x * x + z * z);
-            x *= Mathf.Abs(x) / magnitude;
-            z *= Mathf.Abs(z) / magnitude;
+            if (magnitude != 0)
+            {
+                x *= Mathf.Abs(x) / magnitude;
+                z *= Mathf.Abs(z) / magnitude;
+            }
             move = transform.right * x + transform.forward * z;
             controller.enabled = true;
             controller.Move(move * speed * Time.deltaTime);
