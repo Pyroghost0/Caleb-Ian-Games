@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStatus : MonoBehaviour
 {
@@ -300,7 +301,7 @@ public class PlayerStatus : MonoBehaviour
             Debug.Log("Dead");
             if (isTutorial)
             {
-
+                SceneManager.LoadScene("Main Screen");
             }
             else
             {
