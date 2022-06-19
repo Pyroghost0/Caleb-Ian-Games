@@ -25,10 +25,13 @@ public class PlayerMovement : MonoBehaviour {
     private float verticalLookRotation = 10f;
     public GameObject cameraBasisObject;
 
+    private Animator playerAnim;
+
     void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
         rigidbody = gameObject.GetComponent<Rigidbody>();
+        playerAnim = gameObject.GetComponentInChildren<Animator>();
         GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player = gameObject;
     }
 
@@ -52,11 +55,15 @@ public class PlayerMovement : MonoBehaviour {
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, minAngle, maxAngle);//Cant over rotate
         cameraBasisObject.transform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);//apply clamp
         isGrounded = groundChecker.inGround;
+        playerAnim.SetBool("Grounded", isGrounded);
 
         if (groundChecker.onIce)
         {
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
+            playerAnim.SetFloat("MoveX", x);
+            playerAnim.SetFloat("MoveY", z);
+
             float magnitude = Mathf.Sqrt(x * x + z * z);
             if (magnitude != 0)
             {
@@ -72,6 +79,9 @@ public class PlayerMovement : MonoBehaviour {
         {
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
+            playerAnim.SetFloat("MoveX", x);
+            playerAnim.SetFloat("MoveY", z);
+
             float magnitude = Mathf.Sqrt(x * x + z * z);
             if (magnitude != 0)
             {
