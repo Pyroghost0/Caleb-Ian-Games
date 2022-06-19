@@ -14,6 +14,14 @@ public class Pause : MonoBehaviour
 
     }
 
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!paused)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -35,6 +43,7 @@ public class Pause : MonoBehaviour
         paused = true;
         Time.timeScale = 0f;
         menu.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void UnPause()
@@ -42,6 +51,7 @@ public class Pause : MonoBehaviour
         paused = false;
         Time.timeScale = 1f;
         menu.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void Restart()
@@ -52,6 +62,7 @@ public class Pause : MonoBehaviour
     public void Respawn()
     {
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>().Respawn();
+        UnPause();
     }
 
     public void QuitGame()

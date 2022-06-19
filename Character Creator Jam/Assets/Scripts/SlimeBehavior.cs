@@ -82,11 +82,28 @@ public class SlimeBehavior : MonoBehaviour
         if (other.CompareTag("Bullet"))
         {
             health -= other.GetComponent<Bullet>().power * 25;
-            Destroy(other.gameObject);
             if (health <= 0)
             {
+                slimeSpawner.SlimeDeath();
                 Destroy(gameObject);
             }
+            else
+            {
+                //Vector3 direction = (other.gameObject.transform.position - transform.position).normalized;
+                //StartCoroutine(Knockback(direction * other.GetComponent<Bullet>().power * 500f));
+            }
+            Destroy(other.gameObject);
+        }
+    }
+
+    IEnumerator Knockback(Vector3 movement)
+    {
+        float timer = 0f;
+        while (timer < 1f)
+        {
+            rigidbody.AddForce(((1f - timer) / 1f) * movement * Time.deltaTime, ForceMode.Force);
+            yield return new WaitForFixedUpdate();
+            timer += Time.deltaTime;
         }
     }
 

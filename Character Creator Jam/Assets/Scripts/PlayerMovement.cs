@@ -40,11 +40,6 @@ public class PlayerMovement : MonoBehaviour {
         gravity = -9.8f * gravityMultiplier;
     }
 
-    private void OnApplicationFocus(bool focus)
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
     // Update is called once per frame
     void Update()
     {
