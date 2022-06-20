@@ -421,5 +421,10 @@ public class PlayerStatus : MonoBehaviour
             slimes[i].GetComponent<SlimeBehavior>().slimeSpawner.SlimeDeath();
             Destroy(slimes[i]);
         }
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Single Enemy Spawner");
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].GetComponent<SingleEnemySpawn>().RespawnEnemy();
+        }
     }
 }

@@ -43,5 +43,9 @@ public class OutOfBounds : MonoBehaviour
             other.GetComponent<SlimeBehavior>().slimeSpawner.SlimeDeath();
             Destroy(other.gameObject);
         }
+        else if (other.CompareTag("Walker"))
+        {
+            Destroy(other.gameObject);
+        }
     }
 }
