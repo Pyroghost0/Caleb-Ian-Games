@@ -14,7 +14,7 @@ public class WalkerBehavior : MonoBehaviour
     private PlayerStatus playerStatus;
     private CharacterController characterController;
 
-    //public WalkerSpawn walkerSpawn;
+    public List<GameObject> faces;
     public float maxDistenceFromPlayer = 80f;
     public float seesPlayerDistence = 70f;
     private bool seesPlayer = false;
@@ -29,12 +29,15 @@ public class WalkerBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        faces[0].SetActive(false);
         rigidbody = gameObject.GetComponent<Rigidbody>();
         characterController = gameObject.GetComponent<CharacterController>();
         playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
         player = playerManager.player;
         playerStatus = player.GetComponent<PlayerStatus>();
         gravity = Vector3.down * 9.8f * gravityMultiplier;
+        faces.RemoveAt(player.GetComponent<PlayerStatus>().isMale ? player.GetComponent<PlayerStatus>().headNumber + 3 : player.GetComponent<PlayerStatus>().headNumber);
+        faces[Random.Range(0, faces.Count)].SetActive(true);
         //maxDistenceFromPlayer = slimeSpawner.spawnDistence;
         //StartCoroutine(WalkTowardPlayer());
     }

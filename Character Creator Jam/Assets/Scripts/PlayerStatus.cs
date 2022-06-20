@@ -6,10 +6,14 @@ using UnityEngine.SceneManagement;
 public class PlayerStatus : MonoBehaviour
 {
 
-    public bool isMale;
-    public int headNumber;
-    public int skinColor;
-    public int hairColor;
+    public bool isMale = false;
+    public int headNumber = 1;
+    public int skinColor = 0;
+    public int hairColor = 0;
+    public GameObject[] maleObjects;
+    public GameObject[] femaleObjects;
+    public GameObject[] maleFaces;
+    public GameObject[] femaleFaces;
 
     public float health = 100f;
     public float maxHealth = 100f;
@@ -36,6 +40,7 @@ public class PlayerStatus : MonoBehaviour
     public bool isTutorial = false;
     public GameObject currentSpawnPosition;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +49,27 @@ public class PlayerStatus : MonoBehaviour
         characterController = gameObject.GetComponent<CharacterController>();
         playerMovement = gameObject.GetComponent<PlayerMovement>();
         gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
+    }
+
+    public void changeCharacter()
+    {
+        femaleFaces[1].SetActive(false);
+        if (isMale)
+        {
+            for (int i = 0; i < femaleObjects.Length; i++)
+            {
+                femaleObjects[i].SetActive(false);
+            }
+            for (int i = 0; i < maleObjects.Length; i++)
+            {
+                maleObjects[i].SetActive(true);
+            }
+            maleFaces[headNumber].SetActive(true);
+        }
+        else
+        {
+            femaleFaces[headNumber].SetActive(true);
+        }
     }
 
     public void Equip(Equipment equipment)

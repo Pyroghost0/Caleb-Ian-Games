@@ -13,7 +13,7 @@ public class FlyerBehavior : MonoBehaviour
     public Transform truePosition;
     private Vector3 forwardDirection;
 
-    //public WalkerSpawn walkerSpawn;
+    public List<GameObject> faces;
     public float maxDistenceFromPlayer = 80f;
     public float seesPlayerDistence = 70f;
     private bool seesPlayer = false;
@@ -27,11 +27,14 @@ public class FlyerBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        faces[0].SetActive(false);
         rigidbody = gameObject.GetComponent<Rigidbody>();
         playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
         player = playerManager.player;
         playerStatus = player.GetComponent<PlayerStatus>();
         forwardDirection = new Vector3(Random.Range(-.5f, .5f), Random.Range(.1f, .3f), 1f).normalized;
+        faces.RemoveAt(player.GetComponent<PlayerStatus>().isMale ? player.GetComponent<PlayerStatus>().headNumber + 3 : player.GetComponent<PlayerStatus>().headNumber);
+        faces[Random.Range(0, faces.Count)].SetActive(true);
         //maxDistenceFromPlayer = slimeSpawner.spawnDistence;
         //StartCoroutine(WalkTowardPlayer());
     }

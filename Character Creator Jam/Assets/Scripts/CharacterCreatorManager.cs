@@ -280,11 +280,11 @@ public class CharacterCreatorManager : MonoBehaviour
 
         PlayerStatus playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
         playerStatus.isMale = isMale;
-        playerStatus.headNumber = headNumber;
+        playerStatus.headNumber = headNumber-1;
         playerStatus.skinColor = skinColor;
         playerStatus.hairColor = hairColor;
         playerStatus.isTutorial = true;
-
+        playerStatus.changeCharacter();
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
     }
 }
