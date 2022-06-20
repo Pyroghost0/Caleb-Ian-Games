@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2846955253875117513}
   - component: {fileID: 9068406109010646192}
   - component: {fileID: 8281171332274109474}
+  - component: {fileID: -2940475861849413429}
   m_Layer: 0
   m_Name: Tree 3
   m_TagString: Untagged
@@ -92,6 +93,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &-2940475861849413429
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2050782809265340617}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 4
+  m_Height: 41.64131
+  m_Direction: 1
+  m_Center: {x: 0, y: 16, z: 0}
 --- !u!114 &-6623848532297350851
 MonoBehaviour:
   m_ObjectHideFlags: 0
