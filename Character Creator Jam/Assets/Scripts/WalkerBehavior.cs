@@ -48,7 +48,7 @@ public class WalkerBehavior : MonoBehaviour
             rigidbody.velocity = Vector3.down;
             if (seesPlayer)
             {
-                if (Mathf.Abs((transform.position - player.transform.position).magnitude) < maxDistenceFromPlayer)
+                if ((transform.position - player.transform.position).magnitude < maxDistenceFromPlayer)
                 {
                     Vector3 direction = player.transform.position - transform.position;
                     direction.y = 0;
@@ -64,7 +64,7 @@ public class WalkerBehavior : MonoBehaviour
                     seesPlayer = false;
                 }
             }
-            else if (Mathf.Abs((transform.position - player.transform.position).magnitude) < seesPlayerDistence)
+            else if ((transform.position - player.transform.position).magnitude < seesPlayerDistence)
             {
                 seesPlayer = true;
             }
