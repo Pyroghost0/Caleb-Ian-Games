@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CharacterCreatorManager : MonoBehaviour
 {
     //character data
     private bool isMale;
     private int headNumber;
-    private int skinColor;
-    private int hairColor;
+    private int skinColor = 0;
+    private int hairColor = 0;
 
     public Text textBox;
     public GameObject yesButton;
@@ -26,9 +27,13 @@ public class CharacterCreatorManager : MonoBehaviour
     public GameObject fHair;
     public GameObject[] fHead = new GameObject[3];
 
+    public Material[] Skin;
+    public Material[] Hair;
     public Animator HeadsAnim;
 
-    private int buttonClicked = 0;//0 = none, 1 = yes, 2 = no, 3 = continue, 4 = maleBase, 5 = femaleBase, 6 = headA, 7 = headB, 8 = headC
+    private int buttonClicked = 0;
+    //0 = none, 1 = yes, 2 = no, 3 = continue, 4 = maleBase, 5 = femaleBase,
+    //6 = headA, 7 = headB, 8 = headC, 11-17 = skin, 21-27 = hair
 
     private string[] introText = new string[]{
         "Before entering the world, you must create a character.",
@@ -41,7 +46,7 @@ public class CharacterCreatorManager : MonoBehaviour
         "Play the game with this character?"
 
     };
-    //0 = continue, 1 = choose, 2 = yes/no
+    
     private int[] textType = new int[]{
         0,
         1,
@@ -52,9 +57,42 @@ public class CharacterCreatorManager : MonoBehaviour
         0,
         2
     };
+    //0 = continue, 1 = choose, 2 = yes/no
+    
     void Start()
     {
         StartCoroutine(TextProgress());
+        
+    }
+    private void ChangeMaterial(bool isSkin, int index)
+    {
+        //MeshRenderer[] renderers;
+        /*if (isMale)
+        {
+            renderers = maleBaseButton.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
+        }
+		else
+		{
+            renderers = femaleBaseButton.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
+        }
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].materials[0] = Skin[index];
+            for (int j = 0; j < renderers[i].sharedMaterials.Length; j++)
+            {
+                renderers[i].sharedMaterials[j] = Skin[index];
+                Debug.Log(renderers[i].materials[j].name);
+                Debug.Log(Skin[index].name);
+                if (isSkin && renderers[i].sharedMaterials[j].name.StartsWith("Skin"))
+                {
+                    renderers[i].sharedMaterials[j] = Skin[index];
+                }
+                if (!isSkin && renderers[i].sharedMaterials[j].name.StartsWith("Hair"))
+                {
+                    renderers[i].sharedMaterials[j] = Hair[index];
+                }
+            }
+        }*/
     }
     private void ChangeText(int textIndex)
 	{
@@ -178,7 +216,7 @@ public class CharacterCreatorManager : MonoBehaviour
         //Choose Face
         do
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
             if (buttonClicked == 3)
 			{
                 ChangeText(5);
@@ -190,7 +228,7 @@ public class CharacterCreatorManager : MonoBehaviour
             else if (buttonClicked != 0 && buttonClicked != 1)
 			{
                 SwitchHead(buttonClicked - 6);
-			}
+            }
         } while (buttonClicked != 1);
         buttonClicked = 0;
         HeadsAnim.SetTrigger("ChoseHead");
@@ -201,5 +239,51 @@ public class CharacterCreatorManager : MonoBehaviour
         ChangeText(6);
 
         //Choose Colors
+        /*do
+        {
+            yield return new WaitForSeconds(0.1f);
+            if (buttonClicked == 3)
+            {
+                ChangeText(7);
+            }
+            else if (buttonClicked == 2)
+            {
+                ChangeText(6);
+            }
+            else if (buttonClicked != 0 && buttonClicked != 1)
+            {
+                if (buttonClicked > 20)
+                {
+                    ChangeMaterial(false, buttonClicked - 21);
+                    buttonClicked = 0;
+                }
+                else
+                {
+                    ChangeMaterial(true, buttonClicked - 11);
+                    buttonClicked = 0;
+                }
+            }
+        } while (buttonClicked != 1);
+        buttonClicked = 0;*/
+
+        //Confirm Character
+        ChangeText(7);
+        yield return new WaitUntil(() => buttonClicked == 1);
+        StartCoroutine(WaitLoad());
+    }
+
+    IEnumerator WaitLoad()
+    {
+        AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
+        AsyncOperation ao2 = SceneManager.LoadSceneAsync("Tutorial", LoadSceneMode.Additive);
+        yield return new WaitUntil(() => ao1.isDone && ao2.isDone);
+
+        PlayerStatus playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+        playerStatus.isMale = isMale;
+        playerStatus.headNumber = headNumber;
+        playerStatus.skinColor = skinColor;
+        playerStatus.hairColor = hairColor;
+
+        SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
     }
 }

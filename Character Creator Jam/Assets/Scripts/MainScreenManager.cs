@@ -13,9 +13,8 @@ public class MainScreenManager : MonoBehaviour
 
     IEnumerator WaitLoad()
     {
-        AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
-        AsyncOperation ao2 = SceneManager.LoadSceneAsync("Deer Level", LoadSceneMode.Additive);
-        yield return new WaitUntil(() => ao1.isDone && ao2.isDone);
+        AsyncOperation ao1 = SceneManager.LoadSceneAsync("Character Creator", LoadSceneMode.Additive);
+        yield return new WaitUntil(() => ao1.isDone);
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Main Screen"));
     }
 

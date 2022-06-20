@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStatus : MonoBehaviour
 {
+
+    public bool isMale;
+    public int headNumber;
+    public int skinColor;
+    public int hairColor;
+
     public float health = 100f;
     public float maxHealth = 100f;
     public bool invincible = false;
