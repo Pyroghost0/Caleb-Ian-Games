@@ -12,6 +12,7 @@ public class FlyerBehavior : MonoBehaviour
     private PlayerStatus playerStatus;
     public Transform truePosition;
     private Vector3 forwardDirection;
+    private Animator anim;
 
     public List<GameObject> faces;
     public float maxDistenceFromPlayer = 80f;
@@ -35,6 +36,7 @@ public class FlyerBehavior : MonoBehaviour
         forwardDirection = new Vector3(Random.Range(-.5f, .5f), Random.Range(.1f, .3f), 1f).normalized;
         faces.RemoveAt(player.GetComponent<PlayerStatus>().isMale ? player.GetComponent<PlayerStatus>().headNumber + 3 : player.GetComponent<PlayerStatus>().headNumber);
         faces[Random.Range(0, faces.Count)].SetActive(true);
+        anim = transform.GetComponentInChildren<Animator>();
         //maxDistenceFromPlayer = slimeSpawner.spawnDistence;
         //StartCoroutine(WalkTowardPlayer());
     }
@@ -55,11 +57,13 @@ public class FlyerBehavior : MonoBehaviour
             else
             {
                 seesPlayer = false;
+                anim.SetBool("isRunning", false);
             }
         }
         else if ((truePosition.position - player.transform.position).magnitude < seesPlayerDistence)
         {
             seesPlayer = true;
+            anim.SetBool("isRunning", true);
         }
         Vector3 normal = rigidbody.velocity.normalized;
         rigidbody.velocity -= normal * Time.deltaTime * 3f;
@@ -137,6 +141,7 @@ public class FlyerBehavior : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            anim.SetTrigger("Attack");
             player.GetComponent<PlayerStatus>().TakeDamage(damage, truePosition.position, knockback);
         }
     }

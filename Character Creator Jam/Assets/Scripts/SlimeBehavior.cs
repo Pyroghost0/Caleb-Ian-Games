@@ -17,6 +17,7 @@ public class SlimeBehavior : MonoBehaviour
     private bool sucked = false;
     public SlimeSpawner slimeSpawner;
     private float maxDistenceFromPlayer = 70f+10f;
+    private Animator anim;
 
     public float gravityMultiplier = 3f;
     public float damage = 30f;
@@ -44,6 +45,7 @@ public class SlimeBehavior : MonoBehaviour
         averageJumpHeightStrengthMax = averageJumpHeightStrength * 1.25f;
         averageJumpStrengthMin = averageJumpStrength * .9f;
         averageJumpStrengthMax = averageJumpStrength * 1.11f;
+        anim = transform.GetComponentInChildren<Animator>();
         StartCoroutine(ConstantJump());
     }
 
@@ -63,6 +65,7 @@ public class SlimeBehavior : MonoBehaviour
                 Vector3 xzDirection = new Vector3(player.transform.position.x - gameObject.transform.position.x, 0, player.transform.position.z - gameObject.transform.position.z).normalized;
                 Vector3 jumpForce = Random.Range(averageJumpStrengthMin, averageJumpStrengthMax) * (xzDirection + (Random.Range(averageJumpHeightStrengthMin, averageJumpHeightStrengthMax) * Vector3.up));
                 rigidbody.AddForce(jumpForce * playerStatus.slimeJumpStrengthMultiplier, ForceMode.Impulse);
+                anim.SetBool("isGrounded", false);
             }
             else
             {
@@ -72,6 +75,7 @@ public class SlimeBehavior : MonoBehaviour
             yield return new WaitForSeconds(.3f);
             yield return new WaitUntil(() => (groundChecker.inGround));
             rigidbody.velocity = Vector3.zero;
+            anim.SetBool("isGrounded", true);
             //rigidbody.AddForce(-jumpForce, ForceMode.Impulse);
             yield return new WaitForSeconds(Random.Range(.2f, .4f));
         }

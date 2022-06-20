@@ -13,6 +13,7 @@ public class WalkerBehavior : MonoBehaviour
     public GameObject player;
     private PlayerStatus playerStatus;
     private CharacterController characterController;
+    private Animator anim;
 
     public List<GameObject> faces;
     public float maxDistenceFromPlayer = 80f;
@@ -23,7 +24,7 @@ public class WalkerBehavior : MonoBehaviour
     public float damage = 50f;
     public float knockback = 35f;
     public float health = 40f;
-    public float movementSpeed = 3f;
+    public float movementSpeed = 5f;
     public float turnSpeed = 1.5f;
 
     // Start is called before the first frame update
@@ -38,6 +39,7 @@ public class WalkerBehavior : MonoBehaviour
         gravity = Vector3.down * 9.8f * gravityMultiplier;
         faces.RemoveAt(player.GetComponent<PlayerStatus>().isMale ? player.GetComponent<PlayerStatus>().headNumber + 3 : player.GetComponent<PlayerStatus>().headNumber);
         faces[Random.Range(0, faces.Count)].SetActive(true);
+        anim = transform.GetComponentInChildren<Animator>();
         //maxDistenceFromPlayer = slimeSpawner.spawnDistence;
         //StartCoroutine(WalkTowardPlayer());
     }
@@ -65,11 +67,13 @@ public class WalkerBehavior : MonoBehaviour
                 else
                 {
                     seesPlayer = false;
+                    anim.SetBool("isRunning", false);
                 }
             }
             else if ((transform.position - player.transform.position).magnitude < seesPlayerDistence)
             {
                 seesPlayer = true;
+                anim.SetBool("isRunning", true);
             }
 
         }
@@ -145,6 +149,7 @@ public class WalkerBehavior : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            anim.SetTrigger("Attack");
             player.GetComponent<PlayerStatus>().TakeDamage(damage, transform.position, knockback);
         }
     }
