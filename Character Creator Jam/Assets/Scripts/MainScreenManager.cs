@@ -7,8 +7,8 @@ public class MainScreenManager : MonoBehaviour
 {
     public void StartGame()
     {
-        //SceneManager.LoadScene("Tutorial");
-        StartCoroutine(WaitLoad());
+        SceneManager.LoadScene("Character Creator");
+        //StartCoroutine(WaitLoad());
     }
 
     IEnumerator WaitLoad()

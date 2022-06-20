@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
 {
     public float power;
     private float lifeTime = 3f;
-    private Vector3 movement;
+    public Vector3 movement;
 
     // Start is called before the first frame update
     void Start()

@@ -32,12 +32,9 @@ public class PlayerMovement : MonoBehaviour {
         controller = gameObject.GetComponent<CharacterController>();
         rigidbody = gameObject.GetComponent<Rigidbody>();
         playerAnim = gameObject.GetComponentInChildren<Animator>();
-        GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player = gameObject;
-    }
-
-    void Awake()
-    {
         gravity = -9.8f * gravityMultiplier;
+        Cursor.lockState = CursorLockMode.Locked;
+        //GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player = gameObject;
     }
 
     // Update is called once per frame

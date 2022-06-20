@@ -283,6 +283,7 @@ public class CharacterCreatorManager : MonoBehaviour
         playerStatus.headNumber = headNumber;
         playerStatus.skinColor = skinColor;
         playerStatus.hairColor = hairColor;
+        playerStatus.isTutorial = true;
 
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
     }

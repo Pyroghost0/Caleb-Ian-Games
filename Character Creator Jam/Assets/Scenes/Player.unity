@@ -2768,8 +2768,8 @@ MonoBehaviour:
   touchingBounce: 0
   isGrounded: 0
   jumpHeight: 5
-  mouseHorizontalSensitivity: 1600
-  mouseVirticalSensitivity: 400
+  mouseHorizontalSensitivity: 400
+  mouseVirticalSensitivity: 175
   minAngle: -60
   maxAngle: 45
   cameraBasisObject: {fileID: 560382055}
@@ -2799,10 +2799,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01668eae084bd5647996516315d951d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMale: 0
+  headNumber: 0
+  skinColor: 0
+  hairColor: 0
   health: 100
   maxHealth: 100
   invincible: 0
-  invincibleTime: 2
+  invincibleTime: 1.5
   healthBar: {fileID: 58453054}
   selfEquipment:
   - {fileID: 7781066868942129257}
@@ -2817,6 +2821,18 @@ MonoBehaviour:
   - {fileID: 4045692703334527883}
   - {fileID: 5298608448576672119}
   - {fileID: 6479253943574496097}
+  - {fileID: 2341371320579322050}
+  - {fileID: 160281536342591145}
+  - {fileID: 5566627179329232193}
+  - {fileID: 6218282201050178432}
+  - {fileID: 8437325482882907504}
+  - {fileID: 362132492266957652}
+  - {fileID: 7385758866220419302}
+  - {fileID: 5419378211213735646}
+  - {fileID: 1823567658740583573}
+  - {fileID: 3161316869570328330}
+  - {fileID: 8423398564153181720}
+  - {fileID: 4207293966690729859}
   equipmentPrefabs:
   - {fileID: 1457537799933373062, guid: cf802e02023f07444ab23c3cc6b2ea89, type: 3}
   - {fileID: 6478482933384405136, guid: 2069975ba3152624b80c347953388d4c, type: 3}
@@ -2835,6 +2851,9 @@ MonoBehaviour:
   - {fileID: 7209333020307152208}
   - {fileID: 341145637336639198}
   - {fileID: 758319911169979042}
+  - {fileID: 8599851399117335609}
+  - {fileID: 1200725330375038571}
+  - {fileID: 5958416277233204031}
   slimeJumpStrengthMultiplier: 1
   takeKnockback: 1
   defenceMultiplier: 1

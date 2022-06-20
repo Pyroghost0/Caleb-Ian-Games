@@ -14,11 +14,12 @@ public class PlayerStatus : MonoBehaviour
     public float health = 100f;
     public float maxHealth = 100f;
     public bool invincible = false;
-    public float invincibleTime = 2f;
+    public float invincibleTime = 1.5f;
     public GameObject healthBar;
     private RectTransform rectHealthBar;
     private float rectHealth;
     private CharacterController characterController;
+    private bool notDead = true;
 
     public GameObject[] selfEquipment;
     public GameObject[] equipmentPrefabs;
@@ -63,31 +64,35 @@ public class PlayerStatus : MonoBehaviour
                 Dequip(somethingElseEquiped, equipment.gameObject.transform.position);
             }
             emptyEquipment[0].SetActive(false);
+            emptyEquipment[3].SetActive(false);
+            int id = 0;
             if (equipment.clothingStyle == "Mech")
             {
                 gun.suckDistence *= 2;
-                equipedEquipment[0] = true;
-                selfEquipment[0].SetActive(true);
+                //id = 0;
             }
             else if (equipment.clothingStyle == "Deer")
             {
                 slimeJumpStrengthMultiplier = .82f;
-                equipedEquipment[3] = true;
-                selfEquipment[3].SetActive(true);
+                id = 3;
             }
             else if (equipment.clothingStyle == "Baker")
             {
                 passiveRegeneration = true;
                 StartCoroutine(PassiveRegeneration());
-                equipedEquipment[6] = true;
-                selfEquipment[6].SetActive(true);
+                id = 6;
             }
             else if (equipment.clothingStyle == "POTUS")
             {
                 //Escape Death Once
-                equipedEquipment[9] = true;
-                selfEquipment[9].SetActive(true);
+                id = 9;
             }
+            equipedEquipment[id] = true;
+            if (isMale)
+            {
+                id += 12;
+            }
+            selfEquipment[id].SetActive(true);
         }
 
 
@@ -107,30 +112,34 @@ public class PlayerStatus : MonoBehaviour
                 Dequip(somethingElseEquiped, equipment.gameObject.transform.position);
             }
             emptyEquipment[1].SetActive(false);
+            emptyEquipment[4].SetActive(false);
+            int id = 1;
             if (equipment.clothingStyle == "Mech")
             {
                 gun.suckPower *= 2;
-                equipedEquipment[1] = true;
-                selfEquipment[1].SetActive(true);
+                //id = 1;
             }
             else if (equipment.clothingStyle == "Deer")
             {
                 gun.powerMultiplier *= 2f;
-                equipedEquipment[4] = true;
-                selfEquipment[4].SetActive(true);
+                id = 4;
             }
             else if (equipment.clothingStyle == "Baker")
             {
                 invincibleTime *= 4f;
-                equipedEquipment[7] = true;
-                selfEquipment[7].SetActive(true);
+                id = 7;
             }
             else if (equipment.clothingStyle == "POTUS")
             {
                 defenceMultiplier *= 1.5f;
-                equipedEquipment[10] = true;
-                selfEquipment[10].SetActive(true);
+                id = 10;
             }
+            equipedEquipment[id] = true;
+            if (isMale)
+            {
+                id += 12;
+            }
+            selfEquipment[id].SetActive(true);
         }
 
 
@@ -150,31 +159,35 @@ public class PlayerStatus : MonoBehaviour
                 Dequip(somethingElseEquiped, equipment.gameObject.transform.position);
             }
             emptyEquipment[2].SetActive(false);
+            emptyEquipment[5].SetActive(false);
+            int id = 2;
             if (equipment.clothingStyle == "Mech")
             {
                 playerMovement.jumpHeight *= 2f;
-                equipedEquipment[2] = true;
-                selfEquipment[2].SetActive(true);
+                //id = 2;
             }
             else if (equipment.clothingStyle == "Deer")
             {
                 playerMovement.speed *= 1.5f;
-                equipedEquipment[5] = true;
-                selfEquipment[5].SetActive(true);
+                id = 5;
             }
             else if (equipment.clothingStyle == "Baker")
             {
                 maxHealth *= 1.5f;
                 health *= 1.5f;
-                equipedEquipment[8] = true;
-                selfEquipment[8].SetActive(true);
+                id = 8;
             }
             else if (equipment.clothingStyle == "POTUS")
             {
                 takeKnockback = false;
-                equipedEquipment[11] = true;
-                selfEquipment[11].SetActive(true);
+                id = 11;
             }
+            equipedEquipment[id] = true;
+            if (isMale)
+            {
+                id += 12;
+            }
+            selfEquipment[id].SetActive(true);
         }
         Destroy(equipment.gameObject);
     }
@@ -183,6 +196,7 @@ public class PlayerStatus : MonoBehaviour
     {
         equipedEquipment[id] = false;
         selfEquipment[id].SetActive(false);
+        selfEquipment[id+12].SetActive(false);
         if (id == 0)
         {//Mech Helmet
             gun.suckDistence /= 2f;
@@ -235,6 +249,7 @@ public class PlayerStatus : MonoBehaviour
         {//POTUS Legs
             takeKnockback = true;
         }
+
         Quaternion rotation = Quaternion.Euler(equipmentPrefabs[id].gameObject.transform.rotation.eulerAngles.x, equipmentPrefabs[id].gameObject.transform.rotation.eulerAngles.y, gameObject.transform.rotation.eulerAngles.z);
         GameObject oldEquipment = Instantiate(equipmentPrefabs[id], position, rotation);
         StartCoroutine(DelayReequiping(oldEquipment));
@@ -302,12 +317,44 @@ public class PlayerStatus : MonoBehaviour
     
     IEnumerator UpdateHealthBar(float healthChange)
     {
+        notDead = true;
         if (health + healthChange <= 0)
         {
             Debug.Log("Dead");
             if (isTutorial)
             {
-                SceneManager.LoadScene("Main Screen");
+                AsyncOperation ao1 = SceneManager.LoadSceneAsync("Mech Level", LoadSceneMode.Additive);
+                AsyncOperation ao2 = SceneManager.UnloadSceneAsync("Tutorial");
+                yield return new WaitUntil(() => ao1.isDone && ao2.isDone);
+                transform.position = Vector3.zero;
+                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                isTutorial = false;
+                health = maxHealth;
+                rectHealthBar.sizeDelta = new Vector2(rectHealth, rectHealthBar.rect.height);
+                invincibleTime = 1.5f;
+                invincible = false;
+                if (equipedEquipment[0])
+                {//Mech Helmet
+                    gun.suckDistence /= 2f;
+                    equipedEquipment[0] = false;
+                    selfEquipment[0].SetActive(false);
+                    selfEquipment[12].SetActive(false);
+                }
+                else if (equipedEquipment[3])
+                {//Deer Helmet
+                    slimeJumpStrengthMultiplier = 1f;
+                    equipedEquipment[3] = false;
+                    selfEquipment[3].SetActive(false);
+                    selfEquipment[15].SetActive(false);
+                }
+                if (isMale)
+                {
+                    emptyEquipment[3].SetActive(true);
+                }
+                else
+                {
+                    emptyEquipment[0].SetActive(true);
+                }
             }
             else
             {
@@ -321,7 +368,7 @@ public class PlayerStatus : MonoBehaviour
                 {
                     float timer = 0f;
                     healthChange = -health;
-                    while (timer < 1f)
+                    while (timer < 1f && notDead)
                     {
                         health += healthChange * Time.deltaTime;
                         rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
@@ -331,7 +378,10 @@ public class PlayerStatus : MonoBehaviour
                     //health = 0f;
                     //rectHealthBar.sizeDelta = new Vector2(0f, rectHealthBar.rect.height);
                     invincible = false;
-                    Respawn();
+                    if (notDead)
+                    {
+                        Respawn();
+                    }
                 }
             }
         }
@@ -340,21 +390,25 @@ public class PlayerStatus : MonoBehaviour
             float timer = 0f;
             float originalHealth = health;
             float invincibleTimeWhenHit = invincibleTime;
-            while (timer < invincibleTimeWhenHit)
+            while (timer < invincibleTimeWhenHit && notDead)
             {
                 health += healthChange * Time.deltaTime / invincibleTimeWhenHit;
                 rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
                 yield return new WaitForFixedUpdate();
                 timer += Time.deltaTime;
             }
-            health = originalHealth + healthChange;
-            rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
+            if (notDead)
+            {
+                health = originalHealth + healthChange;
+                rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
+            }
             invincible = false;
         }
     }
 
     public void Respawn()
     {
+        notDead = false;
         survivedDeathOnce = false;
         health = maxHealth;
         rectHealthBar.sizeDelta = new Vector2(rectHealth, rectHealthBar.rect.height);
