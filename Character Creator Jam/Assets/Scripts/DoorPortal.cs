@@ -39,6 +39,7 @@ public class DoorPortal : MonoBehaviour
 			else
 			{
                 SceneManager.LoadSceneAsync(nextSceneName, LoadSceneMode.Additive);
+                other.GetComponent<PlayerMovement>().groundChecker.inGround = false;
                 SceneManager.UnloadSceneAsync("Dress Up Room");
             }
             
@@ -49,6 +50,7 @@ public class DoorPortal : MonoBehaviour
         AsyncOperation ao1 = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao1.isDone);
         GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = nextSceneName;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().groundChecker.inGround = false;
         SceneManager.UnloadSceneAsync(currentSceneName);
     }
 }

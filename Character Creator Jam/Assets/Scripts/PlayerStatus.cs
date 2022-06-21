@@ -387,6 +387,7 @@ public class PlayerStatus : MonoBehaviour
                 yield return new WaitUntil(() => ao1.isDone);
                 AsyncOperation ao2 = SceneManager.LoadSceneAsync("Mech Level", LoadSceneMode.Additive);
                 yield return new WaitUntil(() => ao2.isDone);
+                playerMovement.groundChecker.inGround = false;
                 transform.position = Vector3.zero;
                 transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 isTutorial = false;
