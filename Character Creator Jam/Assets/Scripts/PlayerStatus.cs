@@ -90,8 +90,17 @@ public class PlayerStatus : MonoBehaviour
             {
                 Dequip(somethingElseEquiped, equipment.gameObject.transform.position);
             }
-            emptyEquipment[0].SetActive(false);
-            emptyEquipment[3].SetActive(false);
+            if (equipment.clothingStyle == "POTUS")
+			{
+                emptyEquipment[0].SetActive(false);
+                emptyEquipment[3].SetActive(false);
+			}
+			else
+			{
+                emptyEquipment[0].SetActive(true);
+                emptyEquipment[3].SetActive(true);
+			}
+            
             int id = 0;
             if (equipment.clothingStyle == "Mech")
             {
