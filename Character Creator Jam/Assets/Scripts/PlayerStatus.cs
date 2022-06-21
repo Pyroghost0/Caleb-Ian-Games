@@ -128,12 +128,12 @@ public class PlayerStatus : MonoBehaviour
                 id = 9;
             }
             equipedEquipment[id] = true;
+            equipmentUnlocked[id] = true;
             if (isMale)
             {
                 id += 12;
             }
             selfEquipment[id].SetActive(true);
-            equipmentUnlocked[id] = true;
         }
 
 
