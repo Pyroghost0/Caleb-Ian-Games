@@ -8,15 +8,9 @@ public class DoorPortal : MonoBehaviour
     public string nextSceneName;
     public bool isDressUpDoor;
     public List<Scene> scenes;
+    public string currentSceneName;
 
-	private void Start()
-	{
-        scenes.Add(SceneManager.GetSceneByName("Mech Level"));
-        scenes.Add(SceneManager.GetSceneByName("Deer Level"));
-        scenes.Add(SceneManager.GetSceneByName("Baker Level"));
-        scenes.Add(SceneManager.GetSceneByName("POTUS Level"));
-    }
-	private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -63,5 +57,8 @@ public class DoorPortal : MonoBehaviour
             SceneManager.UnloadSceneAsync("Baker Level");
         else if (scenes[3].isLoaded)
             SceneManager.UnloadSceneAsync("POTUS Level");
+            SceneManager.LoadSceneAsync(nextSceneName, LoadSceneMode.Additive);
+            SceneManager.UnloadSceneAsync(currentSceneName);
+        }
     }
 }
