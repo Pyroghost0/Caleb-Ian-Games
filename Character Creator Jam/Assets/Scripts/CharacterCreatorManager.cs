@@ -37,10 +37,10 @@ public class CharacterCreatorManager : MonoBehaviour
 
     private string[] introText = new string[]{
         "Before entering the world, you must create a character.",
-        "Choose a body type.",
+        "Choose a body type. The only difference is aesthetic.",
         "Choose the male body and discard the female?",
         "Choose the female body and discard the male?",
-        "Pick a face.",
+        "Pick a face. You can only choose one, so pick carefully.",
         "Use this face?",
         "Choose a hair color and a skin color.",
         "Play the game with this character?"

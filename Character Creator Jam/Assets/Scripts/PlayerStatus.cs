@@ -39,6 +39,7 @@ public class PlayerStatus : MonoBehaviour
 
     public bool isTutorial = false;
     public GameObject currentSpawnPosition;
+    public GameObject notice;
 
 
     // Start is called before the first frame update
@@ -454,4 +455,15 @@ public class PlayerStatus : MonoBehaviour
             enemies[i].GetComponent<SingleEnemySpawn>().RespawnEnemy();
         }
     }
+
+    public void TriggerNotice(int noticeNumber)
+    {
+        notice.transform.GetChild(noticeNumber).gameObject.SetActive(true);
+        StartCoroutine(deactivateAfterSeconds(notice.transform.GetChild(noticeNumber).gameObject, 3.5f));
+    }
+    private IEnumerator deactivateAfterSeconds(GameObject go, float seconds)
+	{
+        yield return new WaitForSeconds(seconds);
+        go.SetActive(false);
+	}
 }
