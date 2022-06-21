@@ -8,11 +8,13 @@ public class DoorPortal : MonoBehaviour
     public string nextSceneName;
     public bool isDressUpDoor;
     public string currentSceneName;
+    private bool loaded = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !loaded)
         {
+            loaded = true;
             GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
             for (int i = 0; i < slimes.Length; i++)
             {
@@ -47,7 +49,6 @@ public class DoorPortal : MonoBehaviour
         AsyncOperation ao1 = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao1.isDone);
         GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = nextSceneName;
-            SceneManager.UnloadSceneAsync(currentSceneName);
-        }
+        SceneManager.UnloadSceneAsync(currentSceneName);
     }
 }
