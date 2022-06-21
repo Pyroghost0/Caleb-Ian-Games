@@ -30,6 +30,8 @@ public class SlimeBehavior : MonoBehaviour
     private float averageJumpStrengthMin = 5f;
     private float averageJumpStrengthMax = 5f;
 
+    private bool isDead = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,7 +59,7 @@ public class SlimeBehavior : MonoBehaviour
 
     IEnumerator ConstantJump()
     {
-        while (true)
+        while (!isDead)
         {
             yield return new WaitUntil(() => (groundChecker.inGround));
             if ((player.transform.position - transform.position).magnitude < maxDistenceFromPlayer)
@@ -89,7 +91,9 @@ public class SlimeBehavior : MonoBehaviour
             if (health <= 0)
             {
                 slimeSpawner.SlimeDeath();
-                Destroy(gameObject);
+                isDead = true;
+                anim.SetBool("isDead", true);
+                StartCoroutine(Die());
             }
             else
             {
@@ -105,7 +109,11 @@ public class SlimeBehavior : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
-
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
+    }
     IEnumerator Knockback(Vector3 movement)
     {
         float timer = 0f;

@@ -27,6 +27,8 @@ public class WalkerBehavior : MonoBehaviour
     public float movementSpeed = 5f;
     public float turnSpeed = 1.5f;
 
+    private bool isDead = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,7 +50,7 @@ public class WalkerBehavior : MonoBehaviour
     void Update()
     {
         //rigidbody.velocity += gravity * Time.deltaTime;
-        if (groundChecker.inGround)
+        if (groundChecker.inGround & !isDead)
         {
             rigidbody.velocity = Vector3.down;
             if (seesPlayer)
@@ -111,7 +113,9 @@ public class WalkerBehavior : MonoBehaviour
             if (health <= 0)
             {
                 //slimeSpawner.SlimeDeath();
-                Destroy(gameObject);
+                isDead = true;
+                anim.SetBool("isDead", true);
+                StartCoroutine(Die());
             }
             else
             {
@@ -130,7 +134,11 @@ public class WalkerBehavior : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
-
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
+    }
     IEnumerator Knockback(Vector3 movement)
     {
         float timer = 0f;

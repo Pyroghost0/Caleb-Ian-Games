@@ -25,6 +25,8 @@ public class FlyerBehavior : MonoBehaviour
     public float movementSpeed = 5f;
     public float turnSpeed = 2.5f;
 
+    private bool isDead = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,33 +46,37 @@ public class FlyerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (seesPlayer)
-        {
-            if ((truePosition.position - player.transform.position).magnitude < maxDistenceFromPlayer)
+        if (!isDead)
+		{
+            if (seesPlayer)
             {
-                Vector3 direction = player.transform.position - truePosition.position;
-                direction = direction.normalized;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * turnSpeed);
+                if ((truePosition.position - player.transform.position).magnitude < maxDistenceFromPlayer)
+                {
+                    Vector3 direction = player.transform.position - truePosition.position;
+                    direction = direction.normalized;
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * turnSpeed);
 
-                transform.Translate(forwardDirection * movementSpeed * Time.deltaTime);
+                    transform.Translate(forwardDirection * movementSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    seesPlayer = false;
+                    anim.SetBool("isRunning", false);
+                }
             }
-            else
+            else if ((truePosition.position - player.transform.position).magnitude < seesPlayerDistence)
             {
-                seesPlayer = false;
-                anim.SetBool("isRunning", false);
+                seesPlayer = true;
+                anim.SetBool("isRunning", true);
             }
-        }
-        else if ((truePosition.position - player.transform.position).magnitude < seesPlayerDistence)
-        {
-            seesPlayer = true;
-            anim.SetBool("isRunning", true);
-        }
-        Vector3 normal = rigidbody.velocity.normalized;
-        rigidbody.velocity -= normal * Time.deltaTime * 3f;
-        if (rigidbody.velocity.normalized != normal)
-        {
-            rigidbody.velocity = Vector3.zero;
-        }
+            Vector3 normal = rigidbody.velocity.normalized;
+            rigidbody.velocity -= normal * Time.deltaTime * 3f;
+            if (rigidbody.velocity.normalized != normal)
+            {
+                rigidbody.velocity = Vector3.zero;
+            }
+		}
+        
     }
 
     /*IEnumerator WalkTowardPlayer()
@@ -105,7 +111,9 @@ public class FlyerBehavior : MonoBehaviour
             if (health <= 0)
             {
                 //slimeSpawner.SlimeDeath();
-                Destroy(gameObject);
+                isDead = true;
+                anim.SetBool("isDead", true);
+                StartCoroutine(Die());
             }
             else
             {
@@ -124,6 +132,12 @@ public class FlyerBehavior : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
+
+    IEnumerator Die()
+	{
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
+	}
 
     IEnumerator Knockback(Vector3 movement)
     {
