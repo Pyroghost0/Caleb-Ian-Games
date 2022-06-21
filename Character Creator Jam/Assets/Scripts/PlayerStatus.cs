@@ -362,9 +362,20 @@ public class PlayerStatus : MonoBehaviour
             Debug.Log("Dead");
             if (isTutorial)
             {
-                AsyncOperation ao1 = SceneManager.LoadSceneAsync("Mech Level", LoadSceneMode.Additive);
-                AsyncOperation ao2 = SceneManager.UnloadSceneAsync("Tutorial");
-                yield return new WaitUntil(() => ao1.isDone && ao2.isDone);
+                GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
+                for (int i = 0; i < slimes.Length; i++)
+                {
+                    Destroy(slimes[i]);
+                }
+                GameObject[] equipment = GameObject.FindGameObjectsWithTag("Equipment");
+                for (int i = 0; i < equipment.Length; i++)
+                {
+                    Destroy(equipment[i]);
+                }
+                AsyncOperation ao1 = SceneManager.UnloadSceneAsync("Tutorial");
+                yield return new WaitUntil(() => ao1.isDone);
+                AsyncOperation ao2 = SceneManager.LoadSceneAsync("Mech Level", LoadSceneMode.Additive);
+                yield return new WaitUntil(() => ao2.isDone);
                 transform.position = Vector3.zero;
                 transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 isTutorial = false;
@@ -385,14 +396,6 @@ public class PlayerStatus : MonoBehaviour
                     equipedEquipment[3] = false;
                     selfEquipment[3].SetActive(false);
                     selfEquipment[15].SetActive(false);
-                }
-                if (isMale)
-                {
-                    emptyEquipment[3].SetActive(true);
-                }
-                else
-                {
-                    emptyEquipment[0].SetActive(true);
                 }
             }
             else
