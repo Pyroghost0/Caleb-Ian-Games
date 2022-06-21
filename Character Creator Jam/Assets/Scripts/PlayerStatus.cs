@@ -40,6 +40,7 @@ public class PlayerStatus : MonoBehaviour
     public bool isTutorial = false;
     public GameObject currentSpawnPosition;
     public GameObject notice;
+    public bool[] equipmentUnlocked;
 
 
     // Start is called before the first frame update
@@ -132,6 +133,7 @@ public class PlayerStatus : MonoBehaviour
                 id += 12;
             }
             selfEquipment[id].SetActive(true);
+            equipmentUnlocked[id] = true;
         }
 
 
@@ -179,6 +181,7 @@ public class PlayerStatus : MonoBehaviour
                 id += 12;
             }
             selfEquipment[id].SetActive(true);
+            equipmentUnlocked[id] = true;
         }
 
 
@@ -204,6 +207,13 @@ public class PlayerStatus : MonoBehaviour
             {
                 playerMovement.jumpHeight *= 2f;
                 //id = 2;
+                if (!equipmentUnlocked[2])
+				{
+                    for (int i = 0; i < equipmentUnlocked.Length; i++)
+                    {
+                        equipmentUnlocked[i] = false;
+					}
+				}
             }
             else if (equipment.clothingStyle == "Deer")
             {
@@ -227,6 +237,7 @@ public class PlayerStatus : MonoBehaviour
                 id += 12;
             }
             selfEquipment[id].SetActive(true);
+            equipmentUnlocked[id] = true;
         }
         Destroy(equipment.gameObject);
     }
