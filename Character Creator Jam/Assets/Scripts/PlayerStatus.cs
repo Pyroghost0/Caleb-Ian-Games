@@ -176,11 +176,11 @@ public class PlayerStatus : MonoBehaviour
                 id = 10;
             }
             equipedEquipment[id] = true;
+            selfEquipment[id].SetActive(true);
             if (isMale)
             {
                 id += 12;
             }
-            selfEquipment[id].SetActive(true);
             equipmentUnlocked[id] = true;
         }
 
@@ -232,11 +232,11 @@ public class PlayerStatus : MonoBehaviour
                 id = 11;
             }
             equipedEquipment[id] = true;
+            selfEquipment[id].SetActive(true);
             if (isMale)
             {
                 id += 12;
             }
-            selfEquipment[id].SetActive(true);
             equipmentUnlocked[id] = true;
         }
         Destroy(equipment.gameObject);
