@@ -7,7 +7,6 @@ public class DoorPortal : MonoBehaviour
 {
     public string nextSceneName;
     public bool isDressUpDoor;
-    public List<Scene> scenes;
     public string currentSceneName;
 
     private void OnTriggerEnter(Collider other)
@@ -48,16 +47,6 @@ public class DoorPortal : MonoBehaviour
         AsyncOperation ao1 = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao1.isDone);
         GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = nextSceneName;
-
-        if (scenes[0].isLoaded)
-            SceneManager.UnloadSceneAsync("Mech Level");
-        else if (scenes[1].isLoaded)
-            SceneManager.UnloadSceneAsync("Deer Level");
-        else if (scenes[2].isLoaded)
-            SceneManager.UnloadSceneAsync("Baker Level");
-        else if (scenes[3].isLoaded)
-            SceneManager.UnloadSceneAsync("POTUS Level");
-            SceneManager.LoadSceneAsync(nextSceneName, LoadSceneMode.Additive);
             SceneManager.UnloadSceneAsync(currentSceneName);
         }
     }
