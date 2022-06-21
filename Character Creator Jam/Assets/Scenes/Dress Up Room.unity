@@ -3790,7 +3790,7 @@ Transform:
   m_Children:
   - {fileID: 1093981591}
   m_Father: {fileID: 2043989000}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
 --- !u!1 &841627976
 GameObject:
@@ -4998,6 +4998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSceneName: Mech Level
   isDressUpDoor: 1
+  currentSceneName: 
 --- !u!65 &1213304592
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5256,7 +5257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5947789644317979026, guid: f7ef9118a68bd2948856f62232bb05d7, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5947789644317979026, guid: f7ef9118a68bd2948856f62232bb05d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8479,8 +8480,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 825459936}
   - {fileID: 1311874552}
+  - {fileID: 825459936}
   - {fileID: 2142744424}
   - {fileID: 1615374361}
   m_Father: {fileID: 49930013}

@@ -27,8 +27,15 @@ public class CharacterCreatorManager : MonoBehaviour
     public GameObject fHair;
     public GameObject[] fHead = new GameObject[3];
 
-    public Material[] Skin;
-    public Material[] Hair;
+    public Material Skin;
+    public Material Hair;
+    public Color[] SkinBase;
+    public Color[] SkinEmission;
+    public Color[] HairBase;
+    public Color[] HairEmission;
+    public GameObject SkinColors;
+    public GameObject HairColors;
+
     public Animator HeadsAnim;
 
     private int buttonClicked = 0;
@@ -43,7 +50,8 @@ public class CharacterCreatorManager : MonoBehaviour
         "Pick a face. You can only choose one, so pick carefully.",
         "Use this face?",
         "Choose a hair color and a skin color.",
-        "Play the game with this character?"
+        "Play the game with this character?",
+        "Loading..."
 
     };
     
@@ -55,44 +63,32 @@ public class CharacterCreatorManager : MonoBehaviour
         0,
         2,
         0,
-        2
+        2,
+        1
     };
     //0 = continue, 1 = choose, 2 = yes/no
     
     void Start()
     {
+        Skin.EnableKeyword("_EMISSION");
+        Hair.EnableKeyword("_EMISSION");
+        ChangeMaterial(true, 0);
+        ChangeMaterial(false, 0);
         StartCoroutine(TextProgress());
         
     }
     private void ChangeMaterial(bool isSkin, int index)
     {
-        //MeshRenderer[] renderers;
-        /*if (isMale)
-        {
-            renderers = maleBaseButton.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
-        }
+        if (isSkin)
+		{
+            Skin.SetColor("_Color", SkinBase[index]);
+            Skin.SetColor("_EmissionColor", SkinEmission[index]);
+		}
 		else
 		{
-            renderers = femaleBaseButton.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
+            Hair.SetColor("_Color", HairBase[index]);
+            Hair.SetColor("_EmissionColor", HairEmission[index]);
         }
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            renderers[i].materials[0] = Skin[index];
-            for (int j = 0; j < renderers[i].sharedMaterials.Length; j++)
-            {
-                renderers[i].sharedMaterials[j] = Skin[index];
-                Debug.Log(renderers[i].materials[j].name);
-                Debug.Log(Skin[index].name);
-                if (isSkin && renderers[i].sharedMaterials[j].name.StartsWith("Skin"))
-                {
-                    renderers[i].sharedMaterials[j] = Skin[index];
-                }
-                if (!isSkin && renderers[i].sharedMaterials[j].name.StartsWith("Hair"))
-                {
-                    renderers[i].sharedMaterials[j] = Hair[index];
-                }
-            }
-        }*/
     }
     private void ChangeText(int textIndex)
 	{
@@ -237,18 +233,24 @@ public class CharacterCreatorManager : MonoBehaviour
         ChangeText(-1);
         yield return new WaitForSeconds(2f);
         ChangeText(6);
+        SkinColors.SetActive(true);
+        HairColors.SetActive(true);
 
         //Choose Colors
-        /*do
+        do
         {
             yield return new WaitForSeconds(0.1f);
             if (buttonClicked == 3)
             {
                 ChangeText(7);
+                SkinColors.SetActive(false);
+                HairColors.SetActive(false);
             }
             else if (buttonClicked == 2)
             {
                 ChangeText(6);
+                SkinColors.SetActive(true);
+                HairColors.SetActive(true);
             }
             else if (buttonClicked != 0 && buttonClicked != 1)
             {
@@ -264,12 +266,10 @@ public class CharacterCreatorManager : MonoBehaviour
                 }
             }
         } while (buttonClicked != 1);
-        buttonClicked = 0;*/
+        buttonClicked = 0;
 
-        //Confirm Character
-        ChangeText(7);
-        yield return new WaitUntil(() => buttonClicked == 1);
         StartCoroutine(WaitLoad());
+        ChangeText(8);
     }
 
     IEnumerator WaitLoad()
