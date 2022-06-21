@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class DoorPortal : MonoBehaviour
 {
     public string nextSceneName;
+    public string currentSceneName;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -29,7 +30,7 @@ public class DoorPortal : MonoBehaviour
             other.gameObject.transform.position = Vector3.zero;
             other.gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             SceneManager.LoadSceneAsync(nextSceneName, LoadSceneMode.Additive);
-            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+            SceneManager.UnloadSceneAsync(currentSceneName);
         }
     }
 }
