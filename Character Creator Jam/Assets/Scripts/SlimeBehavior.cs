@@ -31,6 +31,7 @@ public class SlimeBehavior : MonoBehaviour
     private float averageJumpStrengthMax = 5f;
 
     private bool isDead = false;
+    public int slimeColor = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -136,7 +137,7 @@ public class SlimeBehavior : MonoBehaviour
             //Debug.Log("Slime Destroyed");
             sucked = true;
             slimeSpawner.SlimeDeath();
-            gun.SuckedSlime();
+            gun.SuckedSlime(slimeColor);
             Destroy(gameObject);
         }
     }

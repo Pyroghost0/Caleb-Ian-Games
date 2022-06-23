@@ -83,11 +83,13 @@ public class CharacterCreatorManager : MonoBehaviour
 		{
             Skin.SetColor("_Color", SkinBase[index]);
             Skin.SetColor("_EmissionColor", SkinEmission[index]);
+            skinColor = index;
 		}
 		else
 		{
             Hair.SetColor("_Color", HairBase[index]);
             Hair.SetColor("_EmissionColor", HairEmission[index]);
+            hairColor = index;
         }
     }
     private void ChangeText(int textIndex)
