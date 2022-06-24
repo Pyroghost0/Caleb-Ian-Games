@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour {
         transform.Rotate(Vector3.up * mouseX);
         verticalLookRotation -= mouseY;
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, minAngle, maxAngle);//Cant over rotate
+        playerAnim.SetFloat("Look", Mathf.Pow((verticalLookRotation / -100) + 0.4f, 1.5f));
         cameraBasisObject.transform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);//apply clamp
         isGrounded = groundChecker.inGround;
         playerAnim.SetBool("Grounded", isGrounded);
