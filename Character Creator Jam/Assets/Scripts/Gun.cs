@@ -85,7 +85,7 @@ public class Gun : MonoBehaviour
                 {
                     slimeColors.Add(0);
                 }
-                bullet.GetComponent<Renderer>().material = materials[slimeColors[0]];
+                bullet.transform.GetChild(0).GetComponent<Renderer>().material = materials[slimeColors[0]];
                 slimeColors.RemoveAt(0);
             }
         }
