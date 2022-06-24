@@ -63,12 +63,12 @@ public class PlayerMovement : MonoBehaviour {
                 x *= Mathf.Abs(x) / magnitude;
                 z *= Mathf.Abs(z) / magnitude;
             }
-             move += ((transform.right * x + transform.forward * z) - move) * Time.deltaTime / 2f;
+            move += ((transform.right * x + transform.forward * z) - move) * Time.deltaTime / 2f;
             controller.enabled = true;
             controller.Move(move * speed * Time.deltaTime);
             controller.enabled = false;
         }
-        else if (!touchingBounce || isGrounded)
+        else if (isGrounded)
         {
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
@@ -86,6 +86,29 @@ public class PlayerMovement : MonoBehaviour {
             controller.Move(move * speed * Time.deltaTime);
             controller.enabled = false;
         }
+        else if (!touchingBounce)
+        {
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+            playerAnim.SetFloat("MoveX", x);
+            playerAnim.SetFloat("MoveY", z);
+
+            float magnitude = Mathf.Sqrt(x * x + z * z);
+            if (magnitude != 0)
+            {
+                x *= Mathf.Abs(x) / magnitude;
+                z *= Mathf.Abs(z) / magnitude;
+            }
+            move = transform.right * x + transform.forward * z;
+            rigidbody.velocity -= new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z) * 3f * Time.deltaTime;
+            rigidbody.velocity += move * speed * 3f * Time.deltaTime;
+            /*
+            controller.enabled = true;
+            if (controller.Move(move * speed * Time.deltaTime).HasFlag(CollisionFlags.Sides)) {
+                controller.Move(-move * speed * Time.deltaTime);
+            }
+            controller.enabled = false;*/
+        }
         else
         {
             isGrounded = false;
@@ -96,11 +119,12 @@ public class PlayerMovement : MonoBehaviour {
             if (Input.GetButtonDown("Jump"))
             {
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                rigidbody.velocity = velocity + (move * speed);
             }
             else if (velocity.y < 0) {
                 velocity = Vector3.down;
+                rigidbody.velocity = velocity;
             }
-            rigidbody.velocity = velocity;
         }
         else
         {
