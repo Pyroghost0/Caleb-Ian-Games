@@ -5,17 +5,25 @@ using UnityEngine;
 public class BossBehavior : MonoBehaviour
 {
     public SlimeSpawner[] slimeSpawners;
+    public SlimeSpawner[] walkerSpawners;
+    public SlimeSpawner[] flyerSpawners;
+    public float movementSpeed = 8f;
+    public float turnSpeed = 5f;
+    public float health = 500f;
+    public bool knockBack = true;
+    public Transform[] sucktionSpots;
+    public GameObject walkerPrefab;
+    public GameObject flyerPrefab;
+    public GameObject bulletPrefab;
+    public Transform bulletSpawnSpot;
+
     private Vector3 pipeDistence = new Vector3(0f, 1.5f, 0f);
+    private Vector3 otherPipeDistence = new Vector3(0f, 3.5f, 0f);
     private Vector3 abovePosition = Vector3.up * 20f;
     private Vector3 spawnPosition;
     private CharacterController characterController;
-    public float movementSpeed = 8f;
-    public float turnSpeed = 5f;
     private GameObject player;
-    public float health = 500f;
-    public bool knockBack = true;
     private bool inCenter = true;
-    public Transform[] sucktionSpots;
 
     // Start is called before the first frame update
     void Start()
@@ -70,7 +78,7 @@ public class BossBehavior : MonoBehaviour
                 StartCoroutine(PipeSpawnSlime(3f, slimeSpawners[i]));
             }
             yield return new WaitForSeconds(2f);
-            bool slimeAttack = true;
+            bool slimeAttack = false;
             if (slimeAttack)
             {
                 knockBack = false;
@@ -136,6 +144,19 @@ public class BossBehavior : MonoBehaviour
                 transform.position = new Vector3(transform.position.x, spawnPosition.y, transform.position.z);
                 knockBack = true;
             }
+            yield return new WaitForSeconds(1f);
+            for (int i = 0; i < walkerSpawners.Length; i++)
+            {
+                StartCoroutine(PipeSpawnOther(3f, walkerSpawners[i], walkerPrefab));
+            }
+            yield return new WaitForSeconds(3f);
+            for (int i = 0; i < flyerSpawners.Length; i++)
+            {
+                StartCoroutine(PipeSpawnOther(3f, flyerSpawners[i], flyerPrefab));
+            }
+            yield return new WaitForSeconds(4f);
+            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnSpot.position, Quaternion.LookRotation(player.transform.position - bulletSpawnSpot.position));
+            //bullet.GetComponent<Bullet>().bossBullet = true;
         }
     }
 
@@ -163,9 +184,33 @@ public class BossBehavior : MonoBehaviour
         pipe.position = new Vector3(pipe.position.x, -2f, pipe.position.z);
     }
 
+    IEnumerator PipeSpawnOther(float seconds, SlimeSpawner slimeSpawner, GameObject prefab)
+    {
+        Transform pipe = slimeSpawner.transform;
+        float timer = 0f;
+        while (timer < seconds / 3f)
+        {
+            yield return new WaitForFixedUpdate();
+            pipe.position += otherPipeDistence * Time.deltaTime * 3f / seconds;
+            timer += Time.deltaTime;
+        }
+        pipe.position = new Vector3(pipe.transform.position.x, -.5f, pipe.position.z);
+        timer = 0f;
+        yield return new WaitForSeconds(seconds / 6f);
+        Instantiate(prefab, slimeSpawner.spawnPoint.transform.position + prefab.transform.position, prefab.transform.rotation);
+        yield return new WaitForSeconds(seconds / 6f);
+        while (timer < seconds / 3f)
+        {
+            yield return new WaitForFixedUpdate();
+            pipe.position -= otherPipeDistence * Time.deltaTime * 3f / seconds;
+            timer += Time.deltaTime;
+        }
+        pipe.position = new Vector3(pipe.position.x, -4f, pipe.position.z);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Bullet"))
+        if (other.CompareTag("Bullet") && !other.GetComponent<Bullet>().bossBullet)
         {
             health -= other.GetComponent<Bullet>().power * 25;
             if (health <= 0)

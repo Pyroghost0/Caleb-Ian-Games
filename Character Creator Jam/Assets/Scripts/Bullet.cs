@@ -7,13 +7,21 @@ public class Bullet : MonoBehaviour
     public float power;
     private float lifeTime = 3f;
     public Vector3 movement;
+    public bool bossBullet = false;
 
     // Start is called before the first frame update
     void Start()
     {
         power = transform.localScale.x / .75f;
         lifeTime *= power;
-        movement = Vector3.forward * power * 75f;
+        if (!bossBullet)
+        {
+            movement = Vector3.forward * power * 75f;
+        }
+        else
+        {
+            movement = Vector3.forward * 75f;
+        }
         StartCoroutine(DieInSeconds(lifeTime));
     }
 
@@ -31,9 +39,9 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer >= 11 || other.gameObject.layer == 8)
+        if (other.CompareTag("Player") && bossBullet)
         {
-            Destroy(gameObject);
+            other.GetComponent<PlayerStatus>().TakeDamage(30f, transform.position, 50f);
         }
     }
 }
