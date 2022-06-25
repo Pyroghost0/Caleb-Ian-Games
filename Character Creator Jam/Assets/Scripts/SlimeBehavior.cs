@@ -101,14 +101,7 @@ public class SlimeBehavior : MonoBehaviour
             }
             else
             {
-                Vector3 direction = transform.position;//Definitly not what you are meant to so
-                Quaternion originalRotation = transform.rotation;
-                transform.rotation = other.transform.rotation;
-                transform.Translate(other.GetComponent<Bullet>().movement);
-                direction = transform.position - direction;
-                transform.Translate(-other.GetComponent<Bullet>().movement);
-                transform.rotation = originalRotation;
-                StartCoroutine(Knockback(direction * other.GetComponent<Bullet>().power * 50f));
+                StartCoroutine(Knockback(other.transform.rotation * other.GetComponent<Bullet>().movement * other.GetComponent<Bullet>().power * 50f));
             }
             Destroy(other.gameObject);
         }
@@ -131,7 +124,7 @@ public class SlimeBehavior : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !sucked)
+        if (other.CompareTag("Player") && !sucked && !isDead)
         {
             player.GetComponent<PlayerStatus>().TakeDamage(damage, transform.position, knockback);
         }

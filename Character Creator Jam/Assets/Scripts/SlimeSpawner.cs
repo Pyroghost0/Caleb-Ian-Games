@@ -57,15 +57,20 @@ public class SlimeSpawner : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(averageSlimeRespawnTime / 4, averageSlimeRespawnTime * 3 / 4));
             if (Mathf.Abs((player.transform.position - transform.position).magnitude) < spawnDistence)
             {
-                slimeColor = Random.Range(0, materials.Length);
-                GameObject slime = Instantiate(slimePrefab, spawnPoint.transform.position, slimePrefab.transform.rotation);
-                slime.GetComponent<SlimeBehavior>().slimeSpawner = this;
-                slime.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().material = materials[slimeColor];
-                slime.GetComponent<SlimeBehavior>().slimeColor = slimeColor;
-                numSlimes++;
+                SpawnSlime();
             }
             yield return new WaitForSeconds(Random.Range(averageSlimeRespawnTime / 4, averageSlimeRespawnTime * 3 / 4));
         }
         currentlySpawning = false;
+    }
+
+    public void SpawnSlime()
+    {
+        slimeColor = Random.Range(0, materials.Length);
+        GameObject slime = Instantiate(slimePrefab, spawnPoint.transform.position, slimePrefab.transform.rotation);
+        slime.GetComponent<SlimeBehavior>().slimeSpawner = this;
+        slime.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().material = materials[slimeColor];
+        slime.GetComponent<SlimeBehavior>().slimeColor = slimeColor;
+        numSlimes++;
     }
 }

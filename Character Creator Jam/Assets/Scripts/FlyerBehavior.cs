@@ -117,17 +117,7 @@ public class FlyerBehavior : MonoBehaviour
             }
             else
             {
-                //Quaternion.FromToRotation
-
-                Vector3 direction = truePosition.position;//Definitly not what you are meant to so
-                Quaternion originalRotation = transform.rotation;
-                transform.rotation = other.transform.rotation;
-                transform.Translate(other.GetComponent<Bullet>().movement);
-                direction = truePosition.position - direction;
-                transform.Translate(-other.GetComponent<Bullet>().movement);
-                transform.rotation = originalRotation;
-
-                StartCoroutine(Knockback(direction * other.GetComponent<Bullet>().power * .3f));
+                StartCoroutine(Knockback(other.transform.rotation * other.GetComponent<Bullet>().movement * other.GetComponent<Bullet>().power * .3f));
             }
             Destroy(other.gameObject);
         }
@@ -153,7 +143,7 @@ public class FlyerBehavior : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isDead)
         {
             anim.SetTrigger("Attack");
             player.GetComponent<PlayerStatus>().TakeDamage(damage, truePosition.position, knockback);

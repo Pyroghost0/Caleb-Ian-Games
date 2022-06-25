@@ -466,6 +466,7 @@ public class PlayerStatus : MonoBehaviour
         survivedDeathOnce = false;
         health = maxHealth;
         rectHealthBar.sizeDelta = new Vector2(rectHealth, rectHealthBar.rect.height);
+        gun.rectSlimeBar.sizeDelta = new Vector2(.5f * gun.rectSlime, gun.rectSlimeBar.rect.height);
         gun.amountOfSlime = 50f;
         characterController.enabled = false;
         gameObject.transform.position = currentSpawnPosition.transform.position;

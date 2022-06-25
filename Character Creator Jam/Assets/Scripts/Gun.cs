@@ -14,8 +14,8 @@ public class Gun : MonoBehaviour
     public GameObject[] middleRays;
     public GameObject[] outerRays;
     public GameObject slimeBar;
-    private RectTransform rectSlimeBar;
-    private float rectSlime;
+    public RectTransform rectSlimeBar;
+    public float rectSlime;
     public float suckDistence = 25f;
     public float suckPower = .6f;
     public GameObject suckSpot;
