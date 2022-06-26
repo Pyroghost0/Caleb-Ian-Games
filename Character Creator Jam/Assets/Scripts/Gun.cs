@@ -19,6 +19,7 @@ public class Gun : MonoBehaviour
     public float suckDistence = 25f;
     public float suckPower = .6f;
     public GameObject suckSpot;
+    public GameObject suckParticles;
     public bool isSucking = false;
     public float powerMultiplier = 1f;
 
@@ -90,15 +91,18 @@ public class Gun : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(1))//Right Click
+        if (Input.GetMouseButtonDown(1))//Right Click
         {
+            suckParticles.SetActive(true);
             reticleAnimation.SetBool("Suck", true);
             playerAnim.SetBool("Sucking", true);
+            isSucking = true;
+        }
+
+        if (Input.GetMouseButton(1))//Right Click
+        {
             List<GameObject> suckedObjects = new List<GameObject> { };
             List<float> slimeSuckPower = new List<float> { };
-            isSucking = true;
-
-
             //Center
             Ray center = new Ray(suckSpot.transform.position, centerRay.transform.position - suckSpot.transform.position);
             RaycastHit centerHit;
@@ -202,6 +206,7 @@ public class Gun : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1))//Right Click
         {
+            suckParticles.SetActive(false);
             reticleAnimation.SetBool("Suck", false);
             playerAnim.SetBool("Sucking", false);
             isSucking = false;

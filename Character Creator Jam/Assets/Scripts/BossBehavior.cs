@@ -20,8 +20,10 @@ public class BossBehavior : MonoBehaviour
     private Vector3 pipeDistence = new Vector3(0f, 1.5f, 0f);
     private Vector3 otherPipeDistence = new Vector3(0f, 3.5f, 0f);
     private Vector3 abovePosition = Vector3.up * 20f;
+    private Vector3 otherAbovePosition = Vector3.up * 6f;
     private Vector3 spawnPosition;
     private CharacterController characterController;
+    private CharacterController playerController;
     private GameObject player;
     private bool inCenter = true;
 
@@ -30,6 +32,7 @@ public class BossBehavior : MonoBehaviour
     {
         spawnPosition = transform.position;
         player = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player;
+        playerController = player.GetComponent<CharacterController>();
         characterController = GetComponent<CharacterController>();
     }
 
@@ -79,6 +82,9 @@ public class BossBehavior : MonoBehaviour
             }
             yield return new WaitForSeconds(2f);
             bool slimeAttack = false;
+
+
+
             if (slimeAttack)
             {
                 knockBack = false;
@@ -118,11 +124,6 @@ public class BossBehavior : MonoBehaviour
                                 assignedSlimesRigidbody[i].velocity -= assignedSlimesRigidbody[i].velocity * Time.deltaTime;
                                 assignedSlimesRigidbody[i].AddForce(distence.normalized * 5000f * Time.deltaTime, ForceMode.Force);
                             }
-                            /*else if (distence.magnitude > assignedSlimesOriginalDistence[i] / 8f)
-                            {
-                                assignedSlimesRigidbody[i].velocity -= assignedSlimesRigidbody[i].velocity * Time.deltaTime;
-                                assignedSlimesRigidbody[i].AddForce(distence.normalized * 2000f * Time.deltaTime, ForceMode.Force);
-                            }*/
                             else
                             {
                                 assignedSlimesRigidbody[i].AddForce(distence * 1000f * Time.deltaTime, ForceMode.Force);
@@ -144,6 +145,92 @@ public class BossBehavior : MonoBehaviour
                 transform.position = new Vector3(transform.position.x, spawnPosition.y, transform.position.z);
                 knockBack = true;
             }
+
+
+            bool suckAttack = true;
+            if (suckAttack)
+            {
+                knockBack = false;
+                float timer = 0f;
+                float seconds = 1f;
+                while (timer < seconds)
+                {
+                    yield return new WaitForFixedUpdate();
+                    transform.position += otherAbovePosition * Time.deltaTime / seconds;
+                    timer += Time.deltaTime;
+                }
+                transform.position = new Vector3(transform.position.x, spawnPosition.y + 6f, transform.position.z);
+                yield return new WaitForSeconds(3f);
+                GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
+                List<Transform> slimesTransform = new List<Transform>();
+                List<Rigidbody> slimesRigidbody = new List<Rigidbody>();
+                for (int i = 0; i < slimes.Length; i++)
+                {
+                    slimesTransform.Add(slimes[i].transform);
+                    slimesRigidbody.Add(slimes[i].GetComponent<Rigidbody>());
+                }
+                GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
+                List<Transform> walkersTransform = new List<Transform>();
+                List<CharacterController> walkersController = new List<CharacterController>();
+                for (int i = 0; i < walkers.Length; i++)
+                {
+                    walkersTransform.Add(walkers[i].transform);
+                    walkersController.Add(walkers[i].GetComponent<CharacterController>());
+                }
+                GameObject[] flyers = GameObject.FindGameObjectsWithTag("Flyer");
+                List<Transform> flyersTransform = new List<Transform>();
+                List<Transform> flyersPosition = new List<Transform>();
+                for (int i = 0; i < flyers.Length; i++)
+                {
+                    flyersTransform.Add(flyers[i].transform);
+                    flyersPosition.Add(flyers[i].GetComponent<FlyerBehavior>().truePosition);
+                }
+                timer = 0f;
+                while (timer < 5f)
+                {
+                    for (int i = 0; i < slimes.Length; i++)
+                    {
+                        if (slimesTransform[i] != null)
+                        {
+                            slimesRigidbody[i].AddForce((spawnPosition - slimesTransform[i].position).normalized * 1500f * Time.deltaTime, ForceMode.Force);
+                        }
+                    }
+                    for (int i = 0; i < walkers.Length; i++)
+                    {
+                        if (walkersTransform[i] != null)
+                        {
+                            walkersController[i].enabled = true;
+                            walkersController[i].Move((spawnPosition - walkersTransform[i].position).normalized * 8f * Time.deltaTime);
+                            walkersController[i].enabled = false;
+                        }
+                    }
+                    for (int i = 0; i < flyers.Length; i++)
+                    {
+                        if (flyersTransform[i] != null)
+                        {
+                            flyersTransform[i].position += (spawnPosition - flyersPosition[i].position).normalized * 8f * Time.deltaTime;
+                        }
+                    }
+                    playerController.enabled = true;
+                    playerController.Move((spawnPosition - player.transform.position).normalized * 15f * Time.deltaTime);
+                    playerController.enabled = false;
+                    yield return new WaitForFixedUpdate();
+                    timer += Time.deltaTime;
+                }
+                yield return new WaitForSeconds(3f);
+                timer = 0f;
+                while (timer < seconds)
+                {
+                    yield return new WaitForFixedUpdate();
+                    transform.position -= otherAbovePosition * Time.deltaTime / seconds;
+                    timer += Time.deltaTime;
+                }
+                transform.position = new Vector3(transform.position.x, spawnPosition.y, transform.position.z);
+                knockBack = true;
+            }
+
+
+
             yield return new WaitForSeconds(1f);
             for (int i = 0; i < walkerSpawners.Length; i++)
             {
