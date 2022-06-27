@@ -9,13 +9,16 @@ public class BossBehavior : MonoBehaviour
     public SlimeSpawner[] flyerSpawners;
     public float movementSpeed = 8f;
     public float turnSpeed = 5f;
-    public float health = 500f;
+    public float health = 1000f;
+    public float maxHealth = 1000f;
     public bool knockBack = true;
     public Transform[] sucktionSpots;
     public GameObject walkerPrefab;
     public GameObject flyerPrefab;
     public GameObject bulletPrefab;
     public Transform bulletSpawnSpot;
+    public GameObject singleSuckParticles;
+    public GameObject wideSuckParticles;
 
     private Vector3 pipeDistence = new Vector3(0f, 1.5f, 0f);
     private Vector3 otherPipeDistence = new Vector3(0f, 3.5f, 0f);
@@ -26,6 +29,8 @@ public class BossBehavior : MonoBehaviour
     private CharacterController playerController;
     private GameObject player;
     private bool inCenter = true;
+    private RectTransform rectHealthBar;
+    private float rectHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -70,181 +75,546 @@ public class BossBehavior : MonoBehaviour
     public void StartFight()
     {
         StartCoroutine(BossActive());
+        GameObject bossBar = GameObject.FindGameObjectWithTag("Boss Health Bar");
+        for (int i =0; i < bossBar.transform.childCount; i++)
+        {
+            bossBar.transform.GetChild(i).gameObject.SetActive(true);
+        }
+#pragma warning disable CS0618 // Type or member is obsolete
+        rectHealthBar = bossBar.transform.FindChild("Health Bar").GetComponent<RectTransform>();
+#pragma warning restore CS0618 // Type or member is obsolete
+        rectHealth = rectHealthBar.rect.width;
+    }
+
+    public void RestartFight()
+    {
+        StopAllCoroutines();
+        health = maxHealth;
+        rectHealthBar.sizeDelta = new Vector2(rectHealth, rectHealthBar.rect.height);
+        inCenter = true;
+        knockBack = true;
+        transform.position = spawnPosition;
+        singleSuckParticles.SetActive(false);
+        wideSuckParticles.SetActive(false);
+        for (int i = 0; i < slimeSpawners.Length; i++)
+        {
+            slimeSpawners[i].transform.position = new Vector3(slimeSpawners[i].transform.position.x, -2f, slimeSpawners[i].transform.position.z);
+        }
+        for (int i = 0; i < walkerSpawners.Length; i++)
+        {
+            walkerSpawners[i].transform.position = new Vector3(walkerSpawners[i].transform.position.x, -4f, walkerSpawners[i].transform.position.z);
+        }
+        for (int i = 0; i < flyerSpawners.Length; i++)
+        {
+            flyerSpawners[i].transform.position = new Vector3(flyerSpawners[i].transform.position.x, -4f, flyerSpawners[i].transform.position.z);
+        }
+        StartCoroutine(BossActive());
     }
 
     IEnumerator BossActive()
     {
         while (health > 0)
         {
+            //Chose action & Number of shots & Slime spawn time depending on health
+            int actionChoice = Random.Range(0, 5);
+            int numShots = 0;
+            float shotDelayMin = 1f;
+            float shotDelayMax = 1f;
+            float slimeSpawnSecondsMin = 1f;
+            float slimeSpawnSecondsMax = 1f;
+            if (health / maxHealth > .825f)
+            {
+                if (actionChoice == 0 || actionChoice == 1)
+                {
+                    numShots = Random.Range(1, 4);
+                    shotDelayMin = 2f;
+                    shotDelayMax = 3f;
+                    slimeSpawnSecondsMin = 3f;
+                    slimeSpawnSecondsMax = 5f;
+                }
+                else if (actionChoice == 2 || actionChoice == 3)
+                {
+                    numShots = Random.Range(2, 5);
+                    shotDelayMin = 1.5f;
+                    shotDelayMax = 2.5f;
+                    slimeSpawnSecondsMin = 2.5f;
+                    slimeSpawnSecondsMax = 4f;
+                }
+                else if (actionChoice == 4)
+                {
+                    numShots = Random.Range(5, 9);
+                    shotDelayMin = 1.25f;
+                    shotDelayMax = 2f;
+                    slimeSpawnSecondsMin = 2.5f;
+                    slimeSpawnSecondsMax = 3f;
+                }
+            }
+            else if (health / maxHealth > .5f)
+            {
+                if (actionChoice == 0 || actionChoice == 1)
+                {
+                    numShots = Random.Range(1, 3);
+                    shotDelayMin = 1f;
+                    shotDelayMax = 2f;
+                    slimeSpawnSecondsMin = 2f;
+                    slimeSpawnSecondsMax = 3f;
+                }
+                else if (actionChoice == 2 || actionChoice == 3)
+                {
+                    numShots = Random.Range(2, 4);
+                    shotDelayMin = .9f;
+                    shotDelayMax = 1.6f;
+                    slimeSpawnSecondsMin = 1.8f;
+                    slimeSpawnSecondsMax = 2.5f;
+                }
+                else if (actionChoice == 4)
+                {
+                    numShots = Random.Range(5, 8);
+                    shotDelayMin = .75f;
+                    shotDelayMax = 1.5f;
+                    slimeSpawnSecondsMin = 2f;
+                    slimeSpawnSecondsMax = 2.4f;
+                }
+            }
+            else if (health / maxHealth > .175)
+            {
+                if (actionChoice == 0 || actionChoice == 1)
+                {
+                    numShots = Random.Range(0, 3);
+                    shotDelayMin = 1f;
+                    shotDelayMax = 1.25f;
+                    slimeSpawnSecondsMin = 1f;
+                    slimeSpawnSecondsMax = 2f;
+                }
+                else if (actionChoice == 2 || actionChoice == 3)
+                {
+                    numShots = Random.Range(0, 4);
+                    shotDelayMin = .75f;
+                    shotDelayMax = 1.2f;
+                    slimeSpawnSecondsMin = 2.5f;
+                    slimeSpawnSecondsMax = 3f;
+                }
+                else if (actionChoice == 4)
+                {
+                    numShots = Random.Range(7, 11);
+                    shotDelayMin = .5f;
+                    shotDelayMax = 1f;
+                    slimeSpawnSecondsMin = 2f;
+                    slimeSpawnSecondsMax = 2.5f;
+                }
+            }
+            else
+            {
+                if (actionChoice == 0 || actionChoice == 1)
+                {
+                    numShots = 1;
+                    shotDelayMin = .1f;
+                    shotDelayMax = .2f;
+                    slimeSpawnSecondsMin = .8f;
+                    slimeSpawnSecondsMax = 1.2f;
+                }
+                else if (actionChoice == 2 || actionChoice == 3)
+                {
+                    numShots = Random.Range(1, 4);
+                    shotDelayMin = .5f;
+                    shotDelayMax = .8f;
+                    slimeSpawnSecondsMin = 2f;
+                    slimeSpawnSecondsMax = 2.5f;
+                }
+                else if (actionChoice == 4)
+                {
+                    numShots = Random.Range(10, 16);
+                    shotDelayMin = .35f;
+                    shotDelayMax = .5f;
+                    slimeSpawnSecondsMin = 1.5f;
+                    slimeSpawnSecondsMax = 2f;
+                }
+            }
+
+            //Spawn slimes and wait if above half
             for (int i = 0; i < slimeSpawners.Length; i++)
             {
-                StartCoroutine(PipeSpawnSlime(3f, slimeSpawners[i]));
+                StartCoroutine(PipeSpawnSlime(Random.Range(slimeSpawnSecondsMin, slimeSpawnSecondsMax), slimeSpawners[i]));
             }
-            yield return new WaitForSeconds(2f);
-            bool slimeAttack = false;
-
-
-
-            if (slimeAttack)
+            if (health/maxHealth > .5f)
             {
-                knockBack = false;
-                float timer = 0f;
-                float seconds = 2f;
-                while (timer < seconds)
+                yield return new WaitForSeconds(Random.Range(slimeSpawnSecondsMax, slimeSpawnSecondsMax*1.5f));
+            }
+
+            //Actions
+            if (actionChoice == 0)
+            {
+                yield return new WaitUntil(() => inCenter);
+                Debug.Log("Slime Sucking");
+                if (health / maxHealth > .75)
                 {
-                    yield return new WaitForFixedUpdate();
-                    transform.position += abovePosition * Time.deltaTime / seconds;
-                    timer += Time.deltaTime;
+                    StartCoroutine(SingleSlimeSuck(3f, 1f, 5f, .5f));
+                    yield return new WaitForSeconds(13f);
                 }
-                transform.position = new Vector3(transform.position.x, spawnPosition.y + 20f, transform.position.z);
-                yield return new WaitForSeconds(3f);
-                GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
-                List<Transform> assignedSlimesTransform = new List<Transform>();
-                List<Rigidbody> assignedSlimesRigidbody = new List<Rigidbody>();
-                List<float> assignedSlimesOriginalDistence = new List<float>();
-                for (int i = 0; i < slimes.Length && assignedSlimesTransform.Count < sucktionSpots.Length; i++)
+                else if (health / maxHealth > .5)
                 {
-                    if (Random.value < .7f)
-                    {//70% chance
-                        assignedSlimesTransform.Add(slimes[i].transform);
-                        assignedSlimesRigidbody.Add(slimes[i].GetComponent<Rigidbody>());
-                        assignedSlimesOriginalDistence.Add((sucktionSpots[assignedSlimesOriginalDistence.Count].position - slimes[i].transform.position).magnitude);
-                    }
+                    StartCoroutine(SingleSlimeSuck(2.5f, .5f, 4f, .65f));
+                    yield return new WaitForSeconds(10f);
                 }
-                timer = 0f;
-                while (timer < 5f)
+                else if (health / maxHealth > .25)
                 {
-                    for (int i = 0; i < assignedSlimesTransform.Count; i++)
+                    StartCoroutine(SingleSlimeSuck(slimeSpawnSecondsMax, .25f, 4f, .8f));
+                    yield return new WaitForSeconds(slimeSpawnSecondsMax + 1f);
+                    if (Random.value > .5f)
                     {
-                        if (assignedSlimesTransform[i] != null)
+                        StartCoroutine(PipeSpawnOther(1.5f, walkerSpawners[Random.Range(0, walkerSpawners.Length)], walkerPrefab));
+                    }
+                    else
+                    {
+                        StartCoroutine(PipeSpawnOther(1.5f, flyerSpawners[Random.Range(0, flyerSpawners.Length)], flyerPrefab));
+                    }
+                    yield return new WaitForSeconds(slimeSpawnSecondsMax + 3.5f);
+                }
+                else
+                {
+                    StartCoroutine(SingleSlimeSuck(slimeSpawnSecondsMax*.85f, slimeSpawnSecondsMax*.15f, 6f, 1f));
+                    yield return new WaitForSeconds(slimeSpawnSecondsMax);
+                    if (Random.value > .5f)
+                    {
+                        StartCoroutine(PipeSpawnOther(1.2f, walkerSpawners[Random.Range(0, walkerSpawners.Length)], walkerPrefab));
+                    }
+                    else
+                    {
+                        StartCoroutine(PipeSpawnOther(1.2f, flyerSpawners[Random.Range(0, flyerSpawners.Length)], flyerPrefab));
+                    }
+                    yield return new WaitForSeconds(3f);
+                    if (Random.value > .5f)
+                    {
+                        StartCoroutine(PipeSpawnOther(1.2f, walkerSpawners[Random.Range(0, walkerSpawners.Length)], walkerPrefab));
+                    }
+                    else
+                    {
+                        StartCoroutine(PipeSpawnOther(1.2f, flyerSpawners[Random.Range(0, flyerSpawners.Length)], flyerPrefab));
+                    }
+                    yield return new WaitForSeconds(slimeSpawnSecondsMax + 3f);
+                }
+            }
+            else if (actionChoice == 1)
+            {
+                yield return new WaitUntil(() => inCenter);
+                Debug.Log("Wide Range Suck");
+                if (health / maxHealth > .75)
+                {
+                    StartCoroutine(WideSuck(1.25f, 1f, 3.5f));
+                    yield return new WaitForSeconds(8f);
+                }
+                else if (health / maxHealth > .5)
+                {
+                    StartCoroutine(WideSuck(1f, .5f, 5f));
+                    List<int> chosenNums = new List<int>();
+                    chosenNums.Add(0);
+                    chosenNums.Add(1);
+                    chosenNums.Add(2);
+                    chosenNums.Add(3);
+                    chosenNums.Add(4);
+                    chosenNums.Add(5);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        chosenNums.RemoveAt(Random.Range(0, chosenNums.Count));
+                    }
+                    yield return new WaitForSeconds(2f);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        int num = Random.Range(0, chosenNums.Count);
+                        StartCoroutine(PipeSpawnSlime(1.25f, slimeSpawners[chosenNums[num]]));
+                        chosenNums.RemoveAt(num);
+                        yield return new WaitForSeconds(1f);
+                    }
+                    yield return new WaitForSeconds(3f);
+                }
+                else if (health / maxHealth > .25)
+                {
+                    StartCoroutine(WideSuck(slimeSpawnSecondsMax/2f, slimeSpawnSecondsMax/2f, 8f));
+                    List<int> chosenNums = new List<int>();
+                    chosenNums.Add(0);
+                    chosenNums.Add(1);
+                    chosenNums.Add(2);
+                    chosenNums.Add(3);
+                    chosenNums.Add(4);
+                    chosenNums.Add(5);
+                    yield return new WaitForSeconds(slimeSpawnSecondsMax);
+                    for (int i = 0; i < 6; i++)
+                    {
+                        int num = Random.Range(0, chosenNums.Count);
+                        StartCoroutine(PipeSpawnSlime(1.25f, slimeSpawners[chosenNums[num]]));
+                        chosenNums.RemoveAt(num);
+                        yield return new WaitForSeconds(1f);
+                    }
+                    yield return new WaitForSeconds(slimeSpawnSecondsMax + 2f);
+                }
+                else
+                {
+                    StartCoroutine(WideSuck(slimeSpawnSecondsMax / 2f, slimeSpawnSecondsMax / 4f, 12f));
+                    List<int> prechosenNums = new List<int>();
+                    List<int> chosenNums = new List<int>();
+                    prechosenNums.Add(0);
+                    prechosenNums.Add(1);
+                    prechosenNums.Add(2);
+                    prechosenNums.Add(3);
+                    prechosenNums.Add(4);
+                    prechosenNums.Add(5);
+                    for (int i = 0; i < 6; i++)
+                    {
+                        int num = Random.Range(0, prechosenNums.Count);
+                        chosenNums.Add(prechosenNums[num]);
+                        prechosenNums.RemoveAt(num);
+                    }
+                    yield return new WaitForSeconds(slimeSpawnSecondsMax);
+                    for (int i = 0; i < 2; i++)
+                    {
+                        for (int j = 0; j < chosenNums.Count; j++)
                         {
-                            Vector3 distence = sucktionSpots[i].position - assignedSlimesTransform[i].position;
-                            if (distence.magnitude > assignedSlimesOriginalDistence[i] / 8f)
-                            {
-                                assignedSlimesRigidbody[i].velocity -= assignedSlimesRigidbody[i].velocity * Time.deltaTime;
-                                assignedSlimesRigidbody[i].AddForce(distence.normalized * 5000f * Time.deltaTime, ForceMode.Force);
-                            }
-                            else
-                            {
-                                assignedSlimesRigidbody[i].AddForce(distence * 1000f * Time.deltaTime, ForceMode.Force);
-                                assignedSlimesOriginalDistence[i] = 1000f;
-                            }
+                            int num = Random.Range(0, chosenNums.Count);
+                            StartCoroutine(PipeSpawnSlime(1f, slimeSpawners[chosenNums[num]]));
+                            chosenNums.RemoveAt(num);
+                            yield return new WaitForSeconds(.75f);
                         }
                     }
-                    yield return new WaitForFixedUpdate();
-                    timer += Time.deltaTime;
+                    yield return new WaitForSeconds((slimeSpawnSecondsMax/2f) + 3f);
                 }
-                yield return new WaitForSeconds(3f);
-                timer = 0f;
-                while (timer < seconds)
-                {
-                    yield return new WaitForFixedUpdate();
-                    transform.position -= abovePosition * Time.deltaTime / seconds;
-                    timer += Time.deltaTime;
-                }
-                transform.position = new Vector3(transform.position.x, spawnPosition.y, transform.position.z);
-                knockBack = true;
             }
-
-
-            bool suckAttack = true;
-            if (suckAttack)
+            else if (actionChoice == 2)
             {
-                knockBack = false;
-                float timer = 0f;
-                float seconds = 1f;
-                while (timer < seconds)
+                Debug.Log("Walker Spawn");
+                if (health / maxHealth > .75)
                 {
-                    yield return new WaitForFixedUpdate();
-                    transform.position += otherAbovePosition * Time.deltaTime / seconds;
-                    timer += Time.deltaTime;
+                    StartCoroutine(PipeSpawnOther(2f, walkerSpawners[Random.Range(0, walkerSpawners.Length)], walkerPrefab));
+                    yield return new WaitForSeconds(2f);
                 }
-                transform.position = new Vector3(transform.position.x, spawnPosition.y + 6f, transform.position.z);
-                yield return new WaitForSeconds(3f);
-                GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
-                List<Transform> slimesTransform = new List<Transform>();
-                List<Rigidbody> slimesRigidbody = new List<Rigidbody>();
-                for (int i = 0; i < slimes.Length; i++)
+                else if (health / maxHealth > .5)
                 {
-                    slimesTransform.Add(slimes[i].transform);
-                    slimesRigidbody.Add(slimes[i].GetComponent<Rigidbody>());
-                }
-                GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
-                List<Transform> walkersTransform = new List<Transform>();
-                List<CharacterController> walkersController = new List<CharacterController>();
-                for (int i = 0; i < walkers.Length; i++)
-                {
-                    walkersTransform.Add(walkers[i].transform);
-                    walkersController.Add(walkers[i].GetComponent<CharacterController>());
-                }
-                GameObject[] flyers = GameObject.FindGameObjectsWithTag("Flyer");
-                List<Transform> flyersTransform = new List<Transform>();
-                List<Transform> flyersPosition = new List<Transform>();
-                for (int i = 0; i < flyers.Length; i++)
-                {
-                    flyersTransform.Add(flyers[i].transform);
-                    flyersPosition.Add(flyers[i].GetComponent<FlyerBehavior>().truePosition);
-                }
-                timer = 0f;
-                while (timer < 5f)
-                {
-                    for (int i = 0; i < slimes.Length; i++)
+                    if (Random.value > .5f)
                     {
-                        if (slimesTransform[i] != null)
-                        {
-                            slimesRigidbody[i].AddForce((spawnPosition - slimesTransform[i].position).normalized * 1500f * Time.deltaTime, ForceMode.Force);
-                        }
+                        StartCoroutine(PipeSpawnOther(1.75f, walkerSpawners[0], walkerPrefab));
+                        StartCoroutine(PipeSpawnOther(1.75f, walkerSpawners[1], walkerPrefab));
                     }
-                    for (int i = 0; i < walkers.Length; i++)
+                    else
                     {
-                        if (walkersTransform[i] != null)
-                        {
-                            walkersController[i].enabled = true;
-                            walkersController[i].Move((spawnPosition - walkersTransform[i].position).normalized * 8f * Time.deltaTime);
-                            walkersController[i].enabled = false;
-                        }
+                        StartCoroutine(PipeSpawnOther(1.75f, walkerSpawners[1], walkerPrefab));
+                        StartCoroutine(PipeSpawnOther(1.75f, walkerSpawners[0], walkerPrefab));
                     }
-                    for (int i = 0; i < flyers.Length; i++)
-                    {
-                        if (flyersTransform[i] != null)
-                        {
-                            flyersTransform[i].position += (spawnPosition - flyersPosition[i].position).normalized * 8f * Time.deltaTime;
-                        }
-                    }
-                    playerController.enabled = true;
-                    playerController.Move((spawnPosition - player.transform.position).normalized * 15f * Time.deltaTime);
-                    playerController.enabled = false;
-                    yield return new WaitForFixedUpdate();
-                    timer += Time.deltaTime;
+                    yield return new WaitForSeconds(3.5f);
                 }
-                yield return new WaitForSeconds(3f);
-                timer = 0f;
-                while (timer < seconds)
+                else if (health / maxHealth > .25)
                 {
-                    yield return new WaitForFixedUpdate();
-                    transform.position -= otherAbovePosition * Time.deltaTime / seconds;
-                    timer += Time.deltaTime;
+                    for (int i = 0; i < walkerSpawners.Length; i++)
+                    {
+                        StartCoroutine(PipeSpawnOther(2.5f, walkerSpawners[i], walkerPrefab));
+                    }
+                    yield return new WaitForSeconds(2.5f);
                 }
-                transform.position = new Vector3(transform.position.x, spawnPosition.y, transform.position.z);
-                knockBack = true;
+                else
+                {
+                    for (int i = 0; i < walkerSpawners.Length; i++)
+                    {
+                        StartCoroutine(PipeSpawnOther(1.75f, walkerSpawners[i], walkerPrefab));
+                    }
+                    yield return new WaitForSeconds(1.75f);
+                    StartCoroutine(PipeSpawnOther(1.75f, walkerSpawners[Random.Range(0, walkerSpawners.Length)], walkerPrefab));
+                    yield return new WaitForSeconds(1.75f);
+                }
             }
-
-
-
-            yield return new WaitForSeconds(1f);
-            for (int i = 0; i < walkerSpawners.Length; i++)
+            else if (actionChoice == 3)
             {
-                StartCoroutine(PipeSpawnOther(3f, walkerSpawners[i], walkerPrefab));
+                Debug.Log("Flyer Spawn");
+                if (health / maxHealth > .75)
+                {
+                    StartCoroutine(PipeSpawnOther(2f, flyerSpawners[Random.Range(0, flyerSpawners.Length)], flyerPrefab));
+                    yield return new WaitForSeconds(2f);
+                }
+                else if (health / maxHealth > .5)
+                {
+                    if (Random.value > .5f)
+                    {
+                        StartCoroutine(PipeSpawnOther(1.75f, flyerSpawners[0], flyerPrefab));
+                        StartCoroutine(PipeSpawnOther(1.75f, flyerSpawners[1], flyerPrefab));
+                    }
+                    else
+                    {
+                        StartCoroutine(PipeSpawnOther(1.75f, flyerSpawners[1], flyerPrefab));
+                        StartCoroutine(PipeSpawnOther(1.75f, flyerSpawners[0], flyerPrefab));
+                    }
+                    yield return new WaitForSeconds(3.5f);
+                }
+                else if (health / maxHealth > .25)
+                {
+                    for (int i = 0; i < flyerSpawners.Length; i++)
+                    {
+                        StartCoroutine(PipeSpawnOther(2.5f, flyerSpawners[i], flyerPrefab));
+                    }
+                    yield return new WaitForSeconds(2.5f);
+                }
+                else
+                {
+                    for (int i = 0; i < flyerSpawners.Length; i++)
+                    {
+                        StartCoroutine(PipeSpawnOther(1.75f, flyerSpawners[i], flyerPrefab));
+                    }
+                    yield return new WaitForSeconds(1.75f);
+                    StartCoroutine(PipeSpawnOther(1.75f, flyerSpawners[Random.Range(0, flyerSpawners.Length)], flyerPrefab));
+                    yield return new WaitForSeconds(1.75f);
+                }
             }
-            yield return new WaitForSeconds(3f);
-            for (int i = 0; i < flyerSpawners.Length; i++)
+            else
             {
-                StartCoroutine(PipeSpawnOther(3f, flyerSpawners[i], flyerPrefab));
+                Debug.Log("Extra Shooting Gun");
             }
-            yield return new WaitForSeconds(4f);
-            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnSpot.position, Quaternion.LookRotation(player.transform.position - bulletSpawnSpot.position));
-            //bullet.GetComponent<Bullet>().bossBullet = true;
+            
+            for (int i = 0; i < numShots; i++)
+            {
+                GameObject bullet = Instantiate(bulletPrefab, bulletSpawnSpot.position, Quaternion.LookRotation(player.transform.position - bulletSpawnSpot.position));
+                yield return new WaitForSeconds(Random.Range(shotDelayMin, shotDelayMax));
+            }
         }
+    }
+
+    IEnumerator SingleSlimeSuck(float riseSeconds, float delaySeconds, float suckingSeconds, float slimeChance)
+    {
+        knockBack = false;
+        float timer = 0f;
+        while (timer < riseSeconds)
+        {
+            yield return new WaitForFixedUpdate();
+            transform.position += abovePosition * Time.deltaTime / riseSeconds;
+            timer += Time.deltaTime;
+        }
+        transform.position = new Vector3(transform.position.x, spawnPosition.y + 20f, transform.position.z);
+        yield return new WaitForSeconds(delaySeconds);
+        singleSuckParticles.SetActive(true);
+        GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
+        List<Transform> assignedSlimesTransform = new List<Transform>();
+        List<Rigidbody> assignedSlimesRigidbody = new List<Rigidbody>();
+        List<float> assignedSlimesOriginalDistence = new List<float>();
+        for (int i = 0; i < slimes.Length && assignedSlimesTransform.Count < sucktionSpots.Length; i++)
+        {
+            if (Random.value < slimeChance)
+            {//70% chance
+                assignedSlimesTransform.Add(slimes[i].transform);
+                assignedSlimesRigidbody.Add(slimes[i].GetComponent<Rigidbody>());
+                assignedSlimesOriginalDistence.Add((sucktionSpots[assignedSlimesOriginalDistence.Count].position - slimes[i].transform.position).magnitude);
+            }
+        }
+        timer = 0f;
+        while (timer < suckingSeconds)
+        {
+            for (int i = 0; i < assignedSlimesTransform.Count; i++)
+            {
+                if (assignedSlimesTransform[i] != null)
+                {
+                    Vector3 distence = sucktionSpots[i].position - assignedSlimesTransform[i].position;
+                    if (distence.magnitude > assignedSlimesOriginalDistence[i] / 8f)
+                    {
+                        assignedSlimesRigidbody[i].velocity -= assignedSlimesRigidbody[i].velocity * Time.deltaTime;
+                        assignedSlimesRigidbody[i].AddForce(distence.normalized * 5000f * Time.deltaTime, ForceMode.Force);
+                    }
+                    else
+                    {
+                        assignedSlimesRigidbody[i].AddForce(distence * 1000f * Time.deltaTime, ForceMode.Force);
+                        assignedSlimesOriginalDistence[i] = 1000f;
+                    }
+                }
+            }
+            yield return new WaitForFixedUpdate();
+            timer += Time.deltaTime;
+        }
+        singleSuckParticles.SetActive(false);
+        yield return new WaitForSeconds(delaySeconds);
+        timer = 0f;
+        while (timer < riseSeconds)
+        {
+            yield return new WaitForFixedUpdate();
+            transform.position -= abovePosition * Time.deltaTime / riseSeconds;
+            timer += Time.deltaTime;
+        }
+        transform.position = new Vector3(transform.position.x, spawnPosition.y, transform.position.z);
+        knockBack = true;
+    }
+
+    IEnumerator WideSuck(float riseSeconds, float delaySeconds, float suckingSeconds)
+    {
+        knockBack = false;
+        float timer = 0f;
+        while (timer < riseSeconds)
+        {
+            yield return new WaitForFixedUpdate();
+            transform.position += otherAbovePosition * Time.deltaTime / riseSeconds;
+            timer += Time.deltaTime;
+        }
+        transform.position = new Vector3(transform.position.x, spawnPosition.y + 6f, transform.position.z);
+        yield return new WaitForSeconds(delaySeconds);
+        wideSuckParticles.SetActive(true);
+        GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
+        List<Transform> slimesTransform = new List<Transform>();
+        List<Rigidbody> slimesRigidbody = new List<Rigidbody>();
+        for (int i = 0; i < slimes.Length; i++)
+        {
+            slimesTransform.Add(slimes[i].transform);
+            slimesRigidbody.Add(slimes[i].GetComponent<Rigidbody>());
+        }
+        GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
+        List<Transform> walkersTransform = new List<Transform>();
+        List<CharacterController> walkersController = new List<CharacterController>();
+        for (int i = 0; i < walkers.Length; i++)
+        {
+            walkersTransform.Add(walkers[i].transform);
+            walkersController.Add(walkers[i].GetComponent<CharacterController>());
+        }
+        GameObject[] flyers = GameObject.FindGameObjectsWithTag("Flyer");
+        List<Transform> flyersTransform = new List<Transform>();
+        List<Transform> flyersPosition = new List<Transform>();
+        for (int i = 0; i < flyers.Length; i++)
+        {
+            flyersTransform.Add(flyers[i].transform);
+            flyersPosition.Add(flyers[i].GetComponent<FlyerBehavior>().truePosition);
+        }
+        timer = 0f;
+        while (timer < suckingSeconds)
+        {
+            for (int i = 0; i < slimes.Length; i++)
+            {
+                if (slimesTransform[i] != null)
+                {
+                    slimesRigidbody[i].AddForce((spawnPosition - slimesTransform[i].position).normalized * 1500f * Time.deltaTime, ForceMode.Force);
+                }
+            }
+            for (int i = 0; i < walkers.Length; i++)
+            {
+                if (walkersTransform[i] != null)
+                {
+                    walkersController[i].enabled = true;
+                    walkersController[i].Move((spawnPosition - walkersTransform[i].position).normalized * 8f * Time.deltaTime);
+                    walkersController[i].enabled = false;
+                }
+            }
+            for (int i = 0; i < flyers.Length; i++)
+            {
+                if (flyersTransform[i] != null)
+                {
+                    flyersTransform[i].position += (spawnPosition - flyersPosition[i].position).normalized * 8f * Time.deltaTime;
+                }
+            }
+            playerController.enabled = true;
+            playerController.Move((spawnPosition - player.transform.position).normalized * 15f * Time.deltaTime);
+            playerController.enabled = false;
+            yield return new WaitForFixedUpdate();
+            timer += Time.deltaTime;
+        }
+        wideSuckParticles.SetActive(false);
+        yield return new WaitForSeconds(delaySeconds);
+        timer = 0f;
+        while (timer < riseSeconds)
+        {
+            yield return new WaitForFixedUpdate();
+            transform.position -= otherAbovePosition * Time.deltaTime / riseSeconds;
+            timer += Time.deltaTime;
+        }
+        transform.position = new Vector3(transform.position.x, spawnPosition.y, transform.position.z);
+        knockBack = true;
     }
 
     IEnumerator PipeSpawnSlime(float seconds, SlimeSpawner slimeSpawner)
@@ -300,6 +670,7 @@ public class BossBehavior : MonoBehaviour
         if (other.CompareTag("Bullet") && !other.GetComponent<Bullet>().bossBullet)
         {
             health -= other.GetComponent<Bullet>().power * 25;
+            rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
             if (health <= 0)
             {
                 //slimeSpawner.SlimeDeath();

@@ -119,7 +119,7 @@ public class WalkerBehavior : MonoBehaviour
             }
             else
             {
-                StartCoroutine(Knockback(other.transform.rotation * other.GetComponent<Bullet>().movement * other.GetComponent<Bullet>().power * .8f));
+                StartCoroutine(Knockback(other.transform.rotation * other.GetComponent<Bullet>().movement * other.GetComponent<Bullet>().power * .4f));
             }
             Destroy(other.gameObject);
         }

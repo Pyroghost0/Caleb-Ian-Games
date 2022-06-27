@@ -471,6 +471,11 @@ public class PlayerStatus : MonoBehaviour
         characterController.enabled = false;
         gameObject.transform.position = currentSpawnPosition.transform.position;
         gameObject.transform.rotation = currentSpawnPosition.transform.rotation;
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+        for (int i = 0; i < bullets.Length; i++)
+        {
+            Destroy(bullets[i]);
+        }
         GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
         for (int i = 0; i < slimes.Length; i++)
         {
@@ -481,6 +486,11 @@ public class PlayerStatus : MonoBehaviour
         for (int i = 0; i < enemies.Length; i++)
         {
             enemies[i].GetComponent<SingleEnemySpawn>().RespawnEnemy();
+        }
+        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+        if (boss != null)
+        {
+            boss.GetComponent<BossBehavior>().RestartFight();
         }
     }
 
