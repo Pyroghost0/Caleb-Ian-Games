@@ -20,8 +20,8 @@ public class PlayerMovement : MonoBehaviour {
 
     public float mouseHorizontalSensitivity = 400f;
     public float mouseVirticalSensitivity = 100f;
-    public float minAngle = -10f;
-    public float maxAngle = 30f;
+    public float minAngle = -60f;
+    public float maxAngle = 45f;
     private float verticalLookRotation = 10f;
     public GameObject cameraBasisObject;
 
@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour {
         transform.Rotate(Vector3.up * mouseX);
         verticalLookRotation -= mouseY;
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, minAngle, maxAngle);//Cant over rotate
-        playerAnim.SetFloat("Look", (verticalLookRotation / -40) + 0.44f);
+        playerAnim.SetFloat("Look", (verticalLookRotation * -0.0064f) + 0.44f);
         cameraBasisObject.transform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);//apply clamp
         isGrounded = groundChecker.inGround;
         playerAnim.SetBool("Grounded", isGrounded);
