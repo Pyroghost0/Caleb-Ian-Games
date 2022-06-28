@@ -15,6 +15,8 @@ public class BossMonologue : MonoBehaviour
     public BossEquipment bossEquipment;
     public BossBehavior bossBehavior;
 
+    public Animator anim;
+
     private int buttonClicked = 0;
     //0 = none, 1 = yes, 2 = no, 3 = continue
 
@@ -156,9 +158,12 @@ public class BossMonologue : MonoBehaviour
         ChangeText(12);
         buttonClicked = 0;
         yield return new WaitUntil(() => buttonClicked > 0);
+        anim.SetTrigger("TakeOffHat");
+        yield return new WaitForSeconds(2f);
         ChangeText(13);
         buttonClicked = 0;
         yield return new WaitForSeconds(2f);
+        anim.SetTrigger("PutOnHat");
         ChangeText(14);
         buttonClicked = 0;
         yield return new WaitUntil(() => buttonClicked > 0);
@@ -195,6 +200,7 @@ public class BossMonologue : MonoBehaviour
         yield return new WaitForSeconds(1f);
         panel.SetActive(false);
         bossBehavior.StartFight();
+        gameObject.transform.localScale *= 2;
 
     }
 }
