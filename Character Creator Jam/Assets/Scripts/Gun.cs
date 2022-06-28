@@ -32,6 +32,8 @@ public class Gun : MonoBehaviour
 
     private GameObject bullet;
 
+    public bool canMove;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,12 +58,13 @@ public class Gun : MonoBehaviour
             if (i == playerSkinColor) offset = 1;
             materials[i + materials.Length / 2] = (Material)Resources.Load("Skin " + (i + offset));
         }
+        canMove = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))//Left Click
+        if (Input.GetMouseButtonDown(0) && canMove)//Left Click
         {
             reticleAnimation.SetTrigger("Shoot");
             playerAnim.SetTrigger("Shoot");
@@ -91,7 +94,7 @@ public class Gun : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1))//Right Click
+        if (Input.GetMouseButtonDown(1) && canMove)//Right Click
         {
             suckParticles.SetActive(true);
             reticleAnimation.SetBool("Suck", true);
@@ -99,7 +102,7 @@ public class Gun : MonoBehaviour
             isSucking = true;
         }
 
-        if (Input.GetMouseButton(1))//Right Click
+        if (Input.GetMouseButton(1) && canMove)//Right Click
         {
             List<GameObject> suckedObjects = new List<GameObject> { };
             List<float> slimeSuckPower = new List<float> { };
@@ -203,6 +206,16 @@ public class Gun : MonoBehaviour
                 suckedObjects[i].GetComponent<Rigidbody>().AddForce(slimeSuckPower[i] * direction * suckPower, ForceMode.Force);
             }
         }
+
+
+        if (Input.GetMouseButton(1) && !canMove &&isSucking)
+		{
+            suckParticles.SetActive(false);
+            reticleAnimation.SetBool("Suck", false);
+            playerAnim.SetBool("Sucking", false);
+            isSucking = false;
+        }
+
 
         if (Input.GetMouseButtonUp(1))//Right Click
         {

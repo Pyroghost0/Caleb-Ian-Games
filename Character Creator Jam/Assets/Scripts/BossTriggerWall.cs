@@ -13,7 +13,7 @@ public class BossTriggerWall : MonoBehaviour
         {
             triggerOnce = true;
             wall.SetActive(true);
-            GameObject.FindGameObjectWithTag("Boss").GetComponent<BossBehavior>().StartFight();
+            GameObject.FindGameObjectWithTag("Boss").GetComponent<BossMonologue>().StartIntro();
             Destroy(gameObject);
         }
     }
