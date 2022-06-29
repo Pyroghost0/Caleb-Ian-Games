@@ -45,8 +45,8 @@ public class CharacterCreatorManager : MonoBehaviour
     //6 = headA, 7 = headB, 8 = headC, 11-17 = skin, 21-27 = hair
 
     private string[] introText = new string[]{
-        "Before entering the world, you must create a character.",
-        "Choose a body type. The only difference is aesthetic.",
+        "Welcome to Qualms. Before jumping into the game, please make a character.",
+        "Choose a body type.",
         "Choose the male body and discard the female?",
         "Choose the female body and discard the male?",
         "Pick a face. You can only choose one, so pick carefully.",

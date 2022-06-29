@@ -198,9 +198,16 @@ public class BossMonologue : MonoBehaviour
         player.GetComponent<PlayerMovement>().canMove = true;
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().canMove = true;
         yield return new WaitForSeconds(1f);
+        player.GetComponent<AudioSource>().pitch = 1.2f;
         panel.SetActive(false);
-        bossBehavior.StartFight();
         gameObject.transform.localScale *= 2;
+        yield return new WaitForSeconds(0.5f);
+        player.GetComponent<AudioSource>().pitch = 1.6f;
+
+        player.GetComponent<AudioEchoFilter>().enabled = true;
+        gameObject.transform.localScale *= 1.5f;
+
+        bossBehavior.StartFight();
 
     }
 }

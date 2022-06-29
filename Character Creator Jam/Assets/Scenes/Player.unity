@@ -8212,6 +8212,7 @@ GameObject:
   - component: {fileID: 1396442011}
   - component: {fileID: 1396442012}
   - component: {fileID: 1396442013}
+  - component: {fileID: 1396442018}
   - component: {fileID: 1396442017}
   m_Layer: 2
   m_Name: Player
@@ -8528,6 +8529,18 @@ CapsuleCollider:
   m_Height: 3.4
   m_Direction: 1
   m_Center: {x: 0, y: 1.25, z: 0}
+--- !u!168 &1396442018
+AudioEchoFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396442008}
+  m_Enabled: 0
+  m_Delay: 200
+  m_DecayRatio: 0.2
+  m_WetMix: 1
+  m_DryMix: 1
 --- !u!1 &1455280254
 GameObject:
   m_ObjectHideFlags: 0

@@ -42,6 +42,8 @@ public class PlayerStatus : MonoBehaviour
     public GameObject notice;
     public bool[] equipmentUnlocked;
 
+    private Animator playerAnim;
+
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +53,7 @@ public class PlayerStatus : MonoBehaviour
         characterController = gameObject.GetComponent<CharacterController>();
         playerMovement = gameObject.GetComponent<PlayerMovement>();
         gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
+        playerAnim = gameObject.GetComponentInChildren<Animator>();
     }
 
     public void changeCharacter()
@@ -371,6 +374,8 @@ public class PlayerStatus : MonoBehaviour
         if (health + healthChange <= 0)
         {
             Debug.Log("Dead");
+            playerAnim.SetBool("Dead", true);
+            playerMovement.canMove = false;
             if (isTutorial)
             {
                 GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
@@ -492,6 +497,9 @@ public class PlayerStatus : MonoBehaviour
         {
             boss.GetComponent<BossBehavior>().RestartFight();
         }
+        playerAnim.SetBool("Dead", false);
+        playerAnim.Play("Idle");
+        playerMovement.canMove = true;
     }
 
     public void TriggerNotice(int noticeNumber)
