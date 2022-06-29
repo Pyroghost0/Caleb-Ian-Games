@@ -16,7 +16,7 @@ public class Pause : MonoBehaviour
 
     private void OnApplicationFocus(bool focus)
     {
-        if (!paused)
+        if (!paused && GameObject.FindGameObjectWithTag("Player") != null)
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -51,10 +51,13 @@ public class Pause : MonoBehaviour
         paused = false;
         Time.timeScale = 1f;
         menu.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
+        if (GameObject.FindGameObjectWithTag("Player") != null)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
-    public void Restart()
+    public void BackToMainMenu()
     {
         SceneManager.LoadScene("Main Screen");
     }

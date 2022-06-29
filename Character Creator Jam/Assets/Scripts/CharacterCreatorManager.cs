@@ -39,6 +39,8 @@ public class CharacterCreatorManager : MonoBehaviour
     public Animator HeadsAnim;
 
     private int buttonClicked = 0;
+    public string level;
+    public bool costume = false;
     //0 = none, 1 = yes, 2 = no, 3 = continue, 4 = maleBase, 5 = femaleBase,
     //6 = headA, 7 = headB, 8 = headC, 11-17 = skin, 21-27 = hair
 
@@ -276,17 +278,57 @@ public class CharacterCreatorManager : MonoBehaviour
 
     IEnumerator WaitLoad()
     {
-        AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
-        AsyncOperation ao2 = SceneManager.LoadSceneAsync("Tutorial", LoadSceneMode.Additive);
-        yield return new WaitUntil(() => ao1.isDone && ao2.isDone);
+        if (level == null)
+        {
+            AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
+            AsyncOperation ao2 = SceneManager.LoadSceneAsync("Tutorial", LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao1.isDone && ao2.isDone);
 
-        PlayerStatus playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
-        playerStatus.isMale = isMale;
-        playerStatus.headNumber = headNumber-1;
-        playerStatus.skinColor = skinColor;
-        playerStatus.hairColor = hairColor;
-        playerStatus.isTutorial = true;
-        playerStatus.changeCharacter();
-        SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
+            PlayerStatus playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+            playerStatus.isMale = isMale;
+            playerStatus.headNumber = headNumber - 1;
+            playerStatus.skinColor = skinColor;
+            playerStatus.hairColor = hairColor;
+            playerStatus.isTutorial = true;
+            playerStatus.changeCharacter();
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
+        }
+        else if (costume)
+        {
+            AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao1.isDone);
+
+            PlayerStatus playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+            playerStatus.isMale = isMale;
+            playerStatus.headNumber = headNumber - 1;
+            playerStatus.skinColor = skinColor;
+            playerStatus.hairColor = hairColor;
+            playerStatus.isTutorial = true;
+            playerStatus.changeCharacter();
+            for (int i = 0; i < playerStatus.equipmentUnlocked.Length; i++)
+            {
+                playerStatus.equipmentUnlocked[i] = true;
+            }
+            AsyncOperation ao2 = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao2.isDone);
+            GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = level;
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
+        }
+        else
+        {
+            AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao1.isDone);
+
+            PlayerStatus playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+            playerStatus.isMale = isMale;
+            playerStatus.headNumber = headNumber - 1;
+            playerStatus.skinColor = skinColor;
+            playerStatus.hairColor = hairColor;
+            playerStatus.isTutorial = true;
+            playerStatus.changeCharacter();
+            AsyncOperation ao2 = SceneManager.LoadSceneAsync(level, LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao2.isDone);
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
+        }
     }
 }
