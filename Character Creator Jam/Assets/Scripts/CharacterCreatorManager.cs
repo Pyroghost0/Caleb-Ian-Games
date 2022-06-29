@@ -278,7 +278,7 @@ public class CharacterCreatorManager : MonoBehaviour
 
     IEnumerator WaitLoad()
     {
-        if (level == null)
+        if (level.Length == 0)
         {
             AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
             AsyncOperation ao2 = SceneManager.LoadSceneAsync("Tutorial", LoadSceneMode.Additive);

@@ -375,7 +375,7 @@ public class PlayerStatus : MonoBehaviour
         {
             Debug.Log("Dead");
             playerAnim.SetBool("Dead", true);
-            playerMovement.canMove = false;
+            playerMovement.enabled = false;
             if (isTutorial)
             {
                 GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
@@ -499,7 +499,7 @@ public class PlayerStatus : MonoBehaviour
         }
         playerAnim.SetBool("Dead", false);
         playerAnim.Play("Idle");
-        playerMovement.canMove = true;
+        playerMovement.enabled = true;
     }
 
     public void TriggerNotice(int noticeNumber)

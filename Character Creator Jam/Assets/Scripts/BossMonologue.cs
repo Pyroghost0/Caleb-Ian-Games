@@ -121,8 +121,10 @@ public class BossMonologue : MonoBehaviour
         ChangeText(0);
         yield return new WaitForSeconds(2f);
         ChangeText(1);
-        player.GetComponent<PlayerMovement>().canMove = false;
-        player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().canMove = false;
+        player.GetComponent<PlayerMovement>().enabled = false;
+        player.GetComponent<PlayerMovement>().playerAnim.SetFloat("MoveX", 0);
+        player.GetComponent<PlayerMovement>().playerAnim.SetFloat("MoveY", 0);
+        player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = false;
         Cursor.lockState = CursorLockMode.None;
         yield return new WaitUntil(() => buttonClicked > 0);
         ChangeText(2);
@@ -195,8 +197,8 @@ public class BossMonologue : MonoBehaviour
         buttonClicked = 0;
         yield return new WaitForSeconds(1f);
         Cursor.lockState = CursorLockMode.Locked;
-        player.GetComponent<PlayerMovement>().canMove = true;
-        player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().canMove = true;
+        player.GetComponent<PlayerMovement>().enabled = true;
+        player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = true;
         yield return new WaitForSeconds(1f);
         player.GetComponent<AudioSource>().pitch = 1.2f;
         panel.SetActive(false);
@@ -206,7 +208,7 @@ public class BossMonologue : MonoBehaviour
 
         player.GetComponent<AudioEchoFilter>().enabled = true;
         gameObject.transform.localScale *= 1.5f;
-
+        bossBehavior.enabled = true;
         bossBehavior.StartFight();
 
     }

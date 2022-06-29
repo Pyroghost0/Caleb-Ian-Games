@@ -7,11 +7,12 @@ public class Pause : MonoBehaviour
 {
     public GameObject menu;
     public bool paused = false;
+    private Gun gun;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
     }
 
     private void OnApplicationFocus(bool focus)
@@ -44,6 +45,10 @@ public class Pause : MonoBehaviour
         Time.timeScale = 0f;
         menu.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
+        if (gun != null)
+        {
+            gun.enabled = false;
+        }
     }
 
     public void UnPause()
@@ -54,6 +59,10 @@ public class Pause : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("Player") != null)
         {
             Cursor.lockState = CursorLockMode.Locked;
+        }
+        if (gun != null)
+        {
+            gun.enabled = true;
         }
     }
 

@@ -25,8 +25,8 @@ public class PlayerMovement : MonoBehaviour {
     private float verticalLookRotation = 10f;
     public GameObject cameraBasisObject;
 
-    private Animator playerAnim;
-    public bool canMove;
+    public Animator playerAnim;
+    //public bool canMove = true;
 
     void Start()
     {
@@ -35,7 +35,6 @@ public class PlayerMovement : MonoBehaviour {
         playerAnim = gameObject.GetComponentInChildren<Animator>();
         gravity = -9.8f * gravityMultiplier;
         Cursor.lockState = CursorLockMode.Locked;
-        canMove = true;
         //GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player = gameObject;
     }
 
@@ -46,91 +45,82 @@ public class PlayerMovement : MonoBehaviour {
         isGrounded = groundChecker.inGround;
         playerAnim.SetBool("Grounded", isGrounded);
 
-        if (canMove)
+        float mouseX = Input.GetAxis("Mouse X") * mouseHorizontalSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseVirticalSensitivity * Time.deltaTime;
+        transform.Rotate(Vector3.up * mouseX);
+        verticalLookRotation -= mouseY;
+        verticalLookRotation = Mathf.Clamp(verticalLookRotation, minAngle, maxAngle);//Cant over rotate
+        playerAnim.SetFloat("Look", (verticalLookRotation * -0.0064f) + 0.44f);
+        cameraBasisObject.transform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);//apply clamp
+
+        if (groundChecker.onIce)
         {
-            float mouseX = Input.GetAxis("Mouse X") * mouseHorizontalSensitivity * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * mouseVirticalSensitivity * Time.deltaTime;
-            transform.Rotate(Vector3.up * mouseX);
-            verticalLookRotation -= mouseY;
-            verticalLookRotation = Mathf.Clamp(verticalLookRotation, minAngle, maxAngle);//Cant over rotate
-            playerAnim.SetFloat("Look", (verticalLookRotation * -0.0064f) + 0.44f);
-            cameraBasisObject.transform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);//apply clamp
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+            playerAnim.SetFloat("MoveX", x);
+            playerAnim.SetFloat("MoveY", z);
 
-            if (groundChecker.onIce)
+            float magnitude = Mathf.Sqrt(x * x + z * z);
+            if (magnitude != 0)
             {
-                float x = Input.GetAxis("Horizontal");
-                float z = Input.GetAxis("Vertical");
-                playerAnim.SetFloat("MoveX", x);
-                playerAnim.SetFloat("MoveY", z);
-
-                float magnitude = Mathf.Sqrt(x * x + z * z);
-                if (magnitude != 0)
-                {
-                    x *= Mathf.Abs(x) / magnitude;
-                    z *= Mathf.Abs(z) / magnitude;
-                }
-                move += ((transform.right * x + transform.forward * z) - move) * Time.deltaTime / 2f;
-                controller.enabled = true;
-                controller.Move(move * speed * Time.deltaTime);
-                controller.enabled = false;
+                x *= Mathf.Abs(x) / magnitude;
+                z *= Mathf.Abs(z) / magnitude;
             }
-            else if (isGrounded)
+            move += ((transform.right * x + transform.forward * z) - move) * Time.deltaTime / 2f;
+            controller.enabled = true;
+            controller.Move(move * speed * Time.deltaTime);
+            controller.enabled = false;
+        }
+        else if (isGrounded)
+        {
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+            playerAnim.SetFloat("MoveX", x);
+            playerAnim.SetFloat("MoveY", z);
+
+            float magnitude = Mathf.Sqrt(x * x + z * z);
+            if (magnitude != 0)
             {
-                float x = Input.GetAxis("Horizontal");
-                float z = Input.GetAxis("Vertical");
-                playerAnim.SetFloat("MoveX", x);
-                playerAnim.SetFloat("MoveY", z);
-
-                float magnitude = Mathf.Sqrt(x * x + z * z);
-                if (magnitude != 0)
-                {
-                    x *= Mathf.Abs(x) / magnitude;
-                    z *= Mathf.Abs(z) / magnitude;
-                }
-                move = transform.right * x + transform.forward * z;
-                controller.enabled = true;
-                controller.Move(move * speed * Time.deltaTime);
-                controller.enabled = false;
+                x *= Mathf.Abs(x) / magnitude;
+                z *= Mathf.Abs(z) / magnitude;
             }
-            else if (!touchingBounce)
+            move = transform.right * x + transform.forward * z;
+            controller.enabled = true;
+            controller.Move(move * speed * Time.deltaTime);
+            controller.enabled = false;
+        }
+        else if (!touchingBounce)
+        {
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+            playerAnim.SetFloat("MoveX", x);
+            playerAnim.SetFloat("MoveY", z);
+
+            float magnitude = Mathf.Sqrt(x * x + z * z);
+            if (magnitude != 0)
             {
-                float x = Input.GetAxis("Horizontal");
-                float z = Input.GetAxis("Vertical");
-                playerAnim.SetFloat("MoveX", x);
-                playerAnim.SetFloat("MoveY", z);
-
-                float magnitude = Mathf.Sqrt(x * x + z * z);
-                if (magnitude != 0)
-                {
-                    x *= Mathf.Abs(x) / magnitude;
-                    z *= Mathf.Abs(z) / magnitude;
-                }
-                move = transform.right * x + transform.forward * z;
-                rigidbody.velocity -= new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z) * 3f * Time.deltaTime;
-                rigidbody.velocity += move * speed * 3f * Time.deltaTime;
-                /*
-                controller.enabled = true;
-                if (controller.Move(move * speed * Time.deltaTime).HasFlag(CollisionFlags.Sides)) {
-                    controller.Move(-move * speed * Time.deltaTime);
-                }
-                controller.enabled = false;*/
+                x *= Mathf.Abs(x) / magnitude;
+                z *= Mathf.Abs(z) / magnitude;
             }
-            else
-            {
-                isGrounded = false;
+            move = transform.right * x + transform.forward * z;
+            rigidbody.velocity -= new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z) * 3f * Time.deltaTime;
+            rigidbody.velocity += move * speed * 3f * Time.deltaTime;
+            /*
+            controller.enabled = true;
+            if (controller.Move(move * speed * Time.deltaTime).HasFlag(CollisionFlags.Sides)) {
+                controller.Move(-move * speed * Time.deltaTime);
             }
-
+            controller.enabled = false;*/
         }
         else
         {
-            playerAnim.SetFloat("MoveX", 0);
-            playerAnim.SetFloat("MoveY", 0);
+            isGrounded = false;
         }
 
 
         if (isGrounded)
         {
-            if (Input.GetButtonDown("Jump") && canMove)
+            if (Input.GetButtonDown("Jump"))
             {
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
                 rigidbody.velocity = velocity + (move * speed);

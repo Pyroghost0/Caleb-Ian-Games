@@ -31,12 +31,20 @@ public class Gun : MonoBehaviour
     private int playerHairColor;
 
     private GameObject bullet;
-
-    public bool canMove;
+    private bool shootCooldown = true;
+    public float maxSuckTime = 3f;
+    public float suckCooldownMultiplier = 2f;
+    private float suckTimer = 0f;
+    public RectTransform recSuckBar;
+    private float recWidth;
+    private bool canSuck = true;
+    public GameObject cameraCenter;
+    //public bool canMove;
 
     // Start is called before the first frame update
     void Start()
     {
+        recWidth = recSuckBar.rect.width;
         rectSlimeBar = slimeBar.GetComponent<RectTransform>();
         rectSlime = rectSlimeBar.rect.width;
         rectSlimeBar.sizeDelta = new Vector2((amountOfSlime / 100) * rectSlime, rectSlimeBar.rect.height);
@@ -58,14 +66,15 @@ public class Gun : MonoBehaviour
             if (i == playerSkinColor) offset = 1;
             materials[i + materials.Length / 2] = (Material)Resources.Load("Skin " + (i + offset));
         }
-        canMove = true;
+        //canMove = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canMove)//Left Click
+        if (Input.GetMouseButtonDown(0) && shootCooldown)//Left Click
         {
+            StartCoroutine(ShootCooldown());
             reticleAnimation.SetTrigger("Shoot");
             playerAnim.SetTrigger("Shoot");
             if (amountOfSlime > 0.5f)
@@ -82,7 +91,7 @@ public class Gun : MonoBehaviour
                 amountOfSlime -= power;
                 rectSlimeBar.sizeDelta = new Vector2((amountOfSlime / 100) * rectSlime, rectSlimeBar.rect.height);
                 power += 4f;
-                Quaternion rotation = Quaternion.Euler(cameraBasisObject.transform.rotation.eulerAngles.x - 5f, cameraBasisObject.transform.rotation.eulerAngles.y, cameraBasisObject.transform.rotation.eulerAngles.z);
+                Quaternion rotation = Quaternion.Euler(transform.rotation.eulerAngles.x-7f, transform.rotation.eulerAngles.y, cameraBasisObject.transform.rotation.eulerAngles.z);
                 bullet = Instantiate(bulletPrefab, transform.position, rotation);
                 bullet.transform.localScale *= (powerMultiplier * power / 14f);
                 if (slimeColors.Count == 0)
@@ -94,16 +103,13 @@ public class Gun : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1) && canMove)//Right Click
+        if (Input.GetMouseButton(1) && canSuck)//Right Click
         {
             suckParticles.SetActive(true);
             reticleAnimation.SetBool("Suck", true);
             playerAnim.SetBool("Sucking", true);
             isSucking = true;
-        }
 
-        if (Input.GetMouseButton(1) && canMove)//Right Click
-        {
             List<GameObject> suckedObjects = new List<GameObject> { };
             List<float> slimeSuckPower = new List<float> { };
             //Center
@@ -207,16 +213,6 @@ public class Gun : MonoBehaviour
             }
         }
 
-
-        if (Input.GetMouseButton(1) && !canMove &&isSucking)
-		{
-            suckParticles.SetActive(false);
-            reticleAnimation.SetBool("Suck", false);
-            playerAnim.SetBool("Sucking", false);
-            isSucking = false;
-        }
-
-
         if (Input.GetMouseButtonUp(1))//Right Click
         {
             suckParticles.SetActive(false);
@@ -225,7 +221,43 @@ public class Gun : MonoBehaviour
             isSucking = false;
         }
 
+        if (isSucking)
+        {
+            recSuckBar.gameObject.SetActive(true);
+            suckTimer += Time.deltaTime;
+            if (suckTimer >= maxSuckTime)
+            {
+                canSuck = false;
+                suckTimer = maxSuckTime;
+                suckParticles.SetActive(false);
+                reticleAnimation.SetBool("Suck", false);
+                playerAnim.SetBool("Sucking", false);
+                isSucking = false;
+            }
+            recSuckBar.sizeDelta = new Vector2((suckTimer / maxSuckTime) * recWidth, recSuckBar.rect.height);
+        }
+        else if (suckTimer > 0f)
+        {
+            suckTimer -= Time.deltaTime * suckCooldownMultiplier;
+            if (suckTimer <= 0f)
+            {
+                canSuck = true;
+                recSuckBar.gameObject.SetActive(true);
+            }
+            else
+            {
+                recSuckBar.sizeDelta = new Vector2((suckTimer / maxSuckTime) * recWidth, recSuckBar.rect.height);
+            }
+        }
     }
+
+    IEnumerator ShootCooldown()
+    {
+        shootCooldown = false;
+        yield return new WaitForSeconds(.2f);
+        shootCooldown = true;
+    }
+
 
     public void SuckedSlime(int slimeColor)
     {
