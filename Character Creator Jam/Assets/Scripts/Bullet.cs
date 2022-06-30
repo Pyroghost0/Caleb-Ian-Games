@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            movement = Vector3.forward * 75f;
+            movement = Vector3.forward;
         }
         StartCoroutine(DieInSeconds(lifeTime));
     }

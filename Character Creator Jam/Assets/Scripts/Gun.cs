@@ -91,8 +91,34 @@ public class Gun : MonoBehaviour
                 amountOfSlime -= power;
                 rectSlimeBar.sizeDelta = new Vector2((amountOfSlime / 100) * rectSlime, rectSlimeBar.rect.height);
                 power += 4f;
+
                 Quaternion rotation = Quaternion.Euler(transform.rotation.eulerAngles.x-7f, transform.rotation.eulerAngles.y, cameraBasisObject.transform.rotation.eulerAngles.z);
-                bullet = Instantiate(bulletPrefab, transform.position, rotation);
+                Ray gunRay = new Ray(suckSpot.transform.position, rotation * Vector3.forward);
+                RaycastHit gunRayHit;
+                Physics.Raycast(gunRay, out gunRayHit);
+                Ray centerCameraRay = new Ray(cameraCenter.transform.position, cameraCenter.transform.forward);
+                RaycastHit centerCameraHit;
+                Physics.Raycast(centerCameraRay, out centerCameraHit);
+
+                /*Debug.Log("Gun: " + gunRayHit.collider.name);
+                Debug.Log("Camera: " + centerCameraHit.collider.name);
+                Debug.DrawRay(suckSpot.transform.position, rotation.normalized * Vector3.forward * 20f, Color.green, 4f);
+                Debug.DrawRay(cameraCenter.transform.position, cameraCenter.transform.forward.normalized*20f, Color.red, 4f);*/
+
+                if (gunRayHit.collider == null || gunRayHit.distance > 8.5f)//8.5 is roughly where the rays collide
+                {
+                    if (centerCameraHit.collider != null && centerCameraHit.distance > 8.5f)
+                    {
+                        rotation = Quaternion.LookRotation(centerCameraHit.point - suckSpot.transform.position);
+                    }
+                    else
+                    {
+                        rotation = Quaternion.Euler(transform.rotation.eulerAngles.x - 7f, transform.rotation.eulerAngles.y-3f, cameraBasisObject.transform.rotation.eulerAngles.z);
+                    }
+                }
+                //Debug.DrawRay(suckSpot.transform.position, rotation.normalized * Vector3.forward * 20f, Color.blue, 4f);
+
+                bullet = Instantiate(bulletPrefab, suckSpot.transform.position, rotation);
                 bullet.transform.localScale *= (powerMultiplier * power / 14f);
                 if (slimeColors.Count == 0)
                 {
