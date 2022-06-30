@@ -14,8 +14,8 @@ public class MainScreenManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("Character Creator");
-        //StartCoroutine(WaitLoad());
+        selectCharacter = true;
+        LoadLevel("Tutorial");
     }
 
     public void EnterLevelSelect()

@@ -8,7 +8,7 @@ public class CharacterCreatorManager : MonoBehaviour
 {
     //character data
     private bool isMale;
-    private int headNumber;
+    private int headNumber = 2;
     private int skinColor = 0;
     private int hairColor = 0;
 
@@ -50,6 +50,7 @@ public class CharacterCreatorManager : MonoBehaviour
         "Choose the male body and discard the female?",
         "Choose the female body and discard the male?",
         "Pick a face. You can only choose one, so pick carefully.",
+        "Pick a face. You can only choose one, so pick carefully.",
         "Use this face?",
         "Choose a hair color and a skin color.",
         "Play the game with this character?",
@@ -62,6 +63,7 @@ public class CharacterCreatorManager : MonoBehaviour
         1,
         2,
         2,
+        1,
         0,
         2,
         0,
@@ -219,15 +221,16 @@ public class CharacterCreatorManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             if (buttonClicked == 3)
 			{
-                ChangeText(5);
+                ChangeText(6);
             }
             else if (buttonClicked == 2)
 			{
-                ChangeText(4);
+                ChangeText(5);
             }
             else if (buttonClicked != 0 && buttonClicked != 1)
 			{
                 SwitchHead(buttonClicked - 6);
+                ChangeText(5);
             }
         } while (buttonClicked != 1);
         buttonClicked = 0;
@@ -236,7 +239,7 @@ public class CharacterCreatorManager : MonoBehaviour
         femaleBaseButton.GetComponent<Animator>().SetTrigger("ChoseHead");
         ChangeText(-1);
         yield return new WaitForSeconds(2f);
-        ChangeText(6);
+        ChangeText(7);
         SkinColors.SetActive(true);
         HairColors.SetActive(true);
 
@@ -246,13 +249,13 @@ public class CharacterCreatorManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             if (buttonClicked == 3)
             {
-                ChangeText(7);
+                ChangeText(8);
                 SkinColors.SetActive(false);
                 HairColors.SetActive(false);
             }
             else if (buttonClicked == 2)
             {
-                ChangeText(6);
+                ChangeText(7);
                 SkinColors.SetActive(true);
                 HairColors.SetActive(true);
             }
@@ -273,7 +276,7 @@ public class CharacterCreatorManager : MonoBehaviour
         buttonClicked = 0;
 
         StartCoroutine(WaitLoad());
-        ChangeText(8);
+        ChangeText(9);
     }
 
     IEnumerator WaitLoad()
@@ -289,7 +292,10 @@ public class CharacterCreatorManager : MonoBehaviour
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
-            playerStatus.isTutorial = true;
+            if (level == "Tutorial")
+			{
+                playerStatus.isTutorial = true;
+            }
             playerStatus.changeCharacter();
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
         }
@@ -303,7 +309,10 @@ public class CharacterCreatorManager : MonoBehaviour
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
-            playerStatus.isTutorial = true;
+            if (level == "Tutorial")
+            {
+                playerStatus.isTutorial = true;
+            }
             playerStatus.changeCharacter();
             for (int i = 0; i < playerStatus.equipmentUnlocked.Length; i++)
             {
@@ -324,7 +333,10 @@ public class CharacterCreatorManager : MonoBehaviour
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
-            playerStatus.isTutorial = true;
+            if (level == "Tutorial")
+            {
+                playerStatus.isTutorial = true;
+            }
             playerStatus.changeCharacter();
             AsyncOperation ao2 = SceneManager.LoadSceneAsync(level, LoadSceneMode.Additive);
             yield return new WaitUntil(() => ao2.isDone);
