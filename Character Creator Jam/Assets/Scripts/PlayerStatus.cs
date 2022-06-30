@@ -24,6 +24,7 @@ public class PlayerStatus : MonoBehaviour
     private float rectHealth;
     private CharacterController characterController;
     private bool notDead = true;
+    private bool notHealing = true;
 
     public GameObject[] selfEquipment;
     public GameObject[] equipmentPrefabs;
@@ -350,22 +351,26 @@ public class PlayerStatus : MonoBehaviour
             yield return new WaitForSeconds(1f);
             if (!invincible && health < maxHealth)
             {
-                if (health +1f < maxHealth)
-                {
-                    HealHealth(1f);
-                }
-                else
-                {
-                    HealHealth(maxHealth-health);
-                }
+                HealHealth(1f);
             }
         }
     }
 
     public void HealHealth(float addedHealth)
     {
-        health += addedHealth;
-        rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
+        if (health < maxHealth)
+        {
+            if (health + addedHealth < maxHealth)
+            {
+                health += addedHealth;
+                rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
+            }
+            else
+            {
+                health = maxHealth;
+                rectHealthBar.sizeDelta = new Vector2(rectHealth, rectHealthBar.rect.height);
+            }
+        }
     }
     
     IEnumerator UpdateHealthBar(float healthChange)
@@ -374,8 +379,6 @@ public class PlayerStatus : MonoBehaviour
         if (health + healthChange <= 0)
         {
             Debug.Log("Dead");
-            playerAnim.SetBool("Dead", true);
-            playerMovement.enabled = false;
             if (isTutorial)
             {
                 GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
@@ -425,6 +428,8 @@ public class PlayerStatus : MonoBehaviour
                 }
                 else
                 {
+                    playerAnim.SetBool("Dead", true);
+                    playerMovement.enabled = false;
                     float timer = 0f;
                     healthChange = -health;
                     while (timer < 1f && notDead)
@@ -449,7 +454,7 @@ public class PlayerStatus : MonoBehaviour
             float timer = 0f;
             float originalHealth = health;
             float invincibleTimeWhenHit = invincibleTime;
-            while (timer < invincibleTimeWhenHit && notDead)
+            while (timer < invincibleTimeWhenHit && notDead && notHealing)
             {
                 health += healthChange * Time.deltaTime / invincibleTimeWhenHit;
                 rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
@@ -461,8 +466,30 @@ public class PlayerStatus : MonoBehaviour
                 health = originalHealth + healthChange;
                 rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
             }
+            while (timer < invincibleTimeWhenHit && notDead)
+            {
+                yield return new WaitForFixedUpdate();
+                timer += Time.deltaTime;
+            }
             invincible = false;
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Health Kit"))
+        {
+            StartCoroutine(HealHealthKit());
+            Destroy(other.gameObject);
+        }
+    }
+
+    IEnumerator HealHealthKit()
+    {
+        notHealing = false;
+        yield return new WaitForEndOfFrame();
+        notHealing = true;
+        HealHealth(40f);
     }
 
     public void Respawn()

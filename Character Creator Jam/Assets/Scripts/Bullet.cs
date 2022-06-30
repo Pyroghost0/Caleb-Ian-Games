@@ -14,13 +14,13 @@ public class Bullet : MonoBehaviour
     {
         power = transform.localScale.x / .75f;
         lifeTime *= power;
-        if (!bossBullet)
+        if (bossBullet)
         {
-            movement = Vector3.forward * power * 75f;
+            movement = Vector3.forward * power * 20f;
         }
         else
         {
-            movement = Vector3.forward;
+            movement = Vector3.forward * power * 100f;
         }
         StartCoroutine(DieInSeconds(lifeTime));
     }

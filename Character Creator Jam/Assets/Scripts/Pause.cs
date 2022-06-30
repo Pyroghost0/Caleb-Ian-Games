@@ -12,12 +12,15 @@ public class Pause : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
+        if (GameObject.FindGameObjectWithTag("Gun") != null)
+        {
+            gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
+        }
     }
 
     private void OnApplicationFocus(bool focus)
     {
-        if (!paused && GameObject.FindGameObjectWithTag("Player") != null)
+        if (!paused && GameObject.FindGameObjectWithTag("Player") != null && (GameObject.FindGameObjectWithTag("Boss") == null || GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().enabled))
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -56,13 +59,16 @@ public class Pause : MonoBehaviour
         paused = false;
         Time.timeScale = 1f;
         menu.SetActive(false);
-        if (GameObject.FindGameObjectWithTag("Player") != null)
+        if (GameObject.FindGameObjectWithTag("Player") != null && (GameObject.FindGameObjectWithTag("Boss") == null || GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().enabled))
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
         if (gun != null)
         {
-            gun.enabled = true;
+            if (GameObject.FindGameObjectWithTag("Boss") == null || GameObject.FindGameObjectWithTag("Boss").GetComponent<BossBehavior>().enabled)
+            {
+                gun.enabled = true;
+            }
         }
     }
 
@@ -73,7 +79,10 @@ public class Pause : MonoBehaviour
 
     public void Respawn()
     {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>().Respawn();
+        if (GameObject.FindGameObjectWithTag("Boss") == null || GameObject.FindGameObjectWithTag("Boss").GetComponent<BossBehavior>().enabled)
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>().Respawn();
+        }
         UnPause();
     }
 
