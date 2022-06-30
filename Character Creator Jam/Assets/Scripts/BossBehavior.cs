@@ -19,6 +19,7 @@ public class BossBehavior : MonoBehaviour
     public Transform bulletSpawnSpot;
     public GameObject singleSuckParticles;
     public GameObject wideSuckParticles;
+    public Animator bossAnim;
 
     private Vector3 pipeDistence = new Vector3(0f, 1.5f, 0f);
     private Vector3 otherPipeDistence = new Vector3(0f, 3.5f, 0f);
@@ -89,6 +90,17 @@ public class BossBehavior : MonoBehaviour
     public void RestartFight()
     {
         StopAllCoroutines();
+        bossAnim.Play("Idle");
+        GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
+        for (int i = 0; i < walkers.Length; i++)
+        {
+            Destroy(walkers[i]);
+        }
+        GameObject[] flyers = GameObject.FindGameObjectsWithTag("Flyer");
+        for (int i = 0; i < flyers.Length; i++)
+        {
+            Destroy(flyers[i]);
+        }
         health = maxHealth;
         rectHealthBar.sizeDelta = new Vector2(rectHealth, rectHealthBar.rect.height);
         inCenter = true;
@@ -232,8 +244,10 @@ public class BossBehavior : MonoBehaviour
             }
 
             //Spawn slimes and wait if above half
+            
             for (int i = 0; i < slimeSpawners.Length; i++)
             {
+                //bossAnim.SetTrigger("ChooseSummon");
                 StartCoroutine(PipeSpawnSlime(Random.Range(slimeSpawnSecondsMin, slimeSpawnSecondsMax), slimeSpawners[i]));
             }
             if (health/maxHealth > .5f)
@@ -246,6 +260,8 @@ public class BossBehavior : MonoBehaviour
             {
                 yield return new WaitUntil(() => inCenter);
                 Debug.Log("Slime Sucking");
+                bossAnim.SetTrigger("ChooseSuck");
+                yield return new WaitForSeconds(1.5f);
                 if (health / maxHealth > .75)
                 {
                     StartCoroutine(SingleSlimeSuck(3f, 1f, 5f, .5f));
@@ -298,6 +314,8 @@ public class BossBehavior : MonoBehaviour
             {
                 yield return new WaitUntil(() => inCenter);
                 Debug.Log("Wide Range Suck");
+                bossAnim.SetTrigger("ChooseSuck");
+                yield return new WaitForSeconds(1.5f);
                 if (health / maxHealth > .75)
                 {
                     StartCoroutine(WideSuck(1.25f, 1f, 3.5f));
@@ -381,6 +399,7 @@ public class BossBehavior : MonoBehaviour
             else if (actionChoice == 2)
             {
                 Debug.Log("Walker Spawn");
+                bossAnim.SetTrigger("ChooseSummon");
                 if (health / maxHealth > .75)
                 {
                     StartCoroutine(PipeSpawnOther(2f, walkerSpawners[Random.Range(0, walkerSpawners.Length)], walkerPrefab));
@@ -422,6 +441,7 @@ public class BossBehavior : MonoBehaviour
             else if (actionChoice == 3)
             {
                 Debug.Log("Flyer Spawn");
+                bossAnim.SetTrigger("ChooseSummon");
                 if (health / maxHealth > .75)
                 {
                     StartCoroutine(PipeSpawnOther(2f, flyerSpawners[Random.Range(0, flyerSpawners.Length)], flyerPrefab));
@@ -463,13 +483,17 @@ public class BossBehavior : MonoBehaviour
             else
             {
                 Debug.Log("Extra Shooting Gun");
+                
             }
-            
+            bossAnim.SetTrigger("ChooseShoot");
+            yield return new WaitForSeconds(1.5f);
             for (int i = 0; i < numShots; i++)
             {
+                bossAnim.SetTrigger("Shoot");
                 GameObject bullet = Instantiate(bulletPrefab, bulletSpawnSpot.position, Quaternion.LookRotation(player.transform.position - bulletSpawnSpot.position));
                 yield return new WaitForSeconds(Random.Range(shotDelayMin, shotDelayMax));
             }
+            bossAnim.SetTrigger("EndAction");
         }
     }
 
@@ -477,6 +501,7 @@ public class BossBehavior : MonoBehaviour
     {
         knockBack = false;
         float timer = 0f;
+        bossAnim.SetTrigger("Rise");
         while (timer < riseSeconds)
         {
             yield return new WaitForFixedUpdate();
@@ -485,6 +510,7 @@ public class BossBehavior : MonoBehaviour
         }
         transform.position = new Vector3(transform.position.x, spawnPosition.y + 20f, transform.position.z);
         yield return new WaitForSeconds(delaySeconds);
+        bossAnim.SetTrigger("SlimeSuck");
         singleSuckParticles.SetActive(true);
         GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
         List<Transform> assignedSlimesTransform = new List<Transform>();
@@ -523,8 +549,10 @@ public class BossBehavior : MonoBehaviour
             timer += Time.deltaTime;
         }
         singleSuckParticles.SetActive(false);
+        
         yield return new WaitForSeconds(delaySeconds);
         timer = 0f;
+        bossAnim.SetTrigger("EndSuck");
         while (timer < riseSeconds)
         {
             yield return new WaitForFixedUpdate();
@@ -533,12 +561,14 @@ public class BossBehavior : MonoBehaviour
         }
         transform.position = new Vector3(transform.position.x, spawnPosition.y, transform.position.z);
         knockBack = true;
+        bossAnim.SetTrigger("EndAction");
     }
 
     IEnumerator WideSuck(float riseSeconds, float delaySeconds, float suckingSeconds)
     {
         knockBack = false;
         float timer = 0f;
+        bossAnim.SetTrigger("Rise");
         while (timer < riseSeconds)
         {
             yield return new WaitForFixedUpdate();
@@ -548,6 +578,7 @@ public class BossBehavior : MonoBehaviour
         transform.position = new Vector3(transform.position.x, spawnPosition.y + 6f, transform.position.z);
         yield return new WaitForSeconds(delaySeconds);
         wideSuckParticles.SetActive(true);
+        bossAnim.SetTrigger("WideSuck");
         GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
         List<Transform> slimesTransform = new List<Transform>();
         List<Rigidbody> slimesRigidbody = new List<Rigidbody>();
@@ -605,8 +636,10 @@ public class BossBehavior : MonoBehaviour
             timer += Time.deltaTime;
         }
         wideSuckParticles.SetActive(false);
+        
         yield return new WaitForSeconds(delaySeconds);
         timer = 0f;
+        bossAnim.SetTrigger("EndSuck");
         while (timer < riseSeconds)
         {
             yield return new WaitForFixedUpdate();
@@ -615,6 +648,7 @@ public class BossBehavior : MonoBehaviour
         }
         transform.position = new Vector3(transform.position.x, spawnPosition.y, transform.position.z);
         knockBack = true;
+        bossAnim.SetTrigger("EndAction");
     }
 
     IEnumerator PipeSpawnSlime(float seconds, SlimeSpawner slimeSpawner)

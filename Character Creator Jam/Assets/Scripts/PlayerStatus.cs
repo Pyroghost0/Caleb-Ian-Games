@@ -323,6 +323,7 @@ public class PlayerStatus : MonoBehaviour
             invincible = true;
             direction.y = transform.position.y;
             direction = (transform.position - direction).normalized;
+            playerAnim.SetTrigger("Hurt");
             if (takeKnockback)
             {
                 StartCoroutine(Knockback(direction * knockback));
@@ -379,6 +380,10 @@ public class PlayerStatus : MonoBehaviour
         if (health + healthChange <= 0)
         {
             Debug.Log("Dead");
+            playerAnim.SetBool("Dead", true);
+            playerAnim.SetFloat("MoveX", 0);
+            playerAnim.SetFloat("MoveY", 0);
+            playerMovement.enabled = false;
             if (isTutorial)
             {
                 GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
@@ -417,6 +422,9 @@ public class PlayerStatus : MonoBehaviour
                     selfEquipment[3].SetActive(false);
                     selfEquipment[15].SetActive(false);
                 }
+                playerAnim.SetBool("Dead", false);
+                playerAnim.Play("Idle");
+                playerMovement.enabled = true;
             }
             else
             {

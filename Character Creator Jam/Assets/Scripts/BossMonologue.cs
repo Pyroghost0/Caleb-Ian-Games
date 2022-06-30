@@ -60,7 +60,7 @@ public class BossMonologue : MonoBehaviour
         0,
         0,
         0,
-        0,
+        1,
         1,
         0,
         0,
@@ -133,40 +133,12 @@ public class BossMonologue : MonoBehaviour
         mainCamera.SetActive(false);
         bossCamera.SetActive(true);
 
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(2);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(3);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(4);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(5);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(6);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(7);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(8);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(9);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(10);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(11);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
-        ChangeText(12);
-        buttonClicked = 0;
-        yield return new WaitUntil(() => buttonClicked > 0);
+        for (int i = 2; i < 13; i++)
+		{
+            yield return new WaitUntil(() => buttonClicked > 0);
+            ChangeText(i);
+            buttonClicked = 0;
+        }
         anim.SetTrigger("TakeOffHat");
         yield return new WaitForSeconds(2f);
         ChangeText(13);
@@ -209,7 +181,7 @@ public class BossMonologue : MonoBehaviour
         yield return new WaitForSeconds(1f);
         player.GetComponent<AudioSource>().pitch = 1.2f;
         panel.SetActive(false);
-        gameObject.transform.localScale *= 2;
+        gameObject.transform.localScale *= 1.2f;
         yield return new WaitForSeconds(0.5f);
         player.GetComponent<AudioSource>().pitch = 1.6f;
 
