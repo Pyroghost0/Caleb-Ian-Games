@@ -7,7 +7,10 @@ public class Pause : MonoBehaviour
 {
     public GameObject menu;
     public bool paused = false;
+    public GameObject startMenu;
+    public GameObject optionsMenu;
     private Gun gun;
+    private GameObject player;
 
     // Start is called before the first frame update
     void Start()
@@ -16,11 +19,15 @@ public class Pause : MonoBehaviour
         {
             gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
         }
+        if (GameObject.FindGameObjectWithTag("Player") != null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
     }
 
     private void OnApplicationFocus(bool focus)
     {
-        if (!paused && GameObject.FindGameObjectWithTag("Player") != null && (GameObject.FindGameObjectWithTag("Boss") == null || GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().enabled))
+        if (!paused && player != null && (GameObject.FindGameObjectWithTag("Boss") == null || player.GetComponent<PlayerMovement>().enabled))
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -44,6 +51,10 @@ public class Pause : MonoBehaviour
 
     public void PauseGame()
     {
+        if (optionsMenu != null)
+        {
+            ExitOptions();
+        }
         paused = true;
         Time.timeScale = 0f;
         menu.SetActive(true);
@@ -59,7 +70,7 @@ public class Pause : MonoBehaviour
         paused = false;
         Time.timeScale = 1f;
         menu.SetActive(false);
-        if (GameObject.FindGameObjectWithTag("Player") != null && (GameObject.FindGameObjectWithTag("Boss") == null || GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().enabled))
+        if (player != null && (GameObject.FindGameObjectWithTag("Boss") == null || player.GetComponent<PlayerMovement>().enabled))
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -71,20 +82,34 @@ public class Pause : MonoBehaviour
             }
         }
     }
+    
+    public void Respawn()
+    {
+        if (GameObject.FindGameObjectWithTag("Boss") == null || GameObject.FindGameObjectWithTag("Boss").GetComponent<BossBehavior>().enabled)
+        {
+            player.GetComponent<PlayerStatus>().Respawn();
+        }
+        UnPause();
+    }
+
+    public void EnterOptions()
+    {
+        startMenu.SetActive(false);
+        optionsMenu.SetActive(true);
+    }
+
+    public void ExitOptions()
+    {
+        startMenu.SetActive(true);
+        optionsMenu.SetActive(false);
+    }
 
     public void BackToMainMenu()
     {
         SceneManager.LoadScene("Main Screen");
     }
 
-    public void Respawn()
-    {
-        if (GameObject.FindGameObjectWithTag("Boss") == null || GameObject.FindGameObjectWithTag("Boss").GetComponent<BossBehavior>().enabled)
-        {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>().Respawn();
-        }
-        UnPause();
-    }
+    
 
     public void QuitGame()
     {
