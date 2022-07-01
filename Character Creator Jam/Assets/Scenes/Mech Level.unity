@@ -5338,7 +5338,7 @@ GameObject:
   - component: {fileID: 74888714}
   m_Layer: 10
   m_Name: Slime Spawn Pipe
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5378,6 +5378,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 2.5
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &74888715
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -15983,7 +15986,7 @@ GameObject:
   - component: {fileID: 236004614}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (11)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -16023,6 +16026,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &236004615
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -18603,7 +18609,7 @@ GameObject:
   - component: {fileID: 274160563}
   m_Layer: 10
   m_Name: Slime Spawn Pipe
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -18643,6 +18649,9 @@ MonoBehaviour:
   maxNumSlimes: 5
   averageSlimeRespawnTime: 2
   spawnDistence: 70
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &274160564
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -24263,7 +24272,7 @@ GameObject:
   - component: {fileID: 363607049}
   m_Layer: 10
   m_Name: Slime Spawn Pipe
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24303,6 +24312,9 @@ MonoBehaviour:
   maxNumSlimes: 5
   averageSlimeRespawnTime: 3
   spawnDistence: 50
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &363607050
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -24785,7 +24797,7 @@ GameObject:
   - component: {fileID: 372055018}
   m_Layer: 10
   m_Name: Slime Spawn Pipe
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -24825,6 +24837,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 2.5
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &372055019
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -27836,7 +27851,7 @@ GameObject:
   - component: {fileID: 420117796}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (19)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -27876,6 +27891,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &420117797
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -34068,7 +34086,7 @@ GameObject:
   - component: {fileID: 519693576}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (18)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -34108,6 +34126,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &519693577
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -36728,7 +36749,7 @@ GameObject:
   - component: {fileID: 555426840}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (6)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -36768,6 +36789,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &555426841
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -37078,7 +37102,7 @@ GameObject:
   - component: {fileID: 561578800}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (1)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -37118,6 +37142,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 4
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &561578801
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -45530,7 +45557,7 @@ GameObject:
   - component: {fileID: 717212130}
   m_Layer: 10
   m_Name: Slime Spawn Pipe
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -45570,6 +45597,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 2.5
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &717212131
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -45729,7 +45759,7 @@ GameObject:
   - component: {fileID: 718535180}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (1)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -45769,6 +45799,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 4
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &718535181
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -58093,7 +58126,7 @@ GameObject:
   - component: {fileID: 911603152}
   m_Layer: 10
   m_Name: Slime Spawn Pipe 1
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -58133,6 +58166,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 3
   spawnDistence: 60
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &911603153
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -63593,7 +63629,7 @@ GameObject:
   - component: {fileID: 1003355025}
   m_Layer: 10
   m_Name: Slime Spawn Pipe
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -63633,6 +63669,9 @@ MonoBehaviour:
   maxNumSlimes: 6
   averageSlimeRespawnTime: 2
   spawnDistence: 50
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1003355026
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -66377,7 +66416,7 @@ GameObject:
   - component: {fileID: 1044120654}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (2)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -66417,6 +66456,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 1.25
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1044120655
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -70216,7 +70258,7 @@ GameObject:
   - component: {fileID: 1103783072}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (20)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -70256,6 +70298,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1103783073
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -72613,7 +72658,7 @@ GameObject:
   - component: {fileID: 1136476624}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (4)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -72653,6 +72698,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1136476625
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -73097,7 +73145,7 @@ GameObject:
   - component: {fileID: 1142576304}
   m_Layer: 10
   m_Name: Slime Spawn Pipe
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -73137,6 +73185,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 2.5
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1142576305
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -79740,7 +79791,7 @@ GameObject:
   - component: {fileID: 1257349400}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (1)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -79780,6 +79831,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 4
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1257349401
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -82130,7 +82184,7 @@ GameObject:
   - component: {fileID: 1308129225}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (5)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -82170,6 +82224,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1308129226
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -95784,7 +95841,7 @@ GameObject:
   - component: {fileID: 1531152212}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (15)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -95824,6 +95881,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1531152213
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -96514,7 +96574,7 @@ GameObject:
   - component: {fileID: 1540215666}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (21)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -96554,6 +96614,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1540215667
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -99051,7 +99114,7 @@ GameObject:
   - component: {fileID: 1588647621}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (14)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -99091,6 +99154,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1588647622
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -100933,7 +100999,7 @@ GameObject:
   - component: {fileID: 1620365564}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (12)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -100973,6 +101039,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1620365565
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -101132,7 +101201,7 @@ GameObject:
   - component: {fileID: 1622596436}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (9)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -101172,6 +101241,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1622596437
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -103030,7 +103102,7 @@ GameObject:
   - component: {fileID: 1649782983}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (7)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -103070,6 +103142,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1649782984
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -103463,7 +103538,7 @@ GameObject:
   - component: {fileID: 1654858453}
   m_Layer: 10
   m_Name: Slime Spawn Pipe
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -103503,6 +103578,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 2.5
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1654858454
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -107632,7 +107710,7 @@ GameObject:
   - component: {fileID: 1721430920}
   m_Layer: 10
   m_Name: Slime Spawn Pipe
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -107672,6 +107750,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 2.5
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1721430921
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -108644,7 +108725,7 @@ GameObject:
   - component: {fileID: 1745678644}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (17)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -108684,6 +108765,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1745678645
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -110383,7 +110467,7 @@ GameObject:
   - component: {fileID: 1768713113}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (1)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -110423,6 +110507,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 4
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1768713114
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -112599,7 +112686,7 @@ GameObject:
   - component: {fileID: 1795796920}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (8)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -112639,6 +112726,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1795796921
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -113811,7 +113901,7 @@ GameObject:
   - component: {fileID: 1817696463}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (22)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -113851,6 +113941,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1817696464
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -115663,7 +115756,7 @@ GameObject:
   - component: {fileID: 1837986236}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (1)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -115703,6 +115796,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 4
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1837986237
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -117435,7 +117531,7 @@ GameObject:
   - component: {fileID: 1861120299}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (1)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -117475,6 +117571,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 4
   spawnDistence: 90
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1861120300
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -119454,6 +119553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSceneName: Deer Level
+  isDressUpDoor: 0
   currentSceneName: Mech Level
 --- !u!1 &1896698676
 GameObject:
@@ -120888,7 +120988,7 @@ GameObject:
   - component: {fileID: 1917669050}
   m_Layer: 10
   m_Name: Slime Spawn Pipe 1
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120928,6 +121028,9 @@ MonoBehaviour:
   maxNumSlimes: 3
   averageSlimeRespawnTime: 3
   spawnDistence: 50
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &1917669051
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -133024,7 +133127,7 @@ GameObject:
   - component: {fileID: 2114662329}
   m_Layer: 10
   m_Name: Slime Spawn Pipe (3)
-  m_TagString: Untagged
+  m_TagString: Slime Spawn Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -133064,6 +133167,9 @@ MonoBehaviour:
   maxNumSlimes: 2
   averageSlimeRespawnTime: 1.5
   spawnDistence: 35
+  maxSlimesPerCycle: -1
+  slimesSpawned: 0
+  materials: []
 --- !u!136 &2114662330
 CapsuleCollider:
   m_ObjectHideFlags: 0

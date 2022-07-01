@@ -522,6 +522,11 @@ public class PlayerStatus : MonoBehaviour
             slimes[i].GetComponent<SlimeBehavior>().slimeSpawner.SlimeDeath();
             Destroy(slimes[i]);
         }
+        GameObject[] slimeSpawnPipe = GameObject.FindGameObjectsWithTag("Slime Spawn Pipe");
+        for (int i = 0; i < slimeSpawnPipe.Length; i++)
+        {
+            slimeSpawnPipe[i].GetComponent<SlimeSpawner>().restartPipe();
+        }
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Single Enemy Spawner");
         for (int i = 0; i < enemies.Length; i++)
         {

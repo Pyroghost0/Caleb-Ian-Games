@@ -10,7 +10,9 @@ public class SlimeSpawner : MonoBehaviour
     public int maxNumSlimes = 5;
     public float averageSlimeRespawnTime = 2f;
     public float spawnDistence = 50f;
+    public int maxSlimesPerCycle = -1;
     private GameObject player;
+    public int slimesSpawned = 0;
     private bool currentlySpawning = false;
     [SerializeField] private Material[] materials;
     private int slimeColor;
@@ -52,16 +54,24 @@ public class SlimeSpawner : MonoBehaviour
     IEnumerator SpawnSlimes()
     {
         currentlySpawning = true;
-        while (numSlimes < maxNumSlimes)
+        while (numSlimes < maxNumSlimes && (maxSlimesPerCycle == -1 || slimesSpawned < maxSlimesPerCycle))
         {
             yield return new WaitForSeconds(Random.Range(averageSlimeRespawnTime / 4, averageSlimeRespawnTime * 3 / 4));
             if (Mathf.Abs((player.transform.position - transform.position).magnitude) < spawnDistence)
             {
+                slimesSpawned++;
                 SpawnSlime();
             }
             yield return new WaitForSeconds(Random.Range(averageSlimeRespawnTime / 4, averageSlimeRespawnTime * 3 / 4));
         }
         currentlySpawning = false;
+    }
+
+    public void restartPipe()
+    {
+        slimesSpawned = 0;
+        StopAllCoroutines();
+        StartCoroutine(SpawnSlimes());
     }
 
     public void SpawnSlime()
