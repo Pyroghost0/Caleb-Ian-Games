@@ -109,6 +109,7 @@ public class WalkerBehavior : MonoBehaviour
     {
         if (other.CompareTag("Bullet"))
         {
+            anim.SetTrigger("Hurt");
             health -= other.GetComponent<Bullet>().power * 25;
             if (health <= 0)
             {
