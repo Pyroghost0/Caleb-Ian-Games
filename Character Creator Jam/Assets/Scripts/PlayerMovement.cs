@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
     public float speed = 12f;
-    private Vector3 velocity;
     private float gravity = -9.8f;
     public float gravityMultiplier = 2f;
 
@@ -26,6 +25,7 @@ public class PlayerMovement : MonoBehaviour {
     public GameObject cameraBasisObject;
 
     public Animator playerAnim;
+    private bool jumped = false;
     //public bool canMove = true;
 
     void Start()
@@ -122,25 +122,48 @@ public class PlayerMovement : MonoBehaviour {
         {
             if (Input.GetButtonDown("Jump"))
             {
-                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                Vector3 velocity = new Vector3(0f, Mathf.Sqrt(jumpHeight * -2f * gravity), 0f);
                 rigidbody.velocity = velocity + (move * speed);
+                jumped = true;
+                StartCoroutine(Jump());
             }
-            else if (velocity.y < 0)
+            else if (!jumped)
             {
-                velocity = Vector3.down;
-                rigidbody.velocity = velocity;
+                rigidbody.velocity = Vector3.down;
             }
         }
         else
         {
-            //float prevHeight = transform.position.y;
-            /*controller.Move(velocity * Time.deltaTime);
-            if (velocity.y > 0 && transform.position.y == prevHeight)
-            {
-                velocity.y *= -.3f;
-            }*/
             rigidbody.velocity += Vector3.up * gravity * Time.deltaTime;
-            velocity = rigidbody.velocity;
+            StartCoroutine(JumpUpCheck());
+        }
+    }
+
+    IEnumerator Jump()
+    {
+        yield return new WaitForSeconds(.4f);
+        jumped = false;
+    }
+
+    IEnumerator JumpUpCheck()
+    {
+        Vector3 previousPosition = transform.position;
+        yield return new WaitForFixedUpdate();
+        Vector3 nextPosition = transform.position;
+        transform.position = previousPosition;
+        controller.enabled = true;
+        controller.Move((rigidbody.velocity - new Vector3(0f, rigidbody.velocity.y, 0f)) * Time.deltaTime);
+        controller.enabled = false;
+        if (transform.position.y > previousPosition.y)
+        {
+            rigidbody.velocity = Vector3.down;
+
+            Debug.Log("Previous Position: " + previousPosition + "\t\t\tRigidbody Position: " + nextPosition + "\t\t\tCortroller Position: " + transform.position);
+        }
+        else
+        {
+            //Debug.Log("F");
+            transform.position = nextPosition;
         }
     }
 }
