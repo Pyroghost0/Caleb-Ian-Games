@@ -289,7 +289,7 @@ public class Gun : MonoBehaviour
     {
         if (amountOfSlime < 50f)
         {
-            amountOfSlime += 10f;
+            amountOfSlime += 20f;
         }
         else
         {//50 = 10 gained, 75 = 5 gained, 95 = 1 gained

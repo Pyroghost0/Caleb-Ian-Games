@@ -40,7 +40,6 @@ public class PlayerStatus : MonoBehaviour
 
     public bool isTutorial = false;
     public GameObject currentSpawnPosition;
-    public GameObject notice;
     public bool[] equipmentUnlocked;
 
     private Animator playerAnim;
@@ -541,15 +540,4 @@ public class PlayerStatus : MonoBehaviour
         playerAnim.Play("Idle");
         playerMovement.enabled = true;
     }
-
-    public void TriggerNotice(int noticeNumber)
-    {
-        notice.transform.GetChild(noticeNumber).gameObject.SetActive(true);
-        StartCoroutine(deactivateAfterSeconds(notice.transform.GetChild(noticeNumber).gameObject, 3.5f));
-    }
-    private IEnumerator deactivateAfterSeconds(GameObject go, float seconds)
-	{
-        yield return new WaitForSeconds(seconds);
-        go.SetActive(false);
-	}
 }
