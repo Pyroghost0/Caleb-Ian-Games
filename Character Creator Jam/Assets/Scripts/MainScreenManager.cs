@@ -66,6 +66,7 @@ public class MainScreenManager : MonoBehaviour
         AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao1.isDone);
         PlayerStatus player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+        GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Dress Up Room");
         for (int i = 0; i < player.equipmentUnlocked.Length; i++)
         {
             player.equipmentUnlocked[i] = true;
@@ -81,6 +82,7 @@ public class MainScreenManager : MonoBehaviour
     {
         AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao1.isDone);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene(sceneName);
         AsyncOperation ao2 = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao2.isDone);
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Main Screen"));

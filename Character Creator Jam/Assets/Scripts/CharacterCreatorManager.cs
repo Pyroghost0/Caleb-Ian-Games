@@ -292,6 +292,7 @@ public class CharacterCreatorManager : MonoBehaviour
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Tutorial");
             if (level == "Tutorial")
 			{
                 playerStatus.isTutorial = true;
@@ -309,6 +310,7 @@ public class CharacterCreatorManager : MonoBehaviour
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Dress Up Room");
             if (level == "Tutorial")
             {
                 playerStatus.isTutorial = true;
@@ -333,6 +335,7 @@ public class CharacterCreatorManager : MonoBehaviour
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene(level);
             if (level == "Tutorial")
             {
                 playerStatus.isTutorial = true;

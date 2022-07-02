@@ -8992,6 +8992,7 @@ GameObject:
   - component: {fileID: 1396442013}
   - component: {fileID: 1396442018}
   - component: {fileID: 1396442017}
+  - component: {fileID: 1396442019}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -9318,6 +9319,20 @@ AudioEchoFilter:
   m_DecayRatio: 0.2
   m_WetMix: 1
   m_DryMix: 1
+--- !u!114 &1396442019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396442008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c5ac8bd54aea446bd7303eb938ab1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgm: {fileID: 1396442013}
+  bgmEcho: {fileID: 1396442018}
 --- !u!1 &1455280254
 GameObject:
   m_ObjectHideFlags: 0

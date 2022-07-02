@@ -40,6 +40,7 @@ public class DoorPortal : MonoBehaviour
 			{
                 SceneManager.LoadSceneAsync(nextSceneName, LoadSceneMode.Additive);
                 other.GetComponent<PlayerMovement>().groundChecker.inGround = false;
+                other.GetComponent<AudioManager>().ChangeScene(nextSceneName);
                 SceneManager.UnloadSceneAsync("Dress Up Room");
             }
             
@@ -51,6 +52,7 @@ public class DoorPortal : MonoBehaviour
         yield return new WaitUntil(() => ao1.isDone);
         GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = nextSceneName;
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().groundChecker.inGround = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Dress Up Room");
         SceneManager.UnloadSceneAsync(currentSceneName);
     }
 }

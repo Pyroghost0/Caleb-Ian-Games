@@ -43,6 +43,7 @@ public class PlayerStatus : MonoBehaviour
     public bool[] equipmentUnlocked;
 
     private Animator playerAnim;
+    private AudioManager audioManager;
 
 
     // Start is called before the first frame update
@@ -54,6 +55,7 @@ public class PlayerStatus : MonoBehaviour
         playerMovement = gameObject.GetComponent<PlayerMovement>();
         gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
         playerAnim = gameObject.GetComponentInChildren<Animator>();
+        audioManager = GetComponent<AudioManager>();
     }
 
     public void changeCharacter()
@@ -397,6 +399,7 @@ public class PlayerStatus : MonoBehaviour
                 }
                 AsyncOperation ao1 = SceneManager.UnloadSceneAsync("Tutorial");
                 yield return new WaitUntil(() => ao1.isDone);
+                audioManager.ChangeScene("Mech Level");
                 AsyncOperation ao2 = SceneManager.LoadSceneAsync("Mech Level", LoadSceneMode.Additive);
                 yield return new WaitUntil(() => ao2.isDone);
                 playerMovement.groundChecker.inGround = false;

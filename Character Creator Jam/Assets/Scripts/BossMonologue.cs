@@ -20,6 +20,7 @@ public class BossMonologue : MonoBehaviour
     public GameObject bossCamera;
     public GameObject mainCamera;
     private int buttonClicked = 0;
+    private AudioManager audioManager;
     //0 = none, 1 = yes, 2 = no, 3 = continue
 
     private string[] introText = new string[]{
@@ -77,6 +78,7 @@ public class BossMonologue : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        audioManager = player.GetComponent<AudioManager>();
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
     private void ChangeText(int textIndex)
@@ -179,15 +181,17 @@ public class BossMonologue : MonoBehaviour
         player.GetComponent<PlayerMovement>().enabled = true;
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = true;
         yield return new WaitForSeconds(1f);
-        player.GetComponent<AudioSource>().pitch = 1.2f;
+        audioManager.BgmRestart();
+        audioManager.BgmChangeVolume(1f);
+        audioManager.BgmChangePitch(1.2f);
         panel.SetActive(false);
         gameObject.transform.localScale *= 1.2f;
         yield return new WaitForSeconds(0.5f);
-        player.GetComponent<AudioSource>().pitch = 1.6f;
+        audioManager.BgmChangePitch(1.6f);
 
         bossCamera.SetActive(false);
         mainCamera.SetActive(true);
-        player.GetComponent<AudioEchoFilter>().enabled = true;
+        audioManager.ToggleBgmEcho(true);
         gameObject.transform.localScale *= 1.5f;
         bossBehavior.enabled = true;
         bossBehavior.StartFight();
