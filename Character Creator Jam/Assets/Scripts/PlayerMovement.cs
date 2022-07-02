@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public Animator playerAnim;
     private bool jumped = false;
+    private bool leftGround = false;
     //public bool canMove = true;
 
     void Start()
@@ -105,12 +106,6 @@ public class PlayerMovement : MonoBehaviour {
             move = transform.right * x + transform.forward * z;
             rigidbody.velocity -= new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z) * 3f * Time.deltaTime;
             rigidbody.velocity += move * speed * 3f * Time.deltaTime;
-            /*
-            controller.enabled = true;
-            if (controller.Move(move * speed * Time.deltaTime).HasFlag(CollisionFlags.Sides)) {
-                controller.Move(-move * speed * Time.deltaTime);
-            }
-            controller.enabled = false;*/
         }
         else
         {
@@ -122,15 +117,18 @@ public class PlayerMovement : MonoBehaviour {
         {
             if (Input.GetButtonDown("Jump"))
             {
-                Vector3 velocity = new Vector3(0f, Mathf.Sqrt(jumpHeight * -2f * gravity), 0f);
-                rigidbody.velocity = velocity + (move * speed);
-                jumped = true;
+                rigidbody.velocity = new Vector3(0f, Mathf.Sqrt(jumpHeight * -2f * gravity), 0f);
                 StartCoroutine(Jump());
             }
             else if (!jumped)
             {
                 rigidbody.velocity = Vector3.down;
             }
+        }
+        else if (!leftGround)
+        {
+            rigidbody.velocity += move * speed + (Vector3.up * gravity * Time.deltaTime);
+            StartCoroutine(WaitUntilGrounded());
         }
         else
         {
@@ -139,8 +137,16 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
+    IEnumerator WaitUntilGrounded()
+    {
+        leftGround = true;
+        yield return new WaitUntil(() => (isGrounded));
+        leftGround = false;
+    }
+
     IEnumerator Jump()
     {
+        jumped = true;
         yield return new WaitForSeconds(.4f);
         jumped = false;
     }
@@ -157,12 +163,11 @@ public class PlayerMovement : MonoBehaviour {
         if (transform.position.y > previousPosition.y)
         {
             rigidbody.velocity = Vector3.down;
-
-            Debug.Log("Previous Position: " + previousPosition + "\t\t\tRigidbody Position: " + nextPosition + "\t\t\tCortroller Position: " + transform.position);
+            //Debug.Log("Previous Position: " + previousPosition + "\t\t\tRigidbody Position: " + nextPosition + "\t\t\tCortroller Position: " + transform.position);
         }
         else
         {
-            //Debug.Log("F");
+            //Debug.Log("Previous Position: " + previousPosition + "\t\t\tRigidbody Position: " + nextPosition + "\t\t\tCortroller Position: " + transform.position);
             transform.position = nextPosition;
         }
     }

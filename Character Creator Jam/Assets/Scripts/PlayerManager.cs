@@ -26,5 +26,14 @@ public class PlayerManager : MonoBehaviour
         }
         gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
         player.GetComponent<PlayerStatus>().currentSpawnPosition = firstCheckpoint;
+
+    }
+
+    IEnumerator DelayForLoading()
+    {
+        player.GetComponent<PlayerMovement>().enabled = false;
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(.5f);
+        player.GetComponent<PlayerMovement>().enabled = true;
     }
 }
