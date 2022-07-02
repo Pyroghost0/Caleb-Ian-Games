@@ -496,6 +496,7 @@ public class PlayerStatus : MonoBehaviour
 
     IEnumerator HealHealthKit()
     {
+        gun.suckUp.Play();
         notHealing = false;
         yield return new WaitForEndOfFrame();
         notHealing = true;

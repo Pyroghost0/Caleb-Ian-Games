@@ -34,6 +34,12 @@ public class SlimeBehavior : MonoBehaviour
     private bool isDead = false;
     public int slimeColor = 0;
 
+    public AudioSource sound;
+    public AudioClip[] jump;
+    public AudioClip hurt;
+    public AudioClip dead;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -81,6 +87,9 @@ public class SlimeBehavior : MonoBehaviour
             rigidbody.velocity = Vector3.zero;
             anim.SetBool("isGrounded", true);
             animInner.SetBool("isGrounded", true);
+
+            sound.clip = jump[Random.Range(0, 2)];
+            sound.Play();
             //rigidbody.AddForce(-jumpForce, ForceMode.Impulse);
             yield return new WaitForSeconds(Random.Range(.2f, .4f));
         }
@@ -91,6 +100,8 @@ public class SlimeBehavior : MonoBehaviour
         if (other.CompareTag("Bullet"))
         {
             anim.SetTrigger("Hurt");
+            sound.clip = hurt;
+            sound.Play();
             health -= other.GetComponent<Bullet>().power * 25;
             if (health <= 0)
             {
@@ -98,6 +109,8 @@ public class SlimeBehavior : MonoBehaviour
                 isDead = true;
                 anim.SetBool("isDead", true);
                 animInner.SetBool("isDead", true);
+                sound.clip = dead;
+                sound.Play();
                 StartCoroutine(Die());
             }
             else
@@ -133,6 +146,8 @@ public class SlimeBehavior : MonoBehaviour
         {
             //Debug.Log("Slime Destroyed");
             sucked = true;
+            sound.clip = dead;
+            sound.Play();
             slimeSpawner.SlimeDeath();
             gun.SuckedSlime(slimeColor);
             Destroy(gameObject);

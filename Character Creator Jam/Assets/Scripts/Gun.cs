@@ -39,6 +39,13 @@ public class Gun : MonoBehaviour
     private float recWidth;
     private bool canSuck = true;
     public GameObject cameraCenter;
+
+    public AudioClip suckStart;
+    public AudioClip suckEnd;
+
+    public AudioSource suck;
+    public AudioSource startEnd;
+    public AudioSource suckUp;
     //public bool canMove;
 
     // Start is called before the first frame update
@@ -128,13 +135,20 @@ public class Gun : MonoBehaviour
                 slimeColors.RemoveAt(0);
             }
         }
+        if (Input.GetMouseButtonDown(1) && canSuck)
+		{
 
-        if (Input.GetMouseButton(1) && canSuck)//Right Click
-        {
             suckParticles.SetActive(true);
             reticleAnimation.SetBool("Suck", true);
             playerAnim.SetBool("Sucking", true);
+            startEnd.clip = suckStart;
+            startEnd.Play();
+            suck.Play();
             isSucking = true;
+        }
+
+        if (Input.GetMouseButton(1) && canSuck)//Right Click
+        {
 
             List<GameObject> suckedObjects = new List<GameObject> { };
             List<float> slimeSuckPower = new List<float> { };
@@ -239,12 +253,15 @@ public class Gun : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(1))//Right Click
+        if (Input.GetMouseButtonUp(1) && isSucking)//Right Click
         {
             suckParticles.SetActive(false);
             reticleAnimation.SetBool("Suck", false);
             playerAnim.SetBool("Sucking", false);
             isSucking = false;
+            startEnd.clip = suckEnd;
+            startEnd.Play();
+            suck.Stop();
         }
 
         if (isSucking)
@@ -259,6 +276,9 @@ public class Gun : MonoBehaviour
                 reticleAnimation.SetBool("Suck", false);
                 playerAnim.SetBool("Sucking", false);
                 isSucking = false;
+                startEnd.clip = suckEnd;
+                startEnd.Play();
+                suck.Stop();
             }
             recSuckBar.sizeDelta = new Vector2((suckTimer / maxSuckTime) * recWidth, recSuckBar.rect.height);
         }
@@ -283,10 +303,9 @@ public class Gun : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         shootCooldown = true;
     }
-
-
     public void SuckedSlime(int slimeColor)
     {
+        suckUp.Play();
         if (amountOfSlime < 50f)
         {
             amountOfSlime += 20f;
