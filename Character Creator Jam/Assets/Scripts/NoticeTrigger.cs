@@ -8,7 +8,8 @@ public class NoticeTrigger : MonoBehaviour
 	public string message;
 	public float seconds = 5f;
 	private GameObject notice;
-	private bool activated = false;
+	public NoticeTrigger mainTrigger;
+	public bool activated = false;
 
     private void Start()
     {
@@ -20,14 +21,27 @@ public class NoticeTrigger : MonoBehaviour
 		if (other.CompareTag("Player") && !activated)
 		{
 			activated = true;
-			notice.transform.GetChild(0).gameObject.SetActive(true);
-			notice.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
-			StartCoroutine(DeactivateAfterSeconds());
+			if (mainTrigger == null)
+            {
+				StartCoroutine(DeactivateAfterSeconds());
+			}
+			else if (!mainTrigger.activated)
+            {
+				mainTrigger.ActivateMainNotice();
+            }
 		}
 	}
 
+	public void ActivateMainNotice()
+    {
+		activated = true;
+		StartCoroutine(DeactivateAfterSeconds());
+    }
+
 	private IEnumerator DeactivateAfterSeconds()
 	{
+		notice.transform.GetChild(0).gameObject.SetActive(true);
+		notice.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
 		yield return new WaitForSeconds(seconds);
 		notice.transform.GetChild(0).gameObject.SetActive(false);
 	}

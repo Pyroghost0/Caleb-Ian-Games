@@ -47,5 +47,9 @@ public class OutOfBounds : MonoBehaviour
         {
             Destroy(other.gameObject);
         }
+        else if (other.CompareTag("Health Kit"))
+        {
+            Destroy(other.gameObject);
+        }
     }
 }
