@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour {
     public Animator playerAnim;
     private bool jumped = false;
     private bool leftGround = false;
+    public bool nearBounce = false;
     //public bool canMove = true;
 
     void Start()
@@ -160,7 +161,7 @@ public class PlayerMovement : MonoBehaviour {
         controller.enabled = true;
         controller.Move((rigidbody.velocity - new Vector3(0f, rigidbody.velocity.y, 0f)) * Time.deltaTime);
         controller.enabled = false;
-        if (transform.position.y > previousPosition.y)
+        if (transform.position.y > previousPosition.y && !nearBounce)
         {
             rigidbody.velocity = Vector3.down;
             //Debug.Log("Previous Position: " + previousPosition + "\t\t\tRigidbody Position: " + nextPosition + "\t\t\tCortroller Position: " + transform.position);

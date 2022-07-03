@@ -9,10 +9,12 @@ public class BouncyObject : MonoBehaviour
     public bool isBounceHelper = false;
     public bool canChange = true;
     private Animator anim;
+    private PlayerMovement playerMovement;
 
 	private void Start()
 	{
         anim = transform.parent.GetComponent<Animator>();
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
 	}
 	private void OnTriggerStay(Collider other)
     {
@@ -22,13 +24,17 @@ public class BouncyObject : MonoBehaviour
             {
                 bounceObject.canChange = false;
             }
-            else if (canChange)
-            {
-                other.GetComponent<PlayerMovement>().touchingBounce = true;
-            }
             else
             {
-                other.GetComponent<PlayerMovement>().touchingBounce = false;
+                playerMovement.nearBounce = true;
+                if (canChange)
+                {
+                    playerMovement.touchingBounce = true;
+                }
+                else
+                {
+                    playerMovement.touchingBounce = false;
+                }
             }
         }
     }
@@ -43,14 +49,15 @@ public class BouncyObject : MonoBehaviour
             }
             else
             {
-                other.GetComponent<PlayerMovement>().touchingBounce = false;
+                playerMovement.nearBounce = false;
+                playerMovement.touchingBounce = false;
             }
         }
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && !playerMovement.isGrounded)
         {
             Rigidbody player = collision.gameObject.GetComponent<Rigidbody>();
             player.velocity = Vector3.up * bounce;
