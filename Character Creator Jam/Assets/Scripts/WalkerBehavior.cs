@@ -28,6 +28,7 @@ public class WalkerBehavior : MonoBehaviour
     public float turnSpeed = 1.5f;
 
     private bool isDead = false;
+    public Transform truePosition;
 
     // Start is called before the first frame update
     void Start()

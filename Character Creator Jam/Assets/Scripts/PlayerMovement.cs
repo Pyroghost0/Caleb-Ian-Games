@@ -23,6 +23,11 @@ public class PlayerMovement : MonoBehaviour {
     public float maxAngle = 45f;
     private float verticalLookRotation = 10f;
     public GameObject cameraBasisObject;
+    public Transform center;
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+    public Transform camera;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+    public float autoAimPower = 1000f;
 
     public Animator playerAnim;
     private bool jumped = false;
@@ -43,14 +48,50 @@ public class PlayerMovement : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
         isGrounded = groundChecker.inGround;
         playerAnim.SetBool("Grounded", isGrounded);
 
+        Ray centerCameraRay = new Ray(center.transform.position, center.transform.forward);
+        RaycastHit centerCameraHit;
+        Physics.Raycast(centerCameraRay, out centerCameraHit);
+        //Debug.Log("Camera: " + (centerCameraHit.collider == null ? "Nothing" : centerCameraHit.collider.name));
+        //Debug.DrawRay(center.transform.position, center.transform.forward.normalized*20f, Color.red);
+        /*Ray centerCameraRay = new Ray(camera.position, camera.forward);
+        RaycastHit centerCameraHit;
+        Physics.Raycast(centerCameraRay, out centerCameraHit);
+        Debug.Log("Camera: " + (centerCameraHit.collider == null ? "Nothing" : centerCameraHit.collider.name));
+        Debug.DrawRay(camera.transform.position, camera.transform.forward.normalized*20f, Color.red, 4f);*/
+        float vertRotation = 0f;
+        float horiRotation = 0f;
+        if (centerCameraHit.collider != null)
+        {
+            if (centerCameraHit.collider.CompareTag("Slime"))
+            {
+                Vector3 rotation = Quaternion.LookRotation(center.position - centerCameraHit.collider.transform.position).eulerAngles - new Vector3(-verticalLookRotation+5f, transform.rotation.eulerAngles.y-6f, 0f);
+                vertRotation = (rotation.x < 180f ? rotation.x : rotation.x -360f) /90f;
+                horiRotation = (rotation.y > 0? rotation.y - 180f : rotation.y + 180f)/360f;
+                //Debug.Log("Object Position: " + centerCameraHit.collider.transform.position + "\t\t\tCamera Position: " + center.position + "\nRotation: " +
+                //Quaternion.LookRotation(center.position - centerCameraHit.collider.transform.position).eulerAngles + "\t\t\tSelf Angle: " + new Vector3(-verticalLookRotation+5f, transform.rotation.eulerAngles.y-6f, 0f));
+                //Debug.Log("Rotation: " + rotation + "\t\t\tVerticle: " + vertRotation + "\t\t\tHorizontal: " + horiRotation);
+            }
+            else if (centerCameraHit.collider.CompareTag("Flyer"))
+            {
+                Vector3 rotation = Quaternion.LookRotation(center.position - centerCameraHit.collider.GetComponent<FlyerBehavior>().truePosition.position).eulerAngles - new Vector3(-verticalLookRotation + 5f, transform.rotation.eulerAngles.y - 6f, 0f);
+                vertRotation = (rotation.x < 180f ? rotation.x : rotation.x - 360f) / 90f;
+                horiRotation = (rotation.y > 0 ? rotation.y - 180f : rotation.y + 180f) / 360f;
+            }
+            else if (centerCameraHit.collider.CompareTag("Walker"))
+            {
+                Vector3 rotation = Quaternion.LookRotation(center.position - centerCameraHit.collider.GetComponent<WalkerBehavior>().truePosition.position).eulerAngles - new Vector3(-verticalLookRotation + 5f, transform.rotation.eulerAngles.y - 6f, 0f);
+                vertRotation = (rotation.x < 180f ? rotation.x : rotation.x - 360f) / 90f;
+                horiRotation = (rotation.y > 0 ? rotation.y - 180f : rotation.y + 180f) / 360f;
+            }
+        }
+
         float mouseX = Input.GetAxis("Mouse X") * mouseHorizontalSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseVirticalSensitivity * Time.deltaTime;
-        transform.Rotate(Vector3.up * mouseX);
-        verticalLookRotation -= mouseY;
+        transform.Rotate(Vector3.up * (mouseX + (horiRotation * autoAimPower * Time.deltaTime)));
+        verticalLookRotation -= mouseY + (vertRotation * autoAimPower * Time.deltaTime);
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, minAngle, maxAngle);//Cant over rotate
         playerAnim.SetFloat("Look", (verticalLookRotation * -0.0064f) + 0.44f);
         cameraBasisObject.transform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, 0f);//apply clamp
