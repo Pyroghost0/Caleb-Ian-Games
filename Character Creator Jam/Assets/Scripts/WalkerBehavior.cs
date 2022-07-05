@@ -115,8 +115,6 @@ public class WalkerBehavior : MonoBehaviour
             if (health <= 0)
             {
                 //slimeSpawner.SlimeDeath();
-                isDead = true;
-                anim.SetBool("isDead", true);
                 StartCoroutine(Die());
             }
             else
@@ -126,8 +124,15 @@ public class WalkerBehavior : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
+    public void StartDie()
+	{
+        StartCoroutine(Die());
+	}
     IEnumerator Die()
     {
+
+        isDead = true;
+        anim.SetBool("isDead", true);
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }

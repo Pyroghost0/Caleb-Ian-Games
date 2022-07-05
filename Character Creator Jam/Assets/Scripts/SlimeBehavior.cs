@@ -105,12 +105,6 @@ public class SlimeBehavior : MonoBehaviour
             health -= other.GetComponent<Bullet>().power * 25;
             if (health <= 0)
             {
-                slimeSpawner.SlimeDeath();
-                isDead = true;
-                anim.SetBool("isDead", true);
-                animInner.SetBool("isDead", true);
-                sound.clip = dead;
-                sound.Play();
                 StartCoroutine(Die());
             }
             else
@@ -120,8 +114,18 @@ public class SlimeBehavior : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
-    IEnumerator Die()
+    public void StartDie()
     {
+        StartCoroutine(Die());
+    }
+    public IEnumerator Die()
+    {
+        slimeSpawner.SlimeDeath();
+        isDead = true;
+        anim.SetBool("isDead", true);
+        animInner.SetBool("isDead", true);
+        sound.clip = dead;
+        sound.Play();
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }

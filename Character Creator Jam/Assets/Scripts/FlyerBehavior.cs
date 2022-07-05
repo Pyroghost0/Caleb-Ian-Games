@@ -112,8 +112,6 @@ public class FlyerBehavior : MonoBehaviour
             if (health <= 0)
             {
                 //slimeSpawner.SlimeDeath();
-                isDead = true;
-                anim.SetBool("isDead", true);
                 StartCoroutine(Die());
             }
             else
@@ -123,9 +121,15 @@ public class FlyerBehavior : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
-
-    IEnumerator Die()
+    public void StartDie()
+    {
+        StartCoroutine(Die());
+    }
+    public IEnumerator Die()
 	{
+
+        isDead = true;
+        anim.SetBool("isDead", true);
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
 	}

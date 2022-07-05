@@ -33,6 +33,7 @@ public class BossBehavior : MonoBehaviour
     private bool inCenter = true;
     private RectTransform rectHealthBar;
     private float rectHealth;
+    private BossMonologue bossMonologue;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +42,7 @@ public class BossBehavior : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player;
         playerController = player.GetComponent<CharacterController>();
         characterController = GetComponent<CharacterController>();
+        bossMonologue = GetComponent<BossMonologue>();
     }
 
     // Update is called once per frame
@@ -91,7 +93,7 @@ public class BossBehavior : MonoBehaviour
     public void RestartFight()
     {
         StopAllCoroutines();
-        bossAnim.Play("Idle");
+        bossAnim.SetTrigger("Restart");
         GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
         for (int i = 0; i < walkers.Length; i++)
         {
@@ -708,10 +710,33 @@ public class BossBehavior : MonoBehaviour
             rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
             if (health <= 0)
             {
-                //slimeSpawner.SlimeDeath();
-                //isDead = true;
-                //anim.SetBool("isDead", true);
-                //StartCoroutine(Die());
+                bossAnim.SetBool("isDead", true);
+                StopAllCoroutines();
+
+                for (int i = 0; i < slimeSpawners.Length; i++)
+                {
+                    slimeSpawners[i].StopAllCoroutines();
+                    slimeSpawners[i].transform.position = new Vector3(slimeSpawners[i].transform.position.x, -2f, slimeSpawners[i].transform.position.z);
+                    //slimeSpawners[i].enabled = false;
+                }
+                GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
+                for (int i = 0; i < slimes.Length; i++)
+                {
+                    slimes[i].GetComponent<SlimeBehavior>().StartDie();
+                }
+                GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
+                for (int i = 0; i < walkers.Length; i++)
+                {
+                    walkers[i].GetComponent<WalkerBehavior>().StartDie();
+                }
+                GameObject[] flyers = GameObject.FindGameObjectsWithTag("Flyer");
+                for (int i = 0; i < flyers.Length; i++)
+                {
+                    flyers[i].GetComponent<FlyerBehavior>().StartDie();
+                }
+                transform.position = spawnPosition;
+                inCenter = true;
+                bossMonologue.StartOutro();
             }
             else if (knockBack)
             {
