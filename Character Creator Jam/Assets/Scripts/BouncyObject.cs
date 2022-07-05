@@ -63,6 +63,15 @@ public class BouncyObject : MonoBehaviour
             player.velocity = Vector3.up * bounce;
             anim.SetTrigger("Bounce");
         }
+        if (collision.gameObject.CompareTag("Slime"))
+        {
+            Rigidbody slime = collision.gameObject.GetComponent<Rigidbody>();
+            if (slime.velocity.y > -1f)
+            {
+                slime.velocity = Vector3.up * bounce / 2f;
+                anim.SetTrigger("Bounce");
+            }
+        }
     }
 
     private void OnCollisionExit(Collision collision)

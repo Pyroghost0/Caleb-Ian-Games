@@ -25,6 +25,7 @@ public class PlayerStatus : MonoBehaviour
     public float maxHealth = 100f;
     public bool invincible = false;
     public float invincibleTime = 1.5f;
+    public GameObject HealthStuff;
     public GameObject healthBar;
     private RectTransform rectHealthBar;
     private float rectHealth;
@@ -531,7 +532,22 @@ public class PlayerStatus : MonoBehaviour
                 if (equipedEquipment[9] && !survivedDeathOnce)
                 {
                     survivedDeathOnce = true;
-                    yield return new WaitForSeconds(invincibleTime);
+                    float timer = 0f;
+                    float invincibleTimeWhenHit = invincibleTime;
+                    while (timer < invincibleTimeWhenHit)
+                    {
+                        if (timer % .5f >= .25f)
+                        {
+                            HealthStuff.SetActive(true);
+                        }
+                        else
+                        {
+                            HealthStuff.SetActive(false);
+                        }
+                        yield return new WaitForFixedUpdate();
+                        timer += Time.deltaTime;
+                    }
+                    HealthStuff.SetActive(true);
                     invincible = false;
                 }
                 else
@@ -564,6 +580,14 @@ public class PlayerStatus : MonoBehaviour
             float invincibleTimeWhenHit = invincibleTime;
             while (timer < invincibleTimeWhenHit && notDead && notHealing)
             {
+                if (timer % .5f >= .25f)
+                {
+                    HealthStuff.SetActive(true);
+                }
+                else
+                {
+                    HealthStuff.SetActive(false);
+                }
                 health += healthChange * Time.deltaTime / invincibleTimeWhenHit;
                 rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
                 yield return new WaitForFixedUpdate();
@@ -576,6 +600,14 @@ public class PlayerStatus : MonoBehaviour
             }
             while (timer < invincibleTimeWhenHit && notDead)
             {
+                if (timer % .5f >= .25f)
+                {
+                    HealthStuff.SetActive(true);
+                }
+                else
+                {
+                    HealthStuff.SetActive(false);
+                }
                 yield return new WaitForFixedUpdate();
                 timer += Time.deltaTime;
             }

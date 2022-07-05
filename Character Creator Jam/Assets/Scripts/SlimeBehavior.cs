@@ -84,7 +84,14 @@ public class SlimeBehavior : MonoBehaviour
             }
             yield return new WaitForSeconds(.3f);
             yield return new WaitUntil(() => (groundChecker.inGround));
-            rigidbody.velocity = Vector3.zero;
+            if (!groundChecker.onIce)
+            {
+                rigidbody.velocity = Vector3.zero;
+            }
+            else
+            {
+                rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
+            }
             anim.SetBool("isGrounded", true);
             animInner.SetBool("isGrounded", true);
 
