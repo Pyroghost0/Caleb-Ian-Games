@@ -14,6 +14,18 @@ public static class SaveLoad
 		bf.Serialize(file, data);
 		file.Close();
 	}
+	public static void ClearData()
+	{
+		int[] data = new int[25];
+		for (int i = 0; i < 25; i++)
+		{
+			data[i] = 0;
+		}
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create(Application.persistentDataPath + "/saveData.gd");
+		bf.Serialize(file, data);
+		file.Close();
+	}
 	public static int[] Load()
 	{
 		if (File.Exists(Application.persistentDataPath + "/saveData.gd"))

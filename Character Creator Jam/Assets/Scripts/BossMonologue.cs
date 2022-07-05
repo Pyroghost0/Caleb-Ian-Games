@@ -216,7 +216,7 @@ public class BossMonologue : MonoBehaviour
         playerMovement.playerAnim.SetFloat("MoveY", 0);
         playerMovement.enabled = false;
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        player.GetComponent<PlayerStatus>().defeatedBoss = true;
+        player.GetComponent<PlayerStatus>().DefeatBoss();
         playerCanvas.SetActive(false);
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = false;
         Cursor.lockState = CursorLockMode.None;

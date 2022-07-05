@@ -32,16 +32,19 @@ public class DoorPortal : MonoBehaviour
             }
             other.gameObject.transform.position = Vector3.zero;
             other.gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+            other.GetComponent<PlayerMovement>().groundChecker.inGround = false;
+            
             if (!isDressUpDoor)
 			{
+                other.GetComponent<AudioManager>().ChangeScene("Dress Up Room");
+                other.GetComponent<PlayerStatus>().CompletedLevel(currentSceneName);
                 StartCoroutine(LoadDressUpRoom());
 			}
 			else
 			{
-                SceneManager.LoadSceneAsync(nextSceneName, LoadSceneMode.Additive);
-                other.GetComponent<PlayerMovement>().groundChecker.inGround = false;
                 other.GetComponent<AudioManager>().ChangeScene(nextSceneName);
-                SceneManager.UnloadSceneAsync("Dress Up Room");
+                StartCoroutine(LoadLevel());
             }
             
         }
@@ -51,9 +54,12 @@ public class DoorPortal : MonoBehaviour
         AsyncOperation ao1 = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao1.isDone);
         GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = nextSceneName;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().groundChecker.inGround = false;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Dress Up Room");
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>().CompletedLevel(currentSceneName);
         SceneManager.UnloadSceneAsync(currentSceneName);
+    }
+    private IEnumerator LoadLevel()
+	{
+        AsyncOperation ao1 = SceneManager.LoadSceneAsync(nextSceneName, LoadSceneMode.Additive);
+        yield return new WaitUntil(() => ao1.isDone);
+        SceneManager.UnloadSceneAsync("Dress Up Room");
     }
 }

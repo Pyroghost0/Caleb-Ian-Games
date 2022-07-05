@@ -293,10 +293,7 @@ public class CharacterCreatorManager : MonoBehaviour
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
             GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Tutorial");
-            if (level == "Tutorial")
-			{
-                playerStatus.isTutorial = true;
-            }
+            playerStatus.isTutorial = true;
             playerStatus.changeCharacter();
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
         }
@@ -311,15 +308,8 @@ public class CharacterCreatorManager : MonoBehaviour
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
             GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Dress Up Room");
-            if (level == "Tutorial")
-            {
-                playerStatus.isTutorial = true;
-            }
             playerStatus.changeCharacter();
-            for (int i = 0; i < playerStatus.equipmentUnlocked.Length; i++)
-            {
-                playerStatus.equipmentUnlocked[i] = true;
-            }
+            playerStatus.LoadData(false);
             AsyncOperation ao2 = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
             yield return new WaitUntil(() => ao2.isDone);
             GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = level;
@@ -339,6 +329,10 @@ public class CharacterCreatorManager : MonoBehaviour
             if (level == "Tutorial")
             {
                 playerStatus.isTutorial = true;
+			}
+			else
+			{
+                playerStatus.LoadData(false);
             }
             playerStatus.changeCharacter();
             AsyncOperation ao2 = SceneManager.LoadSceneAsync(level, LoadSceneMode.Additive);

@@ -38,12 +38,12 @@ public class DressUpManager : MonoBehaviour
 			}
 		}
         if (playerStatus.defeatedBoss)
-		{
+        {
             mainDoor.SetActive(false);
             fakeWalls.SetActive(false);
             extraDoors.SetActive(true);
             //DisplayMessage();
-		}
+        }
     }
     private void DisplayMessage()
 	{

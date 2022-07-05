@@ -20,13 +20,38 @@ public class MainScreenManager : MonoBehaviour
 
     public void EnterLevelSelect()
     {
-        for (int i = 0; i < buttons1.Length; i++)
+        Debug.Log("Loading");
+        int[] data = SaveLoad.Load();
+        if (data == null)
+		{
+            Debug.Log("No Save Data");
+            for (int i = 0; i < buttons1.Length; i++)
+            {
+                buttons1[i].SetActive(false);
+            }
+            buttons2[7].SetActive(true);
+		}
+		else
         {
-            buttons1[i].SetActive(false);
-        }
-        for (int i = 0; i < buttons2.Length; i++)
-        {
-            buttons2[i].SetActive(true);
+            Debug.Log("Loaded Save Data");
+            for (int i = 0; i < buttons1.Length; i++)
+            {
+                buttons1[i].SetActive(false);
+            }
+            for (int i = 0; i < buttons2.Length - 3; i++)
+            {
+                if (data[i + 20] == 0)
+				{
+                    buttons2[i].SetActive(false);
+				}
+				else
+				{
+                    buttons2[i].SetActive(true);
+                }
+            }
+            buttons2[5].SetActive(true);
+            buttons2[6].SetActive(true);
+            buttons2[7].SetActive(true);
         }
     }
 
@@ -65,12 +90,11 @@ public class MainScreenManager : MonoBehaviour
     {
         AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao1.isDone);
+
         PlayerStatus player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+        player.LoadData(false);
         GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Dress Up Room");
-        for (int i = 0; i < player.equipmentUnlocked.Length; i++)
-        {
-            player.equipmentUnlocked[i] = true;
-        }
+ 
         AsyncOperation ao2 = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao2.isDone);
         GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = sceneName;
@@ -82,7 +106,12 @@ public class MainScreenManager : MonoBehaviour
     {
         AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao1.isDone);
+        PlayerStatus player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
         GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene(sceneName);
+        if (sceneName != "Tutorial")
+        {
+            player.LoadData(false);
+        }
         AsyncOperation ao2 = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao2.isDone);
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Main Screen"));
