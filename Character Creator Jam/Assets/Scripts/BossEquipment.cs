@@ -18,24 +18,23 @@ public class BossEquipment : MonoBehaviour
         playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
         if (playerStatus.isMale)
 		{
-            isMale = false;
-            for (int i = 0; i < femaleObjects.Length; i++)
+            isMale = true;
+            for (int i = 0; i < maleObjects.Length; i++)
 			{
-                femaleObjects[i].SetActive(true);
-                maleObjects[i].SetActive(false);
+                femaleObjects[i].SetActive(false);
+                maleObjects[i].SetActive(true);
             }
 		}
 		else
 		{
-            isMale = true;
+            isMale = false;
             for (int i = 0; i < femaleObjects.Length; i++)
             {
-                femaleObjects[i].SetActive(false);
-                maleObjects[i].SetActive(true);
+                femaleObjects[i].SetActive(true);
+                maleObjects[i].SetActive(false);
             }
         }
-        offset = 0;
-        if (isMale) offset = 12;
+        offset = isMale? 12 : 0;
 
         if (playerStatus.equipedEquipment[0] == false && playerStatus.equipedEquipment[1] == false && playerStatus.equipedEquipment[2] == false)
 		{

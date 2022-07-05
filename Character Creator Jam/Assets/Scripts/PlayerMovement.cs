@@ -56,11 +56,6 @@ public class PlayerMovement : MonoBehaviour {
         Physics.Raycast(centerCameraRay, out centerCameraHit);
         //Debug.Log("Camera: " + (centerCameraHit.collider == null ? "Nothing" : centerCameraHit.collider.name));
         //Debug.DrawRay(center.transform.position, center.transform.forward.normalized*20f, Color.red);
-        /*Ray centerCameraRay = new Ray(camera.position, camera.forward);
-        RaycastHit centerCameraHit;
-        Physics.Raycast(centerCameraRay, out centerCameraHit);
-        Debug.Log("Camera: " + (centerCameraHit.collider == null ? "Nothing" : centerCameraHit.collider.name));
-        Debug.DrawRay(camera.transform.position, camera.transform.forward.normalized*20f, Color.red, 4f);*/
         float vertRotation = 0f;
         float horiRotation = 0f;
         if (centerCameraHit.collider != null)
@@ -78,13 +73,19 @@ public class PlayerMovement : MonoBehaviour {
             {
                 Vector3 rotation = Quaternion.LookRotation(center.position - centerCameraHit.collider.GetComponent<FlyerBehavior>().truePosition.position).eulerAngles - new Vector3(-verticalLookRotation + 5f, transform.rotation.eulerAngles.y - 6f, 0f);
                 vertRotation = (rotation.x < 180f ? rotation.x : rotation.x - 360f) / 90f;
-                horiRotation = (rotation.y > 0 ? rotation.y - 180f : rotation.y + 180f) / 360f;
+                horiRotation = (rotation.y > 0 ? rotation.y - 180f : rotation.y + 180f) / 90;
             }
             else if (centerCameraHit.collider.CompareTag("Walker"))
             {
                 Vector3 rotation = Quaternion.LookRotation(center.position - centerCameraHit.collider.GetComponent<WalkerBehavior>().truePosition.position).eulerAngles - new Vector3(-verticalLookRotation + 5f, transform.rotation.eulerAngles.y - 6f, 0f);
-                vertRotation = (rotation.x < 180f ? rotation.x : rotation.x - 360f) / 90f;
+                vertRotation = (rotation.x < 180f ? rotation.x : rotation.x - 360f) / 360f;
                 horiRotation = (rotation.y > 0 ? rotation.y - 180f : rotation.y + 180f) / 360f;
+            }
+            else if (centerCameraHit.collider.CompareTag("Boss"))
+            {
+                Vector3 rotation = Quaternion.LookRotation(center.position - centerCameraHit.collider.GetComponent<BossBehavior>().truePosition.position).eulerAngles - new Vector3(-verticalLookRotation + 5f, transform.rotation.eulerAngles.y - 6f, 0f);
+                vertRotation = (rotation.x < 180f ? rotation.x : rotation.x - 360f) / 360f;
+                horiRotation = (rotation.y > 0 ? rotation.y - 180f : rotation.y + 180f) / 90f;
             }
         }
 

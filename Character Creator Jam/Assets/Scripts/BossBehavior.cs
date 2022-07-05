@@ -20,6 +20,7 @@ public class BossBehavior : MonoBehaviour
     public GameObject singleSuckParticles;
     public GameObject wideSuckParticles;
     public Animator bossAnim;
+    public Transform truePosition;
 
     private Vector3 pipeDistence = new Vector3(0f, 1.5f, 0f);
     private Vector3 otherPipeDistence = new Vector3(0f, 3.5f, 0f);
@@ -630,7 +631,7 @@ public class BossBehavior : MonoBehaviour
                 }
             }
             playerController.enabled = true;
-            playerController.Move((spawnPosition - player.transform.position).normalized * 15f * Time.deltaTime);
+            playerController.Move((spawnPosition - player.transform.position).normalized * 11f * Time.deltaTime);
             playerController.enabled = false;
             yield return new WaitForFixedUpdate();
             timer += Time.deltaTime;
@@ -717,7 +718,7 @@ public class BossBehavior : MonoBehaviour
                 inCenter = false;
                 Vector3 direction = other.transform.rotation * other.GetComponent<Bullet>().movement;
                 direction.y = 0f;
-                StartCoroutine(Knockback(direction * other.GetComponent<Bullet>().power * .3f));
+                StartCoroutine(Knockback(direction * other.GetComponent<Bullet>().power * .1f));
             }
             Destroy(other.gameObject);
         }
