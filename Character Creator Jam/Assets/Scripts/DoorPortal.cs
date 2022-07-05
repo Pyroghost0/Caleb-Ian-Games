@@ -53,6 +53,7 @@ public class DoorPortal : MonoBehaviour
         GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = nextSceneName;
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().groundChecker.inGround = false;
         GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Dress Up Room");
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>().CompletedLevel(currentSceneName);
         SceneManager.UnloadSceneAsync(currentSceneName);
     }
 }

@@ -12,6 +12,8 @@ public class BossMonologue : MonoBehaviour
     public GameObject noButton;
     public GameObject continueButton;
     private GameObject player;
+    private PlayerMovement playerMovement;
+    private GameObject playerCanvas;
     public BossEquipment bossEquipment;
     public BossBehavior bossBehavior;
 
@@ -77,6 +79,8 @@ public class BossMonologue : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerMovement = player.GetComponent<PlayerMovement>();
+        playerCanvas = GameObject.FindGameObjectWithTag("Player Canvas");
         audioManager = player.GetComponent<AudioManager>();
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
@@ -129,10 +133,11 @@ public class BossMonologue : MonoBehaviour
         ChangeText(0);
         yield return new WaitForSeconds(2f);
         ChangeText(1);
-        player.GetComponent<PlayerMovement>().enabled = false;
-        player.GetComponent<PlayerMovement>().playerAnim.SetFloat("MoveX", 0);
-        player.GetComponent<PlayerMovement>().playerAnim.SetFloat("MoveY", 0);
+        playerMovement.playerAnim.SetFloat("MoveX", 0);
+        playerMovement.playerAnim.SetFloat("MoveY", 0);
+        playerMovement.enabled = false;
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        playerCanvas.SetActive(false);
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = false;
         Cursor.lockState = CursorLockMode.None;
         mainCamera.SetActive(false);
@@ -181,7 +186,8 @@ public class BossMonologue : MonoBehaviour
         buttonClicked = 0;
         yield return new WaitForSeconds(1f);
         Cursor.lockState = CursorLockMode.Locked;
-        player.GetComponent<PlayerMovement>().enabled = true;
+        playerMovement.enabled = true;
+        playerCanvas.SetActive(true);
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = true;
         yield return new WaitForSeconds(1f);
         audioManager.BgmRestart();
@@ -205,11 +211,12 @@ public class BossMonologue : MonoBehaviour
         bossBehavior.enabled = false;
         
         yield return new WaitForSeconds(2f);
-
-        player.GetComponent<PlayerMovement>().enabled = false;
-        player.GetComponent<PlayerMovement>().playerAnim.SetFloat("MoveX", 0);
-        player.GetComponent<PlayerMovement>().playerAnim.SetFloat("MoveY", 0);
+        playerMovement.playerAnim.SetFloat("MoveX", 0);
+        playerMovement.playerAnim.SetFloat("MoveY", 0);
+        playerMovement.enabled = false;
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        player.GetComponent<PlayerStatus>().defeatedBoss = true;
+        playerCanvas.SetActive(false);
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = false;
         Cursor.lockState = CursorLockMode.None;
         mainCamera.SetActive(false);
@@ -227,7 +234,8 @@ public class BossMonologue : MonoBehaviour
         yield return new WaitUntil(() => buttonClicked > 0);
 
         Cursor.lockState = CursorLockMode.Locked;
-        player.GetComponent<PlayerMovement>().enabled = true;
+        playerMovement.enabled = true;
+        playerCanvas.SetActive(true);
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = true;
         yield return new WaitForSeconds(1f);
         panel.SetActive(false);

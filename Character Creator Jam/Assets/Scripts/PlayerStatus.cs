@@ -5,11 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStatus : MonoBehaviour
 {
-
+    //data to save
     public bool isMale = false;
     public int headNumber = 1;
     public int skinColor = 0;
     public int hairColor = 0;
+    public bool[] equipmentUnlocked;
+    public bool[] setsCompleted;
+    public bool[] levelsCompleted;
+    public bool defeatedBoss = false;
+
+    //other data
     public GameObject[] maleObjects;
     public GameObject[] femaleObjects;
     public GameObject[] maleFaces;
@@ -40,8 +46,6 @@ public class PlayerStatus : MonoBehaviour
 
     public bool isTutorial = false;
     public GameObject currentSpawnPosition;
-    public bool[] equipmentUnlocked;
-
     private Animator playerAnim;
     private AudioManager audioManager;
 
@@ -79,7 +83,71 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
-    public void Equip(Equipment equipment)
+    public void CompletedLevel(string levelName)
+	{
+        if (levelName == "Mech Level")
+		{
+            levelsCompleted[0] = true;
+		}
+        else if (levelName == "Deer Level")
+        {
+            levelsCompleted[1] = true;
+        }
+        else if (levelName == "Baker Level")
+        {
+            levelsCompleted[2] = true;
+        }
+        else if (levelName == "POTUS Level")
+        {
+            levelsCompleted[3] = true;
+        }
+        Save();
+    }
+	private void Save()
+	{
+        int[] data = new int[25];
+        data[0] = isMale ? 1 : 0;
+        data[1] = headNumber;
+        data[2] = skinColor;
+        data[3] = hairColor;
+        for (int i = 0; i < 12; i++)
+        {
+            data[i + 4] = equipmentUnlocked[i] ? 1 : 0;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            data[i + 16] = setsCompleted[i] ? 1 : 0;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            data[i + 20] = levelsCompleted[i] ? 1 : 0;
+        }
+        data[24] = defeatedBoss ? 1 : 0;
+        SaveLoad.Save(data);
+    }
+	private void Load()
+	{
+        int[] data = SaveLoad.Load();
+        isMale = (data[0] > 0);
+        headNumber = data[1];
+        skinColor = data[2];
+        hairColor = data[3];
+        for (int i = 0; i < 12; i++)
+        {
+            equipmentUnlocked[i] = (data[i + 4] > 0);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            setsCompleted[i] = (data[i + 16] > 0);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            levelsCompleted[i] = (data[i + 20] > 0);
+        }
+        defeatedBoss = (data[24] > 0);
+    }
+
+	public void Equip(Equipment equipment)
     {
         if (equipment.clothingType == "Head")
         {
@@ -244,6 +312,36 @@ public class PlayerStatus : MonoBehaviour
             }
             selfEquipment[id].SetActive(true);
         }
+
+        if (equipment.clothingStyle == "Mech" && !setsCompleted[0])
+		{
+            if (equipmentUnlocked[0] && equipmentUnlocked[1] && equipmentUnlocked[2])
+            {
+                setsCompleted[0] = true;
+            }
+        }
+        if (equipment.clothingStyle == "Deer" && !setsCompleted[1])
+        {
+            if (equipmentUnlocked[3] && equipmentUnlocked[4] && equipmentUnlocked[5])
+            {
+                setsCompleted[1] = true;
+            }
+        }
+        if (equipment.clothingStyle == "Baker" && !setsCompleted[2])
+        {
+            if (equipmentUnlocked[6] && equipmentUnlocked[7] && equipmentUnlocked[8])
+            {
+                setsCompleted[2] = true;
+            }
+        }
+        if (equipment.clothingStyle == "POTUS" && !setsCompleted[3])
+        {
+            if (equipmentUnlocked[9] && equipmentUnlocked[10] && equipmentUnlocked[11])
+            {
+                setsCompleted[3] = true;
+            }
+        }
+
         Destroy(equipment.gameObject);
     }
 
