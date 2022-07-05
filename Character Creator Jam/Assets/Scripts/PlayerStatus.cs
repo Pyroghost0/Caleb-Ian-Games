@@ -13,7 +13,7 @@ public class PlayerStatus : MonoBehaviour
     public bool[] equipmentUnlocked;
     public bool[] setsCompleted;
     public bool[] levelsCompleted;
-    public bool defeatedBoss = false;
+    private bool defeatedBoss = false;
 
     //other data
     public GameObject[] maleObjects;
@@ -106,27 +106,37 @@ public class PlayerStatus : MonoBehaviour
     }
 	private void Save()
 	{
-        int[] data = new int[25];
+        int[] data = SaveLoad.Load();
+        if (data == null)
+		{
+            data = new int[25];
+		}
         data[0] = isMale ? 1 : 0;
         data[1] = headNumber;
         data[2] = skinColor;
         data[3] = hairColor;
         for (int i = 0; i < 12; i++)
         {
-            data[i + 4] = equipmentUnlocked[i] ? 1 : 0;
+            if (data[i + 4] == 0)
+                data[i + 4] = equipmentUnlocked[i] ? 1 : 0;
         }
         for (int i = 0; i < 4; i++)
         {
-            data[i + 16] = setsCompleted[i] ? 1 : 0;
+
+            if (data[i + 16] == 0)
+                data[i + 16] = setsCompleted[i] ? 1 : 0;
         }
         for (int i = 0; i < 4; i++)
         {
-            data[i + 20] = levelsCompleted[i] ? 1 : 0;
+
+            if (data[i + 20] == 0)
+                data[i + 20] = levelsCompleted[i] ? 1 : 0;
         }
-        data[24] = defeatedBoss ? 1 : 0;
+        if (data[24] == 0)
+            data[24] = defeatedBoss ? 1 : 0;
         SaveLoad.Save(data);
     }
-	private void Load()
+	public void LoadData(bool playthrough)
 	{
         int[] data = SaveLoad.Load();
         isMale = (data[0] > 0);
@@ -145,9 +155,12 @@ public class PlayerStatus : MonoBehaviour
         {
             levelsCompleted[i] = (data[i + 20] > 0);
         }
-        defeatedBoss = (data[24] > 0);
+        defeatedBoss = playthrough && (data[24] > 0);
     }
-
+    public void DefeatBoss()
+	{
+        defeatedBoss = true;
+	}
 	public void Equip(Equipment equipment)
     {
         if (equipment.clothingType == "Head")
