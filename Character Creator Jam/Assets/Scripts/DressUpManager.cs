@@ -37,7 +37,7 @@ public class DressUpManager : MonoBehaviour
                 equipment[i].transform.GetChild(0).gameObject.SetActive(false);
 			}
 		}
-        if (playerStatus.defeatedBoss)
+        if (playerStatus.bossDefeated())
         {
             mainDoor.SetActive(false);
             fakeWalls.SetActive(false);

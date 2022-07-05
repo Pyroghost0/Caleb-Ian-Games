@@ -161,6 +161,10 @@ public class PlayerStatus : MonoBehaviour
 	{
         defeatedBoss = true;
 	}
+    public bool bossDefeated()
+	{
+        return defeatedBoss;
+	}
 	public void Equip(Equipment equipment)
     {
         if (equipment.clothingType == "Head")
