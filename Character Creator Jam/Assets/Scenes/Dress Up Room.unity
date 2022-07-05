@@ -606,6 +606,9 @@ MonoBehaviour:
   mainDoor: {fileID: 2073727304}
   fakeWalls: {fileID: 717332806}
   extraDoors: {fileID: 56230282}
+  dressUpCanvas: {fileID: 2094459138}
+  text: {fileID: 917914325}
+  optionalText: {fileID: 304609117}
 --- !u!1 &105641220
 GameObject:
   m_ObjectHideFlags: 0
@@ -2560,7 +2563,7 @@ GameObject:
   - component: {fileID: 290463373}
   - component: {fileID: 290463372}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Continue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2628,7 +2631,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 290463373}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 74201225}
+        m_TargetAssemblyTypeName: DressUpManager, Assembly-CSharp
+        m_MethodName: Continue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &290463373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2715,7 +2730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &304609118
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6586,7 +6601,7 @@ GameObject:
   - component: {fileID: 1007900345}
   - component: {fileID: 1007900344}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: MainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6654,7 +6669,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1007900345}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 74201225}
+        m_TargetAssemblyTypeName: DressUpManager, Assembly-CSharp
+        m_MethodName: MainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1007900345
 MonoBehaviour:
   m_ObjectHideFlags: 0

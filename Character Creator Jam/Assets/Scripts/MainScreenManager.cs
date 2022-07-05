@@ -11,8 +11,41 @@ public class MainScreenManager : MonoBehaviour
     public bool selectCostume = false;
     public GameObject characterBlackPart;
     public GameObject costumeBlackPart;
+    public GameObject text100;
 
-    public void StartGame()
+    private int[] data;
+    private bool isData;
+    private bool fullCompletion = false;
+	public void Start()
+	{
+        data = SaveLoad.Load();
+        if (data == null)
+        {
+            isData = false;
+            data = new int[25];
+            for (int i = 0; i < 25; i++)
+            {
+                data[i] = 0;
+            }
+        }
+        else
+        {
+            isData = true;
+            fullCompletion = true;
+            for (int i = 4; i < data.Length; i++)
+            {
+                if (data[i] < 1)
+                {
+                    fullCompletion = false;
+                }
+            }
+            if (fullCompletion == true)
+            {
+                text100.SetActive(true);
+            }
+        }
+    }
+	public void StartGame()
     {
         selectCharacter = true;
         LoadLevel("Tutorial");
@@ -20,9 +53,7 @@ public class MainScreenManager : MonoBehaviour
 
     public void EnterLevelSelect()
     {
-        Debug.Log("Loading");
-        int[] data = SaveLoad.Load();
-        if (data == null)
+        if (!isData)
 		{
             Debug.Log("No Save Data");
             for (int i = 0; i < buttons1.Length; i++)
