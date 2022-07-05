@@ -34,6 +34,7 @@ public class BossBehavior : MonoBehaviour
     private RectTransform rectHealthBar;
     private float rectHealth;
     private BossMonologue bossMonologue;
+    private bool killed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -92,38 +93,41 @@ public class BossBehavior : MonoBehaviour
 
     public void RestartFight()
     {
-        StopAllCoroutines();
-        bossAnim.SetTrigger("Restart");
-        GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
-        for (int i = 0; i < walkers.Length; i++)
+        if (!killed)
         {
-            Destroy(walkers[i]);
+            StopAllCoroutines();
+            bossAnim.SetTrigger("Restart");
+            GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
+            for (int i = 0; i < walkers.Length; i++)
+            {
+                Destroy(walkers[i]);
+            }
+            GameObject[] flyers = GameObject.FindGameObjectsWithTag("Flyer");
+            for (int i = 0; i < flyers.Length; i++)
+            {
+                Destroy(flyers[i]);
+            }
+            health = maxHealth;
+            rectHealthBar.sizeDelta = new Vector2(rectHealth, rectHealthBar.rect.height);
+            inCenter = true;
+            knockBack = true;
+            transform.position = spawnPosition;
+            singleSuckParticles.SetActive(false);
+            wideSuckParticles.SetActive(false);
+            for (int i = 0; i < slimeSpawners.Length; i++)
+            {
+                slimeSpawners[i].transform.position = new Vector3(slimeSpawners[i].transform.position.x, -2f, slimeSpawners[i].transform.position.z);
+            }
+            for (int i = 0; i < walkerSpawners.Length; i++)
+            {
+                walkerSpawners[i].transform.position = new Vector3(walkerSpawners[i].transform.position.x, -4f, walkerSpawners[i].transform.position.z);
+            }
+            for (int i = 0; i < flyerSpawners.Length; i++)
+            {
+                flyerSpawners[i].transform.position = new Vector3(flyerSpawners[i].transform.position.x, -4f, flyerSpawners[i].transform.position.z);
+            }
+            StartCoroutine(BossActive());
         }
-        GameObject[] flyers = GameObject.FindGameObjectsWithTag("Flyer");
-        for (int i = 0; i < flyers.Length; i++)
-        {
-            Destroy(flyers[i]);
-        }
-        health = maxHealth;
-        rectHealthBar.sizeDelta = new Vector2(rectHealth, rectHealthBar.rect.height);
-        inCenter = true;
-        knockBack = true;
-        transform.position = spawnPosition;
-        singleSuckParticles.SetActive(false);
-        wideSuckParticles.SetActive(false);
-        for (int i = 0; i < slimeSpawners.Length; i++)
-        {
-            slimeSpawners[i].transform.position = new Vector3(slimeSpawners[i].transform.position.x, -2f, slimeSpawners[i].transform.position.z);
-        }
-        for (int i = 0; i < walkerSpawners.Length; i++)
-        {
-            walkerSpawners[i].transform.position = new Vector3(walkerSpawners[i].transform.position.x, -4f, walkerSpawners[i].transform.position.z);
-        }
-        for (int i = 0; i < flyerSpawners.Length; i++)
-        {
-            flyerSpawners[i].transform.position = new Vector3(flyerSpawners[i].transform.position.x, -4f, flyerSpawners[i].transform.position.z);
-        }
-        StartCoroutine(BossActive());
     }
 
     IEnumerator BossActive()
@@ -704,35 +708,37 @@ public class BossBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Bullet") && !other.GetComponent<Bullet>().bossBullet)
+        if (other.CompareTag("Bullet") && !other.GetComponent<Bullet>().bossBullet && !killed)
         {
             health -= other.GetComponent<Bullet>().power * 25;
             rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
             if (health <= 0)
             {
+                killed = true;
                 bossAnim.SetBool("isDead", true);
+                singleSuckParticles.SetActive(false);
+                wideSuckParticles.SetActive(false);
+                truePosition.localPosition = Vector3.zero;
                 StopAllCoroutines();
 
                 for (int i = 0; i < slimeSpawners.Length; i++)
                 {
-                    slimeSpawners[i].StopAllCoroutines();
                     slimeSpawners[i].transform.position = new Vector3(slimeSpawners[i].transform.position.x, -2f, slimeSpawners[i].transform.position.z);
-                    //slimeSpawners[i].enabled = false;
                 }
                 GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
                 for (int i = 0; i < slimes.Length; i++)
                 {
-                    slimes[i].GetComponent<SlimeBehavior>().StartDie();
+                    Destroy(slimes[i]);
                 }
                 GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
                 for (int i = 0; i < walkers.Length; i++)
                 {
-                    walkers[i].GetComponent<WalkerBehavior>().StartDie();
+                    Destroy(walkers[i]);
                 }
                 GameObject[] flyers = GameObject.FindGameObjectsWithTag("Flyer");
                 for (int i = 0; i < flyers.Length; i++)
                 {
-                    flyers[i].GetComponent<FlyerBehavior>().StartDie();
+                    Destroy(flyers[i]);
                 }
                 transform.position = spawnPosition;
                 inCenter = true;

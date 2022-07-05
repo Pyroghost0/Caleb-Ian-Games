@@ -209,7 +209,8 @@ public class BossMonologue : MonoBehaviour
     private IEnumerator OutroProgress()
 	{
         bossBehavior.enabled = false;
-        
+        player.GetComponent<PlayerStatus>().HealHealth(200f);
+
         yield return new WaitForSeconds(2f);
         playerMovement.playerAnim.SetFloat("MoveX", 0);
         playerMovement.playerAnim.SetFloat("MoveY", 0);
@@ -236,14 +237,14 @@ public class BossMonologue : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         playerMovement.enabled = true;
         playerCanvas.SetActive(true);
-        player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = true;
-        yield return new WaitForSeconds(1f);
-        panel.SetActive(false);
         GameObject bossBar = GameObject.FindGameObjectWithTag("Boss Health Bar");
         for (int i = 0; i < bossBar.transform.childCount; i++)
         {
             bossBar.transform.GetChild(i).gameObject.SetActive(false);
         }
+        player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = true;
+        yield return new WaitForSeconds(2f);
+        panel.SetActive(false);
         bossCamera.SetActive(false);
         mainCamera.SetActive(true);
         endingWall.SetActive(false);
