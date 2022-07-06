@@ -288,7 +288,7 @@ public class Gun : MonoBehaviour
             if (suckTimer <= 0f)
             {
                 canSuck = true;
-                recSuckBar.gameObject.SetActive(true);
+                recSuckBar.gameObject.SetActive(false);
             }
             else
             {
@@ -300,7 +300,7 @@ public class Gun : MonoBehaviour
     IEnumerator ShootCooldown()
     {
         shootCooldown = false;
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(1f);
         shootCooldown = true;
     }
     public void SuckedSlime(int slimeColor)
