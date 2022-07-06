@@ -30,17 +30,21 @@ public class BossBehavior : MonoBehaviour
     private CharacterController characterController;
     private CharacterController playerController;
     private GameObject player;
+    private Transform playerTruePosition;
     private bool inCenter = true;
     private RectTransform rectHealthBar;
     private float rectHealth;
     private BossMonologue bossMonologue;
     private bool killed = false;
+    List<Transform> wideSlimesTransform = new List<Transform>();
+    List<Rigidbody> wideSlimesRigidbody = new List<Rigidbody>();
 
     // Start is called before the first frame update
     void Start()
     {
         spawnPosition = transform.position;
         player = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player;
+        playerTruePosition = player.GetComponent<PlayerStatus>().truePosition;
         playerController = player.GetComponent<CharacterController>();
         characterController = GetComponent<CharacterController>();
         bossMonologue = GetComponent<BossMonologue>();
@@ -497,7 +501,7 @@ public class BossBehavior : MonoBehaviour
             for (int i = 0; i < numShots; i++)
             {
                 bossAnim.SetTrigger("Shoot");
-                GameObject bullet = Instantiate(bulletPrefab, bulletSpawnSpot.position, Quaternion.LookRotation(player.transform.position - bulletSpawnSpot.position));
+                GameObject bullet = Instantiate(bulletPrefab, bulletSpawnSpot.position, Quaternion.LookRotation(playerTruePosition.position - bulletSpawnSpot.position));
                 yield return new WaitForSeconds(Random.Range(shotDelayMin, shotDelayMax));
             }
             bossAnim.SetTrigger("EndAction");
@@ -587,12 +591,12 @@ public class BossBehavior : MonoBehaviour
         wideSuckParticles.SetActive(true);
         bossAnim.SetTrigger("WideSuck");
         GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
-        List<Transform> slimesTransform = new List<Transform>();
-        List<Rigidbody> slimesRigidbody = new List<Rigidbody>();
+        wideSlimesTransform = new List<Transform>();
+        wideSlimesRigidbody = new List<Rigidbody>();
         for (int i = 0; i < slimes.Length; i++)
         {
-            slimesTransform.Add(slimes[i].transform);
-            slimesRigidbody.Add(slimes[i].GetComponent<Rigidbody>());
+            wideSlimesTransform.Add(slimes[i].transform);
+            wideSlimesRigidbody.Add(slimes[i].GetComponent<Rigidbody>());
         }
         GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
         List<Transform> walkersTransform = new List<Transform>();
@@ -613,11 +617,11 @@ public class BossBehavior : MonoBehaviour
         timer = 0f;
         while (timer < suckingSeconds)
         {
-            for (int i = 0; i < slimes.Length; i++)
+            for (int i = 0; i < wideSlimesTransform.Count; i++)
             {
-                if (slimesTransform[i] != null)
+                if (wideSlimesTransform[i] != null)
                 {
-                    slimesRigidbody[i].AddForce((spawnPosition - slimesTransform[i].position).normalized * 1500f * Time.deltaTime, ForceMode.Force);
+                    wideSlimesRigidbody[i].AddForce((spawnPosition - wideSlimesTransform[i].position).normalized * 1500f * Time.deltaTime, ForceMode.Force);
                 }
             }
             for (int i = 0; i < walkers.Length; i++)
@@ -671,7 +675,9 @@ public class BossBehavior : MonoBehaviour
         pipe.position = new Vector3(pipe.transform.position.x, -.5f, pipe.position.z);
         timer = 0f;
         yield return new WaitForSeconds(seconds / 6f);
-        slimeSpawner.SpawnSlime();
+        GameObject slime = slimeSpawner.SpawnSlime();
+        wideSlimesTransform.Add(slime.transform);
+        wideSlimesRigidbody.Add(slime.GetComponent<Rigidbody>());
         yield return new WaitForSeconds(seconds / 6f);
         while (timer < seconds / 3f)
         {

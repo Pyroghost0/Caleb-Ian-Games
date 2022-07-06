@@ -49,7 +49,7 @@ public class PlayerStatus : MonoBehaviour
     public GameObject currentSpawnPosition;
     private Animator playerAnim;
     private AudioManager audioManager;
-
+    public Transform truePosition;
 
     // Start is called before the first frame update
     void Start()

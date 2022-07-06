@@ -300,7 +300,7 @@ public class Gun : MonoBehaviour
     IEnumerator ShootCooldown()
     {
         shootCooldown = false;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.6f);
         shootCooldown = true;
     }
     public void SuckedSlime(int slimeColor)

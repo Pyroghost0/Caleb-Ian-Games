@@ -51,9 +51,9 @@ public class FlyerBehavior : MonoBehaviour
 		{
             if (seesPlayer)
             {
-                if ((truePosition.position - player.transform.position).magnitude < maxDistenceFromPlayer)
+                if ((truePosition.position - playerStatus.truePosition.position).magnitude < maxDistenceFromPlayer)
                 {
-                    Vector3 direction = player.transform.position - truePosition.position;
+                    Vector3 direction = playerStatus.truePosition.position - truePosition.position;
                     direction = direction.normalized;
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * turnSpeed);
 
@@ -65,7 +65,7 @@ public class FlyerBehavior : MonoBehaviour
                     anim.SetBool("isRunning", false);
                 }
             }
-            else if ((truePosition.position - player.transform.position).magnitude < seesPlayerDistence)
+            else if ((truePosition.position - playerStatus.truePosition.position).magnitude < seesPlayerDistence)
             {
                 seesPlayer = true;
                 anim.SetBool("isRunning", true);
