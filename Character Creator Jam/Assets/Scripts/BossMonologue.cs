@@ -137,7 +137,9 @@ public class BossMonologue : MonoBehaviour
         playerMovement.playerAnim.SetFloat("MoveY", 0);
         playerMovement.enabled = false;
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        playerCanvas.SetActive(false);
+        playerCanvas.transform.GetChild(0).gameObject.SetActive(false);
+        playerCanvas.transform.GetChild(1).gameObject.SetActive(false);
+        playerCanvas.transform.GetChild(2).gameObject.SetActive(false);
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = false;
         Cursor.lockState = CursorLockMode.None;
         mainCamera.SetActive(false);
@@ -187,7 +189,9 @@ public class BossMonologue : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Cursor.lockState = CursorLockMode.Locked;
         playerMovement.enabled = true;
-        playerCanvas.SetActive(true);
+        playerCanvas.transform.GetChild(0).gameObject.SetActive(true);
+        playerCanvas.transform.GetChild(1).gameObject.SetActive(true);
+        playerCanvas.transform.GetChild(2).gameObject.SetActive(true);
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = true;
         yield return new WaitForSeconds(1f);
         audioManager.BgmRestart();
@@ -217,7 +221,14 @@ public class BossMonologue : MonoBehaviour
         playerMovement.enabled = false;
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         player.GetComponent<PlayerStatus>().DefeatBoss();
-        playerCanvas.SetActive(false);
+        playerCanvas.transform.GetChild(0).gameObject.SetActive(false);
+        playerCanvas.transform.GetChild(1).gameObject.SetActive(false);
+        playerCanvas.transform.GetChild(2).gameObject.SetActive(false);
+        GameObject bossBar = GameObject.FindGameObjectWithTag("Boss Health Bar");
+        for (int i = 0; i < bossBar.transform.childCount; i++)
+        {
+            bossBar.transform.GetChild(i).gameObject.SetActive(false);
+        }
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = false;
         Cursor.lockState = CursorLockMode.None;
         mainCamera.SetActive(false);
@@ -236,12 +247,9 @@ public class BossMonologue : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         playerMovement.enabled = true;
-        playerCanvas.SetActive(true);
-        GameObject bossBar = GameObject.FindGameObjectWithTag("Boss Health Bar");
-        for (int i = 0; i < bossBar.transform.childCount; i++)
-        {
-            bossBar.transform.GetChild(i).gameObject.SetActive(false);
-        }
+        playerCanvas.transform.GetChild(0).gameObject.SetActive(true);
+        playerCanvas.transform.GetChild(1).gameObject.SetActive(true);
+        playerCanvas.transform.GetChild(2).gameObject.SetActive(true);
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = true;
         yield return new WaitForSeconds(2f);
         panel.SetActive(false);

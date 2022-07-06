@@ -308,7 +308,7 @@ public class Gun : MonoBehaviour
         suckUp.Play();
         if (amountOfSlime < 50f)
         {
-            amountOfSlime += 20f;
+            amountOfSlime += 15f;
         }
         else
         {//50 = 10 gained, 75 = 5 gained, 95 = 1 gained

@@ -21,6 +21,7 @@ public class FlyerBehavior : MonoBehaviour
 
     public float damage = 25f;
     public float knockback = 15f;
+    public float selfKnockback = .5f;
     public float health = 20f;
     public float movementSpeed = 5f;
     public float turnSpeed = 2.5f;
@@ -116,7 +117,7 @@ public class FlyerBehavior : MonoBehaviour
             }
             else
             {
-                StartCoroutine(Knockback(other.transform.rotation * other.GetComponent<Bullet>().movement * other.GetComponent<Bullet>().power * .3f));
+                StartCoroutine(Knockback(other.transform.rotation * other.GetComponent<Bullet>().movement * other.GetComponent<Bullet>().power * selfKnockback));
             }
             Destroy(other.gameObject);
         }

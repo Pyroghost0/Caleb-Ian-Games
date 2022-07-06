@@ -111,6 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   power: 0
   movement: {x: 0, y: 0, z: 0}
+  bossBullet: 0
 --- !u!1 &4023342450134261766
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,7 +123,6 @@ GameObject:
   - component: {fileID: 1120902479209128251}
   - component: {fileID: 3176181042144844480}
   - component: {fileID: 1862581634332853913}
-  - component: {fileID: 5437352252893774116}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -193,16 +193,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5437352252893774116
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4023342450134261766}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}

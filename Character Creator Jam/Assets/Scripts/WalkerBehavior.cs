@@ -23,6 +23,7 @@ public class WalkerBehavior : MonoBehaviour
     public float gravityMultiplier = 1f;
     public float damage = 50f;
     public float knockback = 35f;
+    public float selfKnockback = .3f;
     public float health = 40f;
     public float movementSpeed = 5f;
     public float turnSpeed = 1.5f;
@@ -119,7 +120,7 @@ public class WalkerBehavior : MonoBehaviour
             }
             else
             {
-                StartCoroutine(Knockback(other.transform.rotation * other.GetComponent<Bullet>().movement * other.GetComponent<Bullet>().power * .4f));
+                StartCoroutine(Knockback(other.transform.rotation * other.GetComponent<Bullet>().movement * other.GetComponent<Bullet>().power * selfKnockback));
             }
             Destroy(other.gameObject);
         }
