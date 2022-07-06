@@ -50,6 +50,12 @@ public class PlayerStatus : MonoBehaviour
     private Animator playerAnim;
     private AudioManager audioManager;
     public Transform truePosition;
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+    public AudioSource audio;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+    public AudioClip[] maleHurt;
+    public AudioEchoFilter echo;
+
 
     // Start is called before the first frame update
     void Start()
@@ -440,6 +446,10 @@ public class PlayerStatus : MonoBehaviour
             invincible = true;
             direction.y = transform.position.y;
             direction = (transform.position - direction).normalized;
+
+            echo.enabled = false;
+            audio.clip = maleHurt[Random.Range(0, maleHurt.Length)];
+            audio.Play();
             playerAnim.SetTrigger("Hurt");
             if (takeKnockback)
             {
@@ -569,6 +579,8 @@ public class PlayerStatus : MonoBehaviour
                 }
                 else
                 {
+                    echo.enabled = true;
+                    audio.Play();
                     playerAnim.SetBool("Dead", true);
                     playerMovement.enabled = false;
                     float timer = 0f;

@@ -28,6 +28,11 @@ public class FlyerBehavior : MonoBehaviour
 
     private bool isDead = false;
 
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+    public AudioSource audio;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+    public AudioClip[] hurt;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -112,11 +117,15 @@ public class FlyerBehavior : MonoBehaviour
             health -= other.GetComponent<Bullet>().power * 25;
             if (health <= 0)
             {
+                audio.clip = hurt[2];
+                audio.Play();
                 //slimeSpawner.SlimeDeath();
                 StartCoroutine(Die());
             }
             else
             {
+                audio.clip = hurt[Random.Range(0, 2)];
+                audio.Play();
                 StartCoroutine(Knockback(other.transform.rotation * other.GetComponent<Bullet>().movement * other.GetComponent<Bullet>().power * selfKnockback));
             }
             Destroy(other.gameObject);
