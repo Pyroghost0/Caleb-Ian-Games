@@ -33,6 +33,12 @@ public class PlayerMovement : MonoBehaviour {
     private bool jumped = false;
     private bool leftGround = false;
     public bool nearBounce = false;
+
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+    public AudioSource audio;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+    public AudioClip[] maleJump;
+    public AudioEchoFilter echo;
     //public bool canMove = true;
 
     void Start()
@@ -161,6 +167,10 @@ public class PlayerMovement : MonoBehaviour {
             if (Input.GetButtonDown("Jump"))
             {
                 rigidbody.velocity = new Vector3(0f, Mathf.Sqrt(jumpHeight * -2f * gravity), 0f);
+
+                echo.enabled = false;
+                audio.clip = maleJump[Random.Range(0, maleJump.Length)];
+                audio.Play();
                 StartCoroutine(Jump());
             }
             else if (!jumped)

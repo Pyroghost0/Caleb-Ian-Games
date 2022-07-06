@@ -31,6 +31,11 @@ public class WalkerBehavior : MonoBehaviour
     private bool isDead = false;
     public Transform truePosition;
 
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+    public AudioSource[] audio;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+    public AudioClip[] hurt;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -115,11 +120,21 @@ public class WalkerBehavior : MonoBehaviour
             health -= other.GetComponent<Bullet>().power * 25;
             if (health <= 0)
             {
+                for (int i = 0; i < audio.Length; i++)
+				{
+                    audio[i].clip = hurt[2];
+                    audio[i].Play();
+                }
                 //slimeSpawner.SlimeDeath();
                 StartCoroutine(Die());
             }
             else
             {
+                for (int i = 0; i < audio.Length; i++)
+                {
+                    audio[i].clip = hurt[Random.Range(0, 2)];
+                    audio[i].Play();
+                }
                 StartCoroutine(Knockback(other.transform.rotation * other.GetComponent<Bullet>().movement * other.GetComponent<Bullet>().power * selfKnockback));
             }
             Destroy(other.gameObject);
