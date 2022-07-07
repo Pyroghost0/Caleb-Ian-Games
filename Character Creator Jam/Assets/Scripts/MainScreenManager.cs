@@ -12,7 +12,10 @@ public class MainScreenManager : MonoBehaviour
     public GameObject characterBlackPart;
     public GameObject costumeBlackPart;
     public GameObject text100;
+    public GameObject removeMenu;
+    public GameObject unlockMenu;
 
+    private bool isMainScreen = true;
     private int[] data;
     private bool isData;
     private bool fullCompletion = false;
@@ -23,7 +26,11 @@ public class MainScreenManager : MonoBehaviour
         {
             isData = false;
             data = new int[25];
-            for (int i = 0; i < 25; i++)
+            data[0] = 0;
+            data[1] = 1;
+            data[2] = 0;
+            data[3] = 0;
+            for (int i = 4; i < 25; i++)
             {
                 data[i] = 0;
             }
@@ -45,7 +52,63 @@ public class MainScreenManager : MonoBehaviour
             }
         }
     }
-	public void StartGame()
+	public void Update()
+	{
+        if (isMainScreen && Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.Escape))
+		{
+            if (Input.GetKey(KeyCode.Backspace))
+            {
+                removeMenu.SetActive(true);
+            }
+			else if (Input.GetKey(KeyCode.Return))
+			{
+                unlockMenu.SetActive(true);
+			}
+        }
+		
+	}
+	public void RemoveData()
+	{
+        SaveLoad.ClearData();
+        removeMenu.SetActive(false);
+        isData = false;
+        fullCompletion = false;
+        text100.SetActive(false);
+    }
+    public void FullUnlock()
+    {
+        SaveLoad.FullUnlock();
+        isData = true;
+        if (data == null)
+		{
+            data = new int[25];
+            data[0] = 0;
+            data[1] = 1;
+            data[2] = 0;
+            data[3] = 0;
+            for (int i = 4; i < 25; i++)
+            {
+                data[i] = 1;
+            }
+		}
+		else
+		{
+            for (int i = 4; i < 25; i++)
+            {
+                data[i] = 1;
+            }
+        }
+        
+        unlockMenu.SetActive(false);
+        fullCompletion = true;
+        text100.SetActive(true);
+    }
+    public void CloseMenu()
+	{
+        removeMenu.SetActive(false);
+        unlockMenu.SetActive(false);
+    }
+    public void StartGame()
     {
         selectCharacter = true;
         LoadLevel("Tutorial");
@@ -53,6 +116,8 @@ public class MainScreenManager : MonoBehaviour
 
     public void EnterLevelSelect()
     {
+        isMainScreen = false;
+        text100.SetActive(false);
         if (!isData)
 		{
             Debug.Log("No Save Data");
@@ -134,6 +199,8 @@ public class MainScreenManager : MonoBehaviour
 
     public void BackToMainMenu()
     {
+        isMainScreen = true;
+        if (fullCompletion) text100.SetActive(true);
         for (int i = 0; i < buttons2.Length; i++)
         {
             buttons2[i].SetActive(false);

@@ -16,10 +16,21 @@ public static class SaveLoad
 	}
 	public static void ClearData()
 	{
-		int[] data = new int[25];
-		for (int i = 0; i < 25; i++)
+		if (File.Exists(Application.persistentDataPath + "/saveData.gd"))
 		{
-			data[i] = 0;
+			File.Delete(Application.persistentDataPath + "/saveData.gd");
+		}
+	}
+	public static void FullUnlock()
+	{
+		int[] data = new int[25];
+		data[0] = 0;
+		data[1] = 1;
+		data[2] = 0;
+		data[3] = 0;
+		for (int i = 4; i < 25; i++)
+		{
+			data[i] = 1;
 		}
 		BinaryFormatter bf = new BinaryFormatter();
 		FileStream file = File.Create(Application.persistentDataPath + "/saveData.gd");
