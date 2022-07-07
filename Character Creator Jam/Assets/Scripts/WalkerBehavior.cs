@@ -91,6 +91,11 @@ public class WalkerBehavior : MonoBehaviour
                 {
                     seesPlayer = true;
                     anim.SetBool("isRunning", true);
+                    for (int i = 0; i < audio.Length; i++)
+                    {
+                        audio[i].clip = hurt[3];
+                        audio[i].Play();
+                    }
                 }
 			}
 			else

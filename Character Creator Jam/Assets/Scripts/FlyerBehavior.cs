@@ -82,6 +82,8 @@ public class FlyerBehavior : MonoBehaviour
                 {
                     seesPlayer = true;
                     anim.SetBool("isRunning", true);
+                    audio.clip = hurt[3];
+                    audio.Play();
                 }
                 Vector3 normal = rigidbody.velocity.normalized;
                 rigidbody.velocity -= normal * Time.deltaTime * 3f;
