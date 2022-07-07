@@ -195,7 +195,7 @@ public class BossMonologue : MonoBehaviour
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = true;
         yield return new WaitForSeconds(1f);
         audioManager.BgmRestart();
-        audioManager.BgmChangeVolume(1f);
+        audioManager.BgmChangeVolume(0.5f);
         audioManager.BgmChangePitch(1.2f);
         panel.SetActive(false);
         gameObject.transform.localScale *= 1.2f;
@@ -233,7 +233,7 @@ public class BossMonologue : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         mainCamera.SetActive(false);
         bossCamera.SetActive(true);
-        audioManager.BgmChangeVolume(0.5f);
+        audioManager.BgmChangeVolume(0.2f);
         gameObject.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         yield return new WaitForSeconds(0.5f);
         audioManager.BgmChangeVolume(0f);

@@ -523,11 +523,11 @@ public class PlayerStatus : MonoBehaviour
                 {
                     Destroy(equipment[i]);
                 }
-                AsyncOperation ao1 = SceneManager.UnloadSceneAsync("Tutorial");
-                yield return new WaitUntil(() => ao1.isDone);
-                audioManager.ChangeScene("Mech Level");
                 AsyncOperation ao2 = SceneManager.LoadSceneAsync("Mech Level", LoadSceneMode.Additive);
                 yield return new WaitUntil(() => ao2.isDone);
+                audioManager.ChangeScene("Mech Level");
+                AsyncOperation ao1 = SceneManager.UnloadSceneAsync("Tutorial");
+                yield return new WaitUntil(() => ao1.isDone);
                 playerMovement.groundChecker.inGround = false;
                 transform.position = Vector3.zero;
                 transform.rotation = Quaternion.Euler(0f, 0f, 0f);

@@ -12,6 +12,7 @@ public class SlimeSpawner : MonoBehaviour
     public float spawnDistence = 50f;
     public int maxSlimesPerCycle = -1;
     private GameObject player;
+    private AudioManager audioManager;
     public int slimesSpawned = 0;
     private bool currentlySpawning = false;
     [SerializeField] private Material[] materials;
@@ -23,6 +24,7 @@ public class SlimeSpawner : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player;
+        audioManager = player.GetComponent<AudioManager>();
         StartCoroutine(SpawnSlimes());
 
         playerSkinColor = player.GetComponent<PlayerStatus>().skinColor;
@@ -82,6 +84,7 @@ public class SlimeSpawner : MonoBehaviour
         slime.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().material = materials[slimeColor];
         slime.GetComponent<SlimeBehavior>().slimeColor = slimeColor;
         numSlimes++;
+		audioManager.SpawnSlime();
         return slime;
     }
 }

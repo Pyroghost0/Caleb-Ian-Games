@@ -38,6 +38,7 @@ public class BossBehavior : MonoBehaviour
     private bool killed = false;
     List<Transform> wideSlimesTransform = new List<Transform>();
     List<Rigidbody> wideSlimesRigidbody = new List<Rigidbody>();
+    private AudioManager audioManager;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +46,7 @@ public class BossBehavior : MonoBehaviour
         spawnPosition = transform.position;
         player = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player;
         playerTruePosition = player.GetComponent<PlayerStatus>().truePosition;
+        audioManager = player.GetComponent<AudioManager>();
         playerController = player.GetComponent<CharacterController>();
         characterController = GetComponent<CharacterController>();
         bossMonologue = GetComponent<BossMonologue>();
@@ -702,6 +704,7 @@ public class BossBehavior : MonoBehaviour
         timer = 0f;
         yield return new WaitForSeconds(seconds / 6f);
         Instantiate(prefab, slimeSpawner.spawnPoint.transform.position + prefab.transform.position, prefab.transform.rotation);
+        audioManager.SpawnSlime();
         yield return new WaitForSeconds(seconds / 6f);
         while (timer < seconds / 3f)
         {

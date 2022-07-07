@@ -6,8 +6,17 @@ public class AudioManager : MonoBehaviour
 {
     public AudioSource bgm;
     public AudioEchoFilter bgmEcho;
- 
-    public void BgmChangePitch(float pitch)
+	private AudioSource[] sounds;
+
+	private float bgmVolume = 1;
+	private float bgmVolumeMultiplier = 1;
+	private float soundVolume = 1;
+
+	public void Start()
+	{
+		sounds = FindObjectsOfType<AudioSource>(true);
+	}
+	public void BgmChangePitch(float pitch)
 	{
         bgm.pitch = pitch;
 	}
@@ -18,10 +27,24 @@ public class AudioManager : MonoBehaviour
 
     public void BgmChangeVolume(float volume)
 	{
-        bgm.volume = volume;
+        bgm.volume = volume * bgmVolumeMultiplier;
+		bgmVolume = volume;
 	}
-
-    public void ToggleBgmEcho(bool enable)
+	public void BgmVolumeSetting(float volume)
+	{
+		bgm.volume = bgmVolume * volume;
+		bgmVolumeMultiplier = volume;
+	}
+	public void SoundChangeVolume(float volume)
+	{
+		for (int i = 0; i < sounds.Length; i++)
+		{
+			if (sounds[i]) sounds[i].volume = volume;
+		}
+		bgm.volume = bgmVolume * bgmVolumeMultiplier;
+		soundVolume = volume;
+	}
+	public void ToggleBgmEcho(bool enable)
 	{
 		if (enable)
 		{
@@ -38,39 +61,46 @@ public class AudioManager : MonoBehaviour
 		bgmEcho.delay = delay;
 		bgmEcho.decayRatio = decayRatio;
 	}
+	public void SpawnSlime()
+	{
+		sounds = FindObjectsOfType<AudioSource>(true);
+		SoundChangeVolume(soundVolume);
+	}
 	public void ChangeScene(string sceneName)
 	{
-		BgmChangeVolume(1f);
+		BgmChangeVolume(0.5f);
+		sounds = FindObjectsOfType<AudioSource>(true);
+		SoundChangeVolume(soundVolume);
 		if (sceneName == "Dress Up Room")
 		{
-			BgmChangeVolume(0.2f);
+			BgmChangeVolume(0.1f);
 		}
-		if (sceneName == "Tutorial")
+		else if (sceneName == "Tutorial")
 		{
-			BgmChangeVolume(0.5f);
+			BgmChangeVolume(0.3f);
 			BgmChangePitch(0.2f);
 		}
-		if (sceneName == "Mech Level")
+		else if (sceneName == "Mech Level")
 		{
 			BgmRestart();
 			BgmChangePitch(1f);
 		}
-		if (sceneName == "Deer Level")
+		else if (sceneName == "Deer Level")
 		{
 			BgmRestart();
 			BgmChangePitch(0.8f);
 		}
-		if (sceneName == "Baker Level")
+		else if (sceneName == "Baker Level")
 		{
 			BgmRestart();
 			BgmChangePitch(0.6f);
 		}
-		if (sceneName == "POTUS Level")
+		else if (sceneName == "POTUS Level")
 		{
 			BgmRestart();
 			BgmChangePitch(1.1f);
 		}
-		if (sceneName == "Boss Battle")
+		else if (sceneName == "Boss Battle")
 		{
 			BgmChangeVolume(0f);
 			BgmChangePitch(1f);

@@ -7,19 +7,27 @@ using UnityEngine.UI;
 public class SoundEffectsText : MonoBehaviour
 {
     private TextMeshProUGUI text;
-    private PlayerMovement player;
+    private AudioManager audioManager;
     public Slider slider;
+    private float defaultSetting;
 
     // Start is called before the first frame update
     void Start()
     {
         text = gameObject.GetComponent<TextMeshProUGUI>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        audioManager = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>();
+        defaultSetting = slider.value;
     }
 
     public void UpdateText()
     {
         text.text = slider.value.ToString();
-        player.autoAimPower = slider.value * 100f;
+        audioManager.SoundChangeVolume(slider.value / 100);
+    }
+    public void ResetValue()
+    {
+        slider.value = defaultSetting;
+        text.text = slider.value.ToString();
+        audioManager.SoundChangeVolume(slider.value / 100);
     }
 }

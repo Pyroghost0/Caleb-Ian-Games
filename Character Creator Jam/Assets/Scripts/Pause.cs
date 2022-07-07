@@ -103,7 +103,6 @@ public class Pause : MonoBehaviour
         startMenu.SetActive(true);
         optionsMenu.SetActive(false);
     }
-
     public void BackToMainMenu()
     {
         Time.timeScale = 1f;
