@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     public Gun gun;
     public string loadedPlayerScene = "Player";
     public GameObject firstCheckpoint;
+    public string sceneName;
 
     // Start is called before the first frame update
     void Start()
@@ -17,18 +18,37 @@ public class PlayerManager : MonoBehaviour
         if (player == null)
         {
             Debug.Log("Loading player...");
-            AsyncOperation ao = SceneManager.LoadSceneAsync(loadedPlayerScene, LoadSceneMode.Additive);
-            if (ao == null)
-            {
-                Debug.LogError("Unable to load player " + loadedPlayerScene);
-            }
-            player = GameObject.FindGameObjectWithTag("Player");
+            StartCoroutine(WaitLoadPlayer());
+		}
+		else
+		{
+            gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
+            player.GetComponent<AudioManager>().ChangeScene(sceneName);
+            player.GetComponent<PlayerStatus>().currentSpawnPosition = firstCheckpoint;
         }
-        gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
-        player.GetComponent<PlayerStatus>().currentSpawnPosition = firstCheckpoint;
 
     }
-
+    private IEnumerator WaitLoadPlayer()
+	{
+        AsyncOperation ao = SceneManager.LoadSceneAsync(loadedPlayerScene, LoadSceneMode.Additive);
+        if (ao == null)
+        {
+            Debug.LogError("Unable to load player " + loadedPlayerScene);
+        }
+        yield return new WaitUntil(() => ao.isDone);
+        player = GameObject.FindGameObjectWithTag("Player");
+        gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
+        if (sceneName != "Tutorial")
+        {
+            player.GetComponent<PlayerStatus>().LoadData(false);
+		}
+		else
+		{
+            player.GetComponent<PlayerStatus>().isTutorial = true;
+		}
+        player.GetComponent<AudioManager>().ChangeScene(sceneName);
+        player.GetComponent<PlayerStatus>().currentSpawnPosition = firstCheckpoint;
+    }
     IEnumerator DelayForLoading()
     {
         player.GetComponent<PlayerMovement>().enabled = false;

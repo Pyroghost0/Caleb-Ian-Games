@@ -23,25 +23,30 @@ public class SlimeSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player;
-        audioManager = player.GetComponent<AudioManager>();
+        FindPlayer();
         StartCoroutine(SpawnSlimes());
-
-        playerSkinColor = player.GetComponent<PlayerStatus>().skinColor;
-        playerHairColor = player.GetComponent<PlayerStatus>().hairColor;
-
-        materials = new Material[12];
-        int offset = 0;
-        for (int i = 0; i < materials.Length / 2; i++)
-		{
-            if (i == playerHairColor) offset = 1;
-            materials[i] = (Material) Resources.Load("Hair " + (i + offset));
-		}
-        offset = 0;
-        for (int i = 0; i < materials.Length / 2; i++)
-		{
-            if (i == playerSkinColor) offset = 1;
-            materials[i + materials.Length / 2] = (Material)Resources.Load("Skin " + (i + offset));
+    }
+    private void FindPlayer()
+    {
+        player = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>().player;
+        if (player)
+        {
+            audioManager = player.GetComponent<AudioManager>();
+            playerSkinColor = player.GetComponent<PlayerStatus>().skinColor;
+            playerHairColor = player.GetComponent<PlayerStatus>().hairColor;
+            materials = new Material[12];
+            int offset = 0;
+            for (int i = 0; i < materials.Length / 2; i++)
+            {
+                if (i == playerHairColor) offset = 1;
+                materials[i] = (Material)Resources.Load("Hair " + (i + offset));
+            }
+            offset = 0;
+            for (int i = 0; i < materials.Length / 2; i++)
+            {
+                if (i == playerSkinColor) offset = 1;
+                materials[i + materials.Length / 2] = (Material)Resources.Load("Skin " + (i + offset));
+            }
         }
     }
     public void SlimeDeath()
@@ -58,12 +63,19 @@ public class SlimeSpawner : MonoBehaviour
         currentlySpawning = true;
         while (numSlimes < maxNumSlimes && (maxSlimesPerCycle == -1 || slimesSpawned < maxSlimesPerCycle))
         {
-            yield return new WaitForSeconds(Random.Range(averageSlimeRespawnTime / 4, averageSlimeRespawnTime * 3 / 4));
-            if (Mathf.Abs((player.transform.position - transform.position).magnitude) < spawnDistence)
-            {
-                slimesSpawned++;
-                SpawnSlime();
-            }
+            if (player)
+			{
+                yield return new WaitForSeconds(Random.Range(averageSlimeRespawnTime / 4, averageSlimeRespawnTime * 3 / 4));
+                if (Mathf.Abs((player.transform.position - transform.position).magnitude) < spawnDistence)
+                {
+                    slimesSpawned++;
+                    SpawnSlime();
+                }
+			}
+			else
+			{
+                FindPlayer();
+			}
             yield return new WaitForSeconds(Random.Range(averageSlimeRespawnTime / 4, averageSlimeRespawnTime * 3 / 4));
         }
         currentlySpawning = false;

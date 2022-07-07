@@ -42,17 +42,23 @@ public class WalkerBehavior : MonoBehaviour
         faces[0].SetActive(false);
         rigidbody = gameObject.GetComponent<Rigidbody>();
         characterController = gameObject.GetComponent<CharacterController>();
-        playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
-        player = playerManager.player;
-        playerStatus = player.GetComponent<PlayerStatus>();
+        FindPlayer();
         gravity = Vector3.down * 9.8f * gravityMultiplier;
-        faces.RemoveAt(player.GetComponent<PlayerStatus>().isMale ? player.GetComponent<PlayerStatus>().headNumber + 3 : player.GetComponent<PlayerStatus>().headNumber);
-        faces[Random.Range(0, faces.Count)].SetActive(true);
         anim = transform.GetComponentInChildren<Animator>();
         //maxDistenceFromPlayer = slimeSpawner.spawnDistence;
         //StartCoroutine(WalkTowardPlayer());
     }
-
+    private void FindPlayer()
+	{
+        playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
+        if (playerManager.player != null)
+        {
+            player = playerManager.player;
+            playerStatus = player.GetComponent<PlayerStatus>();
+            faces.RemoveAt(player.GetComponent<PlayerStatus>().isMale ? player.GetComponent<PlayerStatus>().headNumber + 3 : player.GetComponent<PlayerStatus>().headNumber);
+            faces[Random.Range(0, faces.Count)].SetActive(true);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -60,30 +66,38 @@ public class WalkerBehavior : MonoBehaviour
         if (groundChecker.inGround & !isDead)
         {
             rigidbody.velocity = Vector3.down;
-            if (seesPlayer)
-            {
-                if ((transform.position - player.transform.position).magnitude < maxDistenceFromPlayer)
+            if (player != null)
+			{
+                if (seesPlayer)
                 {
-                    Vector3 direction = player.transform.position - transform.position;
-                    direction.y = 0;
-                    direction = direction.normalized;
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * turnSpeed);
+                    if ((transform.position - player.transform.position).magnitude < maxDistenceFromPlayer)
+                    {
+                        Vector3 direction = player.transform.position - transform.position;
+                        direction.y = 0;
+                        direction = direction.normalized;
+                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * turnSpeed);
 
-                    characterController.enabled = true;
-                    characterController.Move(transform.rotation * Vector3.forward * movementSpeed * Time.deltaTime);
-                    characterController.enabled = false;
+                        characterController.enabled = true;
+                        characterController.Move(transform.rotation * Vector3.forward * movementSpeed * Time.deltaTime);
+                        characterController.enabled = false;
+                    }
+                    else
+                    {
+                        seesPlayer = false;
+                        anim.SetBool("isRunning", false);
+                    }
                 }
-                else
+                else if ((transform.position - player.transform.position).magnitude < seesPlayerDistence)
                 {
-                    seesPlayer = false;
-                    anim.SetBool("isRunning", false);
+                    seesPlayer = true;
+                    anim.SetBool("isRunning", true);
                 }
-            }
-            else if ((transform.position - player.transform.position).magnitude < seesPlayerDistence)
-            {
-                seesPlayer = true;
-                anim.SetBool("isRunning", true);
-            }
+			}
+			else
+			{
+                FindPlayer();
+			}
+            
 
         }
     }
@@ -171,7 +185,7 @@ public class WalkerBehavior : MonoBehaviour
         if (other.CompareTag("Player") && !isDead)
         {
             anim.SetTrigger("Attack");
-            player.GetComponent<PlayerStatus>().TakeDamage(damage, transform.position, knockback);
+            other.GetComponent<PlayerStatus>().TakeDamage(damage, transform.position, knockback);
         }
     }
 }

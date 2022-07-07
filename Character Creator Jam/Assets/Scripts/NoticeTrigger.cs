@@ -11,13 +11,9 @@ public class NoticeTrigger : MonoBehaviour
 	public NoticeTrigger mainTrigger;
 	public bool activated = false;
 
-    private void Start()
-    {
-		notice = GameObject.FindGameObjectWithTag("Notice");
-    }
-
     private void OnTriggerEnter(Collider other)
 	{
+		if (notice == null) notice = GameObject.FindGameObjectWithTag("Notice");
 		if (other.CompareTag("Player") && !activated)
 		{
 			activated = true;
@@ -34,7 +30,7 @@ public class NoticeTrigger : MonoBehaviour
 
 	public void ActivateMainNotice()
     {
-		activated = true;
+		mainTrigger.activated = true;
 		StartCoroutine(DeactivateAfterSeconds());
     }
 

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class DressUpManager : MonoBehaviour
 {
     public GameObject[] equipment;
+    private PlayerManager playerManager;
     private GameObject player;
     private PlayerStatus playerStatus;
     private PlayerMovement playerMovement;
@@ -21,25 +22,30 @@ public class DressUpManager : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerStatus = player.GetComponent<PlayerStatus>();
-        playerMovement = player.GetComponent<PlayerMovement>();
+        StartCoroutine(WaitFindPlayer());
+    }
+    private IEnumerator WaitFindPlayer()
+	{
+        playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
+        yield return new WaitUntil(() => playerManager.player != null);
+        playerStatus = playerManager.player.GetComponent<PlayerStatus>();
+        playerMovement = playerManager.player.GetComponent<PlayerMovement>();
         playerCanvas = GameObject.FindGameObjectWithTag("Player Canvas");
         for (int i = 0; i < equipment.Length; i++)
-		{
+        {
             if (playerStatus.equipmentUnlocked[i])
-			{
+            {
                 equipment[i].SetActive(true);
-			}
-			else
-			{
+            }
+            else
+            {
                 equipment[i].SetActive(false);
             }
             if (playerStatus.equipedEquipment[i])
-			{
+            {
                 equipment[i].transform.GetChild(0).gameObject.SetActive(false);
-			}
-		}
+            }
+        }
         if (playerStatus.bossDefeated())
         {
             mainDoor.SetActive(false);

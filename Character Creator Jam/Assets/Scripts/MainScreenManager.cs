@@ -119,32 +119,16 @@ public class MainScreenManager : MonoBehaviour
 
     IEnumerator WaitLoadCostume(string sceneName)
     {
-        AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
-        yield return new WaitUntil(() => ao1.isDone);
-
-        PlayerStatus player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
-        player.LoadData(false);
- 
         AsyncOperation ao2 = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao2.isDone);
         GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = sceneName;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Dress Up Room");
-
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Main Screen"));
     }
 
     IEnumerator WaitLoadScene(string sceneName)
     {
-        AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
-        yield return new WaitUntil(() => ao1.isDone);
-        PlayerStatus player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
-        if (sceneName != "Tutorial")
-        {
-            player.LoadData(false);
-        }
         AsyncOperation ao2 = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao2.isDone);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene(sceneName);
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Main Screen"));
     }
 

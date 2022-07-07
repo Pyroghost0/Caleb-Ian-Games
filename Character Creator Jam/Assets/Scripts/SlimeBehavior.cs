@@ -44,11 +44,7 @@ public class SlimeBehavior : MonoBehaviour
     void Start()
     {
         rigidbody = gameObject.GetComponent<Rigidbody>();
-        playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
-        player = playerManager.player;
-        playerStatus = player.GetComponent<PlayerStatus>();
-        gun = playerManager.gun;
-        suckSpot = gun.suckSpot;
+        FindPlayer();
         gravity = Vector3.down * 9.8f * gravityMultiplier;
         maxDistenceFromPlayer = slimeSpawner.spawnDistence;
         averageJumpHeightStrengthMin = averageJumpHeightStrength * .75f;
@@ -57,7 +53,17 @@ public class SlimeBehavior : MonoBehaviour
         averageJumpStrengthMax = averageJumpStrength * 1.11f;
         StartCoroutine(ConstantJump());
     }
-
+    private void FindPlayer()
+    {
+        playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
+        if (playerManager.player != null && playerManager.gun != null)
+        {
+            player = playerManager.player;
+            playerStatus = player.GetComponent<PlayerStatus>();
+            gun = playerManager.gun;
+            suckSpot = gun.suckSpot;
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -68,36 +74,44 @@ public class SlimeBehavior : MonoBehaviour
     {
         while (!isDead)
         {
-            yield return new WaitUntil(() => (groundChecker.inGround));
-            if ((player.transform.position - transform.position).magnitude < maxDistenceFromPlayer)
-            {
-                Vector3 xzDirection = new Vector3(player.transform.position.x - gameObject.transform.position.x, 0, player.transform.position.z - gameObject.transform.position.z).normalized;
-                Vector3 jumpForce = Random.Range(averageJumpStrengthMin, averageJumpStrengthMax) * (xzDirection + (Random.Range(averageJumpHeightStrengthMin, averageJumpHeightStrengthMax) * Vector3.up));
-                rigidbody.AddForce(jumpForce * playerStatus.slimeJumpStrengthMultiplier, ForceMode.Impulse);
-                anim.SetBool("isGrounded", false);
-                animInner.SetBool("isGrounded", false);
-            }
-            else
-            {
-                slimeSpawner.SlimeDeath();
-                Destroy(gameObject);
-            }
-            yield return new WaitForSeconds(.3f);
-            yield return new WaitUntil(() => (groundChecker.inGround));
-            if (!groundChecker.onIce)
-            {
-                rigidbody.velocity = Vector3.zero;
-            }
-            else
-            {
-                rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
-            }
-            anim.SetBool("isGrounded", true);
-            animInner.SetBool("isGrounded", true);
+            if (player != null)
+			{
+                yield return new WaitUntil(() => (groundChecker.inGround));
+                if ((player.transform.position - transform.position).magnitude < maxDistenceFromPlayer)
+                {
+                    Vector3 xzDirection = new Vector3(player.transform.position.x - gameObject.transform.position.x, 0, player.transform.position.z - gameObject.transform.position.z).normalized;
+                    Vector3 jumpForce = Random.Range(averageJumpStrengthMin, averageJumpStrengthMax) * (xzDirection + (Random.Range(averageJumpHeightStrengthMin, averageJumpHeightStrengthMax) * Vector3.up));
+                    rigidbody.AddForce(jumpForce * playerStatus.slimeJumpStrengthMultiplier, ForceMode.Impulse);
+                    anim.SetBool("isGrounded", false);
+                    animInner.SetBool("isGrounded", false);
+                }
+                else
+                {
+                    slimeSpawner.SlimeDeath();
+                    Destroy(gameObject);
+                }
+                yield return new WaitForSeconds(.3f);
+                yield return new WaitUntil(() => (groundChecker.inGround));
+                if (!groundChecker.onIce)
+                {
+                    rigidbody.velocity = Vector3.zero;
+                }
+                else
+                {
+                    rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
+                }
+                anim.SetBool("isGrounded", true);
+                animInner.SetBool("isGrounded", true);
 
-            sound.clip = jump[Random.Range(0, 2)];
-            sound.Play();
-            //rigidbody.AddForce(-jumpForce, ForceMode.Impulse);
+                sound.clip = jump[Random.Range(0, 2)];
+                sound.Play();
+				//rigidbody.AddForce(-jumpForce, ForceMode.Impulse);
+			}
+			else
+			{
+                FindPlayer();
+			}
+
             yield return new WaitForSeconds(Random.Range(.2f, .4f));
         }
     }
@@ -151,10 +165,11 @@ public class SlimeBehavior : MonoBehaviour
     {
         if (other.CompareTag("Player") && !sucked && !isDead)
         {
-            player.GetComponent<PlayerStatus>().TakeDamage(damage, transform.position, knockback);
+            other.GetComponent<PlayerStatus>().TakeDamage(damage, transform.position, knockback);
         }
         if (other.gameObject == suckSpot && gun.isSucking && !sucked)
         {
+            if (gun == null) FindPlayer();
             //Debug.Log("Slime Destroyed");
             sucked = true;
             sound.clip = dead;

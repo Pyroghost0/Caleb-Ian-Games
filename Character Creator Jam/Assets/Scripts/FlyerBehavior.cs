@@ -38,49 +38,63 @@ public class FlyerBehavior : MonoBehaviour
     {
         faces[0].SetActive(false);
         rigidbody = gameObject.GetComponent<Rigidbody>();
-        playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
-        player = playerManager.player;
-        playerStatus = player.GetComponent<PlayerStatus>();
+        FindPlayer();
         forwardDirection = new Vector3(Random.Range(-.5f, .5f), Random.Range(.1f, .3f), 1f).normalized;
-        faces.RemoveAt(player.GetComponent<PlayerStatus>().isMale ? player.GetComponent<PlayerStatus>().headNumber + 3 : player.GetComponent<PlayerStatus>().headNumber);
-        faces[Random.Range(0, faces.Count)].SetActive(true);
         anim = transform.GetComponentInChildren<Animator>();
         //maxDistenceFromPlayer = slimeSpawner.spawnDistence;
         //StartCoroutine(WalkTowardPlayer());
     }
-
+    private void FindPlayer()
+    {
+        playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
+        if (playerManager.player != null)
+        {
+            player = playerManager.player;
+            playerStatus = player.GetComponent<PlayerStatus>();
+            faces.RemoveAt(player.GetComponent<PlayerStatus>().isMale ? player.GetComponent<PlayerStatus>().headNumber + 3 : player.GetComponent<PlayerStatus>().headNumber);
+            faces[Random.Range(0, faces.Count)].SetActive(true);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
         if (!isDead)
 		{
-            if (seesPlayer)
-            {
-                if ((truePosition.position - playerStatus.truePosition.position).magnitude < maxDistenceFromPlayer)
+            if (player != null)
+			{
+                if (seesPlayer)
                 {
-                    Vector3 direction = playerStatus.truePosition.position - truePosition.position;
-                    direction = direction.normalized;
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * turnSpeed);
+                    if ((truePosition.position - playerStatus.truePosition.position).magnitude < maxDistenceFromPlayer)
+                    {
+                        Vector3 direction = playerStatus.truePosition.position - truePosition.position;
+                        direction = direction.normalized;
+                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * turnSpeed);
 
-                    transform.Translate(forwardDirection * movementSpeed * Time.deltaTime);
+                        transform.Translate(forwardDirection * movementSpeed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        seesPlayer = false;
+                        anim.SetBool("isRunning", false);
+                    }
                 }
-                else
+                else if ((truePosition.position - playerStatus.truePosition.position).magnitude < seesPlayerDistence)
                 {
-                    seesPlayer = false;
-                    anim.SetBool("isRunning", false);
+                    seesPlayer = true;
+                    anim.SetBool("isRunning", true);
                 }
-            }
-            else if ((truePosition.position - playerStatus.truePosition.position).magnitude < seesPlayerDistence)
-            {
-                seesPlayer = true;
-                anim.SetBool("isRunning", true);
-            }
-            Vector3 normal = rigidbody.velocity.normalized;
-            rigidbody.velocity -= normal * Time.deltaTime * 3f;
-            if (rigidbody.velocity.normalized != normal)
-            {
-                rigidbody.velocity = Vector3.zero;
-            }
+                Vector3 normal = rigidbody.velocity.normalized;
+                rigidbody.velocity -= normal * Time.deltaTime * 3f;
+                if (rigidbody.velocity.normalized != normal)
+                {
+                    rigidbody.velocity = Vector3.zero;
+                }
+			}
+			else
+			{
+                FindPlayer();
+			}
+            
 		}
         
     }
@@ -161,7 +175,7 @@ public class FlyerBehavior : MonoBehaviour
         if (other.CompareTag("Player") && !isDead)
         {
             anim.SetTrigger("Attack");
-            player.GetComponent<PlayerStatus>().TakeDamage(damage, truePosition.position, knockback);
+            other.GetComponent<PlayerStatus>().TakeDamage(damage, truePosition.position, knockback);
         }
     }
 }

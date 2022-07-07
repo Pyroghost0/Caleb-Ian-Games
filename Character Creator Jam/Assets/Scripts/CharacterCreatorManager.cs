@@ -283,60 +283,45 @@ public class CharacterCreatorManager : MonoBehaviour
     {
         if (level.Length == 0)
         {
-            AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
-            AsyncOperation ao2 = SceneManager.LoadSceneAsync("Tutorial", LoadSceneMode.Additive);
-            yield return new WaitUntil(() => ao1.isDone && ao2.isDone);
-
-            PlayerStatus playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+            AsyncOperation ao = SceneManager.LoadSceneAsync("Tutorial", LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao.isDone);
+            PlayerManager playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
+            yield return new WaitUntil(() => playerManager.player != null);
+            PlayerStatus playerStatus = playerManager.player.GetComponent<PlayerStatus>();
             playerStatus.isMale = isMale;
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Tutorial");
-            playerStatus.isTutorial = true;
-            playerStatus.changeCharacter();
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
         }
         else if (costume)
         {
-            AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
-            yield return new WaitUntil(() => ao1.isDone);
 
-            PlayerStatus playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+            AsyncOperation ao = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao.isDone);
+            PlayerManager playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
+            yield return new WaitUntil(() => playerManager.player != null);
+            PlayerStatus playerStatus = playerManager.player.GetComponent<PlayerStatus>();
             playerStatus.isMale = isMale;
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene("Dress Up Room");
             playerStatus.changeCharacter();
-            playerStatus.LoadData(false);
-            AsyncOperation ao2 = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
-            yield return new WaitUntil(() => ao2.isDone);
             GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = level;
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
         }
         else
         {
-            AsyncOperation ao1 = SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
-            yield return new WaitUntil(() => ao1.isDone);
-
-            PlayerStatus playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+            AsyncOperation ao = SceneManager.LoadSceneAsync(level, LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao.isDone);
+            PlayerManager playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
+            yield return new WaitUntil(() => playerManager.player != null);
+            PlayerStatus playerStatus = playerManager.player.GetComponent<PlayerStatus>();
             playerStatus.isMale = isMale;
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>().ChangeScene(level);
-            if (level == "Tutorial")
-            {
-                playerStatus.isTutorial = true;
-			}
-			else
-			{
-                playerStatus.LoadData(false);
-            }
             playerStatus.changeCharacter();
-            AsyncOperation ao2 = SceneManager.LoadSceneAsync(level, LoadSceneMode.Additive);
-            yield return new WaitUntil(() => ao2.isDone);
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
         }
     }

@@ -9,15 +9,20 @@ public class BouncyObject : MonoBehaviour
     public bool isBounceHelper = false;
     public bool canChange = true;
     private Animator anim;
+    private PlayerManager playerManager;
     private PlayerMovement playerMovement;
 
 	private void Start()
 	{
-        anim = transform.parent.GetComponent<Animator>();
-        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-	}
-	private void OnTriggerStay(Collider other)
+        anim = transform.parent.GetComponent<Animator>();}
+    private void FindPlayer()
+	{
+        playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
+        if (playerManager.player != null) playerMovement = playerManager.player.GetComponent<PlayerMovement>();
+    }
+    private void OnTriggerStay(Collider other)
     {
+        if (playerMovement == null) FindPlayer();
         if (other.CompareTag("Player"))
         {
             if (isBounceHelper)
@@ -41,6 +46,7 @@ public class BouncyObject : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (playerMovement == null) FindPlayer();
         if (other.CompareTag("Player"))
         {
             if (isBounceHelper)
@@ -57,6 +63,7 @@ public class BouncyObject : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
+        if (playerMovement == null) FindPlayer();
         if (collision.gameObject.CompareTag("Player") && !playerMovement.isGrounded)
         {
             Rigidbody player = collision.gameObject.GetComponent<Rigidbody>();
@@ -76,6 +83,7 @@ public class BouncyObject : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
+        if (playerMovement == null) FindPlayer();
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerMovement>().touchingBounce = false;
