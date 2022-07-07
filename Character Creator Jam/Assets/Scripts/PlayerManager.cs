@@ -53,6 +53,7 @@ public class PlayerManager : MonoBehaviour
     {
         yield return new WaitUntil(() => (player != null));
         player.GetComponent<PlayerMovement>().enabled = false;
+        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         yield return new WaitForFixedUpdate();
         yield return new WaitForSeconds(.5f);
         player.GetComponent<PlayerMovement>().enabled = true;
