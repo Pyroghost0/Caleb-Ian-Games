@@ -25,20 +25,20 @@ public class BossEquipment : MonoBehaviour
         playerStatus = playerManager.player.GetComponent<PlayerStatus>();
         if (playerStatus.isMale)
         {
-            isMale = true;
-            for (int i = 0; i < maleObjects.Length; i++)
-            {
-                femaleObjects[i].SetActive(false);
-                maleObjects[i].SetActive(true);
-            }
-        }
-        else
-        {
             isMale = false;
             for (int i = 0; i < femaleObjects.Length; i++)
             {
                 femaleObjects[i].SetActive(true);
                 maleObjects[i].SetActive(false);
+            }
+        }
+        else
+        {
+            isMale = true;
+            for (int i = 0; i < maleObjects.Length; i++)
+            {
+                femaleObjects[i].SetActive(false);
+                maleObjects[i].SetActive(true);
             }
         }
         offset = isMale ? 12 : 0;

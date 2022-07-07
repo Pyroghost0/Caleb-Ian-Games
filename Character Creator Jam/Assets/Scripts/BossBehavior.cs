@@ -325,6 +325,8 @@ public class BossBehavior : MonoBehaviour
             }
             else if (actionChoice == 1)
             {
+
+                bossAnim.SetTrigger("Rise");
                 yield return new WaitUntil(() => inCenter);
                 Debug.Log("Wide Range Suck");
                 bossAnim.SetTrigger("ChooseSuck");
@@ -496,8 +498,9 @@ public class BossBehavior : MonoBehaviour
             else
             {
                 Debug.Log("Extra Shooting Gun");
-                
+
             }
+            bossAnim.SetTrigger("EndAction");
             bossAnim.SetTrigger("ChooseShoot");
             yield return new WaitForSeconds(1.5f);
             for (int i = 0; i < numShots; i++)

@@ -70,7 +70,7 @@ public class PlayerStatus : MonoBehaviour
         audioManager = GetComponent<AudioManager>();
     }
 
-    public void changeCharacter()
+    public void ChangeCharacter()
     {
         femaleFaces[1].SetActive(false);
         if (isMale)
@@ -87,6 +87,14 @@ public class PlayerStatus : MonoBehaviour
         }
         else
         {
+            for (int i = 0; i < femaleObjects.Length; i++)
+            {
+                femaleObjects[i].SetActive(true);
+            }
+            for (int i = 0; i < maleObjects.Length; i++)
+            {
+                maleObjects[i].SetActive(false);
+            }
             femaleFaces[headNumber].SetActive(true);
         }
     }
@@ -163,7 +171,7 @@ public class PlayerStatus : MonoBehaviour
             levelsUnlocked[i] = (data[i + 20] > 0);
         }
         defeatedBoss = playthrough && (data[24] > 0);
-        changeCharacter();
+        ChangeCharacter();
     }
     public void DefeatBoss()
 	{

@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     public string loadedPlayerScene = "Player";
     public GameObject firstCheckpoint;
     public string sceneName;
+    public bool loadedPlayer = false;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,7 @@ public class PlayerManager : MonoBehaviour
     }
     private IEnumerator WaitLoadPlayer()
 	{
+        loadedPlayer = false;
         AsyncOperation ao = SceneManager.LoadSceneAsync(loadedPlayerScene, LoadSceneMode.Additive);
         if (ao == null)
         {
@@ -48,6 +50,7 @@ public class PlayerManager : MonoBehaviour
 		}
         player.GetComponent<AudioManager>().ChangeScene(sceneName);
         player.GetComponent<PlayerStatus>().currentSpawnPosition = firstCheckpoint;
+        loadedPlayer = true;
     }
     IEnumerator DelayForLoading()
     {

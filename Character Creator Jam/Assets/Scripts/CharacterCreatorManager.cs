@@ -287,13 +287,13 @@ public class CharacterCreatorManager : MonoBehaviour
             AsyncOperation ao = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
             yield return new WaitUntil(() => ao.isDone);
             PlayerManager playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
-            yield return new WaitUntil(() => playerManager.player != null);
+            yield return new WaitUntil(() => playerManager.loadedPlayer);
             PlayerStatus playerStatus = playerManager.player.GetComponent<PlayerStatus>();
             playerStatus.isMale = isMale;
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
-            playerStatus.changeCharacter();
+            playerStatus.ChangeCharacter();
             GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = level;
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
         }
@@ -302,7 +302,7 @@ public class CharacterCreatorManager : MonoBehaviour
             AsyncOperation ao = SceneManager.LoadSceneAsync(level, LoadSceneMode.Additive);
             yield return new WaitUntil(() => ao.isDone);
             PlayerManager playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
-            yield return new WaitUntil(() => playerManager.player != null);
+            yield return new WaitUntil(() => playerManager.loadedPlayer);
             PlayerStatus playerStatus = playerManager.player.GetComponent<PlayerStatus>();
             playerStatus.isMale = isMale;
             playerStatus.headNumber = headNumber - 1;
@@ -314,7 +314,7 @@ public class CharacterCreatorManager : MonoBehaviour
                 playerStatus.health = 20f;
             }
             playerStatus.UnlockLevel(level);
-            playerStatus.changeCharacter();
+            playerStatus.ChangeCharacter();
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
         }
     }
