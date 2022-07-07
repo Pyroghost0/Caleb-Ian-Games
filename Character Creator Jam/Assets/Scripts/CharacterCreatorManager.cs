@@ -37,6 +37,7 @@ public class CharacterCreatorManager : MonoBehaviour
     public GameObject HairColors;
 
     public Animator HeadsAnim;
+    public GameObject loadingScreen;
 
     private int buttonClicked = 0;
     public string level;
@@ -276,7 +277,7 @@ public class CharacterCreatorManager : MonoBehaviour
         buttonClicked = 0;
 
         StartCoroutine(WaitLoad());
-        ChangeText(9);
+        loadingScreen.SetActive(true);
     }
 
     IEnumerator WaitLoad()
@@ -312,6 +313,7 @@ public class CharacterCreatorManager : MonoBehaviour
                 playerStatus.maxHealth = 20f;
                 playerStatus.health = 20f;
             }
+            playerStatus.UnlockLevel(level);
             playerStatus.changeCharacter();
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
         }

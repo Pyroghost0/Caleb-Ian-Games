@@ -12,7 +12,7 @@ public class PlayerStatus : MonoBehaviour
     public int hairColor = 0;
     public bool[] equipmentUnlocked;
     public bool[] setsCompleted;
-    public bool[] levelsCompleted;
+    public bool[] levelsUnlocked;
     private bool defeatedBoss = false;
 
     //other data
@@ -91,23 +91,23 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
-    public void CompletedLevel(string levelName)
+    public void UnlockLevel(string levelName)
 	{
         if (levelName == "Mech Level")
 		{
-            levelsCompleted[0] = true;
+            levelsUnlocked[0] = true;
 		}
         else if (levelName == "Deer Level")
         {
-            levelsCompleted[1] = true;
+            levelsUnlocked[1] = true;
         }
         else if (levelName == "Baker Level")
         {
-            levelsCompleted[2] = true;
+            levelsUnlocked[2] = true;
         }
         else if (levelName == "POTUS Level")
         {
-            levelsCompleted[3] = true;
+            levelsUnlocked[3] = true;
         }
         Save();
     }
@@ -137,7 +137,7 @@ public class PlayerStatus : MonoBehaviour
         {
 
             if (data[i + 20] == 0)
-                data[i + 20] = levelsCompleted[i] ? 1 : 0;
+                data[i + 20] = levelsUnlocked[i] ? 1 : 0;
         }
         if (data[24] == 0)
             data[24] = defeatedBoss ? 1 : 0;
@@ -160,9 +160,10 @@ public class PlayerStatus : MonoBehaviour
         }
         for (int i = 0; i < 4; i++)
         {
-            levelsCompleted[i] = (data[i + 20] > 0);
+            levelsUnlocked[i] = (data[i + 20] > 0);
         }
         defeatedBoss = playthrough && (data[24] > 0);
+        changeCharacter();
     }
     public void DefeatBoss()
 	{
@@ -533,6 +534,7 @@ public class PlayerStatus : MonoBehaviour
                 AsyncOperation ao1 = SceneManager.UnloadSceneAsync("Tutorial");
                 yield return new WaitUntil(() => ao1.isDone);
                 GameObject.FindGameObjectWithTag("Loading").transform.GetChild(0).gameObject.SetActive(false);
+                UnlockLevel("Mech Level");
                 playerMovement.groundChecker.inGround = false;
                 transform.position = Vector3.zero;
                 transform.rotation = Quaternion.Euler(0f, 0f, 0f);

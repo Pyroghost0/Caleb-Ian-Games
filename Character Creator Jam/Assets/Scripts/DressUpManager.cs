@@ -103,7 +103,7 @@ public class DressUpManager : MonoBehaviour
         }
         for (int i = 0; i < 4; i++)
         {
-            if (playerStatus.levelsCompleted[i])
+            if (playerStatus.levelsUnlocked[i])
 			{
                 completion += 10;
             }

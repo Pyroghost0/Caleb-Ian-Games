@@ -41,7 +41,7 @@ public class DoorPortal : MonoBehaviour
             
             if (!isDressUpDoor)
 			{
-                other.GetComponent<PlayerStatus>().CompletedLevel(currentSceneName);
+                other.GetComponent<PlayerStatus>().UnlockLevel(nextSceneName);
                 StartCoroutine(LoadDressUpRoom());
 			}
 			else

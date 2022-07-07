@@ -105,6 +105,7 @@ public class Pause : MonoBehaviour
     }
     public void BackToMainMenu()
     {
+        player.GetComponent<PlayerStatus>().UnlockLevel("Save Equipment Info");
         Time.timeScale = 1f;
         SceneManager.LoadScene("Main Screen");
     }
