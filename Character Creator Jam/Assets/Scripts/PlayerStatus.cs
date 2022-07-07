@@ -516,6 +516,7 @@ public class PlayerStatus : MonoBehaviour
             playerMovement.enabled = false;
             if (isTutorial)
             {
+                GameObject.FindGameObjectWithTag("Loading").transform.GetChild(0).gameObject.SetActive(true);
                 GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
                 for (int i = 0; i < slimes.Length; i++)
                 {
@@ -531,14 +532,17 @@ public class PlayerStatus : MonoBehaviour
                 audioManager.ChangeScene("Mech Level");
                 AsyncOperation ao1 = SceneManager.UnloadSceneAsync("Tutorial");
                 yield return new WaitUntil(() => ao1.isDone);
+                GameObject.FindGameObjectWithTag("Loading").transform.GetChild(0).gameObject.SetActive(false);
                 playerMovement.groundChecker.inGround = false;
                 transform.position = Vector3.zero;
                 transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 isTutorial = false;
+                maxHealth = 100f;
                 health = maxHealth;
                 rectHealthBar.sizeDelta = new Vector2(rectHealth, rectHealthBar.rect.height);
                 invincibleTime = 1.5f;
                 invincible = false;
+                HealthStuff.SetActive(true);
                 if (equipedEquipment[0])
                 {//Mech Helmet
                     gun.suckDistence /= 2f;
@@ -643,6 +647,7 @@ public class PlayerStatus : MonoBehaviour
                 yield return new WaitForFixedUpdate();
                 timer += Time.deltaTime;
             }
+            HealthStuff.SetActive(true);
             invincible = false;
         }
     }

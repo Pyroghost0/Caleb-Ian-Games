@@ -281,22 +281,8 @@ public class CharacterCreatorManager : MonoBehaviour
 
     IEnumerator WaitLoad()
     {
-        if (level.Length == 0)
+        if (costume)
         {
-            AsyncOperation ao = SceneManager.LoadSceneAsync("Tutorial", LoadSceneMode.Additive);
-            yield return new WaitUntil(() => ao.isDone);
-            PlayerManager playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
-            yield return new WaitUntil(() => playerManager.player != null);
-            PlayerStatus playerStatus = playerManager.player.GetComponent<PlayerStatus>();
-            playerStatus.isMale = isMale;
-            playerStatus.headNumber = headNumber - 1;
-            playerStatus.skinColor = skinColor;
-            playerStatus.hairColor = hairColor;
-            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
-        }
-        else if (costume)
-        {
-
             AsyncOperation ao = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
             yield return new WaitUntil(() => ao.isDone);
             PlayerManager playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
@@ -321,6 +307,11 @@ public class CharacterCreatorManager : MonoBehaviour
             playerStatus.headNumber = headNumber - 1;
             playerStatus.skinColor = skinColor;
             playerStatus.hairColor = hairColor;
+            if (level == "Tutorial")
+            {
+                playerStatus.maxHealth = 20f;
+                playerStatus.health = 20f;
+            }
             playerStatus.changeCharacter();
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Character Creator"));
         }

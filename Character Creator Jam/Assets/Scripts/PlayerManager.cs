@@ -26,7 +26,7 @@ public class PlayerManager : MonoBehaviour
             player.GetComponent<AudioManager>().ChangeScene(sceneName);
             player.GetComponent<PlayerStatus>().currentSpawnPosition = firstCheckpoint;
         }
-
+        StartCoroutine(DelayForLoading());
     }
     private IEnumerator WaitLoadPlayer()
 	{
@@ -51,6 +51,7 @@ public class PlayerManager : MonoBehaviour
     }
     IEnumerator DelayForLoading()
     {
+        yield return new WaitUntil(() => (player != null));
         player.GetComponent<PlayerMovement>().enabled = false;
         yield return new WaitForFixedUpdate();
         yield return new WaitForSeconds(.5f);
