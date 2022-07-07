@@ -11,6 +11,7 @@ public class BouncyObject : MonoBehaviour
     private Animator anim;
     private PlayerManager playerManager;
     private PlayerMovement playerMovement;
+    public AudioSource bounceSound;
 
 	private void Start()
 	{
@@ -69,6 +70,7 @@ public class BouncyObject : MonoBehaviour
             Rigidbody player = collision.gameObject.GetComponent<Rigidbody>();
             player.velocity = Vector3.up * bounce;
             anim.SetTrigger("Bounce");
+            bounceSound.Play();
         }
         if (collision.gameObject.CompareTag("Slime"))
         {
@@ -77,6 +79,7 @@ public class BouncyObject : MonoBehaviour
             {
                 slime.velocity = Vector3.up * bounce / 2f;
                 anim.SetTrigger("Bounce");
+                bounceSound.Play();
             }
         }
     }

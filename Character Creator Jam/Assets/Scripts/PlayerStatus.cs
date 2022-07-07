@@ -307,13 +307,6 @@ public class PlayerStatus : MonoBehaviour
             {
                 playerMovement.jumpHeight *= 2f;
                 //id = 2;
-                if (!equipmentUnlocked[2])
-				{
-                    for (int i = 0; i < equipmentUnlocked.Length; i++)
-                    {
-                        equipmentUnlocked[i] = false;
-					}
-				}
             }
             else if (equipment.clothingStyle == "Deer")
             {
@@ -534,6 +527,10 @@ public class PlayerStatus : MonoBehaviour
                 AsyncOperation ao1 = SceneManager.UnloadSceneAsync("Tutorial");
                 yield return new WaitUntil(() => ao1.isDone);
                 GameObject.FindGameObjectWithTag("Loading").transform.GetChild(0).gameObject.SetActive(false);
+                for (int i = 0; i < equipmentUnlocked.Length; i++)
+                {
+                    equipmentUnlocked[i] = false;
+                }
                 UnlockLevel("Mech Level");
                 playerMovement.groundChecker.inGround = false;
                 transform.position = Vector3.zero;
