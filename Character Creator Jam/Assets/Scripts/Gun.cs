@@ -46,6 +46,8 @@ public class Gun : MonoBehaviour
     public AudioSource suck;
     public AudioSource startEnd;
     public AudioSource suckUp;
+    public AudioSource equip;
+    public AudioSource shoot;
     //public bool canMove;
 
     // Start is called before the first frame update
@@ -81,6 +83,7 @@ public class Gun : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && shootCooldown)//Left Click
         {
+            
             StartCoroutine(ShootCooldown());
             reticleAnimation.SetTrigger("Shoot");
             playerAnim.SetTrigger("Shoot");
@@ -95,7 +98,20 @@ public class Gun : MonoBehaviour
                 {//50 = 10 lost, 25 = 5 lost, 5 = 1 lost
                     power = amountOfSlime / 5f;
                 }
-                amountOfSlime -= power;
+                if (power < 1) power = 0;
+                shoot.pitch = (power / -8) + 2;
+                shoot.volume = (power / 12) + 0.2f;
+                shoot.Play();
+                if (power > 5f)
+				{
+                    amountOfSlime -= power;
+				}
+				else
+				{
+                    amountOfSlime -= 2.5f;
+
+                }
+                if (power == 0) amountOfSlime = 0;
                 rectSlimeBar.sizeDelta = new Vector2((amountOfSlime / 100) * rectSlime, rectSlimeBar.rect.height);
                 power += 4f;
 

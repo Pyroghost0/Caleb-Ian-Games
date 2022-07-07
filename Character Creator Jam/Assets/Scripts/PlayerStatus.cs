@@ -174,6 +174,7 @@ public class PlayerStatus : MonoBehaviour
 	}
 	public void Equip(Equipment equipment)
     {
+        gun.equip.Play();
         if (equipment.clothingType == "Head")
         {
             int somethingElseEquiped = -1;
