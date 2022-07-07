@@ -12,6 +12,7 @@ public class BossMonologue : MonoBehaviour
     public GameObject noButton;
     public GameObject continueButton;
     private GameObject player;
+    private PlayerManager playerManager;
     private PlayerMovement playerMovement;
     private GameObject playerCanvas;
     public BossEquipment bossEquipment;
@@ -24,6 +25,7 @@ public class BossMonologue : MonoBehaviour
     private int buttonClicked = 0;
     private AudioManager audioManager;
     public GameObject endingWall;
+    public AudioSource audio;
     //0 = none, 1 = yes, 2 = no, 3 = continue
 
     private string[] introText = new string[]{
@@ -76,13 +78,17 @@ public class BossMonologue : MonoBehaviour
     };
     //0 = continue, 1 = choose, 2 = yes/no
 
-    void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerMovement = player.GetComponent<PlayerMovement>();
-        playerCanvas = GameObject.FindGameObjectWithTag("Player Canvas");
-        audioManager = player.GetComponent<AudioManager>();
-        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+    private void FindPlayer()
+	{
+        playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
+        if (playerManager.player != null)
+		{
+            player = playerManager.player;
+            playerMovement = player.GetComponent<PlayerMovement>();
+            playerCanvas = GameObject.FindGameObjectWithTag("Player Canvas");
+            audioManager = player.GetComponent<AudioManager>();
+            mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        }
     }
     private void ChangeText(int textIndex)
     {
@@ -131,7 +137,12 @@ public class BossMonologue : MonoBehaviour
     {
         panel.SetActive(true);
         ChangeText(0);
-        yield return new WaitForSeconds(2f);
+        while (player == null)
+		{
+            FindPlayer();
+            yield return new WaitForSeconds(0.2f);
+        }
+        yield return new WaitForSeconds(1.8f);
         ChangeText(1);
         playerMovement.playerAnim.SetFloat("MoveX", 0);
         playerMovement.playerAnim.SetFloat("MoveY", 0);
@@ -251,6 +262,7 @@ public class BossMonologue : MonoBehaviour
         playerCanvas.transform.GetChild(1).gameObject.SetActive(true);
         playerCanvas.transform.GetChild(2).gameObject.SetActive(true);
         player.transform.GetChild(0).GetChild(1).GetComponent<Gun>().enabled = true;
+        audio.Play();
         yield return new WaitForSeconds(2f);
         panel.SetActive(false);
         bossCamera.SetActive(false);

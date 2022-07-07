@@ -129,7 +129,7 @@ public class FlyerBehavior : MonoBehaviour
         {
             anim.SetTrigger("Hurt");
             health -= other.GetComponent<Bullet>().power * 25;
-            if (health <= 0)
+            if (health <= 0 && !isDead)
             {
                 audio.clip = hurt[2];
                 audio.Play();

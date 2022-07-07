@@ -124,7 +124,7 @@ public class SlimeBehavior : MonoBehaviour
             sound.clip = hurt;
             sound.Play();
             health -= other.GetComponent<Bullet>().power * 25;
-            if (health <= 0)
+            if (health <= 0 && !isDead)
             {
                 StartCoroutine(Die());
             }

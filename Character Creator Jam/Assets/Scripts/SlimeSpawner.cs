@@ -90,6 +90,7 @@ public class SlimeSpawner : MonoBehaviour
 
     public GameObject SpawnSlime()
     {
+        if (player == null) FindPlayer();
         slimeColor = Random.Range(0, materials.Length);
         GameObject slime = Instantiate(slimePrefab, spawnPoint.transform.position, slimePrefab.transform.rotation);
         slime.GetComponent<SlimeBehavior>().slimeSpawner = this;

@@ -68,6 +68,8 @@ public class AudioManager : MonoBehaviour
 	}
 	public void ChangeScene(string sceneName)
 	{
+		ToggleBgmEcho(false);
+		BgmChangePitch(1f);
 		BgmChangeVolume(0.5f);
 		sounds = FindObjectsOfType<AudioSource>(true);
 		SoundChangeVolume(soundVolume);

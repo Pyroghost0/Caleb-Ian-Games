@@ -44,6 +44,7 @@ public class PlayerStatus : MonoBehaviour
     public float defenceMultiplier = 1f;
     public bool survivedDeathOnce = false;
     public bool passiveRegeneration = false;
+    private bool isDead = false;
 
     public bool isTutorial = false;
     public GameObject currentSpawnPosition;
@@ -504,8 +505,9 @@ public class PlayerStatus : MonoBehaviour
     IEnumerator UpdateHealthBar(float healthChange)
     {
         notDead = true;
-        if (health + healthChange <= 0)
+        if (health + healthChange <= 0 && !isDead)
         {
+            isDead = true;
             Debug.Log("Dead");
             playerAnim.SetBool("Dead", true);
             playerAnim.SetFloat("MoveX", 0);
@@ -664,6 +666,7 @@ public class PlayerStatus : MonoBehaviour
 
     public void Respawn()
     {
+        isDead = false;
         notDead = false;
         survivedDeathOnce = false;
         health = maxHealth;

@@ -132,7 +132,7 @@ public class WalkerBehavior : MonoBehaviour
         {
             anim.SetTrigger("Hurt");
             health -= other.GetComponent<Bullet>().power * 25;
-            if (health <= 0)
+            if (health <= 0 && !isDead)
             {
                 for (int i = 0; i < audio.Length; i++)
 				{

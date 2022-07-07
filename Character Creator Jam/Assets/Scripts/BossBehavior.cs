@@ -721,7 +721,7 @@ public class BossBehavior : MonoBehaviour
         {
             health -= other.GetComponent<Bullet>().power * 25;
             rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * rectHealth, rectHealthBar.rect.height);
-            if (health <= 0)
+            if (health <= 0 && !killed)
             {
                 killed = true;
                 bossAnim.SetBool("isDead", true);

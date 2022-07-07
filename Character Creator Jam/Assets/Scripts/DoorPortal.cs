@@ -9,12 +9,16 @@ public class DoorPortal : MonoBehaviour
     public bool isDressUpDoor;
     public string currentSceneName;
     private bool loaded = false;
+    private GameObject loadingScreen;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !loaded)
         {
             loaded = true;
+            Time.timeScale = 0f;
+            loadingScreen = GameObject.FindGameObjectWithTag("Loading");
+            loadingScreen.transform.GetChild(0).gameObject.SetActive(true);
             GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
             for (int i = 0; i < slimes.Length; i++)
             {
@@ -52,12 +56,16 @@ public class DoorPortal : MonoBehaviour
         AsyncOperation ao1 = SceneManager.LoadSceneAsync("Dress Up Room", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao1.isDone);
         GameObject.FindGameObjectWithTag("Dress Up Door").GetComponent<DoorPortal>().nextSceneName = nextSceneName;
+        loadingScreen.transform.GetChild(0).gameObject.SetActive(false);
+        Time.timeScale = 1f;
         SceneManager.UnloadSceneAsync(currentSceneName);
     }
     private IEnumerator LoadLevel()
 	{
         AsyncOperation ao1 = SceneManager.LoadSceneAsync(nextSceneName, LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao1.isDone);
+        loadingScreen.transform.GetChild(0).gameObject.SetActive(false);
+        Time.timeScale = 1f;
         SceneManager.UnloadSceneAsync("Dress Up Room");
     }
 }

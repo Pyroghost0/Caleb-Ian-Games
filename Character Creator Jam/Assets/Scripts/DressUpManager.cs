@@ -28,8 +28,9 @@ public class DressUpManager : MonoBehaviour
 	{
         playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
         yield return new WaitUntil(() => playerManager.player != null);
-        playerStatus = playerManager.player.GetComponent<PlayerStatus>();
-        playerMovement = playerManager.player.GetComponent<PlayerMovement>();
+        player = playerManager.player;
+        playerStatus = player.GetComponent<PlayerStatus>();
+        playerMovement = player.GetComponent<PlayerMovement>();
         playerCanvas = GameObject.FindGameObjectWithTag("Player Canvas");
         for (int i = 0; i < equipment.Length; i++)
         {

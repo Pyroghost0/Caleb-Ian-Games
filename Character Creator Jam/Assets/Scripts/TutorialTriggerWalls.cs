@@ -13,6 +13,7 @@ public class TutorialTriggerWalls : MonoBehaviour
 
     public bool isFinalTriggerWall = false;
     public GameObject ground;
+    public AudioSource audio;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -53,6 +54,7 @@ public class TutorialTriggerWalls : MonoBehaviour
 
     IEnumerator MoveGateUp()
     {
+        audio.Play();
         float timer = 0f;
         while (timer < 2.5f)
         {

@@ -13,7 +13,6 @@ public class NoticeTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
 	{
-		if (notice == null) notice = GameObject.FindGameObjectWithTag("Notice");
 		if (other.CompareTag("Player") && !activated)
 		{
 			activated = true;
@@ -30,12 +29,13 @@ public class NoticeTrigger : MonoBehaviour
 
 	public void ActivateMainNotice()
     {
-		mainTrigger.activated = true;
+		activated = true;
 		StartCoroutine(DeactivateAfterSeconds());
     }
 
 	private IEnumerator DeactivateAfterSeconds()
 	{
+		if (notice == null) notice = GameObject.FindGameObjectWithTag("Notice");
 		notice.transform.GetChild(0).gameObject.SetActive(true);
 		notice.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
 		yield return new WaitForSeconds(seconds);

@@ -10,23 +10,30 @@ public class BossEquipment : MonoBehaviour
     public GameObject[] selfEquipment;
     public int equipedSet; //0 = mech, 1 = deer, 2 = baker, 3 = potus
 
+    private PlayerManager playerManager;
     private PlayerStatus playerStatus;
     private int offset;
     // Start is called before the first frame update
     void Start()
     {
-        playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+        StartCoroutine(WaitFindPlayer());
+    }
+	private IEnumerator WaitFindPlayer()
+	{
+        playerManager = GameObject.FindGameObjectWithTag("Player Manager").GetComponent<PlayerManager>();
+        yield return new WaitUntil(() => playerManager.player != null);
+        playerStatus = playerManager.player.GetComponent<PlayerStatus>();
         if (playerStatus.isMale)
-		{
+        {
             isMale = true;
             for (int i = 0; i < maleObjects.Length; i++)
-			{
+            {
                 femaleObjects[i].SetActive(false);
                 maleObjects[i].SetActive(true);
             }
-		}
-		else
-		{
+        }
+        else
+        {
             isMale = false;
             for (int i = 0; i < femaleObjects.Length; i++)
             {
@@ -34,18 +41,18 @@ public class BossEquipment : MonoBehaviour
                 maleObjects[i].SetActive(false);
             }
         }
-        offset = isMale? 12 : 0;
+        offset = isMale ? 12 : 0;
 
         if (playerStatus.equipedEquipment[0] == false && playerStatus.equipedEquipment[1] == false && playerStatus.equipedEquipment[2] == false)
-		{
+        {
             equipedSet = 0;
             selfEquipment[0 + offset].SetActive(true);
             selfEquipment[1 + offset].SetActive(true);
             selfEquipment[2 + offset].SetActive(true);
 
-		}
-		else if (playerStatus.equipedEquipment[3] == false && playerStatus.equipedEquipment[4] == false && playerStatus.equipedEquipment[5] == false)
-		{
+        }
+        else if (playerStatus.equipedEquipment[3] == false && playerStatus.equipedEquipment[4] == false && playerStatus.equipedEquipment[5] == false)
+        {
             equipedSet = 1;
             selfEquipment[3 + offset].SetActive(true);
             selfEquipment[4 + offset].SetActive(true);
@@ -58,8 +65,8 @@ public class BossEquipment : MonoBehaviour
             selfEquipment[7 + offset].SetActive(true);
             selfEquipment[8 + offset].SetActive(true);
         }
-		else
-		{
+        else
+        {
             equipedSet = 3;
             selfEquipment[9 + offset].SetActive(true);
             selfEquipment[10 + offset].SetActive(true);

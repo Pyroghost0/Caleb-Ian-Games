@@ -14,6 +14,7 @@ public class MainScreenManager : MonoBehaviour
     public GameObject text100;
     public GameObject removeMenu;
     public GameObject unlockMenu;
+    public GameObject loading;
 
     private bool isMainScreen = true;
     private int[] data;
@@ -59,11 +60,13 @@ public class MainScreenManager : MonoBehaviour
             if (Input.GetKey(KeyCode.Backspace))
             {
                 removeMenu.SetActive(true);
+                unlockMenu.SetActive(false);
             }
 			else if (Input.GetKey(KeyCode.Return))
 			{
                 unlockMenu.SetActive(true);
-			}
+                removeMenu.SetActive(false);
+            }
         }
 		
 	}
@@ -159,6 +162,15 @@ public class MainScreenManager : MonoBehaviour
 
     public void LoadLevel(string sceneName)
     {
+        for (int i = 0; i < buttons1.Length; i++)
+        {
+            buttons1[i].SetActive(false);
+        }
+        for (int i = 0; i < buttons2.Length; i++)
+        {
+            buttons2[i].SetActive(false);
+        }
+        loading.SetActive(true);
         if (selectCharacter)
         {
             StartCoroutine(WaitLoadCreator(sceneName));
