@@ -39,7 +39,8 @@ public class BossBehavior : MonoBehaviour
     List<Transform> wideSlimesTransform = new List<Transform>();
     List<Rigidbody> wideSlimesRigidbody = new List<Rigidbody>();
     private AudioManager audioManager;
-
+    public AudioSource bossAudio;
+    public AudioClip[] bossSounds;
     // Start is called before the first frame update
     void Start()
     {
@@ -274,7 +275,11 @@ public class BossBehavior : MonoBehaviour
                 yield return new WaitUntil(() => inCenter);
                 Debug.Log("Slime Sucking");
                 bossAnim.SetTrigger("ChooseSuck");
-                yield return new WaitForSeconds(1.5f);
+                bossAudio.clip = bossSounds[2];
+                bossAudio.loop = false;
+                yield return new WaitForSeconds(0.7f);
+                bossAudio.Play();
+                yield return new WaitForSeconds(0.8f);
                 if (health / maxHealth > .75)
                 {
                     StartCoroutine(SingleSlimeSuck(3f, 1f, 5f, .5f));
@@ -330,7 +335,11 @@ public class BossBehavior : MonoBehaviour
                 yield return new WaitUntil(() => inCenter);
                 Debug.Log("Wide Range Suck");
                 bossAnim.SetTrigger("ChooseSuck");
-                yield return new WaitForSeconds(1.5f);
+                bossAudio.clip = bossSounds[2];
+                bossAudio.loop = false;
+                yield return new WaitForSeconds(0.7f);
+                bossAudio.Play();
+                yield return new WaitForSeconds(0.8f);
                 if (health / maxHealth > .75)
                 {
                     StartCoroutine(WideSuck(1.25f, 1f, 3.5f));
@@ -502,10 +511,16 @@ public class BossBehavior : MonoBehaviour
             }
             bossAnim.SetTrigger("EndAction");
             bossAnim.SetTrigger("ChooseShoot");
-            yield return new WaitForSeconds(1.5f);
+            bossAudio.clip = bossSounds[0];
+            bossAudio.loop = false;
+            yield return new WaitForSeconds(0.7f);
+            bossAudio.Play();
+            yield return new WaitForSeconds(0.8f);
             for (int i = 0; i < numShots; i++)
             {
                 bossAnim.SetTrigger("Shoot");
+                bossAudio.clip = bossSounds[1];
+                bossAudio.Play();
                 GameObject bullet = Instantiate(bulletPrefab, bulletSpawnSpot.position, Quaternion.LookRotation(playerTruePosition.position - bulletSpawnSpot.position));
                 yield return new WaitForSeconds(Random.Range(shotDelayMin, shotDelayMax));
             }
@@ -527,6 +542,9 @@ public class BossBehavior : MonoBehaviour
         transform.position = new Vector3(transform.position.x, spawnPosition.y + 20f, transform.position.z);
         yield return new WaitForSeconds(delaySeconds);
         bossAnim.SetTrigger("SlimeSuck");
+        bossAudio.clip = bossSounds[3];
+        bossAudio.loop = true;
+        bossAudio.Play();
         singleSuckParticles.SetActive(true);
         GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
         List<Transform> assignedSlimesTransform = new List<Transform>();
@@ -569,6 +587,8 @@ public class BossBehavior : MonoBehaviour
         yield return new WaitForSeconds(delaySeconds);
         timer = 0f;
         bossAnim.SetTrigger("EndSuck");
+        bossAudio.loop = false;
+        bossAudio.Stop();
         while (timer < riseSeconds)
         {
             yield return new WaitForFixedUpdate();
@@ -595,6 +615,9 @@ public class BossBehavior : MonoBehaviour
         yield return new WaitForSeconds(delaySeconds);
         wideSuckParticles.SetActive(true);
         bossAnim.SetTrigger("WideSuck");
+        bossAudio.clip = bossSounds[4];
+        bossAudio.loop = true;
+        bossAudio.Play();
         GameObject[] slimes = GameObject.FindGameObjectsWithTag("Slime");
         wideSlimesTransform = new List<Transform>();
         wideSlimesRigidbody = new List<Rigidbody>();
@@ -656,6 +679,8 @@ public class BossBehavior : MonoBehaviour
         yield return new WaitForSeconds(delaySeconds);
         timer = 0f;
         bossAnim.SetTrigger("EndSuck");
+        bossAudio.loop = false;
+        bossAudio.Stop();
         while (timer < riseSeconds)
         {
             yield return new WaitForFixedUpdate();

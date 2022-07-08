@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
             gun = GameObject.FindGameObjectWithTag("Gun").GetComponent<Gun>();
             player.GetComponent<AudioManager>().ChangeScene(sceneName);
             player.GetComponent<PlayerStatus>().currentSpawnPosition = firstCheckpoint;
+            GameObject.FindGameObjectWithTag("Notice").transform.GetChild(0).gameObject.SetActive(false);
         }
         StartCoroutine(DelayForLoading());
     }

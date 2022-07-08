@@ -34,9 +34,9 @@ public class PlayerMovement : MonoBehaviour {
     private bool leftGround = false;
     public bool nearBounce = false;
 
-#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
-    public AudioSource audio;
-#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+    public AudioSource playerAudio;
+    public AudioSource walk;
+    public AudioClip[] walks;
     public AudioClip[] maleJump;
     public AudioEchoFilter echo;
     //public bool canMove = true;
@@ -109,12 +109,28 @@ public class PlayerMovement : MonoBehaviour {
             float z = Input.GetAxis("Vertical");
             playerAnim.SetFloat("MoveX", x);
             playerAnim.SetFloat("MoveY", z);
-
+            if (z > 0)
+			{
+                walk.clip = walks[0];
+			}
+            else if (z < 0)
+            {
+                walk.clip = walks[1];
+            }
+            else
+            {
+                walk.clip = walks[2];
+            }
             float magnitude = Mathf.Sqrt(x * x + z * z);
             if (magnitude != 0)
             {
                 x *= Mathf.Abs(x) / magnitude;
                 z *= Mathf.Abs(z) / magnitude;
+                if (!walk.isPlaying) walk.Play();
+            }
+            else if (walk.isPlaying)
+            {
+                walk.Stop();
             }
             move += ((transform.right * x + transform.forward * z) - move) * Time.deltaTime / 2f;
             controller.enabled = true;
@@ -127,12 +143,27 @@ public class PlayerMovement : MonoBehaviour {
             float z = Input.GetAxis("Vertical");
             playerAnim.SetFloat("MoveX", x);
             playerAnim.SetFloat("MoveY", z);
-
+            if (z > 0)
+            {
+                walk.clip = walks[0];
+            }
+            else if (z < 0)
+            {
+                walk.clip = walks[1];
+            }
+            else
+            {
+                walk.clip = walks[2];
+            }
             float magnitude = Mathf.Sqrt(x * x + z * z);
             if (magnitude != 0)
             {
                 x *= Mathf.Abs(x) / magnitude;
                 z *= Mathf.Abs(z) / magnitude;
+                if (!walk.isPlaying) walk.Play();
+            }else if (walk.isPlaying)
+			{
+                walk.Stop();
             }
             move = transform.right * x + transform.forward * z;
             controller.enabled = true;
@@ -145,7 +176,6 @@ public class PlayerMovement : MonoBehaviour {
             float z = Input.GetAxis("Vertical");
             playerAnim.SetFloat("MoveX", x);
             playerAnim.SetFloat("MoveY", z);
-
             float magnitude = Mathf.Sqrt(x * x + z * z);
             if (magnitude != 0)
             {
@@ -158,6 +188,7 @@ public class PlayerMovement : MonoBehaviour {
         }
         else
         {
+            walk.Stop();
             isGrounded = false;
         }
 
@@ -166,11 +197,13 @@ public class PlayerMovement : MonoBehaviour {
         {
             if (Input.GetButtonDown("Jump"))
             {
+
+                walk.Stop();
                 rigidbody.velocity = new Vector3(0f, Mathf.Sqrt(jumpHeight * -2f * gravity), 0f);
 
                 echo.enabled = false;
-                audio.clip = maleJump[Random.Range(0, maleJump.Length)];
-                audio.Play();
+                playerAudio.clip = maleJump[Random.Range(0, maleJump.Length)];
+                playerAudio.Play();
                 StartCoroutine(Jump());
             }
             else if (!jumped)
@@ -180,11 +213,15 @@ public class PlayerMovement : MonoBehaviour {
         }
         else if (!leftGround)
         {
+
+            walk.Stop();
             rigidbody.velocity += move * speed + (Vector3.up * gravity * Time.deltaTime);
             StartCoroutine(WaitUntilGrounded());
         }
         else
         {
+
+            walk.Stop();
             rigidbody.velocity += Vector3.up * gravity * Time.deltaTime;
             StartCoroutine(JumpUpCheck());
         }

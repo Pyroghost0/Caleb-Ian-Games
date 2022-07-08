@@ -34,6 +34,7 @@ public class WalkerBehavior : MonoBehaviour
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     public AudioSource[] audio;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+    public AudioSource walk;
     public AudioClip[] hurt;
 
     // Start is called before the first frame update
@@ -85,12 +86,14 @@ public class WalkerBehavior : MonoBehaviour
                     {
                         seesPlayer = false;
                         anim.SetBool("isRunning", false);
+                        walk.Stop();
                     }
                 }
                 else if ((transform.position - player.transform.position).magnitude < seesPlayerDistence)
                 {
                     seesPlayer = true;
                     anim.SetBool("isRunning", true);
+                    walk.Play();
                     for (int i = 0; i < audio.Length; i++)
                     {
                         audio[i].clip = hurt[3];
