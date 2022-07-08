@@ -201,9 +201,12 @@ public class PlayerMovement : MonoBehaviour {
                 walk.Stop();
                 rigidbody.velocity = new Vector3(0f, Mathf.Sqrt(jumpHeight * -2f * gravity), 0f);
 
-                echo.enabled = false;
-                playerAudio.clip = maleJump[Random.Range(0, maleJump.Length)];
-                playerAudio.Play();
+                if (GetComponent<PlayerStatus>().isMale)
+				{
+                    echo.enabled = false;
+                    playerAudio.clip = maleJump[Random.Range(0, maleJump.Length)];
+                    playerAudio.Play();
+                }
                 StartCoroutine(Jump());
             }
             else if (!jumped)

@@ -451,9 +451,12 @@ public class PlayerStatus : MonoBehaviour
             direction.y = transform.position.y;
             direction = (transform.position - direction).normalized;
 
-            echo.enabled = false;
-            audio.clip = maleHurt[Random.Range(0, maleHurt.Length)];
-            audio.Play();
+            if (isMale)
+			{
+                echo.enabled = false;
+                audio.clip = maleHurt[Random.Range(0, maleHurt.Length)];
+                audio.Play();
+            }
             playerAnim.SetTrigger("Hurt");
             if (takeKnockback)
             {
