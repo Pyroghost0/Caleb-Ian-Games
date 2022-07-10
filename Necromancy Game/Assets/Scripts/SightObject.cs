@@ -20,11 +20,11 @@ public class SightObject : MonoBehaviour
         }
         else if (skeleton != null)
         {
-            if ((collision.CompareTag("Enemy") && !collision.GetComponent<Skeleton>().dead) && !enemy.inPresenceOfSkeleton)
+            if ((collision.CompareTag("Enemy") && !collision.GetComponent<Enemy>().dead) && !skeleton.inPresenceOfEnemy)
             {
                 skeleton.goal = collision.transform;
                 skeleton.inPresenceOfEnemy = true;
-                skeleton.enemyAttackRange = skeleton.attack.attackRange + skeleton.circleCollider.radius + collision.GetComponent<Enemy>().circleCollider.radius;//Change Later
+                skeleton.enemyAttackRange = skeleton.attack.attackRange + skeleton.circleCollider.radius + collision.GetComponent<Enemy>().circleCollider.radius;
             }
         }
     }

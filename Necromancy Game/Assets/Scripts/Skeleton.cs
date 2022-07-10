@@ -28,7 +28,6 @@ public class Skeleton : MonoBehaviour
     private float xGoal = 60f;
     private float xGoal2 = 62f;
     private float xBaseGoal = 2f;
-    private float xBaseGoal2 = 0f;
     public Transform goal;
     public Vector3 stayGoal;
     public bool inPresenceOfEnemy = false;
@@ -48,6 +47,7 @@ public class Skeleton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Move Right Mode
         if (skeletonMode == SkeletonMode.right)
         {
             if (inPresenceOfTower)
@@ -73,7 +73,7 @@ public class Skeleton : MonoBehaviour
                     {
                         if (!attack.currectlyAttacking)
                         {
-                            attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
+                            attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, 180f));
                             attack.gameObject.SetActive(true);
                             attack.StartAttack();
                         }
@@ -117,15 +117,17 @@ public class Skeleton : MonoBehaviour
                 Vector2 destination = goal.position - transform.position;
                 if (dead)
                 {
-
+                    //Debug.Log("Dead");
                 }
-                else if (!goal.GetComponent<Enemy>().dead)
+                else if (goal.GetComponent<Enemy>().dead)
                 {
+                    //Debug.Log("They Dead");
                     inPresenceOfEnemy = false;
                     goal = null;
                 }
                 else if (destination.magnitude < enemyAttackRange)
                 {
+                    //Debug.Log("Attack");
                     if (!attack.currectlyAttacking)
                     {
                         attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
@@ -135,10 +137,12 @@ public class Skeleton : MonoBehaviour
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
                 {
+                    //Debug.Log("Lowest Speed");
                     rigidbody.velocity += ((maxSpeed / 3f) - rigidbody.velocity.magnitude) * destination.normalized;
                 }
                 else
                 {
+                    //Debug.Log("Normal Speed");
                     rigidbody.velocity += speedAcceleration * destination.normalized * Time.deltaTime;
                 }
             }
@@ -167,13 +171,12 @@ public class Skeleton : MonoBehaviour
             }
         }
 
-
+        //Stay Mode
         else if (skeletonMode == SkeletonMode.stay)
         {
-            if (inPresenceOfEnemy)
+            if (inPresenceOfEnemy && Mathf.Abs(goal.position.x - transform.position.x) < 5f)
             {
-
-                /*if (rigidbody.velocity.magnitude != 0f)
+                if (rigidbody.velocity.magnitude != 0f)
                 {
                     Vector2 norm = rigidbody.velocity.normalized;
                     rigidbody.velocity -= norm * speedAcceleration * 3f * Time.deltaTime;
@@ -185,15 +188,17 @@ public class Skeleton : MonoBehaviour
                 Vector2 destination = goal.position - transform.position;
                 if (dead)
                 {
-
+                    //Debug.Log("Dead");
                 }
-                else if ((goal.CompareTag("Skeleton") && !goal.GetComponent<Skeleton>().dead) || false)
+                else if (goal.GetComponent<Enemy>().dead)
                 {
+                    //Debug.Log("They Dead");
                     inPresenceOfEnemy = false;
                     goal = null;
                 }
                 else if (destination.magnitude < enemyAttackRange)
                 {
+                    //Debug.Log("Attack");
                     if (!attack.currectlyAttacking)
                     {
                         attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
@@ -203,15 +208,22 @@ public class Skeleton : MonoBehaviour
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
                 {
+                    //Debug.Log("Lowest Speed");
                     rigidbody.velocity += ((maxSpeed / 3f) - rigidbody.velocity.magnitude) * destination.normalized;
                 }
                 else
                 {
+                    //Debug.Log("Normal Speed");
                     rigidbody.velocity += speedAcceleration * destination.normalized * Time.deltaTime;
-                }*/
+                }
             }
             else
             {
+                if (inPresenceOfEnemy)
+                {
+                    goal = null;
+                    inPresenceOfEnemy = false;
+                }
                 bool unUsed = false;
                 float x = 0f;
                 bool walkX = false;
@@ -280,15 +292,44 @@ public class Skeleton : MonoBehaviour
 
                 if (walkX && walkY)
                 {
-                    rigidbody.velocity += new Vector2(stayGoal.x - transform.position.x, stayGoal.y - transform.position.y).normalized * speedAcceleration * Time.deltaTime;
+                    Vector2 distenceMoved = new Vector2(stayGoal.x - transform.position.x, stayGoal.y - transform.position.y).normalized * speedAcceleration * Time.deltaTime;
+                    rigidbody.velocity += distenceMoved;
+                    if ((distenceMoved.x > 0f && rigidbody.velocity.x > 0f) || (distenceMoved.x < 0f && rigidbody.velocity.x < 0f))
+                    {
+                        if ((distenceMoved.y > 0f && rigidbody.velocity.y > 0f) || (distenceMoved.y < 0f && rigidbody.velocity.y < 0f))
+                        {
+                            if (rigidbody.velocity.magnitude > maxSpeed)
+                            {
+                                rigidbody.velocity *= maxSpeed / rigidbody.velocity.magnitude;
+                            }
+                        }
+                        else if (Mathf.Abs(rigidbody.velocity.x) > maxSpeed)
+                        {
+                            rigidbody.velocity *= new Vector2(maxSpeed * (distenceMoved.x > 0 ? 1f : -1f) / rigidbody.velocity.x, 1f);
+                        }
+                    }
+                    else if (((distenceMoved.y > 0f && rigidbody.velocity.y > 0f) || (distenceMoved.y < 0f && rigidbody.velocity.y < 0f)) && Mathf.Abs(rigidbody.velocity.y) > maxSpeed)
+                    {
+                        rigidbody.velocity *= new Vector2(1f, maxSpeed * (distenceMoved.y > 0 ? 1f : -1f) / rigidbody.velocity.y);
+                    }
                 }
                 else if (walkX)
                 {
-                    rigidbody.velocity += new Vector2(stayGoal.x - transform.position.x > 0f ? speedAcceleration * Time.deltaTime : -speedAcceleration * Time.deltaTime, y);
+                    x = stayGoal.x - transform.position.x > 0f ? speedAcceleration * Time.deltaTime : -speedAcceleration * Time.deltaTime;
+                    rigidbody.velocity += new Vector2(x, y);
+                    if (((x > 0f && rigidbody.velocity.x > 0f) || (x < 0f && rigidbody.velocity.x < 0f)) && Mathf.Abs(rigidbody.velocity.x) > maxSpeed)
+                    {
+                        rigidbody.velocity *= new Vector2(maxSpeed * (x > 0 ? 1f : -1f) / rigidbody.velocity.x, 1f);
+                    }
                 }
                 else if (walkY)
                 {
-                    rigidbody.velocity += new Vector2(x, stayGoal.y - transform.position.y > 0f ? speedAcceleration * Time.deltaTime : -speedAcceleration * Time.deltaTime);
+                    y = stayGoal.y - transform.position.y > 0f ? speedAcceleration * Time.deltaTime : -speedAcceleration * Time.deltaTime;
+                    rigidbody.velocity += new Vector2(x, y);
+                    if (((y > 0f && rigidbody.velocity.y > 0f) || (y < 0f && rigidbody.velocity.y < 0f)) && Mathf.Abs(rigidbody.velocity.y) > maxSpeed)
+                    {
+                        rigidbody.velocity *= new Vector2(1f, maxSpeed * (y > 0 ? 1f : -1f) / rigidbody.velocity.y);
+                    }
                 }
                 else if (unUsed)
                 {
@@ -300,65 +341,34 @@ public class Skeleton : MonoBehaviour
                 }
             }
         }
+
+        //Left Mode
         else /*if (skeletonMode == SkeletonMode.left)*/
         {
-            if (transform.position.x <= xGoal)
+            if (transform.position.x < xBaseGoal)
             {
-                inPresenceOfTower = true;
-            }
-            else if (inPresenceOfEnemy)
-            {
-                if (rigidbody.velocity.magnitude != 0f)
-                {
-                    Vector2 norm = rigidbody.velocity.normalized;
-                    rigidbody.velocity -= norm * speedAcceleration * 3f * Time.deltaTime;
-                    if (norm != rigidbody.velocity.normalized)
-                    {
-                        rigidbody.velocity = Vector2.zero;
-                    }
-                }
-                Vector2 destination = goal.position - transform.position;
-                if (dead)
-                {
-
-                }
-                else if ((goal.CompareTag("Skeleton") && !goal.GetComponent<Skeleton>().dead) || false)
-                {
-                    inPresenceOfEnemy = false;
-                    goal = null;
-                }
-                else if (destination.magnitude < enemyAttackRange)
-                {
-                    if (!attack.currectlyAttacking)
-                    {
-                        attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
-                        attack.gameObject.SetActive(true);
-                        attack.StartAttack();
-                    }
-                }
-                else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
-                {
-                    rigidbody.velocity += ((maxSpeed / 3f) - rigidbody.velocity.magnitude) * destination.normalized;
-                }
-                else
-                {
-                    rigidbody.velocity += speedAcceleration * destination.normalized * Time.deltaTime;
-                }
+                skeletonMode = SkeletonMode.stay;
+                stayGoal = transform.position;
             }
             else
             {
-                if (transform.position.x <= xGoal)
+                if (Mathf.Abs(rigidbody.velocity.y) < .1f)
                 {
-                    inPresenceOfTower = true;
+                    rigidbody.velocity += new Vector2(-speedAcceleration * Time.deltaTime, -rigidbody.velocity.y);
                 }
-                else if (-rigidbody.velocity.x < maxSpeed)
+                else if (rigidbody.velocity.y > 0)
                 {
-                    rigidbody.velocity += speedAcceleration * Time.deltaTime * Vector2.left;
-                    if (-rigidbody.velocity.x >= maxSpeed)
-                    {
-                        rigidbody.velocity = new Vector2(-maxSpeed, rigidbody.velocity.y);
-                    }
+                    rigidbody.velocity += new Vector2(-speedAcceleration * Time.deltaTime, -speedAcceleration * 3f * Time.deltaTime);
                 }
+                else /*if(rigidbody.velocity.y <= 0)*/
+                {
+                    rigidbody.velocity += new Vector2(-speedAcceleration * Time.deltaTime, speedAcceleration * 3f * Time.deltaTime);
+                }
+                if (rigidbody.velocity.x < -maxSpeed)
+                {
+                    rigidbody.velocity *= new Vector2(-maxSpeed / rigidbody.velocity.x, 1f);
+                }
+
             }
         }
     }
@@ -372,6 +382,7 @@ public class Skeleton : MonoBehaviour
             {
                 inPresenceOfEnemy = true;
                 goal = source;
+                enemyAttackRange = attack.attackRange + circleCollider.radius + source.GetComponent<Enemy>().circleCollider.radius;
             }
             health -= (short)(damage / defence);
             if (health <= 0)
@@ -387,13 +398,15 @@ public class Skeleton : MonoBehaviour
     IEnumerator Knockback(Vector3 attackCenter, float knockback)
     {
         float timer = 0f;
-        Vector2 knockbackVector = new Vector2((transform.position - attackCenter).x, (transform.position - attackCenter).y) * (knockback / knockbackResistence);
+        Vector2 knockbackVector = new Vector2(transform.position.x - attackCenter.x, transform.position.y - attackCenter.y) * (knockback / knockbackResistence);
+        //Debug.Log("Attack Center: " + attackCenter + "\t\t\tKnockback: " + knockback + "\t\t\tKnockback Vector: " + knockbackVector);
         float knockbackTime = knockbackVector.magnitude / 2f;
         while (timer < knockbackTime)
         {
             yield return new WaitForFixedUpdate();
             rigidbody.velocity += knockbackVector * ((knockbackTime - timer) * Time.deltaTime);
             timer += Time.deltaTime;
+            //Debug.Log("Knockback Time: " + knockbackTime + "\t\t\tTimer: " + timer + "Velocity: " + rigidbody.velocity);
         }
     }
 

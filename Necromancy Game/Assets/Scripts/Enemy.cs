@@ -167,7 +167,8 @@ public class Enemy : MonoBehaviour
             {
                 inPresenceOfSkeleton = true;
                 goal = source;
-            }
+                skeletonAttackRange = attack.attackRange + circleCollider.radius + (source.CompareTag("Skeleton") ? source.GetComponent<Skeleton>().circleCollider.radius : .5f);//Change Later
+        }
             health -= (short) (damage / defence);
             if (health <= 0)
             {
@@ -182,7 +183,7 @@ public class Enemy : MonoBehaviour
     IEnumerator Knockback(Vector3 attackCenter, float knockback)
     {
         float timer = 0f;
-        Vector2 knockbackVector = new Vector2((transform.position - attackCenter).x, (transform.position - attackCenter).y) * (knockback / knockbackResistence);
+        Vector2 knockbackVector = new Vector2(transform.position.x - attackCenter.x, transform.position.y - attackCenter.y) * (knockback / knockbackResistence);
         float knockbackTime = knockbackVector.magnitude / 2f;
         while (timer < knockbackTime)
         {
