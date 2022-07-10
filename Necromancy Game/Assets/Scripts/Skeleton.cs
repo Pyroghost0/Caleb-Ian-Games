@@ -373,6 +373,16 @@ public class Skeleton : MonoBehaviour
         }
     }
 
+    public void UpgradeAttack()
+    {
+
+    }
+
+    public void UpgradeDefence()
+    {
+
+    }
+
     public bool Hit(Vector3 attackCenter, Transform source, float knockback, short damage)
     {
         if (health > 0)
@@ -412,6 +422,22 @@ public class Skeleton : MonoBehaviour
 
     IEnumerator Death()
     {
+        SelectManager selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
+        if (selectManager.selectedTroop  == transform)
+        {
+            selectManager.SelectedTroupDestroyed();
+        }
+        else
+        {
+            for (int i = 0; i < selectManager.selectableObjects.Count; i++)
+            {
+                if (selectManager.selectableObjects[i] == transform)
+                {
+                    selectManager.selectableObjects.RemoveAt(i);
+                    break;
+                }
+            }
+        }
         yield return new WaitForSeconds(deathTime);
         Destroy(gameObject);
     }
