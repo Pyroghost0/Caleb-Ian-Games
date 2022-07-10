@@ -5,23 +5,47 @@ using UnityEngine;
 public class SightObject : MonoBehaviour
 {
     public Enemy enemy;
+    public Skeleton skeleton;
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if ((collision.CompareTag("Skeleton") || collision.CompareTag("Minion")) && !enemy.inPresenceOfSkeleton)
+        if (enemy != null)
         {
-            enemy.goal = collision.transform;
-            enemy.inPresenceOfSkeleton = true;
-            enemy.skeletonAttackRange = enemy.attack.attackRange + enemy.circleCollider.radius + .5f;//Change Later
+            if (((collision.CompareTag("Skeleton") && !collision.GetComponent<Skeleton>().dead) || collision.CompareTag("Minion")) && !enemy.inPresenceOfSkeleton)
+            {
+                enemy.goal = collision.transform;
+                enemy.inPresenceOfSkeleton = true;
+                enemy.skeletonAttackRange = enemy.attack.attackRange + enemy.circleCollider.radius + (collision.CompareTag("Skeleton") ? collision.GetComponent<Skeleton>().circleCollider.radius : .5f);//Change Later
+            }
+        }
+        else if (skeleton != null)
+        {
+            if ((collision.CompareTag("Enemy") && !collision.GetComponent<Skeleton>().dead) && !enemy.inPresenceOfSkeleton)
+            {
+                skeleton.goal = collision.transform;
+                skeleton.inPresenceOfEnemy = true;
+                skeleton.enemyAttackRange = skeleton.attack.attackRange + skeleton.circleCollider.radius + collision.GetComponent<Enemy>().circleCollider.radius;//Change Later
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (enemy.goal != null && collision.transform == enemy.goal)
+        if (enemy != null)
         {
-            enemy.goal = null;
-            enemy.inPresenceOfSkeleton = false;
+            if (enemy.goal != null && collision.transform == enemy.goal)
+            {
+                enemy.goal = null;
+                enemy.inPresenceOfSkeleton = false;
+            }
+        }
+        else if (skeleton != null)
+        {
+            if (skeleton.goal != null && collision.transform == skeleton.goal)
+            {
+                skeleton.goal = null;
+                skeleton.inPresenceOfEnemy = false;
+            }
         }
     }
 }
