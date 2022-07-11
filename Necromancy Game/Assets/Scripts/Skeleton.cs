@@ -383,7 +383,7 @@ public class Skeleton : MonoBehaviour
 
     }
 
-    public bool Hit(Vector3 attackCenter, Transform source, float knockback, short damage)
+    public void Hit(Vector3 attackCenter, Transform source, float knockback, short damage)
     {
         if (health > 0)
         {
@@ -398,11 +398,8 @@ public class Skeleton : MonoBehaviour
             if (health <= 0)
             {
                 StartCoroutine(Death());
-                return true;
             }
-            return false;
         }
-        return true;
     }
 
     IEnumerator Knockback(Vector3 attackCenter, float knockback)

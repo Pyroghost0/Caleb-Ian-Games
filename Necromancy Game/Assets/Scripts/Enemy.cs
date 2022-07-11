@@ -106,7 +106,7 @@ public class Enemy : MonoBehaviour
             {
                 //Debug.Log("Dead");
             }
-            else if ((goal.CompareTag("Skeleton") && goal.GetComponent<Skeleton>().dead) || false)//Change Later
+            else if ((goal.CompareTag("Skeleton") && goal.GetComponent<Skeleton>().dead) || (goal.CompareTag("Minion") && goal.GetComponent<Minion>().dead))
             {
                 //Debug.Log("They Dead");
                 inPresenceOfSkeleton = false;
@@ -158,7 +158,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public bool Hit(Vector3 attackCenter, Transform source, float knockback, short damage)
+    public void Hit(Vector3 attackCenter, Transform source, float knockback, short damage)
     {
         if (health > 0)
         {
@@ -167,17 +167,14 @@ public class Enemy : MonoBehaviour
             {
                 inPresenceOfSkeleton = true;
                 goal = source;
-                skeletonAttackRange = attack.attackRange + circleCollider.radius + (source.CompareTag("Skeleton") ? source.GetComponent<Skeleton>().circleCollider.radius : .5f);//Change Later
+                skeletonAttackRange = attack.attackRange + circleCollider.radius + (source.CompareTag("Skeleton") ? source.GetComponent<Skeleton>().circleCollider.radius : source.GetComponent<Minion>().circleCollider.radius);
         }
             health -= (short) (damage / defence);
             if (health <= 0)
             {
                 StartCoroutine(Death());
-                return true;
             }
-            return false;
         }
-        return true;
     }
 
     IEnumerator Knockback(Vector3 attackCenter, float knockback)

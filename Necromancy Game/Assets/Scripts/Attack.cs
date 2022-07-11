@@ -54,6 +54,17 @@ public class Attack : MonoBehaviour
                     targets[i].GetComponent<Skeleton>().Hit(transform.position, source.transform, knockback, attackPower);
                 }
             }
+            else if (targets[i].CompareTag("Minion"))
+            {
+                if (source.CompareTag("Minion"))
+                {
+                    targets[i].GetComponent<Minion>().Hit(transform.position, null, knockback, attackPower);
+                }
+                else
+                {
+                    targets[i].GetComponent<Minion>().Hit(transform.position, source.transform, knockback, attackPower);
+                }
+            }
         }
         yield return new WaitForSeconds(attackCooldown);
         currectlyAttacking = false;
