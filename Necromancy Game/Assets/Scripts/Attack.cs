@@ -16,12 +16,12 @@ public class Attack : MonoBehaviour
     public bool currectlyAttacking = false;
     private List<GameObject> targets = new List<GameObject>();
 
-    public void StartAttack()
+    public void StartAOEAttack()
     {
-        StartCoroutine(StartAttackCorutine());
+        StartCoroutine(StartAOEAttackCorutine());
     }
 
-    IEnumerator StartAttackCorutine()
+    IEnumerator StartAOEAttackCorutine()
     {
         currectlyAttacking = true;
         targets.Clear();
@@ -65,6 +65,25 @@ public class Attack : MonoBehaviour
                     targets[i].GetComponent<Minion>().Hit(transform.position, source.transform, knockback, attackPower);
                 }
             }
+        }
+        yield return new WaitForSeconds(attackCooldown);
+        currectlyAttacking = false;
+        gameObject.SetActive(false);
+    }
+
+    public void StartDigAttack(short bonesNeeded, Grave target)
+    {
+        StartCoroutine(StartDigAttackCorutine(bonesNeeded, target));
+    }
+
+    IEnumerator StartDigAttackCorutine(short bonesNeeded, Grave target)
+    {
+        currectlyAttacking = true;
+        //targets.Clear();
+        yield return new WaitForSeconds(attackSpeed);
+        if (target != null)
+        {
+            source.GetComponent<Minion>().bonesStored += target.DigBones(bonesNeeded);
         }
         yield return new WaitForSeconds(attackCooldown);
         currectlyAttacking = false;

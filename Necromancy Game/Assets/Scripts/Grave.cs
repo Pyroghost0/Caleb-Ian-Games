@@ -6,7 +6,7 @@ public class Grave : MonoBehaviour
 {
     public short bones = 50;
     public bool usedUp = false;
-    public GraveAssistant graveAssistant;
+    public Transform graveAssistant;
 
     public short DigBones(short bonesDug)
     {
@@ -33,13 +33,13 @@ public class Grave : MonoBehaviour
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         while (timer < 1f)
         {
-            spriteRenderer.color = new Color(1f, 1f, 1f, timer);//Would rather it disappear into the ground, but fading also works
+            spriteRenderer.color = new Color(1f, 1f, 1f, 1f - timer);//Would rather it disappear into the ground, but fading also works
             yield return new WaitForFixedUpdate();
             timer += Time.deltaTime;
         }
         if (graveAssistant != null)
         {
-            graveAssistant.graveManager.graveAssistants.Add(graveAssistant);
+            GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().graveAssistants.Add(graveAssistant);
         }
         Destroy(gameObject);
     }

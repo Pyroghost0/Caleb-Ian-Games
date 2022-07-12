@@ -16,6 +16,7 @@ public class SelectManager : MonoBehaviour
     private float velocity = 0f;
     private float minX = 0f;
     private float maxX = 50f;
+    public bool currentMinionDigStatus = true;
 
     // Start is called before the first frame update
     void Start()

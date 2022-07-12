@@ -62,7 +62,7 @@ public class Enemy : MonoBehaviour
                     {
                         attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
                         attack.gameObject.SetActive(true);
-                        attack.StartAttack();
+                        attack.StartAOEAttack();
                     }
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
@@ -119,7 +119,7 @@ public class Enemy : MonoBehaviour
                 {
                     attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                     attack.gameObject.SetActive(true);
-                    attack.StartAttack();
+                    attack.StartAOEAttack();
                 }
             }
             else if (rigidbody.velocity.magnitude < maxSpeed / 3f)

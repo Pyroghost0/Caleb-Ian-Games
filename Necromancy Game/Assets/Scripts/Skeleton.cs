@@ -18,6 +18,7 @@ public class Skeleton : MonoBehaviour
     public float speedAcceleration = 1f;
     public float maxSpeed = 2f;
     public float deathTime = .5f;
+    public short graveBones = 15;
 
     public CircleCollider2D circleCollider;
     public Attack attack;
@@ -75,7 +76,7 @@ public class Skeleton : MonoBehaviour
                         {
                             attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, 180f));
                             attack.gameObject.SetActive(true);
-                            attack.StartAttack();
+                            attack.StartAOEAttack();
                         }
                     }
                     else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
@@ -132,7 +133,7 @@ public class Skeleton : MonoBehaviour
                     {
                         attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         attack.gameObject.SetActive(true);
-                        attack.StartAttack();
+                        attack.StartAOEAttack();
                     }
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
@@ -203,7 +204,7 @@ public class Skeleton : MonoBehaviour
                     {
                         attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         attack.gameObject.SetActive(true);
-                        attack.StartAttack();
+                        attack.StartAOEAttack();
                     }
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
@@ -224,13 +225,11 @@ public class Skeleton : MonoBehaviour
                     goal = null;
                     inPresenceOfEnemy = false;
                 }
-                bool unUsed = false;
                 float x = 0f;
                 bool walkX = false;
                 if (Mathf.Abs(rigidbody.velocity.x) < .1f && transform.position.x > stayGoal.x -.1f && transform.position.x < stayGoal.x + .1f)
                 {
                     //Debug.Log("None");
-                    unUsed = true;
                     x = -rigidbody.velocity.x;
                 }
                 else if (rigidbody.velocity.x > 0)
@@ -264,7 +263,6 @@ public class Skeleton : MonoBehaviour
                 bool walkY = false;
                 if (Mathf.Abs(rigidbody.velocity.y) < .1f && transform.position.y > stayGoal.y - .1f && transform.position.y < stayGoal.y + .1f)
                 {
-                    unUsed = true;
                     y = -rigidbody.velocity.y;
                 }
                 else if (rigidbody.velocity.y > 0)
@@ -331,14 +329,14 @@ public class Skeleton : MonoBehaviour
                         rigidbody.velocity *= new Vector2(1f, maxSpeed * (y > 0 ? 1f : -1f) / rigidbody.velocity.y);
                     }
                 }
-                else if (unUsed)
+                else
                 {
                     rigidbody.velocity += new Vector2(x, y);
                 }
-                else
+                /*else
                 {
                     rigidbody.velocity += new Vector2((rigidbody.velocity.x * speedAcceleration / 6f) + transform.position.x - stayGoal.x, (rigidbody.velocity.y * speedAcceleration / 6f) + transform.position.y - stayGoal.y).normalized * 3f * -speedAcceleration * Time.deltaTime;
-                }
+                }*/
             }
         }
 
@@ -368,7 +366,6 @@ public class Skeleton : MonoBehaviour
                 {
                     rigidbody.velocity *= new Vector2(-maxSpeed / rigidbody.velocity.x, 1f);
                 }
-
             }
         }
     }
@@ -436,6 +433,7 @@ public class Skeleton : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(deathTime);
+        GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGrave(graveBones, transform.position);
         Destroy(gameObject);
     }
 }

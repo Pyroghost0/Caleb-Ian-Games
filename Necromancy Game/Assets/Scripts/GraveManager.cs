@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GraveManager : MonoBehaviour
 {
-    public List<GraveAssistant> graveAssistants = new List<GraveAssistant>();
+    public List<Transform> graveAssistants = new List<Transform>();
     public GameObject[] gravePrefabs;
     public short startGraveAmount = 6;
 
@@ -19,7 +19,9 @@ public class GraveManager : MonoBehaviour
         for (int i = 0; i < numGravesAdded && graveAssistants.Count > 0; i++)
         {
             int graveNum = Random.Range(0, graveAssistants.Count);
-            graveAssistants[graveNum].SpawnGrave();
+            int prefabNum = Random.Range(0, gravePrefabs.Length);
+            GameObject grave = Instantiate(gravePrefabs[prefabNum], graveAssistants[graveNum]);
+            grave.GetComponent<Grave>().graveAssistant = graveAssistants[graveNum];
             graveAssistants.RemoveAt(graveNum);
         }
     }
