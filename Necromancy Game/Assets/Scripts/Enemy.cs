@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
     public bool inPresenceOfSkeleton = false;
     private bool inPresenceOfTower = false;
     public float skeletonAttackRange;
+    private SpriteRenderer spriteRenderer;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
@@ -156,6 +157,7 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+        spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
     }
 
     public void Hit(Vector3 attackCenter, Transform source, float knockback, short damage)

@@ -13,6 +13,17 @@ public class Corpse : MonoBehaviour
     {
         selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
         selectManager.selectableObjects.Add(transform);
+        GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -10);
+    }
+
+    public void SpawnMinion()
+    {
+
+    }
+
+    public void SpawnTombStones()
+    {
+
     }
 
     public void AddBones()

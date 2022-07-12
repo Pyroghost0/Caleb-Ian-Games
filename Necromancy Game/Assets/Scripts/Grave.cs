@@ -8,6 +8,11 @@ public class Grave : MonoBehaviour
     public bool usedUp = false;
     public Transform graveAssistant;
 
+    private void Start()
+    {
+        GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -10);
+    }
+
     public short DigBones(short bonesDug)
     {
         if (!usedUp)

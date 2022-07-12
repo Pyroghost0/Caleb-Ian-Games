@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using Cinemachine;
 
 public class SelectManager : MonoBehaviour
@@ -17,6 +19,12 @@ public class SelectManager : MonoBehaviour
     private float minX = 0f;
     private float maxX = 50f;
     public bool currentMinionDigStatus = true;
+
+    public Image[] buttonImages;
+    public TextMeshProUGUI[] buttonTexts;
+    private string[] unselectButtonsText = {"Minions Mine", "Select", "Minions Attack",       "All Retreat", "All Stay", "All Attack",         "Look Left", "+Troop Size", "Look Right"};
+    private string[] selectSkeletonText = {"Select Left", "Deselect", "Select Right",       "Retreat", "Stay", "Attack",         "+Defence", "Die", "+Attack"};
+    private string[] selectCorpseText = {"Select Left", "Deselect", "Select Right",       "All Minion", "All Tombstones", "All Skeleton",         "Minion", "Tombstones", "Skeleton"};
 
     // Start is called before the first frame update
     void Start()
@@ -73,6 +81,20 @@ public class SelectManager : MonoBehaviour
         selectedTroop = newSelect;
         cinemachine.Follow = newSelect;
         cinemachine.m_Lens.OrthographicSize = 3.5f;
+        if (newSelect.CompareTag("Skeleton"))
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                buttonTexts[i].text = selectSkeletonText[i];
+            }
+        }
+        else /*if (newSelect.CompareTag("Corpse"))*/
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                buttonTexts[i].text = selectCorpseText[i];
+            }
+        }
     }
 
     public void Deselect()
@@ -82,6 +104,10 @@ public class SelectManager : MonoBehaviour
         transform.position = new Vector3(cinemachine.transform.position.x, 0f, 0f);
         cinemachine.Follow = transform;
         cinemachine.m_Lens.OrthographicSize = 5f;
+        for (int i = 0; i < 9; i++)
+        {
+            buttonTexts[i].text = unselectButtonsText[i];
+        }
     }
 
     public void SelectLeftTroup()
@@ -229,6 +255,21 @@ public class SelectManager : MonoBehaviour
     }
 
     public void AllMinionsAttack()
+    {
+
+    }
+
+    public void AllCorpsesSpawnMinions()
+    {
+
+    }
+
+    public void AllCorpsesSpawnTombstones()
+    {
+
+    }
+
+    public void AllCorpsesSpawnSkeletons()
     {
 
     }

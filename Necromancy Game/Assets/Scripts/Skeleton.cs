@@ -34,6 +34,7 @@ public class Skeleton : MonoBehaviour
     public bool inPresenceOfEnemy = false;
     private bool inPresenceOfTower = false;
     public float enemyAttackRange;
+    private SpriteRenderer spriteRenderer;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
@@ -43,6 +44,7 @@ public class Skeleton : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody2D>();
         stayGoal = transform.position;
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -368,9 +370,15 @@ public class Skeleton : MonoBehaviour
                 }
             }
         }
+        spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
     }
 
     public void UpgradeAttack()
+    {
+
+    }
+
+    public void TurnIntoTombstone()
     {
 
     }

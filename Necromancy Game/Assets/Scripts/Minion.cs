@@ -34,6 +34,7 @@ public class Minion : MonoBehaviour
     public bool inPresenceOfEnemy = false;
     private bool inPresenceOfTower = false;
     public float enemyAttackRange;
+    private SpriteRenderer spriteRenderer;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
@@ -44,6 +45,7 @@ public class Minion : MonoBehaviour
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         inDiggingMode = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>().currentMinionDigStatus;
         rigidbody = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -454,6 +456,7 @@ public class Minion : MonoBehaviour
                 }
             }
         }
+        spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
     }
 
     public void Hit(Vector3 attackCenter, Transform source, float knockback, short damage)
