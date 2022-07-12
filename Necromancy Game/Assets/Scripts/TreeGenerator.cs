@@ -16,9 +16,18 @@ public class TreeGenerator : MonoBehaviour
             GameObject t = Instantiate(tree, gameObject.transform);
             t.transform.position = new Vector3(x, y, 0);
             t.GetComponent<SpriteRenderer>().sortingOrder = (int) (y * -10) + 50;
-            t.GetComponent<SpriteRenderer>().color = new Color((y - 1.5f) / -3 + 1.3f, (y - 1.5f) / -3 + 1.3f, (y - 1.5f) / -3 + 1.3f);
+            t.GetComponent<SpriteRenderer>().color = new Color((y - 1.5f) / -3 + 1f, (y - 1.5f) / -3 + 1f, (y - 1.5f) / -3 + 1f, (y - 1.5f) / -1.5f + 1.7f);
             t.GetComponent<SpriteRenderer>().sprite = treeSprites[UnityEngine.Random.Range(0, treeSprites.Length)];
-            x += UnityEngine.Random.Range(0.2f, 0.4f);
+            int rand = UnityEngine.Random.Range(0, 2);
+            if (rand == 0)
+			{
+                t.GetComponent<SpriteRenderer>().flipX =  false;
+			}
+			else
+			{
+                t.GetComponent<SpriteRenderer>().flipX = true;
+            }
+            x += UnityEngine.Random.Range(0.3f, 0.4f);
         }
     }
 }
