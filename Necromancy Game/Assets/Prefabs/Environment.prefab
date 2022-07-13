@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -241585417
   m_SortingLayer: 2
-  m_SortingOrder: -1
+  m_SortingOrder: -39
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0, b: 1, a: 1}
   m_FlipX: 0
@@ -309,7 +309,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 747269325
   m_SortingLayer: 1
-  m_SortingOrder: -1
+  m_SortingOrder: -35
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.19607843}
   m_FlipX: 0
@@ -393,7 +393,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 747269325
   m_SortingLayer: 1
-  m_SortingOrder: -3
+  m_SortingOrder: -25
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -477,7 +477,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -241585417
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: -22
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.24687403, g: 0.3018868, b: 0.23780705, a: 1}
   m_FlipX: 0
@@ -561,7 +561,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 747269325
   m_SortingLayer: 1
-  m_SortingOrder: 100
+  m_SortingOrder: 50
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.2381927, g: 0.2924528, b: 0.21106264, a: 1}
   m_FlipX: 0
@@ -646,7 +646,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -241585417
   m_SortingLayer: 2
-  m_SortingOrder: 2
+  m_SortingOrder: 999
   m_Sprite: {fileID: 21300000, guid: c9540e0d6bfd6024c8b3c2063169528e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -673,65 +673,55 @@ MonoBehaviour:
   bones: 0
   health: 1000
   maxHealth: 1000
---- !u!1001 &2011582219131182699
-PrefabInstance:
+  maxSkeletons: 3
+  maxSkeletonUpgradeAmount: 100
+--- !u!1 &2156211377876818123
+GameObject:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 2011582217841869670}
-    m_Modifications:
-    - target: {fileID: 2031059005725156616, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_Name
-      value: Trees
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3.0046399
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.9591944
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.02602701
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
---- !u!4 &559948532796455777 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2031059005725156618, guid: 9a3c4374e7308e848a13388ae3bfc1ec, type: 3}
-  m_PrefabInstance: {fileID: 2011582219131182699}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 559948532796455777}
+  - component: {fileID: 2380384072037792621}
+  m_Layer: 0
+  m_Name: Trees
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &559948532796455777
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2156211377876818123}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2011582217841869670}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2380384072037792621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2156211377876818123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23276a2205cc7b843af5750cbb179aa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tree: {fileID: 1641044843416262259, guid: e9a8490b54d58f149b0dfe5fb9caba73, type: 3}
+  treeSprites:
+  - {fileID: -857703084, guid: d3fdc5a9ab7fd6f438889ee229f8d99f, type: 3}
+  - {fileID: 452558184, guid: d3fdc5a9ab7fd6f438889ee229f8d99f, type: 3}
+  - {fileID: -1769188778, guid: d3fdc5a9ab7fd6f438889ee229f8d99f, type: 3}
+  - {fileID: -2069410787, guid: d3fdc5a9ab7fd6f438889ee229f8d99f, type: 3}

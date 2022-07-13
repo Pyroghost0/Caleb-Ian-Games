@@ -19,6 +19,10 @@ public class Skeleton : MonoBehaviour
     public float maxSpeed = 2f;
     public float deathTime = .5f;
     public short graveBones = 15;
+    public short attackBoneUpgradeAmount = 25;//-1 for maxed out
+    public short deffenceBoneUpgradeAmount = 25;
+    public float attackUpgradeFactor = 2f;
+    public float deffenceUpgradeFactor = 2f;
 
     public CircleCollider2D circleCollider;
     public Attack attack;
@@ -35,6 +39,7 @@ public class Skeleton : MonoBehaviour
     private bool inPresenceOfTower = false;
     public float enemyAttackRange;
     private SpriteRenderer spriteRenderer;
+    private PlayerBase playerBase;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
@@ -45,6 +50,9 @@ public class Skeleton : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         stayGoal = transform.position;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        skeletonMode = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>().currentSkeletonMode;
+        PlayerBase playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
+        playerBase.numSkeletons++;
     }
 
     // Update is called once per frame
@@ -375,7 +383,7 @@ public class Skeleton : MonoBehaviour
 
     public void UpgradeAttack()
     {
-
+        playerBase.bones -= attackBoneUpgradeAmount;
     }
 
     public void TurnIntoTombstone()
@@ -385,7 +393,7 @@ public class Skeleton : MonoBehaviour
 
     public void UpgradeDefence()
     {
-
+        playerBase.bones -= deffenceBoneUpgradeAmount;
     }
 
     public void Hit(Vector3 attackCenter, Transform source, float knockback, short damage)
@@ -441,6 +449,7 @@ public class Skeleton : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(deathTime);
+        playerBase.numSkeletons--;
         GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGrave(graveBones, transform.position);
         Destroy(gameObject);
     }

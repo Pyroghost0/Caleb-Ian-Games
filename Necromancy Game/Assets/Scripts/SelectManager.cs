@@ -11,16 +11,20 @@ public class SelectManager : MonoBehaviour
     public InputManager inputManager;
     public CinemachineVirtualCamera cinemachine;
 
-    public bool selectingObject = false;
-    public Transform selectedTroop;
     public float maxVelocity = 8f;
     public float velocityAcceleration = 16f;
     private float velocity = 0f;
     private float minX = 0f;
     private float maxX = 50f;
-    public bool currentMinionDigStatus = true;
 
-    public Image[] buttonImages;
+    public bool selectingObject = false;
+    public Transform selectedTroop;
+    public bool currentMinionDigStatus = true;
+    public SkeletonMode currentSkeletonMode = SkeletonMode.stay;
+    public PlayerBase playerBase;
+    public GameObject impossibleActionPrefab;
+    public bool corpseActionFail = false;
+
     public TextMeshProUGUI[] buttonTexts;
     private string[] unselectButtonsText = {"Minions Mine", "Select", "Minions Attack",       "All Retreat", "All Stay", "All Attack",         "Look Left", "+Troop Size", "Look Right"};
     private string[] selectSkeletonText = {"Select Left", "Deselect", "Select Right",       "Retreat", "Stay", "Attack",         "+Defence", "Die", "+Attack"};
@@ -39,20 +43,51 @@ public class SelectManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(inputManager.rightButton) && !selectingObject)
+        if (Input.GetKey(inputManager.rightButton) && !selectingObject && !inputManager.holdInputWait)
         {
-            if (velocity < 0f)
+            if (!inputManager.holdRight)
             {
-                velocity = Mathf.Clamp(velocity + (velocityAcceleration * 2f * Time.deltaTime), -maxVelocity, maxVelocity);
+                inputManager.holdRight = true;
+                inputManager.MovingAroundInputChange(inputManager.buttonImages[8], inputManager.rightButton);
+            }
+            if (Input.GetKey(inputManager.leftButton))
+            {
+                if (!inputManager.holdLeft)
+                {
+                    inputManager.holdLeft = true;
+                    inputManager.MovingAroundInputChange(inputManager.buttonImages[6], inputManager.leftButton);
+                }
+                if (velocity > 0f)
+                {
+                    velocity = Mathf.Clamp(velocity - (velocityAcceleration * Time.deltaTime), 0f, maxVelocity);
+                    transform.position = new Vector3(Mathf.Clamp(transform.position.x + (velocity * Time.deltaTime), minX, maxX), 0f, 0f);
+                }
+                else /*if (velocity < 0f)*/
+                {
+                    velocity = Mathf.Clamp(velocity + (velocityAcceleration * Time.deltaTime), -maxVelocity, 0f);
+                    transform.position = new Vector3(Mathf.Clamp(transform.position.x + (velocity * Time.deltaTime), minX, maxX), 0f, 0f);
+                }
             }
             else
             {
-                velocity = Mathf.Clamp(velocity + (velocityAcceleration * Time.deltaTime), -maxVelocity, maxVelocity);
+                if (velocity < 0f)
+                {
+                    velocity = Mathf.Clamp(velocity + (velocityAcceleration * 2f * Time.deltaTime), -maxVelocity, maxVelocity);
+                }
+                else
+                {
+                    velocity = Mathf.Clamp(velocity + (velocityAcceleration * Time.deltaTime), -maxVelocity, maxVelocity);
+                }
+                transform.position = new Vector3(Mathf.Clamp(transform.position.x + (velocity * Time.deltaTime), minX, maxX), 0f, 0f);
             }
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x + (velocity * Time.deltaTime), minX, maxX), 0f, 0f);
         }
-        else if (Input.GetKey(inputManager.leftButton) && !selectingObject)
+        else if (Input.GetKey(inputManager.leftButton) && !selectingObject && !inputManager.holdInputWait)
         {
+            if (!inputManager.holdLeft)
+            {
+                inputManager.holdLeft = true;
+                inputManager.MovingAroundInputChange(inputManager.buttonImages[6], inputManager.leftButton);
+            }
             if (velocity > 0f)
             {
                 velocity = Mathf.Clamp(velocity - (velocityAcceleration * 2f * Time.deltaTime), -maxVelocity, maxVelocity);
@@ -246,32 +281,83 @@ public class SelectManager : MonoBehaviour
 
     public void AllMinionsMine()
     {
-
+        currentMinionDigStatus = true;
+        GameObject[] minions = GameObject.FindGameObjectsWithTag("Minion");
+        for (int i = 1; i < minions.Length; i++)
+        {
+            minions[i].GetComponent<Minion>().inDiggingMode = true;
+        }
     }
 
     public void BuyMinion()
     {
-
+        if (playerBase.bones >= playerBase.maxSkeletonUpgradeAmount)
+        {
+            playerBase.UpgradeMaxSkeletons();
+        }
+        else
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.textPosition.anchoredPosition = new Vector2(265f, 150f);
+        }
     }
 
     public void AllMinionsAttack()
     {
-
+        currentMinionDigStatus = false;
+        GameObject[] minions = GameObject.FindGameObjectsWithTag("Minion");
+        for (int i = 1; i < minions.Length; i++)
+        {
+            minions[i].GetComponent<Minion>().inDiggingMode = false;
+        }
     }
 
     public void AllCorpsesSpawnMinions()
     {
-
+        GameObject[] corpses = GameObject.FindGameObjectsWithTag("Corpse");
+        for (int i = 1; i < corpses.Length; i++)
+        {
+            corpses[i].GetComponent<Corpse>().SpawnMinion();
+        }
+        if (corpseActionFail)
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Max Troops Reached";
+            notice.textPosition.anchoredPosition = new Vector2(-75f, 150f);
+            corpseActionFail = false;
+        }
     }
 
     public void AllCorpsesSpawnTombstones()
     {
-
+        GameObject[] corpses = GameObject.FindGameObjectsWithTag("Corpse");
+        for (int i = 1; i < corpses.Length; i++)
+        {
+            corpses[i].GetComponent<Corpse>().SpawnTombstones();
+        }
+        if (corpseActionFail)
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Graveyard Is Full";
+            notice.textPosition.anchoredPosition = new Vector2(0f, 150f);
+            corpseActionFail = false;
+        }
     }
 
     public void AllCorpsesSpawnSkeletons()
     {
-
+        GameObject[] corpses = GameObject.FindGameObjectsWithTag("Corpse");
+        for (int i = 1; i < corpses.Length; i++)
+        {
+            corpses[i].GetComponent<Corpse>().SpawnSkeleton();
+        }
+        if (corpseActionFail)
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Max Troops Reached";
+            notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+            corpseActionFail = false;
+        }
     }
 
     public void AllTroupsLeft()
@@ -291,7 +377,9 @@ public class SelectManager : MonoBehaviour
         {
             if (selectableObjects[i].CompareTag("Skeleton"))
             {
-                selectableObjects[i].GetComponent<Skeleton>().skeletonMode = SkeletonMode.stay;
+                Skeleton skeleton = selectableObjects[i].GetComponent<Skeleton>();
+                skeleton.skeletonMode = SkeletonMode.stay;
+                skeleton.stayGoal = selectableObjects[i].position;
             }
         }
     }
@@ -307,19 +395,11 @@ public class SelectManager : MonoBehaviour
         }
     }
 
-    public void TroupLeft()
-    {
-        selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
-    }
-
     public void TroupStay()
     {
-        selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.stay;
-    }
-
-    public void TroupRight()
-    {
-        selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
+        Skeleton skeleton = selectedTroop.GetComponent<Skeleton>();
+        skeleton.skeletonMode = SkeletonMode.stay;
+        skeleton.stayGoal = selectedTroop.position;
     }
 
     public void SelectedTroupDestroyed()

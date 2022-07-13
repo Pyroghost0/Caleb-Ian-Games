@@ -20,14 +20,13 @@ public class InputManager : MonoBehaviour
     private float buttonPressTime = .3f;
     private ButtonPressed buttonType;
 
+    public GameObject impossibleActionPrefab;
+    public PlayerBase playerBase;
     public SelectManager selectManager;
     public Image[] buttonImages;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool holdInputWait = false;
+    public bool holdRight = false;
+    public bool holdLeft = false;
 
     // Update is called once per frame
     void Update()
@@ -41,12 +40,14 @@ public class InputManager : MonoBehaviour
         {
             if (!buttonPressed)
             {
+                holdInputWait = true;
                 buttonPressed = true;
                 buttonType = ButtonPressed.left;
             }
             else if (buttonType == ButtonPressed.left)
             {
                 //Debug.Log("Double Left");
+                StartCoroutine(SlightWait());
                 DoublePress(buttonType);
                 buttonPressTimer = 0f;
                 buttonPressed = false;
@@ -70,12 +71,14 @@ public class InputManager : MonoBehaviour
         {
             if (!buttonPressed)
             {
+                holdInputWait = true;
                 buttonPressed = true;
                 buttonType = ButtonPressed.middle;
             }
             else if (buttonType == ButtonPressed.middle)
             {
                 //Debug.Log("Double Middle");
+                StartCoroutine(SlightWait());
                 DoublePress(buttonType);
                 buttonPressTimer = 0f;
                 buttonPressed = false;
@@ -99,12 +102,14 @@ public class InputManager : MonoBehaviour
         {
             if (!buttonPressed)
             {
+                holdInputWait = true;
                 buttonPressed = true;
                 buttonType = ButtonPressed.right;
             }
             else if (buttonType == ButtonPressed.right)
             {
                 //Debug.Log("Double Right");
+                StartCoroutine(SlightWait());
                 DoublePress(buttonType);
                 buttonPressTimer = 0f;
                 buttonPressed = false;
@@ -128,6 +133,7 @@ public class InputManager : MonoBehaviour
         {
             buttonPressTimer = 0f;
             buttonPressed = false;
+            holdInputWait = false;
             if (!(Input.GetKey(leftButton) && Input.GetKey(middleButton)) && !(Input.GetKey(leftButton) && Input.GetKey(rightButton)) && !(Input.GetKey(middleButton) && Input.GetKey(rightButton)))
             {
                 if (Input.GetKey(leftButton))
@@ -210,7 +216,7 @@ public class InputManager : MonoBehaviour
                 if (type == ButtonPressed.left)
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[3]));
-                    selectManager.TroupLeft();
+                    selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
                 }
                 else if (type == ButtonPressed.middle)
                 {
@@ -220,7 +226,7 @@ public class InputManager : MonoBehaviour
                 else /*if (type == ButtonPressed.right)*/
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[5]));
-                    selectManager.TroupRight();
+                    selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
                 }
             }
             else /*if (selectManager.selectedTroop.CompareTag("Corpse"))*/
@@ -268,7 +274,15 @@ public class InputManager : MonoBehaviour
                 if (type == ButtonPressed.left)
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[6]));
-                    selectManager.selectedTroop.GetComponent<Skeleton>().UpgradeDefence();
+                    if (selectManager.selectedTroop.GetComponent<Skeleton>().deffenceBoneUpgradeAmount != -1 && playerBase.bones >= selectManager.selectedTroop.GetComponent<Skeleton>().deffenceBoneUpgradeAmount)
+                    {
+                        selectManager.selectedTroop.GetComponent<Skeleton>().UpgradeDefence();
+                    }
+                    else
+                    {
+                        InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                        notice.textPosition.anchoredPosition = new Vector2(190f, 150f);
+                    }
                 }
                 else if (type == ButtonPressed.middle)
                 {
@@ -278,7 +292,15 @@ public class InputManager : MonoBehaviour
                 else /*if (type == ButtonPressed.right)*/
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[8]));
-                    selectManager.selectedTroop.GetComponent<Skeleton>().UpgradeAttack();
+                    if (selectManager.selectedTroop.GetComponent<Skeleton>().attackBoneUpgradeAmount != -1 && playerBase.bones >= selectManager.selectedTroop.GetComponent<Skeleton>().attackBoneUpgradeAmount)
+                    {
+                        selectManager.selectedTroop.GetComponent<Skeleton>().UpgradeAttack();
+                    }
+                    else
+                    {
+                        InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                        notice.textPosition.anchoredPosition = new Vector2(340f, 150f);
+                    }
                 }
             }
             else /*if (selectManager.selectedTroop.CompareTag("Corpse"))*/
@@ -287,23 +309,61 @@ public class InputManager : MonoBehaviour
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[6]));
                     selectManager.selectedTroop.GetComponent<Corpse>().SpawnMinion();
+                    if (selectManager.corpseActionFail)
+                    {
+                        InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                        notice.text.text = "Max Troops Reached";
+                        notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+                        selectManager.corpseActionFail = false;
+                    }
                 }
                 else if (type == ButtonPressed.middle)
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[7]));
-                    selectManager.selectedTroop.GetComponent<Corpse>().SpawnTombStones();
+                    selectManager.selectedTroop.GetComponent<Corpse>().SpawnTombstones();
+                    if (selectManager.corpseActionFail)
+                    {
+                        InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                        notice.text.text = "Graveyard Full";
+                        notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+                        selectManager.corpseActionFail = false;
+                    }
                 }
                 else /*if (type == ButtonPressed.right)*/
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[8]));
                     selectManager.selectedTroop.GetComponent<Corpse>().SpawnSkeleton();
+                    if (selectManager.corpseActionFail)
+                    {
+                        InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                        notice.text.text = "Max Troops Reached";
+                        notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+                        selectManager.corpseActionFail = false;
+                    }
                 }
             }
-        }//Left and right are inside select manager
+        }//Left and right handled inside select manager
+        /*else if (type == ButtonPressed.left)
+        {
+            StartCoroutine(HoldButtonVisually(buttonImages[6], leftButton));
+        }*/
         else if (type == ButtonPressed.middle)
         {
             StartCoroutine(PressButtonVisually(buttonImages[7]));
             selectManager.BuyMinion();
+        }
+        /*else /*if (type == ButtonPressed.right)*/
+        /*{
+            StartCoroutine(HoldButtonVisually(buttonImages[8], rightButton));
+        }*/
+    }
+
+    IEnumerator SlightWait()
+    {
+        yield return new WaitForSeconds(buttonPressTime / 2f);
+        if (!buttonPressed)
+        {
+            holdInputWait = false;
         }
     }
 
@@ -314,10 +374,23 @@ public class InputManager : MonoBehaviour
         buttonImage.color = Color.white;
     }
 
+    public void MovingAroundInputChange(Image buttonImage, KeyCode buttonType)
+    {
+        StartCoroutine(HoldButtonVisually(buttonImage, buttonType));
+    }
+
     IEnumerator HoldButtonVisually(Image buttonImage, KeyCode buttonType)
     {
         buttonImage.color = Color.gray;
         yield return new WaitUntil(() => (Input.GetKeyUp(buttonType) || buttonPressed));
         buttonImage.color = Color.white;
+        if (buttonImage == buttonImages[6])
+        {
+            holdLeft = false;
+        }
+        else
+        {
+            holdRight = false;
+        }
     }
 }
