@@ -3885,7 +3885,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1705645369
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4130,19 +4130,19 @@ MonoBehaviour:
   playerBase: {fileID: 1058914002}
   impossibleActionPrefab: {fileID: 2710029271421347445, guid: 236f8d845ad447d499da2f2f9f997331, type: 3}
   corpseActionFail: 0
-  rectHealthBar: {fileID: 1684878505}
+  rectHealthBar: {fileID: 0}
   rectHealth: 0
-  healthValue: {fileID: 797297805}
-  selectedObjectName: {fileID: 1540270165}
-  boneValue: {fileID: 1914123919}
-  boneCostObject0: {fileID: 1978452601}
-  boneCostValue0: {fileID: 823914512}
-  troopCapacity: {fileID: 715022839}
-  troopCapacityText: {fileID: 2117407097}
-  boneCostObject1: {fileID: 498673879}
-  boneCostValue1: {fileID: 1382754102}
-  boneCostObject2: {fileID: 772626395}
-  boneCostValue2: {fileID: 820223405}
+  healthValue: {fileID: 0}
+  selectedObjectName: {fileID: 0}
+  boneValue: {fileID: 0}
+  boneCostObject0: {fileID: 0}
+  boneCostValue0: {fileID: 0}
+  troopCapacity: {fileID: 0}
+  troopCapacityText: {fileID: 0}
+  boneCostObject1: {fileID: 0}
+  boneCostValue1: {fileID: 0}
+  boneCostObject2: {fileID: 0}
+  boneCostValue2: {fileID: 0}
   buttonTexts:
   - {fileID: 730932353}
   - {fileID: 319968086}
@@ -4216,7 +4216,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7772311, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
