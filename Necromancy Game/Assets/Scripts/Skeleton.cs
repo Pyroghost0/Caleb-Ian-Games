@@ -28,6 +28,7 @@ public class Skeleton : MonoBehaviour
     public CircleCollider2D circleCollider;
     public Attack attack;
     public Transform attackBasisObject;
+    public GameObject selectBars;
 
     public SkeletonMode skeletonMode = SkeletonMode.stay;
     public bool dead = false;

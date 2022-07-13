@@ -6,6 +6,7 @@ public class Corpse : MonoBehaviour
 {
     private SelectManager selectManager;
     private PlayerBase playerBase;
+    public GameObject selectBars;
     public GameObject skeletonPrefab;
     public GameObject minionPrefab;
     public short numTombstones = 3;

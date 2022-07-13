@@ -126,6 +126,17 @@ public class SelectManager : MonoBehaviour
 
     public void Select(Transform newSelect)
     {
+        if (selectingObject)
+        {
+            if (selectedTroop.CompareTag("Skeleton"))
+            {
+                selectedTroop.GetComponent<Skeleton>().selectBars.SetActive(false);
+            }
+            else /*if (selectedTroop.CompareTag("Corpse"))*/
+            {
+                selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
+            }
+        }
         selectingObject = true;
         selectedTroop = newSelect;
         cinemachine.Follow = newSelect;
@@ -161,6 +172,7 @@ public class SelectManager : MonoBehaviour
                 boneCostValue2.text = "-" + skeleton.attackBoneUpgradeAmount.ToString();
             }
             troopCapacity.anchoredPosition = new Vector3(265f, -105, 0f);
+            selectedTroop.GetComponent<Skeleton>().selectBars.SetActive(true);
         }
         else /*if (newSelect.CompareTag("Corpse"))*/
         {
@@ -175,11 +187,23 @@ public class SelectManager : MonoBehaviour
             boneCostObject1.SetActive(false);
             boneCostObject2.SetActive(false);
             troopCapacity.anchoredPosition = new Vector3(265f, -105, 0f);
+            selectedTroop.GetComponent<Corpse>().selectBars.SetActive(true);
         }
     }
 
     public void Deselect()
     {
+        if (selectingObject)
+        {
+            if (selectedTroop.CompareTag("Skeleton"))
+            {
+                selectedTroop.GetComponent<Skeleton>().selectBars.SetActive(false);
+            }
+            else /*if (selectedTroop.CompareTag("Corpse"))*/
+            {
+                selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
+            }
+        }
         selectingObject = false;
         selectedTroop = null;
         transform.position = new Vector3(cinemachine.transform.position.x, 0f, 0f);
