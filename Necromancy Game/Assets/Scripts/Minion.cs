@@ -34,6 +34,7 @@ public class Minion : MonoBehaviour
     public bool inPresenceOfEnemy = false;
     private bool inPresenceOfTower = false;
     public float enemyAttackRange;
+    SelectManager selectManager;
     private SpriteRenderer spriteRenderer;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
@@ -43,9 +44,12 @@ public class Minion : MonoBehaviour
     void Start()
     {
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
-        inDiggingMode = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>().currentMinionDigStatus;
+        selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
+        inDiggingMode = selectManager.currentMinionDigStatus;
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        playerBase.numSkeletons++;
+        selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
     }
 
     // Update is called once per frame
@@ -273,7 +277,7 @@ public class Minion : MonoBehaviour
                 {
                     if (bonesStored > 0)
                     {
-                        playerBase.bones += bonesStored;
+                        playerBase.UpdateBones(bonesStored);
                         bonesStored = 0;
                     }
                     if (goal != null)
@@ -494,6 +498,8 @@ public class Minion : MonoBehaviour
     IEnumerator Death()
     {
         yield return new WaitForSeconds(deathTime);
+        playerBase.numSkeletons--;
+        selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
         GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGrave((short)(graveBones+bonesStored), transform.position);
         Destroy(gameObject);
     }

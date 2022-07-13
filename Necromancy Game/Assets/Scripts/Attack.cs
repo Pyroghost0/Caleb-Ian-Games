@@ -32,7 +32,7 @@ public class Attack : MonoBehaviour
             {
 
             }
-            else if (targets[i].CompareTag("Enemy"))
+            else if (targets[i].CompareTag("Enemy") && affectsEnemies)
             {
                 if (source.CompareTag("Enemy"))
                 {
@@ -43,7 +43,7 @@ public class Attack : MonoBehaviour
                     targets[i].GetComponent<Enemy>().Hit(transform.position, source.transform, knockback, attackPower);
                 }
             }
-            else if (targets[i].CompareTag("Skeleton"))
+            else if (targets[i].CompareTag("Skeleton") && affectsSkeletons)
             {
                 if (source.CompareTag("Skeleton"))
                 {
@@ -54,7 +54,7 @@ public class Attack : MonoBehaviour
                     targets[i].GetComponent<Skeleton>().Hit(transform.position, source.transform, knockback, attackPower);
                 }
             }
-            else if (targets[i].CompareTag("Minion"))
+            else if (targets[i].CompareTag("Minion") && affectsSkeletons)
             {
                 if (source.CompareTag("Minion"))
                 {
@@ -64,6 +64,10 @@ public class Attack : MonoBehaviour
                 {
                     targets[i].GetComponent<Minion>().Hit(transform.position, source.transform, knockback, attackPower);
                 }
+            }
+            else if (targets[i].CompareTag("Player Base") && affectsSkeletons)
+            {
+                targets[i].GetComponent<PlayerBase>().Hit(attackPower);
             }
         }
         yield return new WaitForSeconds(attackCooldown);

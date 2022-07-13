@@ -274,7 +274,7 @@ public class InputManager : MonoBehaviour
                 if (type == ButtonPressed.left)
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[6]));
-                    if (selectManager.selectedTroop.GetComponent<Skeleton>().deffenceBoneUpgradeAmount != -1 && playerBase.bones >= selectManager.selectedTroop.GetComponent<Skeleton>().deffenceBoneUpgradeAmount)
+                    if (selectManager.selectedTroop.GetComponent<Skeleton>().defenceBoneUpgradeAmount != -1 && playerBase.bones >= selectManager.selectedTroop.GetComponent<Skeleton>().defenceBoneUpgradeAmount)
                     {
                         selectManager.selectedTroop.GetComponent<Skeleton>().UpgradeDefence();
                     }
@@ -350,7 +350,15 @@ public class InputManager : MonoBehaviour
         else if (type == ButtonPressed.middle)
         {
             StartCoroutine(PressButtonVisually(buttonImages[7]));
-            selectManager.BuyMinion();
+            if (playerBase.bones >= playerBase.maxSkeletonUpgradeAmount)
+            {
+                playerBase.UpgradeMaxSkeletons();
+            }
+            else
+            {
+                InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                notice.textPosition.anchoredPosition = new Vector2(265f, 150f);
+            }
         }
         /*else /*if (type == ButtonPressed.right)*/
         /*{

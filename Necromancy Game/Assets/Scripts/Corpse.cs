@@ -9,6 +9,7 @@ public class Corpse : MonoBehaviour
     public GameObject skeletonPrefab;
     public GameObject minionPrefab;
     public short numTombstones = 3;
+    public string corpseName = "Corpse";
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +28,7 @@ public class Corpse : MonoBehaviour
             {
                 if (selectManager.selectableObjects[i] == transform)
                 {
-                    if (selectManager.selectableObjects[i] == selectManager.selectingObject)
+                    if (selectManager.selectableObjects[i] == selectManager.selectedTroop)
                     {
                         selectManager.SelectedTroupDestroyed();
                     }
@@ -56,7 +57,7 @@ public class Corpse : MonoBehaviour
             {
                 if (selectManager.selectableObjects[i] == transform)
                 {
-                    if (selectManager.selectableObjects[i] == selectManager.selectingObject)
+                    if (selectManager.selectableObjects[i] == selectManager.selectedTroop)
                     {
                         selectManager.SelectedTroupDestroyed();
                     }

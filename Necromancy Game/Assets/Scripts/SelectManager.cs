@@ -25,6 +25,19 @@ public class SelectManager : MonoBehaviour
     public GameObject impossibleActionPrefab;
     public bool corpseActionFail = false;
 
+    public RectTransform rectHealthBar;
+    public float rectHealth;
+    public TextMeshProUGUI healthValue;
+    public TextMeshProUGUI selectedObjectName;
+    public TextMeshProUGUI boneValue;
+    public GameObject boneCostObject0;
+    public TextMeshProUGUI boneCostValue0;
+    public RectTransform troopCapacity;
+    public TextMeshProUGUI troopCapacityText;
+    public GameObject boneCostObject1;
+    public TextMeshProUGUI boneCostValue1;
+    public GameObject boneCostObject2;
+    public TextMeshProUGUI boneCostValue2;
     public TextMeshProUGUI[] buttonTexts;
     private string[] unselectButtonsText = {"Minions Mine", "Select", "Minions Attack",       "All Retreat", "All Stay", "All Attack",         "Look Left", "+Troop Size", "Look Right"};
     private string[] selectSkeletonText = {"Select Left", "Deselect", "Select Right",       "Retreat", "Stay", "Attack",         "+Defence", "Die", "+Attack"};
@@ -33,6 +46,7 @@ public class SelectManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rectHealth = rectHealthBar.rect.width;
         GameObject[] skeletons = GameObject.FindGameObjectsWithTag("Skeleton");
         for (int i = 0; i < skeletons.Length; i++)
         {
@@ -122,6 +136,31 @@ public class SelectManager : MonoBehaviour
             {
                 buttonTexts[i].text = selectSkeletonText[i];
             }
+            Skeleton skeleton = newSelect.GetComponent<Skeleton>();
+            selectedObjectName.text = skeleton.skeletonName;
+            rectHealthBar.gameObject.SetActive(true);
+            rectHealthBar.sizeDelta = new Vector2((skeleton.health / skeleton.maxHealth) * rectHealth, rectHealthBar.rect.height);
+            healthValue.text = skeleton.health + "\n" + skeleton.maxHealth;
+            boneCostObject0.SetActive(false);
+            if (skeleton.defenceBoneUpgradeAmount == -1)
+            {
+                boneCostObject1.SetActive(false);
+            }
+            else
+            {
+                boneCostObject1.SetActive(true);
+                boneCostValue1.text = "-" + skeleton.defenceBoneUpgradeAmount.ToString();
+            }
+            if (skeleton.attackBoneUpgradeAmount == -1)
+            {
+                boneCostObject2.SetActive(false);
+            }
+            else
+            {
+                boneCostObject2.SetActive(true);
+                boneCostValue2.text = "-" + skeleton.attackBoneUpgradeAmount.ToString();
+            }
+            troopCapacity.anchoredPosition = new Vector3(265f, -105, 0f);
         }
         else /*if (newSelect.CompareTag("Corpse"))*/
         {
@@ -129,6 +168,13 @@ public class SelectManager : MonoBehaviour
             {
                 buttonTexts[i].text = selectCorpseText[i];
             }
+            selectedObjectName.text = newSelect.GetComponent<Corpse>().corpseName;
+            rectHealthBar.gameObject.SetActive(false);
+            healthValue.text = "0\n0";
+            boneCostObject0.SetActive(false);
+            boneCostObject1.SetActive(false);
+            boneCostObject2.SetActive(false);
+            troopCapacity.anchoredPosition = new Vector3(265f, -105, 0f);
         }
     }
 
@@ -143,6 +189,15 @@ public class SelectManager : MonoBehaviour
         {
             buttonTexts[i].text = unselectButtonsText[i];
         }
+        selectedObjectName.text = "Player Base";
+        rectHealthBar.gameObject.SetActive(true);
+        rectHealthBar.sizeDelta = new Vector2((playerBase.health / playerBase.maxHealth) * rectHealth, rectHealthBar.rect.height);
+        healthValue.text = playerBase.health + "\n" + playerBase.maxHealth;
+        boneCostObject0.SetActive(true);
+        boneCostValue0.text = "-" + playerBase.maxSkeletonUpgradeAmount.ToString();
+        boneCostObject1.SetActive(false);
+        boneCostObject2.SetActive(false);
+        troopCapacity.anchoredPosition = new Vector3(340f, -105, 0f);
     }
 
     public void SelectLeftTroup()
@@ -286,19 +341,6 @@ public class SelectManager : MonoBehaviour
         for (int i = 1; i < minions.Length; i++)
         {
             minions[i].GetComponent<Minion>().inDiggingMode = true;
-        }
-    }
-
-    public void BuyMinion()
-    {
-        if (playerBase.bones >= playerBase.maxSkeletonUpgradeAmount)
-        {
-            playerBase.UpgradeMaxSkeletons();
-        }
-        else
-        {
-            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
-            notice.textPosition.anchoredPosition = new Vector2(265f, 150f);
         }
     }
 

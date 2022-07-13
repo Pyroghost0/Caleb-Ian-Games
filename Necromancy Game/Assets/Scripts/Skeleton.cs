@@ -20,9 +20,10 @@ public class Skeleton : MonoBehaviour
     public float deathTime = .5f;
     public short graveBones = 15;
     public short attackBoneUpgradeAmount = 25;//-1 for maxed out
-    public short deffenceBoneUpgradeAmount = 25;
+    public short defenceBoneUpgradeAmount = 25;
     public float attackUpgradeFactor = 2f;
-    public float deffenceUpgradeFactor = 2f;
+    public float defenceUpgradeFactor = 2f;
+    public string skeletonName = "Skeleton";
 
     public CircleCollider2D circleCollider;
     public Attack attack;
@@ -40,6 +41,7 @@ public class Skeleton : MonoBehaviour
     public float enemyAttackRange;
     private SpriteRenderer spriteRenderer;
     private PlayerBase playerBase;
+    private SelectManager selectManager;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
@@ -50,9 +52,11 @@ public class Skeleton : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         stayGoal = transform.position;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        skeletonMode = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>().currentSkeletonMode;
+        selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
+        skeletonMode = selectManager.currentSkeletonMode;
         PlayerBase playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         playerBase.numSkeletons++;
+        selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
     }
 
     // Update is called once per frame
@@ -381,19 +385,39 @@ public class Skeleton : MonoBehaviour
         spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
     }
 
-    public void UpgradeAttack()
+    public void UpgradeDefence()
     {
-        playerBase.bones -= attackBoneUpgradeAmount;
+        playerBase.UpdateBones((short)-defenceBoneUpgradeAmount);
+        playerBase.UpdateBones((short)-attackBoneUpgradeAmount);
+        if (defenceBoneUpgradeAmount == -1)
+        {
+            selectManager.boneCostObject1.SetActive(false);
+        }
+        else
+        {
+            selectManager.boneCostObject1.SetActive(true);
+            selectManager.boneCostValue1.text = "-" + defenceBoneUpgradeAmount.ToString();
+        }
     }
 
     public void TurnIntoTombstone()
     {
-
+        dead = true;
+        StartCoroutine(Death());
     }
 
-    public void UpgradeDefence()
+    public void UpgradeAttack()
     {
-        playerBase.bones -= deffenceBoneUpgradeAmount;
+        playerBase.UpdateBones((short)-attackBoneUpgradeAmount);
+        if (attackBoneUpgradeAmount == -1)
+        {
+            selectManager.boneCostObject2.SetActive(false);
+        }
+        else
+        {
+            selectManager.boneCostObject2.SetActive(true);
+            selectManager.boneCostValue2.text = "-" + defenceBoneUpgradeAmount.ToString();
+        }
     }
 
     public void Hit(Vector3 attackCenter, Transform source, float knockback, short damage)
@@ -406,6 +430,11 @@ public class Skeleton : MonoBehaviour
                 inPresenceOfEnemy = true;
                 goal = source;
                 enemyAttackRange = attack.attackRange + circleCollider.radius + source.GetComponent<Enemy>().circleCollider.radius;
+                if (selectManager.selectedTroop == transform)
+                {
+                    selectManager.rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * selectManager.rectHealth, selectManager.rectHealthBar.rect.height);
+                    selectManager.healthValue.text = health + "\n" + maxHealth;
+                }
             }
             health -= (short)(damage / defence);
             if (health <= 0)
@@ -432,7 +461,6 @@ public class Skeleton : MonoBehaviour
 
     IEnumerator Death()
     {
-        SelectManager selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
         if (selectManager.selectedTroop  == transform)
         {
             selectManager.SelectedTroupDestroyed();
@@ -450,7 +478,8 @@ public class Skeleton : MonoBehaviour
         }
         yield return new WaitForSeconds(deathTime);
         playerBase.numSkeletons--;
-        GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGrave(graveBones, transform.position);
+        selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
+        GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGrave((short)(graveBones * (1f + (health / maxHealth))), transform.position);
         Destroy(gameObject);
     }
 }
