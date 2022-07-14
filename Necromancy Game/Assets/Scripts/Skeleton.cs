@@ -55,7 +55,7 @@ public class Skeleton : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
         skeletonMode = selectManager.currentSkeletonMode;
-        PlayerBase playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
+        playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         playerBase.numSkeletons++;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
     }
