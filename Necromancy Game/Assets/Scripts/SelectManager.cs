@@ -171,7 +171,7 @@ public class SelectManager : MonoBehaviour
                 boneCostObject2.SetActive(true);
                 boneCostValue2.text = "-" + skeleton.attackBoneUpgradeAmount.ToString();
             }
-            troopCapacity.anchoredPosition = new Vector3(265f, -105, 0f);
+            troopCapacity.anchoredPosition = new Vector3(265f, -25, 0f);
             selectedTroop.GetComponent<Skeleton>().selectBars.SetActive(true);
         }
         else /*if (newSelect.CompareTag("Corpse"))*/
@@ -186,7 +186,7 @@ public class SelectManager : MonoBehaviour
             boneCostObject0.SetActive(false);
             boneCostObject1.SetActive(false);
             boneCostObject2.SetActive(false);
-            troopCapacity.anchoredPosition = new Vector3(265f, -105, 0f);
+            troopCapacity.anchoredPosition = new Vector3(265f, -25, 0f);
             selectedTroop.GetComponent<Corpse>().selectBars.SetActive(true);
         }
     }
@@ -221,7 +221,7 @@ public class SelectManager : MonoBehaviour
         boneCostValue0.text = "-" + playerBase.maxSkeletonUpgradeAmount.ToString();
         boneCostObject1.SetActive(false);
         boneCostObject2.SetActive(false);
-        troopCapacity.anchoredPosition = new Vector3(340f, -105, 0f);
+        troopCapacity.anchoredPosition = new Vector3(340f, -25, 0f);
     }
 
     public void SelectLeftTroup()
@@ -362,7 +362,7 @@ public class SelectManager : MonoBehaviour
     {
         currentMinionDigStatus = true;
         GameObject[] minions = GameObject.FindGameObjectsWithTag("Minion");
-        for (int i = 1; i < minions.Length; i++)
+        for (int i = 0; i < minions.Length; i++)
         {
             minions[i].GetComponent<Minion>().inDiggingMode = true;
         }
@@ -372,7 +372,7 @@ public class SelectManager : MonoBehaviour
     {
         currentMinionDigStatus = false;
         GameObject[] minions = GameObject.FindGameObjectsWithTag("Minion");
-        for (int i = 1; i < minions.Length; i++)
+        for (int i = 0; i < minions.Length; i++)
         {
             minions[i].GetComponent<Minion>().inDiggingMode = false;
         }
@@ -381,9 +381,26 @@ public class SelectManager : MonoBehaviour
     public void AllCorpsesSpawnMinions()
     {
         GameObject[] corpses = GameObject.FindGameObjectsWithTag("Corpse");
-        for (int i = 1; i < corpses.Length; i++)
+        for (int i = 0; i < corpses.Length; i++)
+        {
+            for (int j = i+1; j < corpses.Length; j++)
+            {
+                if (corpses[i].transform.position.x > corpses[j].transform.position.x)
+                {
+                    GameObject temp = corpses[i];
+                    corpses[i] = corpses[j];
+                    corpses[j] = temp;
+                }
+            }
+        }
+        for (int i = 0; i < corpses.Length && playerBase.numSkeletons + i < playerBase.maxSkeletons; i++)
         {
             corpses[i].GetComponent<Corpse>().SpawnMinion();
+            if (i + 1 < corpses.Length && playerBase.numSkeletons + i + 1 == playerBase.maxSkeletons)
+            {
+                corpseActionFail = true;
+                break;
+            }
         }
         if (corpseActionFail)
         {
@@ -397,7 +414,7 @@ public class SelectManager : MonoBehaviour
     public void AllCorpsesSpawnTombstones()
     {
         GameObject[] corpses = GameObject.FindGameObjectsWithTag("Corpse");
-        for (int i = 1; i < corpses.Length; i++)
+        for (int i = 0; i < corpses.Length; i++)
         {
             corpses[i].GetComponent<Corpse>().SpawnTombstones();
         }
@@ -412,17 +429,55 @@ public class SelectManager : MonoBehaviour
 
     public void AllCorpsesSpawnSkeletons()
     {
-        GameObject[] corpses = GameObject.FindGameObjectsWithTag("Corpse");
-        for (int i = 1; i < corpses.Length; i++)
+        if (playerBase.numSkeletons + 1 == playerBase.maxSkeletons)
         {
-            corpses[i].GetComponent<Corpse>().SpawnSkeleton();
+            selectedTroop.GetComponent<Corpse>().SpawnSkeleton();
         }
-        if (corpseActionFail)
+        else if (playerBase.numSkeletons == playerBase.maxSkeletons)
         {
             InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
             notice.text.text = "Max Troops Reached";
             notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
             corpseActionFail = false;
+        }
+        else
+        {
+            Transform previouslySelectedTroop = selectedTroop;
+            GameObject[] corpses = GameObject.FindGameObjectsWithTag("Corpse");
+            for (int i = 0; i < corpses.Length; i++)
+            {
+                for (int j = i + 1; j < corpses.Length; j++)
+                {
+                    if (corpses[i].transform.position.x < corpses[j].transform.position.x)
+                    {
+                        GameObject temp = corpses[i];
+                        corpses[i] = corpses[j];
+                        corpses[j] = temp;
+                    }
+                }
+            }
+            short numSpawned = 0;
+            for (int i = 0; i < corpses.Length && playerBase.numSkeletons + numSpawned + 1 < playerBase.maxSkeletons; i++)
+            {
+                if (previouslySelectedTroop != corpses[i].transform)
+                {
+                    numSpawned++;
+                    corpses[i].GetComponent<Corpse>().SpawnSkeleton();
+                }
+                if (((numSpawned == i && i + 2 < corpses.Length) || (numSpawned != i && i + 1 < corpses.Length)) && playerBase.numSkeletons + numSpawned + 1 == playerBase.maxSkeletons)
+                {
+                    corpseActionFail = true;
+                    break;
+                }
+            }
+            previouslySelectedTroop.GetComponent<Corpse>().SpawnSkeleton();
+            if (corpseActionFail)
+            {
+                InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                notice.text.text = "Max Troops Reached";
+                notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+                corpseActionFail = false;
+            }
         }
     }
 
