@@ -10,7 +10,12 @@ public class TutorialManager : MonoBehaviour
     public GameObject doubleButtons;
     public GameObject holdButtons;
     public TextMeshProUGUI mainText;
+    public RectTransform arrowBasisObject;
     public RectTransform arrow;
+    public RectTransform arrow1;
+    public RectTransform arrow2;
+    public RectTransform arrow3;
+    public RectTransform arrow4;
     public GameObject corpsePrefab;
     public GameObject textBox;
 
@@ -21,7 +26,6 @@ public class TutorialManager : MonoBehaviour
     public bool buttonPressed = false;
     private bool allThreePressed = false;
     private float timer = 0f;
-    private float arrowYPosition = -110;
     private float arrowTimer = 0f;
 
     // Start is called before the first frame update
@@ -40,7 +44,7 @@ public class TutorialManager : MonoBehaviour
         if (arrowTimer > Mathf.PI) {
             arrowTimer -= Mathf.PI;
         }
-        arrow.anchoredPosition = new Vector3(arrow.anchoredPosition.x, 10f * Mathf.Sin(arrowTimer * 4f) + arrowYPosition, 0f);
+        arrowBasisObject.anchoredPosition = new Vector3(0f, 10f * Mathf.Sin(arrowTimer * 4f), 0f);
         if (allThreePressed)
         {
             if (!Input.GetKey(inputManager.leftButton) || !Input.GetKey(inputManager.middleButton) && !Input.GetKey(inputManager.rightButton))
@@ -68,41 +72,53 @@ public class TutorialManager : MonoBehaviour
         //Status
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
-        arrow.gameObject.SetActive(true);
+        arrowBasisObject.gameObject.SetActive(true);
         mainText.text = "This is the health bar of whatever you have selected. Next to it are the numbers that show the current health over the max health.\n\nPress All 3 Buttons To Continue";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
-        arrow.anchoredPosition += new Vector2(215f, 0f);
+        arrow2.gameObject.SetActive(false);
+        arrow1.anchoredPosition = new Vector2(-25, -100f);
         mainText.text = "This shows the name of the selected object. Whenever nothing is selected, it shows your base's health, just make sure its doesn't fall to zero, or you lose!\n\nPress All 3 Buttons To Continue";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
-        arrow.anchoredPosition += new Vector2(125f, 0f);
+        arrow1.anchoredPosition = new Vector2(75, -100f);
         mainText.text = "This shows your bones, the currency of this game.\n\nPress All 3 Buttons To Continue";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
-        arrow.anchoredPosition += new Vector2(265f, 0f);
+        arrow1.anchoredPosition = new Vector2(340f, -100f);
         mainText.text = "This shows the amount of active troops over the max number of troops you can have active at one time.\n\nPress All 3 Buttons To Continue";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
 
         //Controls 1
-        arrow.anchoredPosition += new Vector2(-75f, -80f);
-        arrowYPosition -= 80f;
+        arrow.gameObject.SetActive(true);
+        arrow.anchoredPosition = new Vector2(265f, -165f);
+        arrow1.anchoredPosition = new Vector2(190f, -180f);
+        arrow2.gameObject.SetActive(true);
+        arrow2.anchoredPosition = new Vector2(340f, -180f);
         selectManager.boneCostObject0.SetActive(true);
         holdButtons.SetActive(true);
         tutorialInputManager.enabled = true;
         mainText.text = "These buttons are activated when held down. The middle button upgrades the max troop capacity for the price at the top.\n\nPress All 3 Buttons To Continue";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
+        arrow.anchoredPosition = new Vector2(340f, -180f);
+        arrow2.anchoredPosition = new Vector2(265f, -165f);
         mainText.text = "Try moving the camera by holding the right button";//This can be skipped if the player moves the camera
-        yield return new WaitUntil(() => (inputManager.selectManager.transform.position.x > 5f));
-        arrow.anchoredPosition += new Vector2(-530f, 0f);
+        yield return new WaitUntil(() => (inputManager.selectManager.transform.position.x > 3.5f));
+        arrow.anchoredPosition = new Vector2(-265f, -165f);
+        arrow1.anchoredPosition = new Vector2(-190f, -180f);
+        arrow2.anchoredPosition = new Vector2(-340f, -180f);
         singleButtons.SetActive(true);
         tutorialInputManager.allowSingle = true;
         mainText.text = "These buttons are activated when pressed once. For now, select a corpse by pressing the middle button.";
         yield return new WaitUntil(() => (selectManager.selectingObject));
 
         //Corpse
+        arrow2.gameObject.SetActive(false);
+        arrow.anchoredPosition = new Vector2(-190f, -180f);
+        arrow1.anchoredPosition = new Vector2(-265f, -165f);
+        arrow4.gameObject.SetActive(true);
         tutorialInputManager.allowHold = false;
         tutorialInputManager.allowHoldMovement = false;
         inputManager.holdInputWait = true;
@@ -114,13 +130,16 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowHold = true;
         tutorialInputManager.allowSingle = false;
         tutorialInputManager.allowRight = false;
-        arrow.anchoredPosition += new Vector2(530f, 0f);
+        arrow1.gameObject.SetActive(false);
+        arrow4.gameObject.SetActive(false);
+        arrow.anchoredPosition = new Vector2(190f, -180f);
         holdButtons.SetActive(true);
         mainText.text = "Lets create a minion to gather bones. Hold the left button to create one from a corpse.";
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
         tutorialInputManager.allowLeft = false;
         tutorialInputManager.allowMiddle = true;
+        arrow.anchoredPosition = new Vector2(265f, -165f);
         mainText.text = "Minions slowly dig bones from graves, but currently, there isn't any. Lets spawn some using a corpse. Hold the middle button to spawn some.";
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
@@ -128,7 +147,7 @@ public class TutorialManager : MonoBehaviour
         //Minion
         tutorialInputManager.allowSingle = true;
         tutorialInputManager.allowHold = false;
-        arrow.anchoredPosition += new Vector2(-530f, -80f);
+        arrow.anchoredPosition = new Vector2(-265, -165f);
         Instantiate(corpsePrefab, new Vector3(3f, 0, 0f), corpsePrefab.transform.rotation);
         Instantiate(corpsePrefab, new Vector3(7f, -.5f, 0f), corpsePrefab.transform.rotation);
         mainText.text = "Minions have 2 modes, attack and dig. Minions can't be selected individually, and all follow the same command, which is set by pressing left or right when nothing is selected. I spawned more corpses for you, select one when you are ready.";
@@ -139,7 +158,7 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowSingle = false;
         tutorialInputManager.allowRight = true;
         tutorialInputManager.allowMiddle = false;
-        arrow.anchoredPosition += new Vector2(265f, 0f);
+        arrow.anchoredPosition = new Vector2(75f, -165f);
         mainText.text = "You can press buttons twice to select these options. We could use some skeletons to attack for us, so hit the right button twice to change all corpses into skeletons.";
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
@@ -149,18 +168,27 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowRight = false;
         tutorialInputManager.allowHold = true;
         tutorialInputManager.allowMiddle = true;
-        arrow.anchoredPosition += new Vector2(265f, 0f);
+        arrow.anchoredPosition = new Vector2(265f, -165f);
+        arrow1.gameObject.SetActive(true);
+        arrow1.anchoredPosition = new Vector2(190f, -180f);
+        arrow2.gameObject.SetActive(true);
+        arrow2.anchoredPosition = new Vector2(340f, -180f);
         mainText.text = "Skeletons can be upgraded by spending bones (using the amount indicated above). If you want the skeleton to die for whatever reason, you can do so holding the middle button.\nKILL THE NEWBORN...";
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
         tutorialInputManager.allowSingle = true;
         tutorialInputManager.allowHold = false;
-        arrow.anchoredPosition += new Vector2(-265f, 0f);
-        mainText.text = "Skeletons have three modes. Retreat make them return home ignoring enemies. Stay makes them stay in place, attacking enemies that get near. Attack makes them charge to the right, attacking any enemies. Deselect them by pressing the middle button";
+        arrow.anchoredPosition = new Vector2(-265f, -165f);
+        arrow1.anchoredPosition = new Vector2(-75f, -165f);
+        arrow2.anchoredPosition = new Vector2(0f, -180f);
+        arrow3.gameObject.SetActive(true);
+        arrow3.anchoredPosition = new Vector2(75f, -165f);
+        mainText.text = "Skeletons have three modes. Retreat make them return home ignoring enemies. Stay makes them stay in place, attacking enemies that get near. Attack makes them charge to the right, attacking any enemies. Deselect the skeleton by pressing the middle button";
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
         tutorialInputManager.allowSingle = false;
         tutorialInputManager.allowMiddle = false;
+        arrow.gameObject.SetActive(false);
         mainText.text = "You can control the mode all your skeletons are in when deselected. This marks the end of the tutorial,\n\nPress All 3 Buttons To Stay And Test Out The Controls\nHold All 3 Buttons To Return To Main Menu";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
@@ -172,7 +200,9 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowHold = true;
         tutorialInputManager.allowHoldMovement = true;
         inputManager.holdInputWait = false;
-        arrow.gameObject.SetActive(false);
+        arrow1.gameObject.SetActive(false);
+        arrow2.gameObject.SetActive(false);
+        arrow3.gameObject.SetActive(false);
         textBox.SetActive(false);
     }
 }

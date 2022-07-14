@@ -17,7 +17,7 @@ public class InputManager : MonoBehaviour
     public KeyCode rightButton = KeyCode.D;
     private float buttonPressTimer = 0f;
     public bool buttonPressed = false;
-    private float buttonPressTime = .3f;
+    private float buttonPressTime = .4f;
     private ButtonPressed buttonType;
 
     public GameObject impossibleActionPrefab;
