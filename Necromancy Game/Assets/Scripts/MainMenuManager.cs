@@ -1,83 +1,203 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MainMenuManager : MonoBehaviour
 {
-    /*public GameObject[] buttons1;
-    public GameObject[] buttons2;
-    public bool selectCharacter = false;
-    public bool selectCostume = false;
-    public GameObject characterBlackPart;
-    public GameObject costumeBlackPart;
-    public GameObject text100;
-    public GameObject removeMenu;
-    public GameObject unlockMenu;
+    //public GameObject[] buttons1;
+    //public GameObject[] buttons2;
     public GameObject loading;
+    public TextMeshProUGUI leftButtonText;
+    public TextMeshProUGUI middleButtonText;
+    public TextMeshProUGUI rightButtonText;
 
-    private bool isMainScreen = true;
-    private int[] data;
-    private bool isData;
-    private bool fullCompletion = false;
-    public void Start()
+    public Image leftButtonImage;
+    public Image middleButtonImage;
+    public Image rightButtonImage;
+    public Image holdLeftButtonImage;
+    public Image holdMiddleButtonImage;
+    public Image holdRightButtonImage;
+
+    private bool allowInputs = true;
+    public KeyCode leftButton = KeyCode.A;
+    public KeyCode middleButton = KeyCode.S;
+    public KeyCode rightButton = KeyCode.D;
+    private float buttonPressTimer = 0f;
+    public bool buttonPressed = false;
+    private float buttonPressTime = .4f;
+    private ButtonPressed buttonType;
+
+    void Start()
     {
-        data = SaveLoad.Load();
-        if (data == null)
-        {
-            isData = false;
-            data = new int[25];
-            data[0] = 0;
-            data[1] = 1;
-            data[2] = 0;
-            data[3] = 0;
-            for (int i = 4; i < 25; i++)
-            {
-                data[i] = 0;
-            }
-        }
-        else
-        {
-            isData = true;
-            fullCompletion = true;
-            for (int i = 4; i < data.Length; i++)
-            {
-                if (data[i] < 1)
-                {
-                    fullCompletion = false;
-                }
-            }
-            if (fullCompletion == true)
-            {
-                text100.SetActive(true);
-            }
-        }
-    }*/
+        leftButtonText.text = leftButton.ToString();
+        middleButtonText.text = middleButton.ToString();
+        rightButtonText.text = rightButton.ToString();
+    }
 
     public void Update()
     {
-        /*if (isMainScreen && Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.Escape))
+        if (allowInputs)
         {
-            if (Input.GetKey(KeyCode.Backspace))
+            if (buttonPressed)
             {
-                removeMenu.SetActive(true);
-                unlockMenu.SetActive(false);
+                buttonPressTimer += Time.deltaTime;
             }
-            else if (Input.GetKey(KeyCode.Return))
+
+            if (Input.GetKeyDown(leftButton) && !Input.GetKey(middleButton) && !Input.GetKey(rightButton))
             {
-                unlockMenu.SetActive(true);
-                removeMenu.SetActive(false);
+                if (!buttonPressed)
+                {
+                    buttonPressed = true;
+                    buttonType = ButtonPressed.left;
+                }
+                /*else if (buttonType == ButtonPressed.left)
+                {
+                    DoublePress(buttonType);
+                    buttonPressTimer = 0f;
+                    buttonPressed = false;
+                }*/
+                else if (buttonType == ButtonPressed.middle)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressed = false;
+                }
+                else if (buttonType == ButtonPressed.right)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressed = false;
+                }
             }
-        }*/
+            else if (Input.GetKeyDown(middleButton) && !Input.GetKey(leftButton) && !Input.GetKey(rightButton))
+            {
+                if (!buttonPressed)
+                {
+                    buttonPressed = true;
+                    buttonType = ButtonPressed.middle;
+                }
+                /*else if (buttonType == ButtonPressed.middle)
+                {
+                    DoublePress(buttonType);
+                    buttonPressTimer = 0f;
+                    buttonPressed = false;
+                }*/
+                else if (buttonType == ButtonPressed.left)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressed = false;
+                }
+                else if (buttonType == ButtonPressed.right)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressed = false;
+                }
+            }
+            else if (Input.GetKeyDown(rightButton) && !Input.GetKey(leftButton) && !Input.GetKey(middleButton))
+            {
+                if (!buttonPressed)
+                {
+                    buttonPressed = true;
+                    buttonType = ButtonPressed.right;
+                }
+                /*else if (buttonType == ButtonPressed.right)
+                {
+                    StartCoroutine(SlightWait());
+                    DoublePress(buttonType);
+                    buttonPressTimer = 0f;
+                    buttonPressed = false;
+                }*/
+                else if (buttonType == ButtonPressed.left)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressed = false;
+                }
+                else if (buttonType == ButtonPressed.middle)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressed = false;
+                }
+            }
+            else if (buttonPressTimer >= buttonPressTime)
+            {
+                buttonPressTimer = 0f;
+                buttonPressed = false;
+                if (!(Input.GetKey(leftButton) && Input.GetKey(middleButton)) && !(Input.GetKey(leftButton) && Input.GetKey(rightButton)) && !(Input.GetKey(middleButton) && Input.GetKey(rightButton)))
+                {
+                    if (Input.GetKey(leftButton))
+                    {
+                        StartCoroutine(HoldPress(buttonType));
+                    }
+                    else if (buttonType == ButtonPressed.left)
+                    {
+                        StartCoroutine(SinglePress(buttonType));
+                    }
+                    else if (Input.GetKey(middleButton))
+                    {
+                        StartCoroutine(HoldPress(buttonType));
+                    }
+                    else if (buttonType == ButtonPressed.middle)
+                    {
+                        StartCoroutine(SinglePress(buttonType));
+                    }
+                    else if (Input.GetKey(rightButton))
+                    {
+                        StartCoroutine(HoldPress(buttonType));
+                    }
+                    else if (buttonType == ButtonPressed.right)
+                    {
+                        StartCoroutine(SinglePress(buttonType));
+                    }
+                }
+            }
+        }
+    }
+
+    IEnumerator SinglePress(ButtonPressed type)
+    {
+        if (type == ButtonPressed.left)
+        {
+            //StartGame();
+            leftButtonImage.color = Color.gray;
+            loading.SetActive(true);
+            AsyncOperation ao = SceneManager.LoadSceneAsync("Endless Mode", LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao.isDone);
+            InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
+            inputManager.leftButton = leftButton;
+            inputManager.middleButton = middleButton;
+            inputManager.rightButton = rightButton;
+            SceneManager.UnloadSceneAsync("Main Menu");
+        }
+        else if (type == ButtonPressed.middle)
+        {
+            //StartTutorial();
+            middleButtonImage.color = Color.gray;
+            loading.SetActive(true);
+            AsyncOperation ao = SceneManager.LoadSceneAsync("Tutorial", LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao.isDone);
+            InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
+            inputManager.leftButton = leftButton;
+            inputManager.middleButton = middleButton;
+            inputManager.rightButton = rightButton;
+            SceneManager.UnloadSceneAsync("Main Menu");
+        }
+        else /*if (type == ButtonPressed.right)*/
+        {
+            rightButtonImage.color = Color.gray;
+            ExitGame();
+        }
     }
 
     public void StartGame()
     {
+        loading.SetActive(true);
         SceneManager.LoadScene("Endless Mode");
     }
 
     public void StartTutorial()
     {
+        loading.SetActive(true);
         SceneManager.LoadScene("Tutorial");
     }
 
@@ -85,6 +205,85 @@ public class MainMenuManager : MonoBehaviour
     {
         Debug.Log("Quit Game");
         Application.Quit();
+    }
+
+    IEnumerator HoldPress(ButtonPressed type)
+    {
+        if (type == ButtonPressed.left)
+        {
+            holdLeftButtonImage.color = Color.gray;
+            allowInputs = false;
+            leftButtonText.text = "Awaiting Input...";
+            yield return new WaitUntil(() => !Input.GetKey(leftButton));
+            holdLeftButtonImage.color = Color.white;
+            KeyCode newKey = KeyCode.None;
+            while (newKey == KeyCode.None)
+            {
+                yield return new WaitUntil(() => !Input.anyKey);
+                for (int i = 0; i < 370; i++)
+                {
+                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != middleButton && (KeyCode)i != rightButton)
+                    {
+                        newKey = (KeyCode)i;
+                        break;
+                    }
+                }
+            }
+            leftButton = newKey;
+            leftButtonText.text = newKey.ToString();
+            yield return new WaitForFixedUpdate();
+            allowInputs = true;
+        }
+        else if (type == ButtonPressed.middle)
+        {
+            holdMiddleButtonImage.color = Color.gray;
+            allowInputs = false;
+            middleButtonText.text = "Awaiting Input...";
+            yield return new WaitUntil(() => !Input.GetKey(middleButton));
+            holdMiddleButtonImage.color = Color.white;
+            KeyCode newKey = KeyCode.None;
+            while (newKey == KeyCode.None)
+            {
+                yield return new WaitUntil(() => !Input.anyKey);
+                for (int i = 0; i < 370; i++)
+                {
+                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != leftButton && (KeyCode)i != rightButton)
+                    {
+                        newKey = (KeyCode)i;
+                        break;
+                    }
+                }
+            }
+            middleButton = newKey;
+            middleButtonText.text = newKey.ToString();
+            yield return new WaitForFixedUpdate();
+            allowInputs = true;
+        }
+        else /*if (type == ButtonPressed.right)*/
+        {
+            holdRightButtonImage.color = Color.gray;
+            allowInputs = false;
+            rightButtonText.text = "Awaiting Input...";
+            yield return new WaitUntil(() => !Input.GetKey(rightButton));
+            holdRightButtonImage.color = Color.white;
+            KeyCode newKey = KeyCode.None;
+            while (newKey == KeyCode.None)
+            {
+                yield return new WaitUntil(() => !Input.anyKey);
+                for (int i = 0; i < 370; i++)
+                {
+                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != leftButton && (KeyCode)i != middleButton)
+                    {
+                        newKey = (KeyCode)i;
+                        break;
+                    }
+                }
+            }
+            rightButton = newKey;
+            rightButtonText.text = newKey.ToString();
+            yield return new WaitForFixedUpdate();
+            allowInputs = true;
+        }
     }
 
     /*public void RemoveData()

@@ -18,6 +18,7 @@ public class TutorialManager : MonoBehaviour
     public RectTransform arrow4;
     public GameObject corpsePrefab;
     public GameObject textBox;
+    public GameObject loading;
 
     public TutorialInputManager tutorialInputManager;
     public InputManager inputManager;
@@ -27,6 +28,7 @@ public class TutorialManager : MonoBehaviour
     private bool allThreePressed = false;
     private float timer = 0f;
     private float arrowTimer = 0f;
+    private bool loadedingMainMenu = false;
 
     // Start is called before the first frame update
     void Start()
@@ -55,9 +57,10 @@ public class TutorialManager : MonoBehaviour
             else
             {
                 timer += Time.deltaTime;
-                if (timer >= 1.5f)
+                if (timer >= 1f && !loadedingMainMenu)
                 {
-                    SceneManager.LoadScene("Main Menu");
+                    loadedingMainMenu = true;
+                    StartCoroutine(LoadMainMenu());
                 }
             }
         }
@@ -65,6 +68,21 @@ public class TutorialManager : MonoBehaviour
         {
             allThreePressed = true;
         }
+    }
+
+    IEnumerator LoadMainMenu()
+    {
+        loading.SetActive(true);
+        AsyncOperation ao = SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
+        yield return new WaitUntil(() => ao.isDone);
+        MainMenuManager mainMenuManager = GameObject.FindGameObjectWithTag("Main Menu Manager").GetComponent<MainMenuManager>();
+        mainMenuManager.leftButton = inputManager.leftButton;
+        mainMenuManager.middleButton = inputManager.middleButton;
+        mainMenuManager.rightButton = inputManager.rightButton;
+        mainMenuManager.leftButtonText.text = mainMenuManager.leftButton.ToString();
+        mainMenuManager.middleButtonText.text = mainMenuManager.middleButton.ToString();
+        mainMenuManager.rightButtonText.text = mainMenuManager.rightButton.ToString();
+        SceneManager.UnloadSceneAsync("Tutorial");
     }
 
     IEnumerator Tutorial()
