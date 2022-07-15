@@ -104,6 +104,7 @@ public class BossBehavior : MonoBehaviour
         {
             StopAllCoroutines();
             bossAnim.SetTrigger("Restart");
+            bossAudio.Stop();
             GameObject[] walkers = GameObject.FindGameObjectsWithTag("Walker");
             for (int i = 0; i < walkers.Length; i++)
             {
@@ -752,6 +753,7 @@ public class BossBehavior : MonoBehaviour
             if (health <= 0 && !killed)
             {
                 killed = true;
+                bossAudio.Stop();
                 bossAnim.SetBool("isDead", true);
                 singleSuckParticles.SetActive(false);
                 wideSuckParticles.SetActive(false);

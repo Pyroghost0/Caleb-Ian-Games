@@ -147,6 +147,7 @@ public class BossMonologue : MonoBehaviour
         playerMovement.playerAnim.SetFloat("MoveX", 0);
         playerMovement.playerAnim.SetFloat("MoveY", 0);
         playerMovement.enabled = false;
+        playerMovement.walk.enabled = false;
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         playerCanvas.transform.GetChild(0).gameObject.SetActive(false);
         playerCanvas.transform.GetChild(1).gameObject.SetActive(false);
@@ -258,6 +259,7 @@ public class BossMonologue : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         playerMovement.enabled = true;
+        playerMovement.walk.enabled = true;
         playerCanvas.transform.GetChild(0).gameObject.SetActive(true);
         playerCanvas.transform.GetChild(1).gameObject.SetActive(true);
         playerCanvas.transform.GetChild(2).gameObject.SetActive(true);

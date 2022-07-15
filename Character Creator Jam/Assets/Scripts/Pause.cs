@@ -55,6 +55,7 @@ public class Pause : MonoBehaviour
         {
             ExitOptions();
         }
+        player.GetComponent<PlayerMovement>().walk.enabled = false;
         paused = true;
         Time.timeScale = 0f;
         menu.SetActive(true);
@@ -68,6 +69,7 @@ public class Pause : MonoBehaviour
     public void UnPause()
     {
         paused = false;
+        player.GetComponent<PlayerMovement>().walk.enabled = true;
         Time.timeScale = 1f;
         menu.SetActive(false);
         if (player != null && (GameObject.FindGameObjectWithTag("Boss") == null || player.GetComponent<PlayerMovement>().enabled))

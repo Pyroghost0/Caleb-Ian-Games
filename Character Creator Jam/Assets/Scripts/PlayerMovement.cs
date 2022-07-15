@@ -34,10 +34,8 @@ public class PlayerMovement : MonoBehaviour {
     private bool leftGround = false;
     public bool nearBounce = false;
 
-    public AudioSource playerAudio;
     public AudioSource walk;
     public AudioClip[] walks;
-    public AudioClip[] maleJump;
     public AudioEchoFilter echo;
     //public bool canMove = true;
 
@@ -201,12 +199,12 @@ public class PlayerMovement : MonoBehaviour {
                 walk.Stop();
                 rigidbody.velocity = new Vector3(0f, Mathf.Sqrt(jumpHeight * -2f * gravity), 0f);
 
-                if (GetComponent<PlayerStatus>().isMale)
+                /*if (GetComponent<PlayerStatus>().isMale)
 				{
                     echo.enabled = false;
                     playerAudio.clip = maleJump[Random.Range(0, maleJump.Length)];
                     playerAudio.Play();
-                }
+                }*/
                 StartCoroutine(Jump());
             }
             else if (!jumped)

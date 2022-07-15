@@ -38,7 +38,8 @@ public class DoorPortal : MonoBehaviour
             other.gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
             other.GetComponent<PlayerMovement>().groundChecker.inGround = false;
-            
+            other.GetComponent<PlayerMovement>().walk.Stop();
+
             if (!isDressUpDoor)
 			{
                 other.GetComponent<PlayerStatus>().UnlockLevel(nextSceneName);

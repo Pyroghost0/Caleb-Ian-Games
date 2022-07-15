@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: bfcb47e5bbbdefe4b9e4bbdb7145e259, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -11588,16 +11588,11 @@ MonoBehaviour:
   autoAimPower: 1000
   playerAnim: {fileID: 0}
   nearBounce: 0
-  playerAudio: {fileID: 1396442018}
   walk: {fileID: 1396442021}
   walks:
   - {fileID: 8300000, guid: 74c920e82a80f4f448e938c43be75363, type: 3}
   - {fileID: 8300000, guid: 360141efd81cfd8419253f9140252b39, type: 3}
   - {fileID: 8300000, guid: 27c406c36e2c07c4eaddac76ee3a6a37, type: 3}
-  maleJump:
-  - {fileID: 8300000, guid: 59f5e45e49f70e94ea26512c4f069837, type: 3}
-  - {fileID: 8300000, guid: d95a4cb9f637ed843989367119302d19, type: 3}
-  - {fileID: 8300000, guid: 25d06a0a9bea3f74d951247a751748b4, type: 3}
   echo: {fileID: 1396442013}
 --- !u!136 &1396442010
 CapsuleCollider:
@@ -11712,9 +11707,7 @@ MonoBehaviour:
   truePosition: {fileID: 962032307}
   audio: {fileID: 1396442018}
   maleHurt:
-  - {fileID: 8300000, guid: 0bbb409ca997f8c42924bcb6b29bdb64, type: 3}
-  - {fileID: 8300000, guid: 072152cc6b80e694abb9353ff5a556c1, type: 3}
-  - {fileID: 8300000, guid: 1349c2fb2cd1f214ba82f99e16ed1947, type: 3}
+  - {fileID: 8300000, guid: 60d80fe702c542145a8d4dac147ef119, type: 3}
   echo: {fileID: 1396442013}
 --- !u!136 &1396442012
 CapsuleCollider:
