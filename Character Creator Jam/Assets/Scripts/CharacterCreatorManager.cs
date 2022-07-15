@@ -86,13 +86,13 @@ public class CharacterCreatorManager : MonoBehaviour
     {
         if (isSkin)
 		{
-            Skin.SetColor("_Color", SkinBase[index]);
+            Skin.SetColor("_BaseColor", SkinBase[index]);
             Skin.SetColor("_EmissionColor", SkinEmission[index]);
             skinColor = index;
 		}
 		else
 		{
-            Hair.SetColor("_Color", HairBase[index]);
+            Hair.SetColor("_BaseColor", HairBase[index]);
             Hair.SetColor("_EmissionColor", HairEmission[index]);
             hairColor = index;
         }

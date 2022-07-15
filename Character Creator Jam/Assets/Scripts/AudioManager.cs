@@ -25,6 +25,11 @@ public class AudioManager : MonoBehaviour
 		bgm.time = 0;
 	}
 
+	public void BgmTime(float time)
+	{
+		bgm.time = time;
+	}
+
     public void BgmChangeVolume(float volume)
 	{
         bgm.volume = volume * bgmVolumeMultiplier;
@@ -100,6 +105,7 @@ public class AudioManager : MonoBehaviour
 		else if (sceneName == "POTUS Level")
 		{
 			BgmRestart();
+			BgmChangeVolume(0.3f);
 			BgmChangePitch(1.1f);
 		}
 		else if (sceneName == "Boss Battle")

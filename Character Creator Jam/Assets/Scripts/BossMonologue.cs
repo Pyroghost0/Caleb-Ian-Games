@@ -216,6 +216,7 @@ public class BossMonologue : MonoBehaviour
 
         bossCamera.SetActive(false);
         mainCamera.SetActive(true);
+        audioManager.BgmEchoSettings(200, 0.2f);
         audioManager.ToggleBgmEcho(true);
         gameObject.transform.localScale *= 1.5f;
         bossBehavior.enabled = true;

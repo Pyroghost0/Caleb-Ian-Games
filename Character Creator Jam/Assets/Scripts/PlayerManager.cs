@@ -11,10 +11,12 @@ public class PlayerManager : MonoBehaviour
     public GameObject firstCheckpoint;
     public string sceneName;
     public bool loadedPlayer = false;
+    public Material sky;
 
     // Start is called before the first frame update
     void Start()
     {
+        RenderSettings.skybox = sky;
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
         {
@@ -29,6 +31,8 @@ public class PlayerManager : MonoBehaviour
             GameObject.FindGameObjectWithTag("Notice").transform.GetChild(0).gameObject.SetActive(false);
         }
         StartCoroutine(DelayForLoading());
+        RenderSettings.skybox = sky;
+
     }
     private IEnumerator WaitLoadPlayer()
 	{
@@ -64,5 +68,6 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForFixedUpdate();
         yield return new WaitForSeconds(.5f);
         player.GetComponent<PlayerMovement>().enabled = true;
+        RenderSettings.skybox = sky;
     }
 }
