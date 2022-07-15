@@ -207,7 +207,13 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowSingle = false;
         tutorialInputManager.allowMiddle = false;
         arrow.gameObject.SetActive(false);
-        mainText.text = "You can control the mode all your skeletons are in when deselected. This marks the end of the tutorial,\n\nPress All 3 Buttons To Stay And Test Out The Controls\nHold All 3 Buttons To Return To Main Menu";
+        mainText.text = "You can control the mode all your skeletons are in when deselected.\n\nPress All 3 Buttons To Continue";
+        yield return new WaitUntil(() => (allThreePressed));
+        yield return new WaitUntil(() => (!allThreePressed));
+        arrow1.gameObject.SetActive(false);
+        arrow2.gameObject.SetActive(false);
+        arrow3.gameObject.SetActive(false);
+        mainText.text = "This marks the end of the tutorial. In the real game, press all 3 buttons to pause the game.\n\nPress All 3 Buttons To Stay And Test Out The Controls\nHold All 3 Buttons To Return To Main Menu Any Time";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         tutorialInputManager.allowLeft = true;
@@ -218,9 +224,6 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowHold = true;
         tutorialInputManager.allowHoldMovement = true;
         inputManager.holdInputWait = false;
-        arrow1.gameObject.SetActive(false);
-        arrow2.gameObject.SetActive(false);
-        arrow3.gameObject.SetActive(false);
         textBox.SetActive(false);
     }
 }
