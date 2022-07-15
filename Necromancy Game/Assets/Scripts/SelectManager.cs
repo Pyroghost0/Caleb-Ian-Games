@@ -14,8 +14,8 @@ public class SelectManager : MonoBehaviour
     public float maxVelocity = 8f;
     public float velocityAcceleration = 16f;
     private float velocity = 0f;
-    private float minX = 0f;
-    private float maxX = 50f;
+    public float minX = 0f;
+    public float maxX = 36f;
 
     public bool selectingObject = false;
     public Transform selectedTroop;
@@ -275,7 +275,9 @@ public class SelectManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Select Fail: Selected Only Troop");
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Select Fail: Selecting Only Object";
+            notice.textPosition.anchoredPosition = new Vector2(-340f, 150f);
         }
     }
 
@@ -331,7 +333,9 @@ public class SelectManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Select Fail: Selected Only Troop");
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Select Fail: Selecting Only Object";
+            notice.textPosition.anchoredPosition = new Vector2(-190f, 150f);
         }
     }
 
@@ -354,7 +358,9 @@ public class SelectManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Select Fail: No Troops/Corpses");
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Select Fail: Nothing To Select";
+            notice.textPosition.anchoredPosition = new Vector2(-2655f, 150f);
         }
     }
 
@@ -442,41 +448,58 @@ public class SelectManager : MonoBehaviour
         }
         else
         {
-            Transform previouslySelectedTroop = selectedTroop;
             GameObject[] corpses = GameObject.FindGameObjectsWithTag("Corpse");
-            for (int i = 0; i < corpses.Length; i++)
+            if (playerBase.numSkeletons + corpses.Length == playerBase.maxSkeletons)
             {
-                for (int j = i + 1; j < corpses.Length; j++)
+                Transform previouslySelectedTroop = selectedTroop;
+                short numSpawned = 0;
+                for (int i = 0; i < corpses.Length && playerBase.numSkeletons + numSpawned + 1 < playerBase.maxSkeletons; i++)
                 {
-                    if (corpses[i].transform.position.x < corpses[j].transform.position.x)
+                    if (previouslySelectedTroop != corpses[i].transform)
                     {
-                        GameObject temp = corpses[i];
-                        corpses[i] = corpses[j];
-                        corpses[j] = temp;
+                        numSpawned++;
+                        corpses[i].GetComponent<Corpse>().SpawnSkeleton();
                     }
                 }
+                previouslySelectedTroop.GetComponent<Corpse>().SpawnSkeleton();
             }
-            short numSpawned = 0;
-            for (int i = 0; i < corpses.Length && playerBase.numSkeletons + numSpawned + 1 < playerBase.maxSkeletons; i++)
+            else
             {
-                if (previouslySelectedTroop != corpses[i].transform)
+                Transform previouslySelectedTroop = selectedTroop;
+                for (int i = 0; i < corpses.Length; i++)
                 {
-                    numSpawned++;
-                    corpses[i].GetComponent<Corpse>().SpawnSkeleton();
+                    for (int j = i + 1; j < corpses.Length; j++)
+                    {
+                        if (corpses[i].transform.position.x < corpses[j].transform.position.x)
+                        {
+                            GameObject temp = corpses[i];
+                            corpses[i] = corpses[j];
+                            corpses[j] = temp;
+                        }
+                    }
                 }
-                if (((numSpawned == i && i + 2 < corpses.Length) || (numSpawned != i && i + 1 < corpses.Length)) && playerBase.numSkeletons + numSpawned + 1 == playerBase.maxSkeletons)
+                short numSpawned = 0;
+                for (int i = 0; i < corpses.Length && playerBase.numSkeletons + numSpawned + 1 < playerBase.maxSkeletons; i++)
                 {
-                    corpseActionFail = true;
-                    break;
+                    if (previouslySelectedTroop != corpses[i].transform)
+                    {
+                        numSpawned++;
+                        corpses[i].GetComponent<Corpse>().SpawnSkeleton();
+                    }
+                    if (((numSpawned == i && i + 2 < corpses.Length) || (numSpawned != i && i + 1 < corpses.Length)) && playerBase.numSkeletons + numSpawned + 1 == playerBase.maxSkeletons)
+                    {
+                        corpseActionFail = true;
+                        break;
+                    }
                 }
-            }
-            previouslySelectedTroop.GetComponent<Corpse>().SpawnSkeleton();
-            if (corpseActionFail)
-            {
-                InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
-                notice.text.text = "Max Troops Reached";
-                notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
-                corpseActionFail = false;
+                previouslySelectedTroop.GetComponent<Corpse>().SpawnSkeleton();
+                if (corpseActionFail)
+                {
+                    InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                    notice.text.text = "Max Troops Reached";
+                    notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+                    corpseActionFail = false;
+                }
             }
         }
     }

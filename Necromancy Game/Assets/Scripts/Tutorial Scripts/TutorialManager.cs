@@ -18,6 +18,7 @@ public class TutorialManager : MonoBehaviour
     public RectTransform arrow4;
     public GameObject corpsePrefab;
     public GameObject textBox;
+    public GameObject loading;
 
     public TutorialInputManager tutorialInputManager;
     public InputManager inputManager;
@@ -27,6 +28,7 @@ public class TutorialManager : MonoBehaviour
     private bool allThreePressed = false;
     private float timer = 0f;
     private float arrowTimer = 0f;
+    private bool loadedingMainMenu = false;
 
     // Start is called before the first frame update
     void Start()
@@ -55,9 +57,10 @@ public class TutorialManager : MonoBehaviour
             else
             {
                 timer += Time.deltaTime;
-                if (timer >= 1.5f)
+                if (timer >= 1f && !loadedingMainMenu)
                 {
-                    SceneManager.LoadScene("Main Menu");
+                    loadedingMainMenu = true;
+                    StartCoroutine(LoadMainMenu());
                 }
             }
         }
@@ -65,6 +68,21 @@ public class TutorialManager : MonoBehaviour
         {
             allThreePressed = true;
         }
+    }
+
+    IEnumerator LoadMainMenu()
+    {
+        loading.SetActive(true);
+        AsyncOperation ao = SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
+        yield return new WaitUntil(() => ao.isDone);
+        MainMenuManager mainMenuManager = GameObject.FindGameObjectWithTag("Main Menu Manager").GetComponent<MainMenuManager>();
+        mainMenuManager.leftButton = inputManager.leftButton;
+        mainMenuManager.middleButton = inputManager.middleButton;
+        mainMenuManager.rightButton = inputManager.rightButton;
+        mainMenuManager.leftButtonText.text = mainMenuManager.leftButton.ToString();
+        mainMenuManager.middleButtonText.text = mainMenuManager.middleButton.ToString();
+        mainMenuManager.rightButtonText.text = mainMenuManager.rightButton.ToString();
+        SceneManager.UnloadSceneAsync("Tutorial");
     }
 
     IEnumerator Tutorial()
@@ -189,7 +207,13 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowSingle = false;
         tutorialInputManager.allowMiddle = false;
         arrow.gameObject.SetActive(false);
-        mainText.text = "You can control the mode all your skeletons are in when deselected. This marks the end of the tutorial,\n\nPress All 3 Buttons To Stay And Test Out The Controls\nHold All 3 Buttons To Return To Main Menu";
+        mainText.text = "You can control the mode all your skeletons are in when deselected.\n\nPress All 3 Buttons To Continue";
+        yield return new WaitUntil(() => (allThreePressed));
+        yield return new WaitUntil(() => (!allThreePressed));
+        arrow1.gameObject.SetActive(false);
+        arrow2.gameObject.SetActive(false);
+        arrow3.gameObject.SetActive(false);
+        mainText.text = "This marks the end of the tutorial. In the real game, press all 3 buttons to pause the game.\n\nPress All 3 Buttons To Stay And Test Out The Controls\nHold All 3 Buttons To Return To Main Menu Any Time";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         tutorialInputManager.allowLeft = true;
@@ -200,9 +224,6 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowHold = true;
         tutorialInputManager.allowHoldMovement = true;
         inputManager.holdInputWait = false;
-        arrow1.gameObject.SetActive(false);
-        arrow2.gameObject.SetActive(false);
-        arrow3.gameObject.SetActive(false);
         textBox.SetActive(false);
     }
 }
