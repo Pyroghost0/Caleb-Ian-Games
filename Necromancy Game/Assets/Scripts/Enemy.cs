@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     public float speedAcceleration = 1f;
     public float maxSpeed = 2f;
     public float deathTime = .5f;
+    public short enemyValue = 5;
 
     public GameObject corpsePrefab;
     public CircleCollider2D circleCollider;

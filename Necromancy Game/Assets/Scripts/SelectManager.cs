@@ -298,7 +298,7 @@ public class SelectManager : MonoBehaviour
                 leastRight = distence;
                 mostLeft = distence;
             }
-                for (int i = 1; i < selectableObjects.Count; i++)
+            for (int i = 1; i < selectableObjects.Count; i++)
             {
                 if (selectableObjects[i] != selectedTroop)
                 {

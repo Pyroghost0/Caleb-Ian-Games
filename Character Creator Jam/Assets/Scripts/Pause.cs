@@ -55,7 +55,10 @@ public class Pause : MonoBehaviour
         {
             ExitOptions();
         }
-        player.GetComponent<PlayerMovement>().walk.enabled = false;
+        if (player != null)
+        {
+            player.GetComponent<PlayerMovement>().walk.enabled = false;
+        }
         paused = true;
         Time.timeScale = 0f;
         menu.SetActive(true);
@@ -69,7 +72,10 @@ public class Pause : MonoBehaviour
     public void UnPause()
     {
         paused = false;
-        player.GetComponent<PlayerMovement>().walk.enabled = true;
+        if (player != null)
+        {
+            player.GetComponent<PlayerMovement>().walk.enabled = true;
+        }
         Time.timeScale = 1f;
         menu.SetActive(false);
         if (player != null && (GameObject.FindGameObjectWithTag("Boss") == null || player.GetComponent<PlayerMovement>().enabled))
@@ -89,7 +95,10 @@ public class Pause : MonoBehaviour
     {
         if (GameObject.FindGameObjectWithTag("Boss") == null || GameObject.FindGameObjectWithTag("Boss").GetComponent<BossBehavior>().enabled)
         {
-            player.GetComponent<PlayerStatus>().Respawn();
+            if (player != null)
+            {
+                player.GetComponent<PlayerStatus>().Respawn();
+            }
         }
         UnPause();
     }
@@ -107,7 +116,10 @@ public class Pause : MonoBehaviour
     }
     public void BackToMainMenu()
     {
-        player.GetComponent<PlayerStatus>().UnlockLevel("Save Equipment Info");
+        if (player != null)
+        {
+            player.GetComponent<PlayerStatus>().UnlockLevel("Save Equipment Info");
+        }
         Time.timeScale = 1f;
         SceneManager.LoadScene("Main Screen");
     }
