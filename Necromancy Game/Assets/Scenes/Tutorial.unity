@@ -1057,6 +1057,18 @@ MonoBehaviour:
   holdInputWait: 0
   holdRight: 0
   holdLeft: 0
+  paused: 0
+  pauseMenu: {fileID: 0}
+  loading: {fileID: 0}
+  leftButtonText: {fileID: 0}
+  middleButtonText: {fileID: 0}
+  rightButtonText: {fileID: 0}
+  leftButtonImage: {fileID: 0}
+  middleButtonImage: {fileID: 0}
+  rightButtonImage: {fileID: 0}
+  holdLeftButtonImage: {fileID: 0}
+  holdMiddleButtonImage: {fileID: 0}
+  holdRightButtonImage: {fileID: 0}
 --- !u!4 &412351971
 Transform:
   m_ObjectHideFlags: 0
@@ -1749,105 +1761,17 @@ PolygonCollider2D:
   m_CorrespondingSourceObject: {fileID: 2011582218769719324, guid: 320692867aae37d438668ebce74f58c1, type: 3}
   m_PrefabInstance: {fileID: 685878747}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &685878749 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 691569415, guid: 320692867aae37d438668ebce74f58c1, type: 3}
-  m_PrefabInstance: {fileID: 685878747}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &685878750 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 476445100, guid: 320692867aae37d438668ebce74f58c1, type: 3}
-  m_PrefabInstance: {fileID: 685878747}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &685878751 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2011582219643169637, guid: 320692867aae37d438668ebce74f58c1, type: 3}
-  m_PrefabInstance: {fileID: 685878747}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &685878752 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2011582219643169638, guid: 320692867aae37d438668ebce74f58c1, type: 3}
   m_PrefabInstance: {fileID: 685878747}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685878751}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32cedd5ed343e8b4c929662427198fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &685878753
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685878749}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 50, y: 0.5, z: 1}
-  m_Center: {x: 20, y: 0.8, z: 0}
---- !u!65 &685878754
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685878750}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 50, y: 0.5, z: 1}
-  m_Center: {x: 20, y: 0.8, z: 0}
---- !u!60 &685878755
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685878751}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 50, y: 100}
-    newSize: {x: 50, y: 100}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -25.450756, y: 4.94691}
-      - {x: 22.354752, y: 29.616491}
-      - {x: 22.735893, y: 21.838589}
-      - {x: 20.270262, y: 18.721323}
-      - {x: 20.532202, y: 17.72927}
-      - {x: 19.584774, y: 16.489227}
-      - {x: 18.593416, y: 16.07664}
-      - {x: 16.467033, y: 12.800021}
-      - {x: 16.517784, y: 11.355445}
-      - {x: 15.483615, y: 9.597964}
-      - {x: 14.080308, y: 9.150062}
-      - {x: 9.513601, y: 2.2535255}
-      - {x: 9.366045, y: 0.45201516}
-      - {x: 2.9646664, y: -7.4466243}
-      - {x: 2.2437065, y: -10.426407}
-      - {x: -0.5134439, y: -13.2065325}
-      - {x: -2.7882276, y: -13.525274}
-      - {x: -14.257788, y: -29.568453}
-      - {x: -14.60074, y: -33.16537}
-      - {x: -16.988657, y: -36.111645}
-      - {x: -20.847439, y: -38.42638}
-      - {x: -25.742783, y: -45.633217}
 --- !u!1 &709412476
 GameObject:
   m_ObjectHideFlags: 0
@@ -5002,6 +4926,7 @@ MonoBehaviour:
   - {fileID: 8452687272392725842, guid: b4716556411299045bcbd47d80c5d475, type: 3}
   - {fileID: 3803328252247418492, guid: 17953257ec7407f4ebbac91b7c2836d6, type: 3}
   - {fileID: 3944066057055433265, guid: 13d6df818a694d1459fbbc1c78dbd1e3, type: 3}
+  - {fileID: 3944066057055433265, guid: 093a71e9f7ba80248a01f33cb8a6bbca, type: 3}
   startGraveAmount: 0
 --- !u!4 &1773375779
 Transform:
