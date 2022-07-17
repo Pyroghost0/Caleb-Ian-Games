@@ -12,11 +12,15 @@ public class Enemy : MonoBehaviour
     public float maxSpeed = 2f;
     public float deathTime = .5f;
     public short enemyValue = 5;
+    public AttackType attackType = AttackType.AOE;
 
     public GameObject corpsePrefab;
     public CircleCollider2D circleCollider;
     public Attack attack;
     public Transform attackBasisObject;
+    public Transform sightObject;
+    public Transform spriteBasisObject;
+    public SpriteRenderer[] sprite;
 
     public bool dead = false;
     private float xGoal = 0f;
@@ -25,7 +29,6 @@ public class Enemy : MonoBehaviour
     public bool inPresenceOfSkeleton = false;
     private bool inPresenceOfTower = false;
     public float skeletonAttackRange;
-    private SpriteRenderer spriteRenderer;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
@@ -64,7 +67,7 @@ public class Enemy : MonoBehaviour
                     {
                         attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
                         attack.gameObject.SetActive(true);
-                        attack.StartAOEAttack();
+                        attack.StartAttack(attackType);
                     }
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
@@ -121,7 +124,7 @@ public class Enemy : MonoBehaviour
                 {
                     attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                     attack.gameObject.SetActive(true);
-                    attack.StartAOEAttack();
+                    attack.StartAttack(attackType);
                 }
             }
             else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
@@ -158,7 +161,21 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
-        spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
+
+        if (rigidbody.velocity.x > 0)
+        {
+            spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+            sightObject.localScale = new Vector3(-1f, 1f, 1f);
+        }
+        else if (rigidbody.velocity.x < 0)
+        {
+            spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+            sightObject.localScale = new Vector3(1f, 1f, 1f);
+        }
+        for (int i = 0; i < sprite.Length; i++)
+        {
+            sprite[i].sortingOrder = (int)(transform.position.y * -10);
+        }
     }
 
     public void Hit(Vector3 attackCenter, Transform source, float knockback, short damage)

@@ -21,6 +21,9 @@ public class Minion : MonoBehaviour
     public Attack diggingAttack;
     public Transform attackBasisObject;
     public Transform digAttackBasisObject;
+    public Transform sightObject;
+    public Transform spriteBasisObject;
+    public SpriteRenderer[] sprite;
 
     private float usedBoneSpeedReductionFactor;
     public bool inDiggingMode;
@@ -35,11 +38,11 @@ public class Minion : MonoBehaviour
     private bool inPresenceOfTower = false;
     public float enemyAttackRange;
     SelectManager selectManager;
-    private SpriteRenderer spriteRenderer;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
     public Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,10 +50,8 @@ public class Minion : MonoBehaviour
         selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
         inDiggingMode = selectManager.currentMinionDigStatus;
         rigidbody = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         playerBase.numSkeletons++;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
-        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -461,7 +462,21 @@ public class Minion : MonoBehaviour
                 }
             }
         }
-        spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
+
+        if (rigidbody.velocity.x > 0)
+        {
+            spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+            sightObject.localScale = new Vector3(1f, 1f, 1f);
+        }
+        else if (rigidbody.velocity.x < 0)
+        {
+            spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+            sightObject.localScale = new Vector3(-1f, 1f, 1f);
+        }
+        for (int i = 0; i < sprite.Length; i++)
+        {
+            sprite[i].sortingOrder = (int)(transform.position.y * -10);
+        }
     }
 
     public void Hit(Vector3 attackCenter, Transform source, float knockback, short damage)

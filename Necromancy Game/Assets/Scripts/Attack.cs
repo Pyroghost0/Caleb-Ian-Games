@@ -2,19 +2,121 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum AttackType
+{
+    AOE = 0,
+    Projectile = 1,
+    Single = 2,
+    Dig = 3
+}
+
 public class Attack : MonoBehaviour
 {
     public short attackPower = 50;
-    public float attackSpeed = 1f;
+    public float attackTime = 1f;
+    public float attackSpeed = 4f;
     public float attackCooldown = .4f;
     public float attackRange = 1f;
     public float knockback = 1f;
     public bool affectsEnemies = false;
     public bool affectsSkeletons = false;
+    //public bool projectilePierces = false;
 
     public GameObject source;
     public bool currectlyAttacking = false;
+    public SpriteRenderer spriteRenderer;
     private List<GameObject> targets = new List<GameObject>();
+
+    private void Update()
+    {
+        spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
+    }
+
+    public void StartAttack(AttackType attackType)
+    {
+        if (attackType == AttackType.AOE)
+        {
+            StartCoroutine(StartAOEAttackCorutine());
+        }
+        else if (attackType == AttackType.Projectile)
+        {
+            StartCoroutine(StartProjectileAttackCorutine());
+        }
+        else if (attackType == AttackType.Single)
+        {
+            StartCoroutine(StartAOEAttackCorutine());
+        }
+        else /*if (attackType == AttackType.Dig)*/
+        {
+            //StartCoroutine(StartDigAttackCorutine());
+        }
+    }
+
+    public void StartProjectileAttack()
+    {
+        StartCoroutine(StartProjectileAttackCorutine());
+    }
+
+    IEnumerator StartProjectileAttackCorutine()
+    {
+        gameObject.SetActive(true);
+        spriteRenderer.enabled = true;
+        transform.parent.parent = null;
+        currectlyAttacking = true;
+        targets.Clear();
+        float timer = 0f;
+        bool done = false;
+        while (timer < attackTime && !done)
+        {
+            timer += Time.deltaTime;
+            transform.position += transform.right * -attackSpeed * Time.deltaTime;
+            for (int i = 0; i < targets.Count; i++)
+            {
+                if (targets[i] == null)
+                {
+
+                }
+                else if (affectsEnemies && targets[i].CompareTag("Enemy"))
+                {
+                    targets[i].GetComponent<Enemy>().Hit(transform.position, source.CompareTag("Enemy") ? null : source.transform, knockback, attackPower);
+                    done = true;
+                    break;
+                }
+                else if (affectsSkeletons)
+                {
+                    if (targets[i].CompareTag("Skeleton"))
+                    {
+                        targets[i].GetComponent<Skeleton>().Hit(transform.position, source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
+                        done = true;
+                        break;
+                    }
+                    else if (targets[i].CompareTag("Minion"))
+                    {
+                        targets[i].GetComponent<Minion>().Hit(transform.position, source.CompareTag("Minion") ? null : source.transform, knockback, attackPower);
+                        done = true;
+                        break;
+                    }
+                    else if (targets[i].CompareTag("Player Base"))
+                    {
+                        targets[i].GetComponent<PlayerBase>().Hit(attackPower);
+                        done = true;
+                        break;
+                    }
+                }
+            }
+            yield return new WaitForFixedUpdate();
+        }
+        spriteRenderer.enabled = false;
+        transform.parent.parent = source.transform;
+        transform.localPosition = Vector3.zero;
+        if (timer < attackTime)
+        {
+            yield return new WaitForSeconds(attackTime - timer);
+        }
+        yield return new WaitForSeconds(attackCooldown);
+        currectlyAttacking = false;
+        gameObject.SetActive(false);
+    }
 
     public void StartAOEAttack()
     {
@@ -25,49 +127,31 @@ public class Attack : MonoBehaviour
     {
         currectlyAttacking = true;
         targets.Clear();
-        yield return new WaitForSeconds(attackSpeed);
+        yield return new WaitForSeconds(attackTime);
         for (int i = 0; i < targets.Count; i++)
         {
             if (targets[i] == null)
             {
 
             }
-            else if (targets[i].CompareTag("Enemy") && affectsEnemies)
+            else if (affectsEnemies && targets[i].CompareTag("Enemy"))
             {
-                if (source.CompareTag("Enemy"))
-                {
-                    targets[i].GetComponent<Enemy>().Hit(transform.position, null, knockback, attackPower);
-                }
-                else
-                {
-                    targets[i].GetComponent<Enemy>().Hit(transform.position, source.transform, knockback, attackPower);
-                }
+                targets[i].GetComponent<Enemy>().Hit(transform.position, source.CompareTag("Enemy") ? null : source.transform, knockback, attackPower);
             }
-            else if (targets[i].CompareTag("Skeleton") && affectsSkeletons)
+            else if (affectsSkeletons)
             {
-                if (source.CompareTag("Skeleton"))
+                if (targets[i].CompareTag("Skeleton"))
                 {
-                    targets[i].GetComponent<Skeleton>().Hit(transform.position, null, knockback, attackPower);
+                    targets[i].GetComponent<Skeleton>().Hit(transform.position, source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
                 }
-                else
+                else if (targets[i].CompareTag("Minion"))
                 {
-                    targets[i].GetComponent<Skeleton>().Hit(transform.position, source.transform, knockback, attackPower);
+                    targets[i].GetComponent<Minion>().Hit(transform.position, source.CompareTag("Minion") ? null : source.transform, knockback, attackPower);
                 }
-            }
-            else if (targets[i].CompareTag("Minion") && affectsSkeletons)
-            {
-                if (source.CompareTag("Minion"))
+                else if (targets[i].CompareTag("Player Base"))
                 {
-                    targets[i].GetComponent<Minion>().Hit(transform.position, null, knockback, attackPower);
+                    targets[i].GetComponent<PlayerBase>().Hit(attackPower);
                 }
-                else
-                {
-                    targets[i].GetComponent<Minion>().Hit(transform.position, source.transform, knockback, attackPower);
-                }
-            }
-            else if (targets[i].CompareTag("Player Base") && affectsSkeletons)
-            {
-                targets[i].GetComponent<PlayerBase>().Hit(attackPower);
             }
         }
         yield return new WaitForSeconds(attackCooldown);
@@ -85,14 +169,13 @@ public class Attack : MonoBehaviour
         currectlyAttacking = true;
         source.GetComponent<Minion>().anim.SetBool("Digging", true);
         //targets.Clear();
-        yield return new WaitForSeconds(attackSpeed);
+        yield return new WaitForSeconds(attackTime);
         if (target != null)
         {
             source.GetComponent<Minion>().bonesStored += target.DigBones(bonesNeeded);
         }
         yield return new WaitForSeconds(attackCooldown);
         currectlyAttacking = false;
-        gameObject.SetActive(false);
         source.GetComponent<Minion>().anim.SetBool("Digging", false);
     }
 

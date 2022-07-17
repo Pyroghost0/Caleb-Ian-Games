@@ -33,6 +33,7 @@ public class EndlessModeManager : MonoBehaviour
         {
             enemyValue[i] = enemyPrefabs[i].GetComponent<Enemy>().enemyValue;
         }
+        StartCoroutine(EndlessSpawn());
     }
 
     // Update is called once per frame
