@@ -1,29 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerBase : MonoBehaviour
 {
     public short bones = 0;
     public short health = 1000;
     public short maxHealth = 1000;
+    public short defence = 10;
     public short maxSkeletons = 3;
     public short maxSkeletonUpgradeAmount = 100;
     public short numSkeletons = 0;
 
-    private SelectManager SelectManager;
+    public float timeSurvived = 0f;
+    public TextMeshProUGUI resumeText;
+    public TextMeshProUGUI pauseText;
+
+    private SelectManager selectManager;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        SelectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
+        selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (health > 0)
+        {
+            timeSurvived += Time.deltaTime;
+        }
     }
 
     public void UpgradeMaxSkeletons()
@@ -37,16 +45,27 @@ public class PlayerBase : MonoBehaviour
     {
         if (health > 0)
         {
-            //health -= (short)(damage / defence);
+            health -= (short)(damage / defence);
             if (health <= 0)
             {
                 //StartCoroutine(Death());
+                health = 0;
+                InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
+                inputManager.Pause();
+                inputManager.allowResume = false;
+                resumeText.text = "Retry";
+                pauseText.text = "Dead";
+            }
+            if (!selectManager.selectingObject)
+            {
+                selectManager.rectHealthBar.sizeDelta = new Vector2(((float)health / maxHealth) * selectManager.rectHealth, selectManager.rectHealthBar.rect.height);
+                selectManager.healthValue.text = health + "\n" + maxHealth;
             }
         }
     }
     public void UpdateBones(short bonesDifference)
     {
         bones += bonesDifference;
-        SelectManager.boneValue.text = bones.ToString();
+        selectManager.boneValue.text = bones.ToString();
     }
 }

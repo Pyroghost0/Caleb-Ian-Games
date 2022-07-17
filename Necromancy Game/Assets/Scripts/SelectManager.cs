@@ -150,7 +150,7 @@ public class SelectManager : MonoBehaviour
             Skeleton skeleton = newSelect.GetComponent<Skeleton>();
             selectedObjectName.text = skeleton.skeletonName;
             rectHealthBar.gameObject.SetActive(true);
-            rectHealthBar.sizeDelta = new Vector2((skeleton.health / skeleton.maxHealth) * rectHealth, rectHealthBar.rect.height);
+            rectHealthBar.sizeDelta = new Vector2(((float)skeleton.health / skeleton.maxHealth) * rectHealth, rectHealthBar.rect.height);
             healthValue.text = skeleton.health + "\n" + skeleton.maxHealth;
             boneCostObject0.SetActive(false);
             if (skeleton.defenceBoneUpgradeAmount == -1)
@@ -215,7 +215,7 @@ public class SelectManager : MonoBehaviour
         }
         selectedObjectName.text = "Player Base";
         rectHealthBar.gameObject.SetActive(true);
-        rectHealthBar.sizeDelta = new Vector2((playerBase.health / playerBase.maxHealth) * rectHealth, rectHealthBar.rect.height);
+        rectHealthBar.sizeDelta = new Vector2(((float)playerBase.health / playerBase.maxHealth) * rectHealth, rectHealthBar.rect.height);
         healthValue.text = playerBase.health + "\n" + playerBase.maxHealth;
         boneCostObject0.SetActive(true);
         boneCostValue0.text = "-" + playerBase.maxSkeletonUpgradeAmount.ToString();

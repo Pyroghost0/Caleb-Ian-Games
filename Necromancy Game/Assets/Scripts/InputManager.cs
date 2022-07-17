@@ -32,8 +32,10 @@ public class InputManager : MonoBehaviour
 
     private bool allowInputs = true;
     public bool paused = false;
+    public bool allowResume = true;
     public GameObject pauseMenu;
     public GameObject loading;
+    public TextMeshProUGUI timeSurvivedText;
     public TextMeshProUGUI leftButtonText;
     public TextMeshProUGUI middleButtonText;
     public TextMeshProUGUI rightButtonText;
@@ -57,10 +59,7 @@ public class InputManager : MonoBehaviour
             }
             if (Input.GetKey(leftButton) && Input.GetKey(middleButton) && Input.GetKey(rightButton) && (Input.GetKeyDown(leftButton) || Input.GetKeyDown(middleButton) || Input.GetKeyDown(rightButton)))
             {
-                paused = false;
-                pauseMenu.SetActive(false);
-                Time.timeScale = 1f;
-                holdInputWait = false;
+                Resume();
             }
             if (Input.GetKeyDown(leftButton) && !Input.GetKey(middleButton) && !Input.GetKey(rightButton))
             {
@@ -159,15 +158,7 @@ public class InputManager : MonoBehaviour
             }
             if (Input.GetKey(leftButton) && Input.GetKey(middleButton) && Input.GetKey(rightButton) && (Input.GetKeyDown(leftButton) || Input.GetKeyDown(middleButton) || Input.GetKeyDown(rightButton)))
             {
-                paused = true;
-                pauseMenu.SetActive(true);
-                Time.timeScale = 0f;
-                holdInputWait = true;
-                buttonPressed = false;
-                buttonPressTimer = 0f;
-                leftButtonText.text = leftButton.ToString();
-                middleButtonText.text = middleButton.ToString();
-                rightButtonText.text = rightButton.ToString();
+                Pause();
             }
             else if (Input.GetKeyDown(leftButton) && !Input.GetKey(middleButton) && !Input.GetKey(rightButton))
             {
@@ -304,14 +295,55 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    IEnumerator PauseSinglePress(ButtonPressed type)
+    public void Pause()
     {
-        if (type == ButtonPressed.left)
+        paused = true;
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0f;
+        holdInputWait = true;
+        buttonPressed = false;
+        buttonPressTimer = 0f;
+        timeSurvivedText.text = "Time Survived: " + ((int)playerBase.timeSurvived) + " Seconds";
+        leftButtonText.text = leftButton.ToString();
+        middleButtonText.text = middleButton.ToString();
+        rightButtonText.text = rightButton.ToString();
+    }
+
+    public void Resume()
+    {
+        if (allowResume)
         {
             paused = false;
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
             holdInputWait = false;
+        }
+        else
+        {
+            StartCoroutine(ReloadScene());
+        }
+    }
+
+    IEnumerator ReloadScene()
+    {
+        loading.SetActive(true);
+        DontDestroyOnLoad(gameObject);
+        AsyncOperation ao = SceneManager.LoadSceneAsync("Endless Mode", LoadSceneMode.Single);
+        yield return new WaitUntil(() => ao.isDone);
+        GameObject[] inputManagers = GameObject.FindGameObjectsWithTag("Input Manager");
+        InputManager otherInputManager = inputManagers[0] == gameObject ? inputManagers[1].GetComponent<InputManager>() : inputManagers[0].GetComponent<InputManager>();
+        otherInputManager.leftButton = leftButton;
+        otherInputManager.middleButton = middleButton;
+        otherInputManager.rightButton = rightButton;
+        Time.timeScale = 1f;
+        Destroy(gameObject);
+    }
+
+    IEnumerator PauseSinglePress(ButtonPressed type)
+    {
+        if (type == ButtonPressed.left)
+        {
+            Resume();
         }
         else if (type == ButtonPressed.middle)
         {

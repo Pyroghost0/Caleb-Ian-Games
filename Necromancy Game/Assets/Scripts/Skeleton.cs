@@ -433,14 +433,20 @@ public class Skeleton : MonoBehaviour
                 enemyAttackRange = attack.attackRange + circleCollider.radius + source.GetComponent<Enemy>().circleCollider.radius;
                 if (selectManager.selectedTroop == transform)
                 {
-                    selectManager.rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * selectManager.rectHealth, selectManager.rectHealthBar.rect.height);
+                    selectManager.rectHealthBar.sizeDelta = new Vector2(((float)health / maxHealth) * selectManager.rectHealth, selectManager.rectHealthBar.rect.height);
                     selectManager.healthValue.text = health + "\n" + maxHealth;
                 }
             }
             health -= (short)(damage / defence);
             if (health <= 0)
             {
+                health = 0;
                 StartCoroutine(Death());
+            }
+            if (selectManager.selectedTroop == transform)
+            {
+                selectManager.rectHealthBar.sizeDelta = new Vector2((health / maxHealth) * selectManager.rectHealth, selectManager.rectHealthBar.rect.height);
+                selectManager.healthValue.text = health + "\n" + maxHealth;
             }
         }
     }

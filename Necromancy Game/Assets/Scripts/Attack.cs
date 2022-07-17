@@ -44,7 +44,7 @@ public class Attack : MonoBehaviour
         }
         else if (attackType == AttackType.Single)
         {
-            StartCoroutine(StartAOEAttackCorutine());
+            StartCoroutine(StartSingleAttackCorutine());
         }
         else /*if (attackType == AttackType.Dig)*/
         {
@@ -157,6 +157,53 @@ public class Attack : MonoBehaviour
         yield return new WaitForSeconds(attackCooldown);
         currectlyAttacking = false;
         gameObject.SetActive(false);
+    }
+
+    public void StartSingleAttack()
+    {
+        StartCoroutine(StartSingleAttackCorutine());
+    }
+
+    IEnumerator StartSingleAttackCorutine()
+    {
+        currectlyAttacking = true;
+        //targets.Clear();
+        yield return new WaitForSeconds(attackTime);
+        if (source.CompareTag("Enemy"))
+        {
+            if (source.GetComponent<Enemy>().inPresenceOfTower)
+            {
+                GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().Hit(attackPower);
+            }
+            else
+            {
+                Transform target = source.GetComponent<Enemy>().goal;
+                if (target != null && (target.position - transform.position).magnitude < attackRange + .1f)
+                {
+                    if (target.CompareTag("Skeleton"))
+                    {
+                        target.GetComponent<Skeleton>().Hit(transform.position, source.transform, knockback, attackPower);
+                    }
+                    else if (target.CompareTag("Minion"))
+                    {
+                        target.GetComponent<Minion>().Hit(transform.position, source.transform, knockback, attackPower);
+                    }
+                }
+            }
+        }
+        else /*if (source.CompareTag("Skeleton"))*/
+        {
+            Transform target = source.GetComponent<Enemy>().goal;
+            if (target != null && (target.position - transform.position).magnitude < attackRange + .1f)
+            {
+                if (target.CompareTag("Enemy"))
+                {
+                    target.GetComponent<Enemy>().Hit(transform.position, source.transform, knockback, attackPower);
+                }
+            }
+        }
+        yield return new WaitForSeconds(attackCooldown);
+        currectlyAttacking = false;
     }
 
     public void StartDigAttack(short bonesNeeded, Grave target)

@@ -23,11 +23,11 @@ public class Enemy : MonoBehaviour
     public SpriteRenderer[] sprite;
 
     public bool dead = false;
-    private float xGoal = 0f;
-    private float xGoal2 = -2f;
+    private float slopeGoal = 1.6f;
+    private float posYGoal = 9.96f;
     public Transform goal;
     public bool inPresenceOfSkeleton = false;
-    private bool inPresenceOfTower = false;
+    public bool inPresenceOfTower = false;
     public float skeletonAttackRange;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
@@ -57,37 +57,13 @@ public class Enemy : MonoBehaviour
             {
                 
             }
-            else if (transform.position.x < xGoal2)
+            else if (transform.position.y > (slopeGoal * (transform.position.x - attack.attackRange)) + posYGoal)
             {
-                //Vector2 destination = goal.position - transform.position;
-                //if (destination.magnitude < skeletonAttackRange)
-                if (true)
+                if (!attack.currectlyAttacking)
                 {
-                    if (!attack.currectlyAttacking)
-                    {
-                        attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-                        attack.gameObject.SetActive(true);
-                        attack.StartAttack(attackType);
-                    }
-                }
-                else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
-                {
-                    rigidbody.velocity += ((maxSpeed / 3f) - rigidbody.velocity.magnitude) * Vector2.left;
-                }
-                else
-                {
-                    rigidbody.velocity += speedAcceleration * Vector2.left * Time.deltaTime;
-                }
-            }
-            else if (transform.position.x < xGoal)
-            {
-                if (rigidbody.velocity.magnitude < maxSpeed / 3f)
-                {
-                    rigidbody.velocity += ((maxSpeed / 3f) - rigidbody.velocity.magnitude) * Vector2.left;
-                }
-                else
-                {
-                    rigidbody.velocity += speedAcceleration * Vector2.left * Time.deltaTime;
+                    attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+                    attack.gameObject.SetActive(true);
+                    attack.StartAttack(attackType);
                 }
             }
             else
@@ -140,7 +116,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            if (transform.position.x <= xGoal)
+            if (transform.position.y > (slopeGoal * (transform.position.x - attack.attackRange)) + posYGoal)
             {
                 inPresenceOfTower = true;
             }
