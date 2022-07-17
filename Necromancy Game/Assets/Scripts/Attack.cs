@@ -83,6 +83,7 @@ public class Attack : MonoBehaviour
     IEnumerator StartDigAttackCorutine(short bonesNeeded, Grave target)
     {
         currectlyAttacking = true;
+        source.GetComponent<Minion>().anim.SetBool("Digging", true);
         //targets.Clear();
         yield return new WaitForSeconds(attackSpeed);
         if (target != null)
@@ -92,6 +93,7 @@ public class Attack : MonoBehaviour
         yield return new WaitForSeconds(attackCooldown);
         currectlyAttacking = false;
         gameObject.SetActive(false);
+        source.GetComponent<Minion>().anim.SetBool("Digging", false);
     }
 
     private void OnTriggerStay2D(Collider2D collision)

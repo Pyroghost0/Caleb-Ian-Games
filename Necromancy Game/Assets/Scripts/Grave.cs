@@ -11,6 +11,7 @@ public class Grave : MonoBehaviour
     private void Start()
     {
         GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -10);
+        transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -10) + 1;
     }
 
     public short DigBones(short bonesDug)

@@ -39,7 +39,7 @@ public class Minion : MonoBehaviour
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
-
+    public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +50,7 @@ public class Minion : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerBase.numSkeletons++;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
