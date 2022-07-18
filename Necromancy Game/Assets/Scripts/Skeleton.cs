@@ -35,6 +35,7 @@ public class Skeleton : MonoBehaviour
     public Transform sightObject;
     public Transform spriteBasisObject;
     public SpriteRenderer[] sprite;
+    private int[] spritePos;
 
     private float spriteMultiplier;
     public SkeletonMode skeletonMode = SkeletonMode.stay;
@@ -63,6 +64,11 @@ public class Skeleton : MonoBehaviour
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         playerBase.numSkeletons++;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
+        spritePos = new int[sprite.Length];
+        for (int i = 0; i < sprite.Length; i++)
+        {
+            spritePos[i] = sprite[i].sortingOrder;
+        }
     }
 
     // Update is called once per frame
@@ -408,7 +414,7 @@ public class Skeleton : MonoBehaviour
         }
         for (int i = 0; i < sprite.Length; i++)
         {
-            sprite[i].sortingOrder = (int)(transform.position.y * -10);
+            sprite[i].sortingOrder = (int)(transform.position.y * -10) + spritePos[i];
         }
     }
 

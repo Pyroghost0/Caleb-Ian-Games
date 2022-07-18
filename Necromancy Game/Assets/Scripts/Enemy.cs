@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     public Transform attackBasisObject;
     public Transform sightObject;
     public Transform spriteBasisObject;
+    private int[] spritePos;
     public SpriteRenderer[] sprite;
 
     private float spriteMultiplier;
@@ -40,6 +41,11 @@ public class Enemy : MonoBehaviour
     {
         spriteMultiplier = spriteBasisObject.localScale.y;
         rigidbody = GetComponent<Rigidbody2D>();
+        spritePos = new int[sprite.Length];
+        for (int i = 0; i < sprite.Length; i++)
+        {
+            spritePos[i] = sprite[i].sortingOrder;
+        }
     }
 
     // Update is called once per frame
@@ -153,7 +159,7 @@ public class Enemy : MonoBehaviour
         }
         for (int i = 0; i < sprite.Length; i++)
         {
-            sprite[i].sortingOrder = (int)(transform.position.y * -10);
+            sprite[i].sortingOrder = (int)(transform.position.y * -10) + spritePos[i];
         }
     }
 
