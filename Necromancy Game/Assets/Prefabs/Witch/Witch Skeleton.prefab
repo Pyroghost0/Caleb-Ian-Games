@@ -628,7 +628,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.5943396, g: 0.17200485, b: 0.17200485, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -654,8 +654,8 @@ MonoBehaviour:
   attackTime: 1
   attackSpeed: 1
   attackCooldown: 0.4
-  attackRange: 1
-  knockback: 1
+  attackRange: 5
+  knockback: 2.5
   affectsEnemies: 1
   affectsSkeletons: 0
   source: {fileID: 3579263437286936696}
@@ -822,7 +822,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3579263437286936696}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7507014, y: -1.6211734, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -894,7 +894,7 @@ MonoBehaviour:
   defenceBoneUpgradeAmount: 20
   attackUpgradeFactor: 2
   defenceUpgradeFactor: 2
-  skeletonName: Ogre Skeleton
+  skeletonName: Witch Skeleton
   attackType: 4
   circleCollider: {fileID: 3579263437286936583}
   attack: {fileID: 3579263435788648569}

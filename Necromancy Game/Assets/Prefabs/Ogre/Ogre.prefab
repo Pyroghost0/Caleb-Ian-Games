@@ -145,7 +145,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2637800101041604213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.926323, y: -1.3300767, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -170,7 +170,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!50 &2637800101041604215
 Rigidbody2D:
   serializedVersion: 4
@@ -211,7 +211,7 @@ MonoBehaviour:
   speedAcceleration: 0.5
   maxSpeed: 1.5
   deathTime: 0.5
-  enemyValue: 10
+  enemyValue: 13
   attackType: 0
   corpsePrefab: {fileID: 5165828461996608682, guid: 8f3b99ec5b01bb0478afbf2473576255, type: 3}
   circleCollider: {fileID: 2637800101041604216}
@@ -259,7 +259,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2637800101381907362}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.8, y: 0, z: 0}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -330,12 +330,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb0a2ecb8b213348afe59cc1d78fa34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPower: 65
+  attackPower: 100
   attackTime: 1
   attackSpeed: 4
   attackCooldown: 0.4
-  attackRange: 1
-  knockback: 1
+  attackRange: 2
+  knockback: 4
   affectsEnemies: 0
   affectsSkeletons: 1
   source: {fileID: 2637800101041604213}
@@ -356,7 +356,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 1.5
 --- !u!1001 &3141954608999678886
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -371,6 +371,14 @@ PrefabInstance:
     - target: {fileID: -7552582706839291426, guid: 31cbfb4f22fbfcd498b928f1a359d7c5, type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: 31cbfb4f22fbfcd498b928f1a359d7c5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: 31cbfb4f22fbfcd498b928f1a359d7c5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 31cbfb4f22fbfcd498b928f1a359d7c5, type: 3}
       propertyPath: m_LocalPosition.x

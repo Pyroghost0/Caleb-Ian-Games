@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
     public Transform spriteBasisObject;
     public SpriteRenderer[] sprite;
 
+    private float spriteMultiplier;
     public bool reversedSprite = false;
     public bool dead = false;
     private float slopeGoal = 1.6f;
@@ -37,6 +38,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spriteMultiplier = spriteBasisObject.localScale.y;
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
@@ -141,13 +143,13 @@ public class Enemy : MonoBehaviour
 
         if (rigidbody.velocity.x > 0)
         {
-            spriteBasisObject.localScale = new Vector3(reversedSprite ? 1f : -1f, 1f, 1f);
-            sightObject.localScale = new Vector3(reversedSprite ? 1f : -1f, 1f, 1f);
+            spriteBasisObject.localScale = new Vector3(reversedSprite ? spriteMultiplier : -spriteMultiplier, spriteMultiplier, 1f);
+            sightObject.localScale = new Vector3(reversedSprite ? spriteMultiplier : -spriteMultiplier, spriteMultiplier, 1f);
         }
         else if (rigidbody.velocity.x < 0)
         {
-            spriteBasisObject.localScale = new Vector3(reversedSprite ? -1f : 1f, 1f, 1f);
-            sightObject.localScale = new Vector3(reversedSprite ? -1f : 1f, 1f, 1f);
+            spriteBasisObject.localScale = new Vector3(reversedSprite ? -spriteMultiplier : spriteMultiplier, spriteMultiplier, 1f);
+            sightObject.localScale = new Vector3(reversedSprite ? -spriteMultiplier : spriteMultiplier, spriteMultiplier, 1f);
         }
         for (int i = 0; i < sprite.Length; i++)
         {

@@ -131,7 +131,7 @@ public class Attack : MonoBehaviour
         }
         else
         {
-            Destroy(transform.parent);
+            Destroy(transform.parent.gameObject);
         }
     }
 

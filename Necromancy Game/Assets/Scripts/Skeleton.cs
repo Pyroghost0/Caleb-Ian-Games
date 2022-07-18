@@ -36,6 +36,7 @@ public class Skeleton : MonoBehaviour
     public Transform spriteBasisObject;
     public SpriteRenderer[] sprite;
 
+    private float spriteMultiplier;
     public SkeletonMode skeletonMode = SkeletonMode.stay;
     public bool dead = false;
     private float xGoal = 37f;
@@ -54,6 +55,7 @@ public class Skeleton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spriteMultiplier = spriteBasisObject.localScale.y;
         rigidbody = GetComponent<Rigidbody2D>();
         stayGoal = transform.position;
         selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
@@ -195,7 +197,12 @@ public class Skeleton : MonoBehaviour
         //Stay Mode
         else if (skeletonMode == SkeletonMode.stay)
         {
-            if (inPresenceOfEnemy && Mathf.Abs(goal.position.x - transform.position.x) < 5f)
+            if (inPresenceOfEnemy && (goal == null || goal.GetComponent<Enemy>().dead))
+            {
+                goal = null;
+                inPresenceOfEnemy = false;
+            }
+            else if (inPresenceOfEnemy && Mathf.Abs(goal.position.x - transform.position.x) < 5f)
             {
                 if (rigidbody.velocity.magnitude != 0f)
                 {
@@ -391,13 +398,13 @@ public class Skeleton : MonoBehaviour
 
         if (rigidbody.velocity.x > 0)
         {
-            spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
-            sightObject.localScale = new Vector3(1f, 1f, 1f);
+            spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
+            sightObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
         }
         else if (rigidbody.velocity.x < 0)
         {
-            spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
-            sightObject.localScale = new Vector3(-1f, 1f, 1f);
+            spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
+            sightObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
         }
         for (int i = 0; i < sprite.Length; i++)
         {
