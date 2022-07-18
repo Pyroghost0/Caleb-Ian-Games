@@ -1308,8 +1308,6 @@ MonoBehaviour:
   graveBones: 15
   attackBoneUpgradeAmount: 20
   defenceBoneUpgradeAmount: 20
-  attackUpgradeFactor: 2
-  defenceUpgradeFactor: 2
   skeletonName: Goblin Skeleton
   attackType: 1
   circleCollider: {fileID: 5557435523823082829}
@@ -1563,8 +1561,8 @@ MonoBehaviour:
   attackCooldown: 1
   attackRange: 6.75
   knockback: 1
-  affectsEnemies: 0
-  affectsSkeletons: 1
+  affectsEnemies: 1
+  affectsSkeletons: 0
   source: {fileID: 5557435523823082802}
   currectlyAttacking: 0
   spriteRenderer: {fileID: 5557435525460036914}
