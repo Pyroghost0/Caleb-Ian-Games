@@ -10,12 +10,17 @@ public class EndlessModeManager : MonoBehaviour
     public short startingValue = 5;
     public float timerToValueRatio = .3f;
 
+    public Transform[] startingCorpsePositions;
     public PlayerBase playerBase;
     private float timeSinceStart;
 
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < startingCorpsePositions.Length; i++)
+        {
+            Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)].GetComponent<Enemy>().corpsePrefab, startingCorpsePositions[i]);
+        }
         for (int i = 0; i < enemyPrefabs.Length; i++)
         {
             for (int j = i + 1; j < enemyPrefabs.Length; j++)
