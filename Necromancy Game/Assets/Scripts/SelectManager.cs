@@ -46,6 +46,8 @@ public class SelectManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        healthValue.text = playerBase.health + "\n" + playerBase.maxHealth;
+        boneCostValue0.text = "-" + playerBase.maxSkeletonUpgradeAmount.ToString();
         rectHealth = rectHealthBar.rect.width;
         GameObject[] skeletons = GameObject.FindGameObjectsWithTag("Skeleton");
         for (int i = 0; i < skeletons.Length; i++)
