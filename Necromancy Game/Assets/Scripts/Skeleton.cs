@@ -399,12 +399,12 @@ public class Skeleton : MonoBehaviour
         if (rigidbody.velocity.x > 0)
         {
             spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
-            sightObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
+            sightObject.localScale = new Vector3(1f, 1f, 1f);
         }
         else if (rigidbody.velocity.x < 0)
         {
             spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
-            sightObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
+            sightObject.localScale = new Vector3(-1f, 1f, 1f);
         }
         for (int i = 0; i < sprite.Length; i++)
         {

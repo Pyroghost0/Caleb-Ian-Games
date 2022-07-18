@@ -3456,7 +3456,7 @@ MonoBehaviour:
   - {fileID: 1044069780}
   - {fileID: 1264345008}
   startingValue: 5
-  timerToValueRatio: 0.2
+  timerToValueRatio: 0.1
   startingCorpsePositions:
   - {fileID: 2070721817}
   - {fileID: 1356734178}
@@ -7294,7 +7294,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7387611, y: 1}
+    m_SensorSize: {x: 1.7051059, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -8368,6 +8368,10 @@ PrefabInstance:
       value: Environment
       objectReference: {fileID: 0}
     - target: {fileID: 2011582219643169638, guid: 320692867aae37d438668ebce74f58c1, type: 3}
+      propertyPath: defence
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2011582219643169638, guid: 320692867aae37d438668ebce74f58c1, type: 3}
       propertyPath: pauseText
       value: 
       objectReference: {fileID: 1007364435}
@@ -8375,5 +8379,13 @@ PrefabInstance:
       propertyPath: resumeText
       value: 
       objectReference: {fileID: 1826044149}
+    - target: {fileID: 2011582219643169638, guid: 320692867aae37d438668ebce74f58c1, type: 3}
+      propertyPath: maxSkeletons
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2011582219643169638, guid: 320692867aae37d438668ebce74f58c1, type: 3}
+      propertyPath: maxSkeletonUpgradeAmount
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 320692867aae37d438668ebce74f58c1, type: 3}
