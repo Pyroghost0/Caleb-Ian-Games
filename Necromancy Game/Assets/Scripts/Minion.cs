@@ -70,7 +70,7 @@ public class Minion : MonoBehaviour
                 {
                     //Debug.Log("X:" + futureX + "\t\t\tY: " + futureY + "\t\t\tDistence: " + futureDistence);
                     futureDistence = futureDistence.normalized;
-                    if (grave.usedUp)
+                    if (grave == null || grave.usedUp)
                     {
                         GameObject[] graves = GameObject.FindGameObjectsWithTag("Grave");
                         int num = -1;
@@ -215,7 +215,7 @@ public class Minion : MonoBehaviour
                     {
                         //Debug.Log("Dead");
                     }
-                    else if (grave.usedUp)
+                    else if (grave == null || grave.usedUp)
                     {
                         GameObject[] graves = GameObject.FindGameObjectsWithTag("Grave");
                         int num = -1;

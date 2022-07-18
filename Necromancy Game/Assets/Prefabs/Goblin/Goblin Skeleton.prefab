@@ -1470,6 +1470,7 @@ GameObject:
   - component: {fileID: 5557435525460036912}
   - component: {fileID: 5557435525460036914}
   - component: {fileID: 5557435525460036915}
+  - component: {fileID: 1206483268791790795}
   m_Layer: 0
   m_Name: Attack
   m_TagString: Attack
@@ -1567,6 +1568,32 @@ MonoBehaviour:
   source: {fileID: 5557435523823082802}
   currectlyAttacking: 0
   spriteRenderer: {fileID: 5557435525460036914}
+--- !u!61 &1206483268791790795
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5557435525460036919}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 7.45, y: 1.1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 7, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &5623017799194417529
 GameObject:
   m_ObjectHideFlags: 0

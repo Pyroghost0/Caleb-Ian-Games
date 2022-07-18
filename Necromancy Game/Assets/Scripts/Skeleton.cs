@@ -21,8 +21,8 @@ public class Skeleton : MonoBehaviour
     public short graveBones = 15;
     public short attackBoneUpgradeAmount = 25;//-1 for maxed out
     public short defenceBoneUpgradeAmount = 25;
-    public float attackUpgradeFactor = 2f;
-    public float defenceUpgradeFactor = 2f;
+    private float attackUpgradeFactor = 1.5f;
+    private float defenceUpgradeFactor = 1.5f;
     private short attackLevel = 1;
     private short armorLevel = 1;
     public string skeletonName = "Skeleton";
@@ -135,12 +135,12 @@ public class Skeleton : MonoBehaviour
                         rigidbody.velocity = Vector2.zero;
                     }
                 }
-                Vector2 destination = goal.position - transform.position;
+                Vector2 destination = goal != null ? goal.position - transform.position : Vector2.zero;
                 if (dead)
                 {
                     //Debug.Log("Dead");
                 }
-                else if (goal.GetComponent<Enemy>().dead)
+                else if (goal == null || goal.GetComponent<Enemy>().dead)
                 {
                     //Debug.Log("They Dead");
                     inPresenceOfEnemy = false;
@@ -151,7 +151,7 @@ public class Skeleton : MonoBehaviour
                     //Debug.Log("Attack");
                     if (!attack.currectlyAttacking)
                     {
-                        attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
+                        attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         attack.gameObject.SetActive(true);
                         attack.StartAttack(attackType);
                     }
@@ -202,7 +202,7 @@ public class Skeleton : MonoBehaviour
                 goal = null;
                 inPresenceOfEnemy = false;
             }
-            else if (inPresenceOfEnemy && Mathf.Abs(goal.position.x - transform.position.x) < 5f)
+            else if (inPresenceOfEnemy && Mathf.Abs(goal.position.x - transform.position.x) < 8f)
             {
                 if (rigidbody.velocity.magnitude != 0f)
                 {
@@ -213,12 +213,12 @@ public class Skeleton : MonoBehaviour
                         rigidbody.velocity = Vector2.zero;
                     }
                 }
-                Vector2 destination = goal.position - transform.position;
+                Vector2 destination = goal != null ? goal.position - transform.position : Vector2.zero;
                 if (dead)
                 {
                     //Debug.Log("Dead");
                 }
-                else if (goal.GetComponent<Enemy>().dead)
+                else if (goal == null || goal.GetComponent<Enemy>().dead)
                 {
                     //Debug.Log("They Dead");
                     inPresenceOfEnemy = false;

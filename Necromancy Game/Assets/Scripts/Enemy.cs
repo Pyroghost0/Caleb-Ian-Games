@@ -85,12 +85,12 @@ public class Enemy : MonoBehaviour
                     rigidbody.velocity = Vector2.zero;
                 }
             }
-            Vector2 destination = goal.position - transform.position;
+            Vector2 destination = goal != null ? goal.position - transform.position : Vector2.zero; ;
             if (dead)
             {
                 //Debug.Log("Dead");
             }
-            else if ((goal.CompareTag("Skeleton") && goal.GetComponent<Skeleton>().dead) || (goal.CompareTag("Minion") && goal.GetComponent<Minion>().dead))
+            else if (goal == null || (goal.CompareTag("Skeleton") && goal.GetComponent<Skeleton>().dead) || (goal.CompareTag("Minion") && goal.GetComponent<Minion>().dead))
             {
                 //Debug.Log("They Dead");
                 inPresenceOfSkeleton = false;

@@ -247,7 +247,7 @@ public class Attack : MonoBehaviour
         {
             if (source.GetComponent<Enemy>().inPresenceOfTower)
             {
-                GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().Hit(attackPower);
+                transform.position = new Vector3(source.transform.position.x, slopeBase * source.transform.position.x + posYBase, 0f);
             }
             else
             {

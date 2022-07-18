@@ -48,6 +48,7 @@ public class SelectManager : MonoBehaviour
     {
         healthValue.text = playerBase.health + "\n" + playerBase.maxHealth;
         boneCostValue0.text = "-" + playerBase.maxSkeletonUpgradeAmount.ToString();
+        troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
         rectHealth = rectHealthBar.rect.width;
         GameObject[] skeletons = GameObject.FindGameObjectsWithTag("Skeleton");
         for (int i = 0; i < skeletons.Length; i++)
