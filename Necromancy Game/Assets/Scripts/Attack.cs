@@ -7,7 +7,8 @@ public enum AttackType
     AOE = 0,
     Projectile = 1,
     Single = 2,
-    Dig = 3
+    Dig = 3,
+    RangedAOE = 4
 }
 
 public class Attack : MonoBehaviour
@@ -27,6 +28,9 @@ public class Attack : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     private List<GameObject> targets = new List<GameObject>();
 
+    private float slopeBase = 1.6f;
+    private float posYBase = 6f;
+
     private void Update()
     {
         spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
@@ -45,6 +49,10 @@ public class Attack : MonoBehaviour
         else if (attackType == AttackType.Single)
         {
             StartCoroutine(StartSingleAttackCorutine());
+        }
+        else if (attackType == AttackType.RangedAOE)
+        {
+            StartCoroutine(StartRangedAOEAttackCorutine());
         }
         else /*if (attackType == AttackType.Dig)*/
         {
@@ -224,6 +232,79 @@ public class Attack : MonoBehaviour
         }
         yield return new WaitForSeconds(attackCooldown);
         currectlyAttacking = false;
+    }
+
+    public void StartRangedAOEAttack()
+    {
+        StartCoroutine(StartRangedAOEAttackCorutine());
+    }
+
+    IEnumerator StartRangedAOEAttackCorutine()
+    {
+        currectlyAttacking = true;
+        targets.Clear();
+        if (source.CompareTag("Enemy"))
+        {
+            if (source.GetComponent<Enemy>().inPresenceOfTower)
+            {
+                GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().Hit(attackPower);
+            }
+            else
+            {
+                Transform target = source.GetComponent<Enemy>().goal;
+                if (target != null)
+                {
+                    transform.position = target.position;
+                }
+            }
+        }
+        else if (source.CompareTag("Skeleton"))
+        {
+            Transform target = source.GetComponent<Skeleton>().goal;
+            if (target != null)
+            {
+                transform.position = target.position;
+            }
+        }
+        else /*if (source.CompareTag("Minion"))*/
+        {
+            Transform target = source.GetComponent<Minion>().goal;
+            if (target != null)
+            {
+                transform.position = target.position;
+            }
+        }
+
+        yield return new WaitForSeconds(attackTime);
+        for (int i = 0; i < targets.Count; i++)
+        {
+            if (targets[i] == null)
+            {
+
+            }
+            else if (affectsEnemies && targets[i].CompareTag("Enemy"))
+            {
+                targets[i].GetComponent<Enemy>().Hit(transform.position, source.CompareTag("Enemy") ? null : source.transform, knockback, attackPower);
+            }
+            else if (affectsSkeletons)
+            {
+                if (targets[i].CompareTag("Skeleton"))
+                {
+                    targets[i].GetComponent<Skeleton>().Hit(transform.position, source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
+                }
+                else if (targets[i].CompareTag("Minion"))
+                {
+                    targets[i].GetComponent<Minion>().Hit(transform.position, source.CompareTag("Minion") ? null : source.transform, knockback, attackPower);
+                }
+                else if (targets[i].CompareTag("Player Base"))
+                {
+                    targets[i].GetComponent<PlayerBase>().Hit(attackPower);
+                }
+            }
+        }
+        yield return new WaitForSeconds(attackCooldown);
+        currectlyAttacking = false;
+        gameObject.SetActive(false);
     }
 
     public void StartDigAttack(short bonesNeeded, Grave target)
