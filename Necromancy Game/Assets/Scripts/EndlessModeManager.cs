@@ -150,7 +150,7 @@ public class EndlessModeManager : MonoBehaviour
             //Wait
             float timer = 0f;
             float waitTime = timeSinceStart + (value * 3 / timerToValueRatio);
-            waitTime = Random.Range(7f * Mathf.Pow(1.008f, -1.5f) + 1f, 10.5f * Mathf.Pow(1.006f, -1f) + 1.5f);
+            waitTime = Random.Range(19f * Mathf.Pow(1.008f, -waitTime) + 6f, 16f * Mathf.Pow(1.006f, -1.2f * waitTime) + 4f);
             while (timer < waitTime)
             {
                 timer += Time.deltaTime;

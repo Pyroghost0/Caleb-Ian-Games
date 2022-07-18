@@ -10060,6 +10060,7 @@ GameObject:
   - component: {fileID: 2011582219643169638}
   - component: {fileID: 1069881552}
   - component: {fileID: 685878755}
+  - component: {fileID: 1058914007}
   m_Layer: 0
   m_Name: Player Base
   m_TagString: Player Base
@@ -10127,7 +10128,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -241585417
   m_SortingLayer: 2
-  m_SortingOrder: 800
+  m_SortingOrder: -99
   m_Sprite: {fileID: 21300000, guid: 2e5cd93b9232c844cad5f5242079f29d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -10154,7 +10155,7 @@ MonoBehaviour:
   bones: 0
   health: 1000
   maxHealth: 1000
-  defence: 10
+  defence: 3
   maxSkeletons: 3
   maxSkeletonUpgradeAmount: 100
   numSkeletons: 0
@@ -10237,6 +10238,27 @@ PolygonCollider2D:
       - {x: -16.988657, y: -36.111645}
       - {x: -20.847439, y: -38.42638}
       - {x: -25.742783, y: -45.633217}
+--- !u!50 &1058914007
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011582219643169637}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &2156211377876818123
 GameObject:
   m_ObjectHideFlags: 0

@@ -3453,7 +3453,7 @@ MonoBehaviour:
   - {fileID: 1044069780}
   - {fileID: 1264345008}
   startingValue: 5
-  timerToValueRatio: 0.3
+  timerToValueRatio: 0.2
   startingCorpsePositions:
   - {fileID: 2070721817}
   - {fileID: 1356734178}
@@ -3572,11 +3572,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &996592473 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2011582219643169637, guid: 320692867aae37d438668ebce74f58c1, type: 3}
-  m_PrefabInstance: {fileID: 2011582218857526993}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1000921264
 GameObject:
   m_ObjectHideFlags: 0
@@ -3914,33 +3909,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2011582219643169638, guid: 320692867aae37d438668ebce74f58c1, type: 3}
   m_PrefabInstance: {fileID: 2011582218857526993}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 996592473}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32cedd5ed343e8b4c929662427198fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!50 &1058914007
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 996592473}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!1 &1079662078
 GameObject:
   m_ObjectHideFlags: 0
@@ -8390,10 +8364,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment
       objectReference: {fileID: 0}
-    - target: {fileID: 2011582219643169636, guid: 320692867aae37d438668ebce74f58c1, type: 3}
-      propertyPath: m_SortingOrder
-      value: -99
-      objectReference: {fileID: 0}
     - target: {fileID: 2011582219643169638, guid: 320692867aae37d438668ebce74f58c1, type: 3}
       propertyPath: pauseText
       value: 
@@ -8402,13 +8372,5 @@ PrefabInstance:
       propertyPath: resumeText
       value: 
       objectReference: {fileID: 1826044149}
-    - target: {fileID: 2011582219643169639, guid: 320692867aae37d438668ebce74f58c1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -6.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2011582219643169639, guid: 320692867aae37d438668ebce74f58c1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 320692867aae37d438668ebce74f58c1, type: 3}

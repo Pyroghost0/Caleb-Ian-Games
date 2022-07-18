@@ -25,11 +25,11 @@ public class Enemy : MonoBehaviour
     public bool reversedSprite = false;
     public bool dead = false;
     private float slopeGoal = 1.6f;
-    private float posYGoal = 9.96f;
+    private float posYGoal = 6f;
     public Transform goal;
     public bool inPresenceOfSkeleton = false;
     public bool inPresenceOfTower = false;
-    public float skeletonAttackRange;
+    //public float skeletonAttackRange;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
@@ -94,12 +94,12 @@ public class Enemy : MonoBehaviour
                 inPresenceOfSkeleton = false;
                 goal = null;
             }
-            else if (destination.magnitude < skeletonAttackRange)
+            else if (destination.magnitude < attack.attackRange)
             {
                 //Debug.Log("Attack");
                 if (!attack.currectlyAttacking)
                 {
-                    attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
+                    attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                     attack.gameObject.SetActive(true);
                     attack.StartAttack(attackType);
                 }
@@ -164,7 +164,7 @@ public class Enemy : MonoBehaviour
             {
                 inPresenceOfSkeleton = true;
                 goal = source;
-                skeletonAttackRange = attack.attackRange + circleCollider.radius + (source.CompareTag("Skeleton") ? source.GetComponent<Skeleton>().circleCollider.radius : source.GetComponent<Minion>().circleCollider.radius);
+                //skeletonAttackRange = attack.attackRange + circleCollider.radius + (source.CompareTag("Skeleton") ? source.GetComponent<Skeleton>().circleCollider.radius : source.GetComponent<Minion>().circleCollider.radius);
         }
             health -= (short) (damage / defence);
             if (health <= 0)

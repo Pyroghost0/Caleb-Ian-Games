@@ -59,6 +59,7 @@ public class Attack : MonoBehaviour
 
     IEnumerator StartProjectileAttackCorutine()
     {
+        Vector3 startPosition = transform.parent.localPosition;
         gameObject.SetActive(true);
         spriteRenderer.enabled = true;
         transform.parent.parent = null;
@@ -107,15 +108,23 @@ public class Attack : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         spriteRenderer.enabled = false;
-        transform.parent.parent = source.transform;
-        transform.localPosition = Vector3.zero;
-        if (timer < attackTime)
+        if (source != null)
         {
-            yield return new WaitForSeconds(attackTime - timer);
+            transform.parent.parent = source.transform;
+            transform.parent.transform.localPosition = startPosition;
+            transform.localPosition = Vector3.zero;
+            if (timer < attackTime)
+            {
+                yield return new WaitForSeconds(attackTime - timer);
+            }
+            yield return new WaitForSeconds(attackCooldown);
+            currectlyAttacking = false;
+            gameObject.SetActive(false);
         }
-        yield return new WaitForSeconds(attackCooldown);
-        currectlyAttacking = false;
-        gameObject.SetActive(false);
+        else
+        {
+            Destroy(transform.parent);
+        }
     }
 
     public void StartAOEAttack()
@@ -191,9 +200,20 @@ public class Attack : MonoBehaviour
                 }
             }
         }
-        else /*if (source.CompareTag("Skeleton"))*/
+        else if (source.CompareTag("Skeleton"))
         {
-            Transform target = source.GetComponent<Enemy>().goal;
+            Transform target = source.GetComponent<Skeleton>().goal;
+            if (target != null && (target.position - transform.position).magnitude < attackRange + .1f)
+            {
+                if (target.CompareTag("Enemy"))
+                {
+                    target.GetComponent<Enemy>().Hit(transform.position, source.transform, knockback, attackPower);
+                }
+            }
+        }
+        else /*if (source.CompareTag("Minion"))*/
+        {
+            Transform target = source.GetComponent<Minion>().goal;
             if (target != null && (target.position - transform.position).magnitude < attackRange + .1f)
             {
                 if (target.CompareTag("Enemy"))

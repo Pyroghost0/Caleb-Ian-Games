@@ -23,6 +23,8 @@ public class Skeleton : MonoBehaviour
     public short defenceBoneUpgradeAmount = 25;
     public float attackUpgradeFactor = 2f;
     public float defenceUpgradeFactor = 2f;
+    private short attackLevel = 1;
+    private short armorLevel = 1;
     public string skeletonName = "Skeleton";
     public AttackType attackType = AttackType.AOE;
 
@@ -42,7 +44,7 @@ public class Skeleton : MonoBehaviour
     public Vector3 stayGoal;
     public bool inPresenceOfEnemy = false;
     private bool inPresenceOfTower = false;
-    public float enemyAttackRange;
+    //public float enemyAttackRange;
     private PlayerBase playerBase;
     private SelectManager selectManager;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
@@ -142,14 +144,14 @@ public class Skeleton : MonoBehaviour
                     inPresenceOfEnemy = false;
                     goal = null;
                 }
-                else if (destination.magnitude < enemyAttackRange)
+                else if (destination.magnitude < attack.attackRange)
                 {
                     //Debug.Log("Attack");
                     if (!attack.currectlyAttacking)
                     {
                         attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         attack.gameObject.SetActive(true);
-                        attack.StartAOEAttack();
+                        attack.StartAttack(attackType);
                     }
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
@@ -215,14 +217,14 @@ public class Skeleton : MonoBehaviour
                     inPresenceOfEnemy = false;
                     goal = null;
                 }
-                else if (destination.magnitude < enemyAttackRange)
+                else if (destination.magnitude < attack.attackRange)
                 {
                     //Debug.Log("Attack");
                     if (!attack.currectlyAttacking)
                     {
-                        attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
+                        attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         attack.gameObject.SetActive(true);
-                        attack.StartAOEAttack();
+                        attack.StartAttack(attackType);
                     }
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
@@ -406,7 +408,16 @@ public class Skeleton : MonoBehaviour
     public void UpgradeDefence()
     {
         playerBase.UpdateBones((short)-defenceBoneUpgradeAmount);
-        playerBase.UpdateBones((short)-attackBoneUpgradeAmount);
+        armorLevel++;
+        defence =(short) (defence * defenceUpgradeFactor);
+        if (armorLevel != 3)
+        {
+            defenceBoneUpgradeAmount *= 2;
+        }
+        else
+        {
+            defenceBoneUpgradeAmount = -1;
+        }
         if (defenceBoneUpgradeAmount == -1)
         {
             selectManager.boneCostObject1.SetActive(false);
@@ -427,6 +438,16 @@ public class Skeleton : MonoBehaviour
     public void UpgradeAttack()
     {
         playerBase.UpdateBones((short)-attackBoneUpgradeAmount);
+        attackLevel++;
+        attack.attackPower = (short)(attack.attackPower * attackUpgradeFactor);
+        if (armorLevel != 3)
+        {
+            attackBoneUpgradeAmount *= 2;
+        }
+        else
+        {
+            attackBoneUpgradeAmount = -1;
+        }
         if (attackBoneUpgradeAmount == -1)
         {
             selectManager.boneCostObject2.SetActive(false);
@@ -447,7 +468,7 @@ public class Skeleton : MonoBehaviour
             {
                 inPresenceOfEnemy = true;
                 goal = source;
-                enemyAttackRange = attack.attackRange + circleCollider.radius + source.GetComponent<Enemy>().circleCollider.radius;
+                //enemyAttackRange = attack.attackRange + circleCollider.radius + source.GetComponent<Enemy>().circleCollider.radius;
             }
             health -= (short)(damage / defence);
             if (health <= 0)

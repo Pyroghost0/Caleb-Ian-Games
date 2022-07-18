@@ -28,15 +28,14 @@ public class Minion : MonoBehaviour
     private float usedBoneSpeedReductionFactor;
     public bool inDiggingMode;
     public bool dead = false;
-    private float xGoal = 0f;
-    private float xGoal2 = -2f;
+    private float xGoal = 37f;
     private float xBaseGoal = -4f;
     public Transform goal;
     public Grave grave;
     private PlayerBase playerBase;
     public bool inPresenceOfEnemy = false;
     private bool inPresenceOfTower = false;
-    public float enemyAttackRange;
+    //public float enemyAttackRange;
     SelectManager selectManager;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
@@ -342,7 +341,7 @@ public class Minion : MonoBehaviour
         //Attack Mode
         else
         {
-            if (inPresenceOfTower)
+            /*if (inPresenceOfTower)
             {//Dont forget boneSpeedReductionFactor
                 if (rigidbody.velocity.magnitude != 0f)
                 {
@@ -395,7 +394,7 @@ public class Minion : MonoBehaviour
                     inPresenceOfTower = false;
                 }
             }
-            else if (inPresenceOfEnemy)
+            else*/ if (inPresenceOfEnemy)
             {
                 if (rigidbody.velocity.magnitude != 0f)
                 {
@@ -417,14 +416,14 @@ public class Minion : MonoBehaviour
                     inPresenceOfEnemy = false;
                     goal = null;
                 }
-                else if (destination.magnitude < enemyAttackRange)
+                else if (destination.magnitude < attack.attackRange)
                 {
                     //Debug.Log("Attack");
                     if (!attack.currectlyAttacking)
                     {
                         attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         attack.gameObject.SetActive(true);
-                        attack.StartAOEAttack();
+                        attack.StartSingleAttack();
                     }
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed * usedBoneSpeedReductionFactor / 3f)
@@ -442,7 +441,16 @@ public class Minion : MonoBehaviour
             {
                 if (transform.position.x >= xGoal)
                 {
-                    inPresenceOfTower = true;
+                    if(rigidbody.velocity.magnitude != 0f)
+                    {
+                        Vector2 norm = rigidbody.velocity.normalized;
+                        rigidbody.velocity -= norm * speedAcceleration * usedBoneSpeedReductionFactor * 3f * Time.deltaTime;
+                        if (norm != rigidbody.velocity.normalized)
+                        {
+                            rigidbody.velocity = Vector2.zero;
+                        }
+                    }
+                    //inPresenceOfTower = true;
                 }
                 else if (rigidbody.velocity.x < maxSpeed * usedBoneSpeedReductionFactor)
                 {
@@ -488,7 +496,7 @@ public class Minion : MonoBehaviour
             {
                 inPresenceOfEnemy = true;
                 goal = source;
-                enemyAttackRange = attack.attackRange + circleCollider.radius + source.GetComponent<Enemy>().circleCollider.radius;
+                //enemyAttackRange = attack.attackRange + circleCollider.radius + source.GetComponent<Enemy>().circleCollider.radius;
             }
             health -= (short)(damage / defence);
             if (health <= 0)
