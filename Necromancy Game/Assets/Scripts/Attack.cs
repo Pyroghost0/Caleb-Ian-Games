@@ -70,6 +70,10 @@ public class Attack : MonoBehaviour
         Vector3 startPosition = transform.parent.localPosition;
         gameObject.SetActive(true);
         spriteRenderer.enabled = true;
+        if (GetComponent<Animator>())
+		{
+            GetComponent<Animator>().SetTrigger("Attack");
+		}
         transform.parent.parent = null;
         currectlyAttacking = true;
         targets.Clear();
