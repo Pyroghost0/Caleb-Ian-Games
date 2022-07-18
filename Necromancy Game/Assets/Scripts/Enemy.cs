@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
     public Transform spriteBasisObject;
     public SpriteRenderer[] sprite;
 
+    public bool reversedSprite = false;
     public bool dead = false;
     private float slopeGoal = 1.6f;
     private float posYGoal = 9.96f;
@@ -140,13 +141,13 @@ public class Enemy : MonoBehaviour
 
         if (rigidbody.velocity.x > 0)
         {
-            spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
-            sightObject.localScale = new Vector3(-1f, 1f, 1f);
+            spriteBasisObject.localScale = new Vector3(reversedSprite ? 1f : -1f, 1f, 1f);
+            sightObject.localScale = new Vector3(reversedSprite ? 1f : -1f, 1f, 1f);
         }
         else if (rigidbody.velocity.x < 0)
         {
-            spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
-            sightObject.localScale = new Vector3(1f, 1f, 1f);
+            spriteBasisObject.localScale = new Vector3(reversedSprite ? -1f : 1f, 1f, 1f);
+            sightObject.localScale = new Vector3(reversedSprite ? -1f : 1f, 1f, 1f);
         }
         for (int i = 0; i < sprite.Length; i++)
         {

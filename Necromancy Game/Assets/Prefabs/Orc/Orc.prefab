@@ -238,7 +238,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 68661542718789904}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: afa075859365f2a45b5cd6d0c59de1ee, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -287,7 +287,7 @@ MonoBehaviour:
   deathTime: 0.5
   enemyValue: 5
   attackType: 2
-  corpsePrefab: {fileID: 1105854830939021426, guid: 73c6266eeb2a7944fa533a5442b011c3, type: 3}
+  corpsePrefab: {fileID: 1105854830939021426, guid: d865e0575236cc342af3839172843c40, type: 3}
   circleCollider: {fileID: 68661542718789917}
   attack: {fileID: 68661542378503363}
   attackBasisObject: {fileID: 68661543784220546}
@@ -302,9 +302,11 @@ MonoBehaviour:
   - {fileID: 1818456802062304501}
   - {fileID: 7436485817622895493}
   - {fileID: 1309168407344920130}
+  reversedSprite: 1
   dead: 0
   goal: {fileID: 0}
   inPresenceOfSkeleton: 0
+  inPresenceOfTower: 0
   skeletonAttackRange: 0
 --- !u!1 &68661543023329876
 GameObject:

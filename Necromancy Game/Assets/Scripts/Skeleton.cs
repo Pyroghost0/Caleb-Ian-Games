@@ -24,23 +24,25 @@ public class Skeleton : MonoBehaviour
     public float attackUpgradeFactor = 2f;
     public float defenceUpgradeFactor = 2f;
     public string skeletonName = "Skeleton";
+    public AttackType attackType = AttackType.AOE;
 
     public CircleCollider2D circleCollider;
     public Attack attack;
     public Transform attackBasisObject;
     public GameObject selectBars;
+    public Transform sightObject;
+    public Transform spriteBasisObject;
+    public SpriteRenderer[] sprite;
 
     public SkeletonMode skeletonMode = SkeletonMode.stay;
     public bool dead = false;
-    private float xGoal = 60f;
-    private float xGoal2 = 62f;
+    private float xGoal = 37f;
     private float xBaseGoal = 2f;
     public Transform goal;
     public Vector3 stayGoal;
     public bool inPresenceOfEnemy = false;
     private bool inPresenceOfTower = false;
     public float enemyAttackRange;
-    private SpriteRenderer spriteRenderer;
     private PlayerBase playerBase;
     private SelectManager selectManager;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
@@ -52,7 +54,6 @@ public class Skeleton : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody2D>();
         stayGoal = transform.position;
-        spriteRenderer = GetComponent<SpriteRenderer>();
         selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
         skeletonMode = selectManager.currentSkeletonMode;
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
@@ -66,7 +67,7 @@ public class Skeleton : MonoBehaviour
         //Move Right Mode
         if (skeletonMode == SkeletonMode.right)
         {
-            if (inPresenceOfTower)
+            /*if (inPresenceOfTower)
             {
                 if (rigidbody.velocity.magnitude != 0f)
                 {
@@ -81,7 +82,7 @@ public class Skeleton : MonoBehaviour
                 {
 
                 }
-                else if (transform.position.x > xGoal2)
+                else if (transform.position.x > xGoal)
                 {
                     //Vector2 destination = goal.position - transform.position;
                     //if (destination.magnitude < skeletonAttackRange)
@@ -119,7 +120,7 @@ public class Skeleton : MonoBehaviour
                     inPresenceOfTower = false;
                 }
             }
-            else if (inPresenceOfEnemy)
+            else*/ if (inPresenceOfEnemy)
             {
                 if (rigidbody.velocity.magnitude != 0f)
                 {
@@ -166,7 +167,9 @@ public class Skeleton : MonoBehaviour
             {
                 if (transform.position.x >= xGoal)
                 {
-                    inPresenceOfTower = true;
+                    //inPresenceOfTower = true;
+                    stayGoal = new Vector3(xGoal, transform.position.y, 0f);
+                    skeletonMode = SkeletonMode.stay;
                 }
                 else if (rigidbody.velocity.x < maxSpeed)
                 {
@@ -383,7 +386,21 @@ public class Skeleton : MonoBehaviour
                 }
             }
         }
-        spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
+
+        if (rigidbody.velocity.x > 0)
+        {
+            spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+            sightObject.localScale = new Vector3(1f, 1f, 1f);
+        }
+        else if (rigidbody.velocity.x < 0)
+        {
+            spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+            sightObject.localScale = new Vector3(-1f, 1f, 1f);
+        }
+        for (int i = 0; i < sprite.Length; i++)
+        {
+            sprite[i].sortingOrder = (int)(transform.position.y * -10);
+        }
     }
 
     public void UpgradeDefence()
