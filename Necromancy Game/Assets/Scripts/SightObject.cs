@@ -16,7 +16,7 @@ public class SightObject : MonoBehaviour
             {
                 enemy.goal = collision.transform;
                 enemy.inPresenceOfSkeleton = true;
-                //enemy.skeletonAttackRange = enemy.attack.attackRange + enemy.circleCollider.radius + (collision.CompareTag("Skeleton") ? collision.GetComponent<Skeleton>().circleCollider.radius : collision.GetComponent<Minion>().circleCollider.radius);
+                enemy.skeletonAttackRange = enemy.attack.attackRange + (collision.CompareTag("Skeleton") ? collision.GetComponent<Skeleton>().circleCollider.radius : collision.GetComponent<Minion>().circleCollider.radius);
             }
         }
         else if (skeleton != null)
@@ -25,7 +25,7 @@ public class SightObject : MonoBehaviour
             {
                 skeleton.goal = collision.transform;
                 skeleton.inPresenceOfEnemy = true;
-                //skeleton.enemyAttackRange = skeleton.attack.attackRange + skeleton.circleCollider.radius + collision.GetComponent<Enemy>().circleCollider.radius;
+                skeleton.enemyAttackRange = skeleton.attack.attackRange + collision.GetComponent<Enemy>().circleCollider.radius;
             }
         }
         else /*if (minion != null)*/
@@ -34,7 +34,7 @@ public class SightObject : MonoBehaviour
             {
                 minion.goal = collision.transform;
                 minion.inPresenceOfEnemy = true;
-                //minion.enemyAttackRange = minion.attack.attackRange + minion.circleCollider.radius + collision.GetComponent<Enemy>().circleCollider.radius;
+                minion.enemyAttackRange = minion.attack.attackRange + collision.GetComponent<Enemy>().circleCollider.radius;
             }
         }
     }

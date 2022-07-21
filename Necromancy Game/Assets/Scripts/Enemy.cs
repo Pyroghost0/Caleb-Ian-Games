@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
     public Transform goal;
     public bool inPresenceOfSkeleton = false;
     public bool inPresenceOfTower = false;
-    //public float skeletonAttackRange;
+    public float skeletonAttackRange;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
@@ -102,7 +102,7 @@ public class Enemy : MonoBehaviour
                 inPresenceOfSkeleton = false;
                 goal = null;
             }
-            else if (destination.magnitude < attack.attackRange)
+            else if (destination.magnitude < skeletonAttackRange)
             {
                 //Debug.Log("Attack");
                 if (!attack.currectlyAttacking)
@@ -172,7 +172,7 @@ public class Enemy : MonoBehaviour
             {
                 inPresenceOfSkeleton = true;
                 goal = source;
-                //skeletonAttackRange = attack.attackRange + circleCollider.radius + (source.CompareTag("Skeleton") ? source.GetComponent<Skeleton>().circleCollider.radius : source.GetComponent<Minion>().circleCollider.radius);
+                skeletonAttackRange = attack.attackRange + (source.CompareTag("Skeleton") ? source.GetComponent<Skeleton>().circleCollider.radius : source.GetComponent<Minion>().circleCollider.radius);
         }
             health -= (short) (damage / defence);
             if (health <= 0)

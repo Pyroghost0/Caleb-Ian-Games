@@ -36,7 +36,7 @@ public class Minion : MonoBehaviour
     private PlayerBase playerBase;
     public bool inPresenceOfEnemy = false;
     private bool inPresenceOfTower = false;
-    //public float enemyAttackRange;
+    public float enemyAttackRange;
     SelectManager selectManager;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
@@ -422,7 +422,7 @@ public class Minion : MonoBehaviour
                     inPresenceOfEnemy = false;
                     goal = null;
                 }
-                else if (destination.magnitude < attack.attackRange)
+                else if (destination.magnitude < enemyAttackRange)
                 {
                     //Debug.Log("Attack");
                     if (!attack.currectlyAttacking)
@@ -502,7 +502,7 @@ public class Minion : MonoBehaviour
             {
                 inPresenceOfEnemy = true;
                 goal = source;
-                //enemyAttackRange = attack.attackRange + circleCollider.radius + source.GetComponent<Enemy>().circleCollider.radius;
+                enemyAttackRange = attack.attackRange + circleCollider.radius + source.GetComponent<Enemy>().circleCollider.radius;
             }
             health -= (short)(damage / defence);
             if (health <= 0)

@@ -199,7 +199,8 @@ public class Attack : MonoBehaviour
             else
             {
                 Transform target = source.GetComponent<Enemy>().goal;
-                if (target != null && (target.position - transform.position).magnitude < attackRange + .1f)
+                //Debug.Log(target.name + "\t\t\tMagnitude: " + (target.position - transform.position).magnitude + "\t\t\tRamge: " + (attackRange + (target.CompareTag("Skeleton") ? target.GetComponent<Skeleton>().circleCollider.radius : target.GetComponent<Minion>().circleCollider.radius) + .1f));
+                if (target != null && (target.position - transform.position).magnitude < attackRange + (target.CompareTag("Skeleton") ? target.GetComponent<Skeleton>().circleCollider.radius : target.GetComponent<Minion>().circleCollider.radius) + .1f)
                 {
                     if (target.CompareTag("Skeleton"))
                     {
@@ -215,7 +216,7 @@ public class Attack : MonoBehaviour
         else if (source.CompareTag("Skeleton"))
         {
             Transform target = source.GetComponent<Skeleton>().goal;
-            if (target != null && (target.position - transform.position).magnitude < attackRange + .1f)
+            if (target != null && (target.position - transform.position).magnitude < attackRange + target.GetComponent<Enemy>().circleCollider.radius + .1f)
             {
                 if (target.CompareTag("Enemy"))
                 {
@@ -226,7 +227,7 @@ public class Attack : MonoBehaviour
         else /*if (source.CompareTag("Minion"))*/
         {
             Transform target = source.GetComponent<Minion>().goal;
-            if (target != null && (target.position - transform.position).magnitude < attackRange + .1f)
+            if (target != null && (target.position - transform.position).magnitude < attackRange + target.GetComponent<Enemy>().circleCollider.radius + .1f)
             {
                 if (target.CompareTag("Enemy"))
                 {
