@@ -62,7 +62,7 @@ public class Corpse : MonoBehaviour
                 {
                     if (selectManager.selectableObjects[i] == selectManager.selectedTroop)
                     {
-                        selectManager.SelectedTroupDestroyed();
+                        selectManager.SelectedTroopDestroyed();
                     }
                     else
                     {

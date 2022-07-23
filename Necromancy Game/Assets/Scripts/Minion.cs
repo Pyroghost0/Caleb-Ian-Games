@@ -97,6 +97,7 @@ public class Minion : MonoBehaviour
                         {
                             goal = graves[num].transform;
                             grave = graves[num].GetComponent<Grave>();
+                            grave.targetSelect.SetActive(true);
                         }
                     }
                     if (goal != null)
@@ -247,6 +248,7 @@ public class Minion : MonoBehaviour
                         {
                             goal = graves[num].transform;
                             grave = graves[num].GetComponent<Grave>();
+                            grave.targetSelect.SetActive(true);
                         }
                     }
                     else
@@ -280,6 +282,7 @@ public class Minion : MonoBehaviour
                     {
                         goal = graves[num].transform;
                         grave = graves[num].GetComponent<Grave>();
+                        grave.targetSelect.SetActive(true);
                     }
                 }
 
@@ -523,6 +526,10 @@ public class Minion : MonoBehaviour
             {
                 inPresenceOfEnemy = true;
                 goal = source;
+                if (selectManager.selectedTroop == transform)
+                {
+                    source.GetComponent<Enemy>().targetSelect.SetActive(true);
+                }
                 enemyAttackRange = attack.attackRange + circleCollider.radius + source.GetComponent<Enemy>().circleCollider.radius;
             }
             health -= (short)(damage / defence);
@@ -555,7 +562,7 @@ public class Minion : MonoBehaviour
     {
         if (selectManager.selectedTroop == transform)
         {
-            selectManager.SelectedTroupDestroyed();
+            selectManager.SelectedTroopDestroyed();
         }
         else
         {

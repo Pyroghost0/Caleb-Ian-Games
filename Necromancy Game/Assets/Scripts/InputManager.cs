@@ -480,7 +480,7 @@ public class InputManager : MonoBehaviour
             if (type == ButtonPressed.left)
             {
                 StartCoroutine(PressButtonVisually(buttonImages[0]));
-                selectManager.SelectLeftTroup();
+                selectManager.SelectLeftTroop();
             }
             else if (type == ButtonPressed.middle)
             {
@@ -524,7 +524,7 @@ public class InputManager : MonoBehaviour
                 else if (type == ButtonPressed.middle)
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[4]));
-                    selectManager.TroupStay();
+                    selectManager.TroopStay();
                 }
                 else /*if (type == ButtonPressed.right)*/
                 {
@@ -572,17 +572,17 @@ public class InputManager : MonoBehaviour
         else if (type == ButtonPressed.left)
         {
             StartCoroutine(PressButtonVisually(buttonImages[3]));
-            selectManager.AllTroupsLeft();
+            selectManager.AllTroopsLeft();
         }
         else if (type == ButtonPressed.middle)
         {
             StartCoroutine(PressButtonVisually(buttonImages[4]));
-            selectManager.AllTroupsStay();
+            selectManager.AllTroopsStay();
         }
         else /*if (type == ButtonPressed.right)*/
         {
             StartCoroutine(PressButtonVisually(buttonImages[5]));
-            selectManager.AllTroupsRight();
+            selectManager.AllTroopsRight();
         }
     }
 

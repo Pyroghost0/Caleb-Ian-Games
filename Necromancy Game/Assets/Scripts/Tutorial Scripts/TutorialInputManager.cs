@@ -215,7 +215,7 @@ public class TutorialInputManager : MonoBehaviour
                 {
                     tutorialManager.buttonPressed = true;
                     StartCoroutine(PressButtonVisually(buttonImages[0]));
-                    selectManager.SelectLeftTroup();
+                    selectManager.SelectLeftTroop();
                 }
                 else if (type == ButtonPressed.middle && allowMiddle)
                 {
@@ -269,7 +269,7 @@ public class TutorialInputManager : MonoBehaviour
                     {
                         tutorialManager.buttonPressed = true;
                         StartCoroutine(PressButtonVisually(buttonImages[4]));
-                        selectManager.TroupStay();
+                        selectManager.TroopStay();
                     }
                     else if (type == ButtonPressed.right && allowRight)
                     {
@@ -304,19 +304,19 @@ public class TutorialInputManager : MonoBehaviour
             {
                 tutorialManager.buttonPressed = true;
                 StartCoroutine(PressButtonVisually(buttonImages[3]));
-                selectManager.AllTroupsLeft();
+                selectManager.AllTroopsLeft();
             }
             else if (type == ButtonPressed.middle && allowMiddle)
             {
                 tutorialManager.buttonPressed = true;
                 StartCoroutine(PressButtonVisually(buttonImages[4]));
-                selectManager.AllTroupsStay();
+                selectManager.AllTroopsStay();
             }
             else if (type == ButtonPressed.right && allowRight)
             {
                 tutorialManager.buttonPressed = true;
                 StartCoroutine(PressButtonVisually(buttonImages[5]));
-                selectManager.AllTroupsRight();
+                selectManager.AllTroopsRight();
             }
         }
     }

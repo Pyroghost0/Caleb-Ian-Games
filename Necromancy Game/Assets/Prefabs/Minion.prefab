@@ -529,7 +529,6 @@ GameObject:
   - component: {fileID: 2534362278462425025}
   - component: {fileID: 2534362278462425028}
   - component: {fileID: 2534362278462425027}
-  - component: {fileID: 2534362278462425026}
   m_Layer: 2
   m_Name: Attack
   m_TagString: Attack
@@ -627,22 +626,6 @@ MonoBehaviour:
   source: {fileID: 2534362278550397990}
   currectlyAttacking: 0
   spriteRenderer: {fileID: 2534362278462425028}
---- !u!58 &2534362278462425026
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2534362278462425024}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 1
 --- !u!1 &2534362278550397990
 GameObject:
   m_ObjectHideFlags: 0
@@ -2799,7 +2782,7 @@ GameObject:
   - component: {fileID: 5783654257784136629}
   m_Layer: 0
   m_Name: Minion Select
-  m_TagString: Enemy Select
+  m_TagString: Skeleton Select
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -467,6 +467,10 @@ public class Skeleton : MonoBehaviour
             {
                 inPresenceOfEnemy = true;
                 goal = source;
+                if (selectManager.selectedTroop == transform)
+                {
+                    source.GetComponent<Enemy>().targetSelect.SetActive(true);
+                }
                 enemyAttackRange = attack.attackRange + source.GetComponent<Enemy>().circleCollider.radius;
             }
             health -= (short)(damage / defence);
@@ -502,7 +506,7 @@ public class Skeleton : MonoBehaviour
     {
         if (selectManager.selectedTroop  == transform)
         {
-            selectManager.SelectedTroupDestroyed();
+            selectManager.SelectedTroopDestroyed();
         }
         else
         {

@@ -8,6 +8,13 @@ public class SightObject : MonoBehaviour
     public Skeleton skeleton;
     public Minion minion;
 
+    private SelectManager selectManager;
+
+    void Start()
+    {
+        selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (enemy != null)
@@ -26,6 +33,10 @@ public class SightObject : MonoBehaviour
                 skeleton.goal = collision.transform;
                 skeleton.inPresenceOfEnemy = true;
                 skeleton.enemyAttackRange = skeleton.attack.attackRange + collision.GetComponent<Enemy>().circleCollider.radius;
+                if (selectManager.selectedTroop == skeleton.transform)
+                {
+                    collision.GetComponent<Enemy>().targetSelect.SetActive(true);
+                }
             }
         }
         else /*if (minion != null)*/
@@ -35,6 +46,10 @@ public class SightObject : MonoBehaviour
                 minion.goal = collision.transform;
                 minion.inPresenceOfEnemy = true;
                 minion.enemyAttackRange = minion.attack.attackRange + collision.GetComponent<Enemy>().circleCollider.radius;
+                if (selectManager.selectedTroop == minion.transform)
+                {
+                    collision.GetComponent<Enemy>().targetSelect.SetActive(true);
+                }
             }
         }
     }
@@ -55,6 +70,10 @@ public class SightObject : MonoBehaviour
             {
                 skeleton.goal = null;
                 skeleton.inPresenceOfEnemy = false;
+                if (selectManager.selectedTroop == skeleton.transform)
+                {
+                    collision.GetComponent<Enemy>().targetSelect.SetActive(false);
+                }
             }
         }
         else /*if (minion != null)*/
@@ -63,6 +82,10 @@ public class SightObject : MonoBehaviour
             {
                 minion.goal = null;
                 minion.inPresenceOfEnemy = false;
+                if (selectManager.selectedTroop == minion.transform)
+                {
+                    collision.GetComponent<Enemy>().targetSelect.SetActive(false);
+                }
             }
         }
     }

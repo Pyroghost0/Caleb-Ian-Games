@@ -7,6 +7,7 @@ public class Grave : MonoBehaviour
     public short bones = 50;
     public bool usedUp = false;
     public Transform graveAssistant;
+    public GameObject targetSelect;
 
     private void Start()
     {
@@ -35,6 +36,7 @@ public class Grave : MonoBehaviour
     IEnumerator DestroyGrave()
     {
         usedUp = true;
+        targetSelect.SetActive(false);
         float timer = 0f;
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         while (timer < 1f)

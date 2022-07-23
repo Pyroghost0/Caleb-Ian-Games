@@ -140,10 +140,22 @@ public class SelectManager : MonoBehaviour
             if (selectedTroop.CompareTag("Skeleton"))
             {
                 selectedTroop.GetComponent<Skeleton>().selectBars.SetActive(false);
+                if (selectedTroop.GetComponent<Skeleton>().goal != null)
+                {
+                    selectedTroop.GetComponent<Skeleton>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                }
             }
             else if (selectedTroop.CompareTag("Minion"))
             {
                 selectedTroop.GetComponent<Minion>().selectBars.SetActive(false);
+                if (selectedTroop.GetComponent<Minion>().goal != null && selectedTroop.GetComponent<Minion>().goal.CompareTag("Enemy"))
+                {
+                    selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                }
+                else if (selectedTroop.GetComponent<Minion>().goal != null && selectedTroop.GetComponent<Minion>().goal.CompareTag("Grave"))
+                {
+                    selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(false);
+                }
             }
             else /*if (selectedTroop.CompareTag("Corpse"))*/
             {
@@ -186,6 +198,10 @@ public class SelectManager : MonoBehaviour
             }
             troopCapacity.anchoredPosition = new Vector3(265f, -25, 0f);
             skeleton.selectBars.SetActive(true);
+            if (skeleton.goal != null)
+            {
+                skeleton.goal.GetComponent<Enemy>().targetSelect.SetActive(true);
+            }
         }
         else if (newSelect.CompareTag("Minion"))
         {
@@ -210,7 +226,15 @@ public class SelectManager : MonoBehaviour
             boneCostObject1.SetActive(false);
             boneCostObject2.SetActive(false);
             troopCapacity.anchoredPosition = new Vector3(340f, -25, 0f);
-            selectedTroop.GetComponent<Minion>().selectBars.SetActive(true);
+            minion.selectBars.SetActive(true);
+            if (minion.goal != null && minion.goal.CompareTag("Enemy"))
+            {
+                minion.goal.GetComponent<Enemy>().targetSelect.SetActive(true);
+            }
+            else if (minion.goal != null && minion.goal.CompareTag("Grave"))
+            {
+                minion.grave.targetSelect.SetActive(true);
+            }
         }
         else /*if (newSelect.CompareTag("Corpse"))*/
         {
@@ -231,20 +255,29 @@ public class SelectManager : MonoBehaviour
 
     public void Deselect()
     {
-        if (selectingObject)
+        if (selectedTroop.CompareTag("Skeleton"))
         {
-            if (selectedTroop.CompareTag("Skeleton"))
+            selectedTroop.GetComponent<Skeleton>().selectBars.SetActive(false);
+            if (selectedTroop.GetComponent<Skeleton>().goal != null)
             {
-                selectedTroop.GetComponent<Skeleton>().selectBars.SetActive(false);
+                selectedTroop.GetComponent<Skeleton>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
             }
-            else if (selectedTroop.CompareTag("Minion"))
+        }
+        else if (selectedTroop.CompareTag("Minion"))
+        {
+            selectedTroop.GetComponent<Minion>().selectBars.SetActive(false);
+            if (selectedTroop.GetComponent<Minion>().goal != null && selectedTroop.GetComponent<Minion>().goal.CompareTag("Enemy"))
             {
-                selectedTroop.GetComponent<Minion>().selectBars.SetActive(false);
+                selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
             }
-            else /*if (selectedTroop.CompareTag("Corpse"))*/
+            else if (selectedTroop.GetComponent<Minion>().goal != null && selectedTroop.GetComponent<Minion>().goal.CompareTag("Grave"))
             {
-                selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
+                selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(false);
             }
+        }
+        else /*if (selectedTroop.CompareTag("Corpse"))*/
+        {
+            selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
         }
         selectingObject = false;
         selectedTroop = null;
@@ -266,7 +299,7 @@ public class SelectManager : MonoBehaviour
         troopCapacity.anchoredPosition = new Vector3(340f, -25, 0f);
     }
 
-    public void SelectLeftTroup()
+    public void SelectLeftTroop()
     {
         if (selectableObjects.Count > 1)
         {
@@ -584,7 +617,7 @@ public class SelectManager : MonoBehaviour
         }
     }
 
-    public void AllTroupsLeft()
+    public void AllTroopsLeft()
     {
         for (int i = 0; i < selectableObjects.Count; i++)
         {
@@ -595,7 +628,7 @@ public class SelectManager : MonoBehaviour
         }
     }
 
-    public void AllTroupsStay()
+    public void AllTroopsStay()
     {
         for (int i = 0; i < selectableObjects.Count; i++)
         {
@@ -608,7 +641,7 @@ public class SelectManager : MonoBehaviour
         }
     }
 
-    public void AllTroupsRight()
+    public void AllTroopsRight()
     {
         for (int i = 0; i < selectableObjects.Count; i++)
         {
@@ -619,14 +652,14 @@ public class SelectManager : MonoBehaviour
         }
     }
 
-    public void TroupStay()
+    public void TroopStay()
     {
         Skeleton skeleton = selectedTroop.GetComponent<Skeleton>();
         skeleton.skeletonMode = SkeletonMode.stay;
         skeleton.stayGoal = selectedTroop.position;
     }
 
-    public void SelectedTroupDestroyed()
+    public void SelectedTroopDestroyed()
     {
         selectableObjects.Remove(selectedTroop);
         if (selectableObjects.Count > 0)

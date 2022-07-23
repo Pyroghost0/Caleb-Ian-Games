@@ -198,6 +198,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Death()
     {
+        targetSelect.SetActive(false);
         yield return new WaitForSeconds(deathTime);
         Instantiate(corpsePrefab, transform.position, transform.rotation);
         Destroy(gameObject);
