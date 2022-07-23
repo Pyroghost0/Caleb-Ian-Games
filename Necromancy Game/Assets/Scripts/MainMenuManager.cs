@@ -20,6 +20,12 @@ public class MainMenuManager : MonoBehaviour
     public Image holdLeftButtonImage;
     public Image holdMiddleButtonImage;
     public Image holdRightButtonImage;
+    public Image otherLeftButtonImage;
+    public Image otherMiddleButtonImage;
+    public Image otherRightButtonImage;
+    public Image otherHoldLeftButtonImage;
+    public Image otherHoldMiddleButtonImage;
+    public Image otherHoldRightButtonImage;
 
     private bool allowInputs = true;
     public KeyCode leftButton = KeyCode.A;
@@ -29,6 +35,21 @@ public class MainMenuManager : MonoBehaviour
     public bool buttonPressed = false;
     private float buttonPressTime = .4f;
     private ButtonPressed buttonType;
+
+    public bool inOtherSelection = false;
+    public bool inMap = false;
+    public TextMeshProUGUI singleLeftButtonText;
+    public TextMeshProUGUI singleMiddleButtonText;
+    public TextMeshProUGUI singleRightButtonText;
+    public RectTransform mainMenuScreen;
+    public RectTransform mapScreen;
+    public string[] normalSceneName;
+    public string[] extraSceneName;
+    public RectTransform[] mapPoints;
+    public int mapPointIndex;
+    public RectTransform selector;
+
+    public bool[] unlockedLevels;
 
     void Start()
     {
@@ -154,135 +175,274 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    public void ClickSinleButtonLeft()
+    {
+        if (allowInputs)
+        {
+            StartCoroutine(SinglePress(ButtonPressed.left));
+        }
+    }
+
+    public void ClickSinleButtoMiddle()
+    {
+        if (allowInputs)
+        {
+            StartCoroutine(SinglePress(ButtonPressed.middle));
+        }
+    }
+
+    public void ClickSinleButtonRight()
+    {
+        if (allowInputs)
+        {
+            StartCoroutine(SinglePress(ButtonPressed.right));
+        }
+    }
+
     IEnumerator SinglePress(ButtonPressed type)
     {
-        if (type == ButtonPressed.left)
+        if (inMap)
         {
-            //StartGame();
-            leftButtonImage.color = Color.gray;
-            loading.SetActive(true);
-            AsyncOperation ao = SceneManager.LoadSceneAsync("Endless Mode", LoadSceneMode.Additive);
-            yield return new WaitUntil(() => ao.isDone);
-            InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
-            inputManager.leftButton = leftButton;
-            inputManager.middleButton = middleButton;
-            inputManager.rightButton = rightButton;
-            SceneManager.UnloadSceneAsync("Main Menu");
+            if (type == ButtonPressed.left)
+            {
+                if (mapPointIndex != 0)
+                {//Don't need to check if unlocked
+                    mapPointIndex--;
+                    selector.anchoredPosition = mapPoints[mapPointIndex].anchoredPosition;
+                }
+            }
+            else if (type == ButtonPressed.middle)
+            {
+                Debug.Log("Select Level");
+                /*allowInputs = false;
+                otherMiddleButtonImage.color = Color.gray;
+                loading.SetActive(true);
+                if (inOtherSelection)
+                {
+                    AsyncOperation ao = SceneManager.LoadSceneAsync(extraSceneName[mapPointIndex], LoadSceneMode.Additive);
+                    yield return new WaitUntil(() => ao.isDone);
+                }
+                else
+                {
+                    AsyncOperation ao = SceneManager.LoadSceneAsync(normalSceneName[mapPointIndex], LoadSceneMode.Additive);
+                    yield return new WaitUntil(() => ao.isDone);
+                }
+                InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
+                inputManager.leftButton = leftButton;
+                inputManager.middleButton = middleButton;
+                inputManager.rightButton = rightButton;
+                SceneManager.UnloadSceneAsync("Main Menu");*/
+            }
+            else /*if (type == ButtonPressed.right)*/
+            {
+                if (mapPointIndex+1 < mapPoints.Length && unlockedLevels[mapPointIndex+1])
+                {
+                    mapPointIndex++;
+                    selector.anchoredPosition = mapPoints[mapPointIndex].anchoredPosition;
+                }
+            }
         }
-        else if (type == ButtonPressed.middle)
+        else if (inOtherSelection)
         {
-            //StartTutorial();
-            middleButtonImage.color = Color.gray;
-            loading.SetActive(true);
-            AsyncOperation ao = SceneManager.LoadSceneAsync("Tutorial", LoadSceneMode.Additive);
-            yield return new WaitUntil(() => ao.isDone);
-            InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
-            inputManager.leftButton = leftButton;
-            inputManager.middleButton = middleButton;
-            inputManager.rightButton = rightButton;
-            SceneManager.UnloadSceneAsync("Main Menu");
+            if (type == ButtonPressed.left)
+            {
+                allowInputs = false;
+                leftButtonImage.color = Color.gray;
+                loading.SetActive(true);
+                AsyncOperation ao = SceneManager.LoadSceneAsync("Endless Mode", LoadSceneMode.Additive);
+                yield return new WaitUntil(() => ao.isDone);
+                InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
+                inputManager.leftButton = leftButton;
+                inputManager.middleButton = middleButton;
+                inputManager.rightButton = rightButton;
+                SceneManager.UnloadSceneAsync("Main Menu");
+            }
+            else if (type == ButtonPressed.middle)
+            {
+
+                allowInputs = false;
+                middleButtonImage.color = Color.gray;
+                loading.SetActive(true);
+                AsyncOperation ao = SceneManager.LoadSceneAsync("Tutorial", LoadSceneMode.Additive);
+                yield return new WaitUntil(() => ao.isDone);
+                InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
+                inputManager.leftButton = leftButton;
+                inputManager.middleButton = middleButton;
+                inputManager.rightButton = rightButton;
+                SceneManager.UnloadSceneAsync("Main Menu");
+            }
+            else /*if (type == ButtonPressed.right)*/
+            {
+                singleLeftButtonText.text = "Campaign";
+                singleMiddleButtonText.text = "Other Modes";
+                singleRightButtonText.text = "Exit Game";
+                inOtherSelection = false;
+            }
         }
-        else /*if (type == ButtonPressed.right)*/
+        else
         {
-            rightButtonImage.color = Color.gray;
-            ExitGame();
+            if (type == ButtonPressed.left)
+            {
+                allowInputs = false;
+                float timer = 0;
+                while (timer < 2f)
+                {
+                    mainMenuScreen.anchoredPosition += new Vector2(mainMenuScreen.rect.x * Time.deltaTime, 0);
+                    mapScreen.anchoredPosition += new Vector2(mainMenuScreen.rect.x * Time.deltaTime, 0);
+                    timer += Time.deltaTime;
+                    yield return new WaitForFixedUpdate();
+                }
+                mainMenuScreen.anchoredPosition = new Vector2(mainMenuScreen.rect.x*2f, 0);
+                mapScreen.anchoredPosition = Vector2.zero;
+                allowInputs = true;
+                inMap = true;
+            }
+            else if (type == ButtonPressed.middle)
+            {
+                singleLeftButtonText.text = "Endless Mode";
+                singleMiddleButtonText.text = "Tutorial";
+                singleRightButtonText.text = "Back";
+                inOtherSelection = true;
+            }
+            else /*if (type == ButtonPressed.right)*/
+            {
+                rightButtonImage.color = Color.gray;
+                Debug.Log("Quit Game");
+                Application.Quit();
+            }
         }
     }
 
-    public void StartGame()
+    public void ClickHoldButtonLeft()
     {
-        loading.SetActive(true);
-        SceneManager.LoadScene("Endless Mode");
+        if (allowInputs)
+        {
+            StartCoroutine(HoldPress(ButtonPressed.left));
+        }
     }
 
-    public void StartTutorial()
+    public void ClickHoldButtonMiddle()
     {
-        loading.SetActive(true);
-        SceneManager.LoadScene("Tutorial");
+        if (allowInputs)
+        {
+            StartCoroutine(HoldPress(ButtonPressed.middle));
+        }
     }
 
-    public void ExitGame()
+    public void ClickHoldButtonRight()
     {
-        Debug.Log("Quit Game");
-        Application.Quit();
+        if (allowInputs)
+        {
+            StartCoroutine(HoldPress(ButtonPressed.right));
+        }
     }
 
     IEnumerator HoldPress(ButtonPressed type)
     {
-        if (type == ButtonPressed.left)
+        if (inMap)
         {
-            holdLeftButtonImage.color = Color.gray;
-            allowInputs = false;
-            leftButtonText.text = "Awaiting Input...";
-            yield return new WaitUntil(() => !Input.GetKey(leftButton));
-            holdLeftButtonImage.color = Color.white;
-            KeyCode newKey = KeyCode.None;
-            while (newKey == KeyCode.None)
+            if (type == ButtonPressed.left)
             {
-                yield return new WaitUntil(() => !Input.anyKey);
-                for (int i = 0; i < 370; i++)
-                {
-                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != middleButton && (KeyCode)i != rightButton)
-                    {
-                        newKey = (KeyCode)i;
-                        break;
-                    }
-                }
+                Debug.Log("More Details");
             }
-            leftButton = newKey;
-            leftButtonText.text = newKey.ToString();
-            yield return new WaitForFixedUpdate();
-            allowInputs = true;
+            else if (type == ButtonPressed.middle)
+            {
+                Debug.Log("Changed To Special Missions");
+            }
+            else /*if (type == ButtonPressed.right)*/
+            {
+                allowInputs = false;
+                float timer = 0;
+                while (timer < 2f)
+                {
+                    mainMenuScreen.anchoredPosition -= new Vector2(mainMenuScreen.rect.x * Time.deltaTime, 0);
+                    mapScreen.anchoredPosition -= new Vector2(mainMenuScreen.rect.x * Time.deltaTime, 0);
+                    timer += Time.deltaTime;
+                    yield return new WaitForFixedUpdate();
+                }
+                mainMenuScreen.anchoredPosition = Vector2.zero;
+                mapScreen.anchoredPosition = new Vector2(-mainMenuScreen.rect.x*2f, 0);
+                allowInputs = true;
+                inMap = false;
+            }
         }
-        else if (type == ButtonPressed.middle)
+        else
         {
-            holdMiddleButtonImage.color = Color.gray;
-            allowInputs = false;
-            middleButtonText.text = "Awaiting Input...";
-            yield return new WaitUntil(() => !Input.GetKey(middleButton));
-            holdMiddleButtonImage.color = Color.white;
-            KeyCode newKey = KeyCode.None;
-            while (newKey == KeyCode.None)
+            if (type == ButtonPressed.left)
             {
-                yield return new WaitUntil(() => !Input.anyKey);
-                for (int i = 0; i < 370; i++)
+                holdLeftButtonImage.color = Color.gray;
+                allowInputs = false;
+                leftButtonText.text = "Awaiting Input...";
+                yield return new WaitUntil(() => !Input.GetKey(leftButton));
+                holdLeftButtonImage.color = Color.white;
+                KeyCode newKey = KeyCode.None;
+                while (newKey == KeyCode.None)
                 {
-                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != leftButton && (KeyCode)i != rightButton)
+                    yield return new WaitUntil(() => !Input.anyKey);
+                    for (int i = 0; i < 370; i++)
                     {
-                        newKey = (KeyCode)i;
-                        break;
+                        if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != middleButton && (KeyCode)i != rightButton && (KeyCode)i != KeyCode.Mouse0 && (KeyCode)i != KeyCode.Escape)
+                        {
+                            newKey = (KeyCode)i;
+                            break;
+                        }
                     }
                 }
+                leftButton = newKey;
+                leftButtonText.text = newKey.ToString();
+                yield return new WaitForFixedUpdate();
+                allowInputs = true;
             }
-            middleButton = newKey;
-            middleButtonText.text = newKey.ToString();
-            yield return new WaitForFixedUpdate();
-            allowInputs = true;
-        }
-        else /*if (type == ButtonPressed.right)*/
-        {
-            holdRightButtonImage.color = Color.gray;
-            allowInputs = false;
-            rightButtonText.text = "Awaiting Input...";
-            yield return new WaitUntil(() => !Input.GetKey(rightButton));
-            holdRightButtonImage.color = Color.white;
-            KeyCode newKey = KeyCode.None;
-            while (newKey == KeyCode.None)
+            else if (type == ButtonPressed.middle)
             {
-                yield return new WaitUntil(() => !Input.anyKey);
-                for (int i = 0; i < 370; i++)
+                holdMiddleButtonImage.color = Color.gray;
+                allowInputs = false;
+                middleButtonText.text = "Awaiting Input...";
+                yield return new WaitUntil(() => !Input.GetKey(middleButton));
+                holdMiddleButtonImage.color = Color.white;
+                KeyCode newKey = KeyCode.None;
+                while (newKey == KeyCode.None)
                 {
-                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != leftButton && (KeyCode)i != middleButton)
+                    yield return new WaitUntil(() => !Input.anyKey);
+                    for (int i = 0; i < 370; i++)
                     {
-                        newKey = (KeyCode)i;
-                        break;
+                        if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != leftButton && (KeyCode)i != rightButton && (KeyCode)i != KeyCode.Mouse0 && (KeyCode)i != KeyCode.Escape)
+                        {
+                            newKey = (KeyCode)i;
+                            break;
+                        }
                     }
                 }
+                middleButton = newKey;
+                middleButtonText.text = newKey.ToString();
+                yield return new WaitForFixedUpdate();
+                allowInputs = true;
             }
-            rightButton = newKey;
-            rightButtonText.text = newKey.ToString();
-            yield return new WaitForFixedUpdate();
-            allowInputs = true;
+            else /*if (type == ButtonPressed.right)*/
+            {
+                holdRightButtonImage.color = Color.gray;
+                allowInputs = false;
+                rightButtonText.text = "Awaiting Input...";
+                yield return new WaitUntil(() => !Input.GetKey(rightButton));
+                holdRightButtonImage.color = Color.white;
+                KeyCode newKey = KeyCode.None;
+                while (newKey == KeyCode.None)
+                {
+                    yield return new WaitUntil(() => !Input.anyKey);
+                    for (int i = 0; i < 370; i++)
+                    {
+                        if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != leftButton && (KeyCode)i != middleButton && (KeyCode)i != KeyCode.Mouse0 && (KeyCode)i != KeyCode.Escape)
+                        {
+                            newKey = (KeyCode)i;
+                            break;
+                        }
+                    }
+                }
+                rightButton = newKey;
+                rightButtonText.text = newKey.ToString();
+                yield return new WaitForFixedUpdate();
+                allowInputs = true;
+            }
         }
     }
 
