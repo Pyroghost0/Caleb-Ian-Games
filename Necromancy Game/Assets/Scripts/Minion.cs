@@ -13,6 +13,9 @@ public class Minion : MonoBehaviour
     public float boneSpeedReductionFactor = 2f/3f;
     public float deathTime = .5f;
     public short graveBones = 25;
+    public short boneUpgradeAmount = 25;//-1 for maxed out
+    private float upgradeFactor = 1.5f;
+    private short upgradeLevel = 1;
     public short bonesStored = 0;
     public short maxBones = 25;
 
@@ -21,6 +24,7 @@ public class Minion : MonoBehaviour
     public Attack diggingAttack;
     public Transform attackBasisObject;
     public Transform digAttackBasisObject;
+    public GameObject selectBars;
     public Transform sightObject;
     public Transform spriteBasisObject;
     public SpriteRenderer[] sprite;
@@ -416,7 +420,7 @@ public class Minion : MonoBehaviour
                 {
                     //Debug.Log("Dead");
                 }
-                else if (goal.GetComponent<Enemy>().dead)
+                else if (goal == null || goal.GetComponent<Enemy>().dead)
                 {
                     //Debug.Log("They Dead");
                     inPresenceOfEnemy = false;
@@ -493,6 +497,23 @@ public class Minion : MonoBehaviour
         }
     }
 
+    public void Upgrade()
+    {
+        playerBase.UpdateBones((short)-boneUpgradeAmount);
+        upgradeLevel++;
+        //attack.attackPower = (short)(attack.attackPower * attackUpgradeFactor);
+        if (upgradeLevel != 3)
+        {
+            boneUpgradeAmount *= 2;
+            selectManager.boneCostValue2.text = "-" + boneUpgradeAmount.ToString();
+        }
+        else
+        {
+            boneUpgradeAmount = -1;
+            selectManager.boneCostObject0.SetActive(false);
+        }
+    }
+
     public void Hit(Vector3 attackCenter, Transform source, float knockback, short damage)
     {
         if (health > 0)
@@ -508,6 +529,11 @@ public class Minion : MonoBehaviour
             if (health <= 0)
             {
                 StartCoroutine(Death());
+            }
+            if (selectManager.selectedTroop == transform)
+            {
+                selectManager.rectHealthBar.sizeDelta = new Vector2(((float)health / maxHealth) * selectManager.rectHealth, selectManager.rectHealthBar.rect.height);
+                selectManager.healthValue.text = health + "\n" + maxHealth;
             }
         }
     }
@@ -527,6 +553,21 @@ public class Minion : MonoBehaviour
 
     IEnumerator Death()
     {
+        if (selectManager.selectedTroop == transform)
+        {
+            selectManager.SelectedTroupDestroyed();
+        }
+        else
+        {
+            for (int i = 0; i < selectManager.selectableObjects.Count; i++)
+            {
+                if (selectManager.selectableObjects[i] == transform)
+                {
+                    selectManager.selectableObjects.RemoveAt(i);
+                    break;
+                }
+            }
+        }
         yield return new WaitForSeconds(deathTime);
         playerBase.numSkeletons--;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;

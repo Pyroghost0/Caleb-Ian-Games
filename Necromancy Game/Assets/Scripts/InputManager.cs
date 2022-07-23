@@ -47,9 +47,35 @@ public class InputManager : MonoBehaviour
     public Image holdMiddleButtonImage;
     public Image holdRightButtonImage;
 
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+    public Camera camera;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            List<GameObject> hitObjects = new List<GameObject>();
+            while (hit.collider != null)
+            {
+                hitObjects.Add(hit.collider.gameObject);
+                hit.collider.gameObject.layer = 2;
+                hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            }
+            int lowestYIndex = 0;
+            for (int i = 0; i < hitObjects.Count; i++)
+            {
+                hitObjects[i].layer = 0;
+                if (hitObjects[lowestYIndex].transform.position.y > hitObjects[i].transform.position.y)
+                {
+                    lowestYIndex = i;
+                }
+            }
+            Debug.Log(hitObjects[lowestYIndex].name);
+        }
+
         //Paused Inputs
         if (paused && allowInputs)
         {
@@ -470,7 +496,7 @@ public class InputManager : MonoBehaviour
         else if (type == ButtonPressed.left)
         {
             StartCoroutine(PressButtonVisually(buttonImages[0]));
-            selectManager.AllMinionsMine();
+            //selectManager.AllMinionsMine();
         }
         else if (type == ButtonPressed.middle)
         {
@@ -480,7 +506,7 @@ public class InputManager : MonoBehaviour
         else /*if (type == ButtonPressed.right)*/
         {
             StartCoroutine(PressButtonVisually(buttonImages[2]));
-            selectManager.AllMinionsAttack();
+            //selectManager.AllMinionsAttack();
         }
     }
 
@@ -504,6 +530,24 @@ public class InputManager : MonoBehaviour
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[5]));
                     selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
+                }
+            }
+            else if (selectManager.selectedTroop.CompareTag("Minion"))
+            {
+                if (type == ButtonPressed.left)
+                {
+                    StartCoroutine(PressButtonVisually(buttonImages[3]));
+                    selectManager.AllMinionsMine();
+                }
+                else if (type == ButtonPressed.middle)
+                {
+                    StartCoroutine(PressButtonVisually(buttonImages[4]));
+                    //selectManager.TroupStay();
+                }
+                else /*if (type == ButtonPressed.right)*/
+                {
+                    StartCoroutine(PressButtonVisually(buttonImages[5]));
+                    selectManager.AllMinionsAttack();
                 }
             }
             else /*if (selectManager.selectedTroop.CompareTag("Corpse"))*/
@@ -578,6 +622,32 @@ public class InputManager : MonoBehaviour
                         InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
                         notice.textPosition.anchoredPosition = new Vector2(340f, 150f);
                     }
+                }
+            }
+            else if (selectManager.selectedTroop.CompareTag("Minion"))
+            {
+                if (type == ButtonPressed.left)
+                {
+                    StartCoroutine(PressButtonVisually(buttonImages[6]));
+                    selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = true;
+                }
+                else if (type == ButtonPressed.middle)
+                {
+                    StartCoroutine(PressButtonVisually(buttonImages[7]));
+                    if (selectManager.selectedTroop.GetComponent<Minion>().boneUpgradeAmount != -1 && playerBase.bones >= selectManager.selectedTroop.GetComponent<Minion>().boneUpgradeAmount)
+                    {
+                        selectManager.selectedTroop.GetComponent<Minion>().Upgrade();
+                    }
+                    else
+                    {
+                        InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                        notice.textPosition.anchoredPosition = new Vector2(265f, 150f);
+                    }
+                }
+                else /*if (type == ButtonPressed.right)*/
+                {
+                    StartCoroutine(PressButtonVisually(buttonImages[8]));
+                    selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = false;
                 }
             }
             else /*if (selectManager.selectedTroop.CompareTag("Corpse"))*/

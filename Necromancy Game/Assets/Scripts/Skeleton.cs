@@ -426,19 +426,12 @@ public class Skeleton : MonoBehaviour
         if (armorLevel != 3)
         {
             defenceBoneUpgradeAmount *= 2;
+            selectManager.boneCostValue1.text = "-" + defenceBoneUpgradeAmount.ToString();
         }
         else
         {
             defenceBoneUpgradeAmount = -1;
-        }
-        if (defenceBoneUpgradeAmount == -1)
-        {
             selectManager.boneCostObject1.SetActive(false);
-        }
-        else
-        {
-            selectManager.boneCostObject1.SetActive(true);
-            selectManager.boneCostValue1.text = "-" + defenceBoneUpgradeAmount.ToString();
         }
     }
 
@@ -456,19 +449,12 @@ public class Skeleton : MonoBehaviour
         if (armorLevel != 3)
         {
             attackBoneUpgradeAmount *= 2;
+            selectManager.boneCostValue2.text = "-" + defenceBoneUpgradeAmount.ToString();
         }
         else
         {
             attackBoneUpgradeAmount = -1;
-        }
-        if (attackBoneUpgradeAmount == -1)
-        {
             selectManager.boneCostObject2.SetActive(false);
-        }
-        else
-        {
-            selectManager.boneCostObject2.SetActive(true);
-            selectManager.boneCostValue2.text = "-" + defenceBoneUpgradeAmount.ToString();
         }
     }
 

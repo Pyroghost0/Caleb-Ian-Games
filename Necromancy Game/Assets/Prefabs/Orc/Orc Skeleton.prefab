@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6173832225091281724}
   - component: {fileID: 8794203048502949570}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: femur_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3353302639083216399}
   - component: {fileID: 5831213937360691144}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: forearm_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4203575188770503683}
   - component: {fileID: 4724059957810277081}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: forearm_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5530481330358180218}
   - component: {fileID: 7710234078535591384}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4916700086548586053}
   - component: {fileID: 2968645725885080206}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: shin_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5472848566505179448}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Select Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -465,7 +465,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4672189337944115330}
   - component: {fileID: 2606737516211683188}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: humerus_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -549,7 +549,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4734862976924470287}
   - component: {fileID: 2130513313981681478}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -633,7 +633,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5856820628620105001}
   - component: {fileID: 3487151611724011282}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Top Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -717,7 +717,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7568891164440191430}
   - component: {fileID: 4652621442227728444}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -801,7 +801,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2711697142530097795}
   - component: {fileID: 6996589764286693992}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -885,7 +885,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5879962594718660781}
   - component: {fileID: 6944313354201972362}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: hand_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -969,7 +969,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1230246541355486477}
   - component: {fileID: 2902608793680289582}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: foot_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1053,7 +1053,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2333444047201158553}
   - component: {fileID: 2727985917452784847}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: hand_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1139,7 +1139,7 @@ GameObject:
   - component: {fileID: 5098792931233784465}
   - component: {fileID: 5098792931233784464}
   - component: {fileID: 5098792931233784559}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Orc Skeleton
   m_TagString: Skeleton
   m_Icon: {fileID: 0}
@@ -1162,6 +1162,7 @@ Transform:
   - {fileID: 5098792931779682118}
   - {fileID: 5472848566505179448}
   - {fileID: 9034291518452031942}
+  - {fileID: 5901869409217827028}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1255,6 +1256,7 @@ MonoBehaviour:
   goal: {fileID: 0}
   stayGoal: {x: 0, y: 0, z: 0}
   inPresenceOfEnemy: 0
+  enemyAttackRange: 0
 --- !u!1 &5098792931779682117
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,7 +1268,7 @@ GameObject:
   - component: {fileID: 5098792931779682118}
   - component: {fileID: 5098792931779682120}
   - component: {fileID: 5098792931779682119}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1352,7 +1354,7 @@ GameObject:
   - component: {fileID: 5098792932950176492}
   - component: {fileID: 5098792932950176494}
   - component: {fileID: 5098792932950176495}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Attack
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -1458,7 +1460,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5098792933219728383}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Attack Basis Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1491,7 +1493,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8128577698899741219}
   - component: {fileID: 3150004351775100512}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: femur_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1575,7 +1577,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8800848688566245766}
   - component: {fileID: 5098660008360125401}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ribcage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1659,7 +1661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5207233803974875958}
   - component: {fileID: 9137410580034126293}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: humerus_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1743,7 +1745,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3051927125172827694}
   - component: {fileID: 1058685673780748359}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: shin_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1827,7 +1829,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5749982590846223748}
   - component: {fileID: 1987147377252980071}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1911,7 +1913,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2428888091167626091}
   - component: {fileID: 6133286008461717502}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Top Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1995,7 +1997,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7815668686595822484}
   - component: {fileID: 1326174266649900252}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2069,6 +2071,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &6686392917431734294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5901869409217827028}
+  - component: {fileID: 4997731669109202596}
+  m_Layer: 0
+  m_Name: Orc Select
+  m_TagString: Enemy Select
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5901869409217827028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6686392917431734294}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5098792931233784467}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &4997731669109202596
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6686392917431734294}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.75}
+  m_Size: {x: 1.25, y: 2.5}
+  m_Direction: 0
 --- !u!1 &6785734117584486322
 GameObject:
   m_ObjectHideFlags: 0
@@ -2079,7 +2129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2651683625132032793}
   - component: {fileID: 4300287544184361196}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: foot_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2163,7 +2213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7488147455863605868}
   - component: {fileID: 696900420044803122}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2246,7 +2296,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9034291518452031942}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1244044165466593435}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,6 +41,54 @@ Transform:
   m_Father: {fileID: 3579263437286936581}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1071274240947779486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1923322494474321683}
+  - component: {fileID: 3955655598281676170}
+  m_Layer: 0
+  m_Name: Witch Select
+  m_TagString: Enemy Select
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1923322494474321683
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071274240947779486}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3579263437286936581}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &3955655598281676170
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071274240947779486}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.5}
+  m_Size: {x: 1.25, y: 1.75}
+  m_Direction: 0
 --- !u!1 &1443555516230791274
 GameObject:
   m_ObjectHideFlags: 0
@@ -51,7 +99,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1190545031774124282}
   - component: {fileID: 9134838487582326436}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3709063826180840802}
   - component: {fileID: 429083221175699329}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: humerus_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1952382228890542338}
   - component: {fileID: 7280368354325431882}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6258790515656319485}
   - component: {fileID: 2482428050999188840}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Top Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,7 +438,7 @@ GameObject:
   - component: {fileID: 3579263435788648569}
   - component: {fileID: 2587829564153621680}
   - component: {fileID: 1305721408}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Attack
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -532,7 +580,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3579263436056103273}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Attack Basis Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -566,7 +614,7 @@ GameObject:
   - component: {fileID: 3579263436774600144}
   - component: {fileID: 3579263436774600158}
   - component: {fileID: 3579263436774600145}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -653,7 +701,7 @@ GameObject:
   - component: {fileID: 3579263437286936583}
   - component: {fileID: 3579263437286936582}
   - component: {fileID: 3579263437286936697}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Witch Skeleton
   m_TagString: Skeleton
   m_Icon: {fileID: 0}
@@ -676,6 +724,7 @@ Transform:
   - {fileID: 3579263436774600144}
   - {fileID: 4367896595466976174}
   - {fileID: 1244044165466593435}
+  - {fileID: 1923322494474321683}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -761,6 +810,7 @@ MonoBehaviour:
   goal: {fileID: 0}
   stayGoal: {x: 0, y: 0, z: 0}
   inPresenceOfEnemy: 0
+  enemyAttackRange: 0
 --- !u!1 &4314898618662484709
 GameObject:
   m_ObjectHideFlags: 0
@@ -771,7 +821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5911231013920074243}
   - component: {fileID: 8568012236071049680}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -855,7 +905,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6582288582151128013}
   - component: {fileID: 6836801600650744475}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: hand_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -939,7 +989,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2749745941109712831}
   - component: {fileID: 5118989566610761092}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Top Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1023,7 +1073,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3072335361185988345}
   - component: {fileID: 1974224099314186462}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: hand_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1107,7 +1157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4219713021073541723}
   - component: {fileID: 7398262973485598994}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1191,7 +1241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4317827357933063894}
   - component: {fileID: 6851681052238133536}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: humerus_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1274,7 +1324,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4367896595466976174}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Select Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1310,7 +1360,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4389550364230736319}
   - component: {fileID: 8181672040763575826}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: book
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1394,7 +1444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4033753156964540206}
   - component: {fileID: 1169444291151340428}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1478,7 +1528,7 @@ GameObject:
   m_Component:
   - component: {fileID: 646871427468568800}
   - component: {fileID: 859606280754169573}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1562,7 +1612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6175456071276681307}
   - component: {fileID: 3158800452056144284}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: forearm_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}

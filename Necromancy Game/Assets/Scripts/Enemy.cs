@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     public short enemyValue = 5;
     public AttackType attackType = AttackType.AOE;
 
+    public GameObject targetSelect;
     public GameObject corpsePrefab;
     public CircleCollider2D circleCollider;
     public Attack attack;

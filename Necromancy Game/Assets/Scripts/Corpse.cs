@@ -29,18 +29,20 @@ public class Corpse : MonoBehaviour
             {
                 if (selectManager.selectableObjects[i] == transform)
                 {
-                    if (selectManager.selectableObjects[i] == selectManager.selectedTroop)
+                    /*if (selectManager.selectableObjects[i] == selectManager.selectedTroop)
                     {
                         selectManager.SelectedTroupDestroyed();
                     }
                     else
-                    {
-                        selectManager.selectableObjects.RemoveAt(i);
-                    }
+                    {*/
+                    selectManager.selectableObjects.RemoveAt(i);
+                    //}
                     break;
                 }
             }
-            Instantiate(minionPrefab, transform.position, transform.rotation);
+            Transform addedMinion = Instantiate(minionPrefab, transform.position, transform.rotation).transform;
+            selectManager.selectableObjects.Add(addedMinion);
+            selectManager.Select(addedMinion);
             Destroy(gameObject);
         }
         else

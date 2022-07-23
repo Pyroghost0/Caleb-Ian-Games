@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8671172276576902218}
   - component: {fileID: 936426320011075807}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Top Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4350042272995320025}
   - component: {fileID: 3370659141455638771}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: leg_front_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4884871763284622082}
   - component: {fileID: 7208849581914589088}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3861204070981033141}
   - component: {fileID: 5441634365534878717}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4700806257907533657}
   - component: {fileID: 7308698579044087240}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 2243242107142258125}
   - component: {fileID: 2243242107142258127}
   - component: {fileID: 2243242107142258126}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Attack
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -537,7 +537,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2243242107411674334}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Attack Basis Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -572,7 +572,7 @@ GameObject:
   - component: {fileID: 2243242107653041584}
   - component: {fileID: 2243242107653041585}
   - component: {fileID: 2243242107653041614}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wolf Skeleton
   m_TagString: Skeleton
   m_Icon: {fileID: 0}
@@ -595,6 +595,7 @@ Transform:
   - {fileID: 2243242108136575079}
   - {fileID: 1301649288356546073}
   - {fileID: 7310453186896706743}
+  - {fileID: 5241684073493365267}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -680,6 +681,7 @@ MonoBehaviour:
   goal: {fileID: 0}
   stayGoal: {x: 0, y: 0, z: 0}
   inPresenceOfEnemy: 0
+  enemyAttackRange: 0
 --- !u!1 &2243242108136575076
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,7 +693,7 @@ GameObject:
   - component: {fileID: 2243242108136575079}
   - component: {fileID: 2243242108136575081}
   - component: {fileID: 2243242108136575078}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -776,7 +778,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5371419372069654988}
   - component: {fileID: 6032303067667011590}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: leg_back_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -860,7 +862,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3074649731619971323}
   - component: {fileID: 7931501782351929360}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -944,7 +946,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4469870494066345293}
   - component: {fileID: 5785145140175340307}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1028,7 +1030,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5674297218131881591}
   - component: {fileID: 1340842443458342206}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1112,7 +1114,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8442101730848783358}
   - component: {fileID: 5316692636185919905}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ribcage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1196,7 +1198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1379292510625353321}
   - component: {fileID: 7831019434503906433}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: leg_back_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1280,7 +1282,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4060997458910541227}
   - component: {fileID: 2849834052567188738}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: leg_front_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1364,7 +1366,7 @@ GameObject:
   m_Component:
   - component: {fileID: 622779549959657992}
   - component: {fileID: 7604270854260676659}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Top Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1447,7 +1449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7310453186896706743}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1488,7 +1490,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1301649288356546073}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Select Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1524,7 +1526,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8073204492794283275}
   - component: {fileID: 3268208315230702683}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ribcage_back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1598,3 +1600,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &8963968367110837927
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5241684073493365267}
+  - component: {fileID: 7350355124277184643}
+  m_Layer: 0
+  m_Name: Wolf Select
+  m_TagString: Enemy Select
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5241684073493365267
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8963968367110837927}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2243242107653041586}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &7350355124277184643
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8963968367110837927}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.2}
+  m_Size: {x: 1.75, y: 1.25}
+  m_Direction: 1
