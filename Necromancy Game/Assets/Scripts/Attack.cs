@@ -91,7 +91,7 @@ public class Attack : MonoBehaviour
                 }
                 else if (affectsEnemies && targets[i].CompareTag("Enemy"))
                 {
-                    targets[i].GetComponent<Enemy>().Hit(transform.position, source.CompareTag("Enemy") ? null : source.transform, knockback, attackPower);
+                    targets[i].GetComponent<Enemy>().Hit(transform.position, source == null || source.CompareTag("Enemy") ? null : source.transform, knockback, attackPower);
                     done = true;
                     break;
                 }
@@ -99,13 +99,13 @@ public class Attack : MonoBehaviour
                 {
                     if (targets[i].CompareTag("Skeleton"))
                     {
-                        targets[i].GetComponent<Skeleton>().Hit(transform.position, source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
+                        targets[i].GetComponent<Skeleton>().Hit(transform.position, source == null || source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
                         done = true;
                         break;
                     }
                     else if (targets[i].CompareTag("Minion"))
                     {
-                        targets[i].GetComponent<Minion>().Hit(transform.position, source.CompareTag("Minion") ? null : source.transform, knockback, attackPower);
+                        targets[i].GetComponent<Minion>().Hit(transform.position, source == null || source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
                         done = true;
                         break;
                     }

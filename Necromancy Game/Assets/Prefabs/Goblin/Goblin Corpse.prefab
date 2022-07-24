@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6812005503063852201}
   - component: {fileID: 7317893846631166067}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Top Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4414704333855958283}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Select Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3051431644462469529}
   - component: {fileID: 4582353147876701629}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2908883791071689554}
   - component: {fileID: 246844903454715193}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Top Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,6 +287,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &7539389213894996699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3484301449067456180}
+  - component: {fileID: 8078476333195410974}
+  m_Layer: 0
+  m_Name: Goblin Corpse Select
+  m_TagString: Skeleton Select
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3484301449067456180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7539389213894996699}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7810518575416313646}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &8078476333195410974
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7539389213894996699}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.1}
+  m_Size: {x: 1.5, y: 0.9}
+  m_Direction: 1
 --- !u!1 &7802243868354426266
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,7 +345,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1145067261615546400}
   - component: {fileID: 544513521761675712}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,9 +429,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7810518575416313646}
   - component: {fileID: 7810518575416313647}
-  - component: {fileID: 7810518575416313644}
   - component: {fileID: 7810518575416313649}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Goblin Corpse
   m_TagString: Corpse
   m_Icon: {fileID: 0}
@@ -403,6 +450,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4414704333855958283}
+  - {fileID: 3484301449067456180}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -458,22 +506,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &7810518575416313644
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7810518575416313645}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: afa075859365f2a45b5cd6d0c59de1ee, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.4
 --- !u!114 &7810518575416313649
 MonoBehaviour:
   m_ObjectHideFlags: 0

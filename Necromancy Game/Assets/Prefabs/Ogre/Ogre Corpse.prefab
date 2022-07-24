@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1625820276601269900}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Select Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8456957693919104814}
   - component: {fileID: 5645927820104907764}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Top Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2607624064833465255}
   - component: {fileID: 3196074655164064327}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,9 +213,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5165828461996608681}
   - component: {fileID: 5165828461996608680}
-  - component: {fileID: 5165828461996608683}
   - component: {fileID: 5165828461996608694}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Ogre Corpse
   m_TagString: Corpse
   m_Icon: {fileID: 0}
@@ -235,6 +234,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1625820276601269900}
+  - {fileID: 127066916425054835}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -290,22 +290,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &5165828461996608683
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5165828461996608682}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: afa075859365f2a45b5cd6d0c59de1ee, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.4
 --- !u!114 &5165828461996608694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +307,54 @@ MonoBehaviour:
   minionPrefab: {fileID: 2534362278550397990, guid: cf3b6a74144ed1c4798b206c31238a0e, type: 3}
   numTombstones: 3
   corpseName: Ogre Corpse
+--- !u!1 &6872752708259615544
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 127066916425054835}
+  - component: {fileID: 2909793563547475251}
+  m_Layer: 0
+  m_Name: Ogre Corpse Select
+  m_TagString: Skeleton Select
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &127066916425054835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6872752708259615544}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5165828461996608681}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &2909793563547475251
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6872752708259615544}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.1}
+  m_Size: {x: 1.5, y: 0.9}
+  m_Direction: 1
 --- !u!1 &7199837981780483363
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,7 +365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 255107294211518677}
   - component: {fileID: 2934311757292119742}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Top Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 111710618548754974}
   - component: {fileID: 1460280317519330874}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -64,16 +64,129 @@ public class InputManager : MonoBehaviour
                 hit.collider.gameObject.layer = 2;
                 hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             }
-            int lowestYIndex = 0;
-            for (int i = 0; i < hitObjects.Count; i++)
+            if (hitObjects.Count != 0)
             {
-                hitObjects[i].layer = 0;
-                if (hitObjects[lowestYIndex].transform.position.y > hitObjects[i].transform.position.y)
+                int lowestYIndex = 0;
+                for (int i = 0; i < hitObjects.Count; i++)
                 {
-                    lowestYIndex = i;
+                    hitObjects[i].layer = 0;
+                    if (hitObjects[lowestYIndex].transform.position.y > hitObjects[i].transform.position.y)
+                    {
+                        lowestYIndex = i;
+                    }
+                }
+                if (hitObjects[lowestYIndex].CompareTag("Skeleton Select"))
+                {
+                    if (selectManager.selectedTroop == hitObjects[lowestYIndex].transform.parent)
+                    {
+                        if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton"))
+                        {
+                            if (selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode != SkeletonMode.left)
+                            {
+                                selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
+                            }
+                            else
+                            {
+                                selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
+                            }
+                        }
+                        else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Minion"))
+                        {
+                            if (selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode)
+                            {
+                                selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = false;
+                                if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
+                                {
+                                    selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(false);
+                                }
+                            }
+                            else
+                            {
+                                selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = true;
+                                if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
+                                {
+                                    selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        selectManager.Select(hitObjects[lowestYIndex].transform.parent);
+                    }
+                }
+                else if (hitObjects[lowestYIndex].CompareTag("Enemy Select"))
+                {
+                    if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton"))
+                    {
+                        selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
+                        if (selectManager.selectedTroop.GetComponent<Skeleton>().goal != null)
+                        {
+                            selectManager.selectedTroop.GetComponent<Skeleton>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                        }
+                        hitObjects[lowestYIndex].transform.parent.GetComponent<Enemy>().targetSelect.SetActive(true);
+                        selectManager.selectedTroop.GetComponent<Skeleton>().goal = hitObjects[lowestYIndex].transform.parent;
+                    }
+                    else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Minion"))
+                    {
+                        if (selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode)
+                        {
+                            selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = false;
+                            if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
+                            {
+                                selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(false);
+                            }
+                        }
+                        else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
+                        {
+                            selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                        }
+                        selectManager.selectedTroop.GetComponent<Minion>().goal = hitObjects[lowestYIndex].transform.parent;
+                        hitObjects[lowestYIndex].transform.parent.GetComponent<Enemy>().targetSelect.SetActive(true);
+                    }
+                }
+                else if (hitObjects[lowestYIndex].CompareTag("Grave Select"))
+                {
+                    if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton"))
+                    {
+                        if (selectManager.selectedTroop.GetComponent<Skeleton>().goal != null)
+                        {
+                            selectManager.selectedTroop.GetComponent<Skeleton>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                            selectManager.selectedTroop.GetComponent<Skeleton>().goal = null;
+                        }
+                        selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.stay;
+                        selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal = camera.ScreenToWorldPoint(Input.mousePosition);
+                    }
+                    else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Minion"))
+                    {
+                        if (selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode)
+                        {
+                            if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
+                            {
+                                selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(false);
+                            }
+                        }
+                        else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
+                        {
+                            selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = true;
+                            selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                        }
+                        selectManager.selectedTroop.GetComponent<Minion>().goal = hitObjects[lowestYIndex].transform.parent;
+                        selectManager.selectedTroop.GetComponent<Minion>().grave = hitObjects[lowestYIndex].transform.parent.GetComponent<Grave>();
+                        hitObjects[lowestYIndex].transform.parent.GetComponent<Grave>().targetSelect.SetActive(true);
+                    }
                 }
             }
-            Debug.Log(hitObjects[lowestYIndex].name);
+            else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton"))
+            {
+                if (selectManager.selectedTroop.GetComponent<Skeleton>().goal != null)
+                {
+                    selectManager.selectedTroop.GetComponent<Skeleton>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                    selectManager.selectedTroop.GetComponent<Skeleton>().goal = null;
+                }
+                selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.stay;
+                selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal = camera.ScreenToWorldPoint(Input.mousePosition);
+            }
         }
 
         //Paused Inputs

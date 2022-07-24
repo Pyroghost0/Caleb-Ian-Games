@@ -97,7 +97,10 @@ public class Minion : MonoBehaviour
                         {
                             goal = graves[num].transform;
                             grave = graves[num].GetComponent<Grave>();
-                            grave.targetSelect.SetActive(true);
+                            if (selectManager.selectedTroop == transform)
+                            {
+                                grave.targetSelect.SetActive(true);
+                            }
                         }
                     }
                     if (goal != null)
@@ -248,7 +251,10 @@ public class Minion : MonoBehaviour
                         {
                             goal = graves[num].transform;
                             grave = graves[num].GetComponent<Grave>();
-                            grave.targetSelect.SetActive(true);
+                            if (selectManager.selectedTroop == transform)
+                            {
+                                grave.targetSelect.SetActive(true);
+                            }
                         }
                     }
                     else
@@ -282,7 +288,10 @@ public class Minion : MonoBehaviour
                     {
                         goal = graves[num].transform;
                         grave = graves[num].GetComponent<Grave>();
-                        grave.targetSelect.SetActive(true);
+                        if (selectManager.selectedTroop == transform)
+                        {
+                            grave.targetSelect.SetActive(true);
+                        }
                     }
                 }
 
@@ -522,7 +531,7 @@ public class Minion : MonoBehaviour
         if (health > 0)
         {
             StartCoroutine(Knockback(attackCenter, knockback));
-            if (!inPresenceOfEnemy && source != null)
+            if (!inPresenceOfEnemy && source != null && !inDiggingMode)
             {
                 inPresenceOfEnemy = true;
                 goal = source;
