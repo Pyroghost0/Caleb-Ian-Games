@@ -282,7 +282,7 @@ MonoBehaviour:
   - {fileID: 8388621069971454235}
   - {fileID: 6951741935041570163}
   m_Bounds:
-    m_Center: {x: -0.0000006556511, y: 0.0013208389, z: 0}
+    m_Center: {x: -0.0000006556511, y: 0.0013210773, z: 0}
     m_Extent: {x: 0.975, y: 2.6436791, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -687,8 +687,8 @@ MonoBehaviour:
   - {fileID: 2558588753047549175}
   - {fileID: 4153183224129111215}
   m_Bounds:
-    m_Center: {x: 0.2811399, y: 0.0015013218, z: 0.01}
-    m_Extent: {x: 0.8601609, y: 3.3685002, z: 0}
+    m_Center: {x: 0.2811399, y: 0.0015010834, z: 0.01}
+    m_Extent: {x: 0.8601609, y: 3.3684993, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1137,8 +1137,8 @@ MonoBehaviour:
   - {fileID: 6446909256948267434}
   - {fileID: 8691909997578168277}
   m_Bounds:
-    m_Center: {x: 0.0016860962, y: 0.0024306774, z: 0.01}
-    m_Extent: {x: 0.80331624, y: 3.2275703, z: 0}
+    m_Center: {x: 0.0016860962, y: 0.002429247, z: 0.01}
+    m_Extent: {x: 0.80331624, y: 3.2275712, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1348,8 +1348,8 @@ MonoBehaviour:
   - {fileID: 7663231386768088595}
   - {fileID: 3249558987304602139}
   m_Bounds:
-    m_Center: {x: 0.0002655983, y: 0.002100706, z: 0.05}
-    m_Extent: {x: 6.7297344, y: 3.457902, z: 0.05}
+    m_Center: {x: 0.0002655983, y: 0.002099514, z: 0.05}
+    m_Extent: {x: 6.7297344, y: 3.4579024, z: 0.05}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1848,8 +1848,8 @@ MonoBehaviour:
   - {fileID: 3253487883290303536}
   - {fileID: 2432101855642850401}
   m_Bounds:
-    m_Center: {x: 0.0029303432, y: 0, z: 0}
-    m_Extent: {x: 0.982071, y: 3.0100007, z: 0}
+    m_Center: {x: 0.0029303432, y: -0.00000071525574, z: 0}
+    m_Extent: {x: 0.982071, y: 3.0100017, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1862,6 +1862,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8434789339341063824}
+  - component: {fileID: 925650207622337671}
   m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
@@ -1891,6 +1892,26 @@ Transform:
   m_Father: {fileID: 8902200210112102534}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &925650207622337671
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7333687453408452339}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 092311bbce62f7d46a87b4364c62cc13, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8164805032232148819
 GameObject:
   m_ObjectHideFlags: 0
@@ -2158,6 +2179,7 @@ MonoBehaviour:
   inPresenceOfSkeleton: 0
   inPresenceOfTower: 0
   skeletonAttackRange: 0
+  anim: {fileID: 925650207622337671}
 --- !u!1 &8902200210452342110
 GameObject:
   m_ObjectHideFlags: 0

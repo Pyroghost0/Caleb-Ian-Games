@@ -36,6 +36,7 @@ public class Enemy : MonoBehaviour
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+    public Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +55,7 @@ public class Enemy : MonoBehaviour
     {
         if (inPresenceOfTower)
         {
+            anim.SetBool("Running", false);
             if (rigidbody.velocity.magnitude != 0f)
             {
                 Vector2 norm = rigidbody.velocity.normalized;
@@ -71,6 +73,7 @@ public class Enemy : MonoBehaviour
             {
                 if (!attack.currectlyAttacking)
                 {
+                    anim.SetTrigger("Attack");
                     attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
                     attack.gameObject.SetActive(true);
                     attack.StartAttack(attackType);
@@ -83,6 +86,7 @@ public class Enemy : MonoBehaviour
         }
         else if (inPresenceOfSkeleton)
         {
+            anim.SetBool("Running", false);
             if (rigidbody.velocity.magnitude != 0f)
             {
                 Vector2 norm = rigidbody.velocity.normalized;
@@ -108,6 +112,7 @@ public class Enemy : MonoBehaviour
                 //Debug.Log("Attack");
                 if (!attack.currectlyAttacking)
                 {
+                    anim.SetTrigger("Attack");
                     attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                     attack.gameObject.SetActive(true);
                     attack.StartAttack(attackType);
@@ -128,10 +133,12 @@ public class Enemy : MonoBehaviour
         {
             if (transform.position.y > (slopeGoal * (transform.position.x - attack.attackRange)) + posYGoal)
             {
+                anim.SetBool("Running", false);
                 inPresenceOfTower = true;
             }
             else if (-rigidbody.velocity.x < maxSpeed)
             {
+                anim.SetBool("Running", true);
                 rigidbody.velocity += speedAcceleration * Time.deltaTime * Vector2.left;
                 if (-rigidbody.velocity.x >= maxSpeed)
                 {
@@ -140,6 +147,7 @@ public class Enemy : MonoBehaviour
             }
             else if (-rigidbody.velocity.x > maxSpeed)
             {
+                anim.SetBool("Running", true);
                 rigidbody.velocity -= speedAcceleration * Time.deltaTime * 3f * Vector2.right;
                 if (rigidbody.velocity.x <= maxSpeed)
                 {

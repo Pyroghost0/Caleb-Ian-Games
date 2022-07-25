@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1244044165466593435}
+  - component: {fileID: 3414623648467969052}
   m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
@@ -42,6 +43,26 @@ Transform:
   m_Father: {fileID: 3579263437286936581}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &3414623648467969052
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111361041946099960}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2c6674feafbcfdf42ae0dbb74c05d3b4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &946654197927684498
 GameObject:
   m_ObjectHideFlags: 0
@@ -2104,7 +2125,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 6408834758240068754}
   m_Bounds:
-    m_Center: {x: 0.0005399585, y: 0.0008749962, z: 0}
+    m_Center: {x: 0.0005399585, y: 0.0008740425, z: 0}
     m_Extent: {x: 0.8763099, y: 0.45912495, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -2305,7 +2326,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 6114287690122162853}
   m_Bounds:
-    m_Center: {x: 0.004430771, y: 0.00090646744, z: 0}
+    m_Center: {x: 0.004430771, y: 0.00090551376, z: 0}
     m_Extent: {x: 0.9805701, y: 0.71590495, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1

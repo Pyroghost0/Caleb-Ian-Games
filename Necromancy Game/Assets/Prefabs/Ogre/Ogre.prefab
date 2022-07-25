@@ -316,7 +316,7 @@ MonoBehaviour:
   - {fileID: 1331116599575429342}
   - {fileID: 7140421128937422066}
   m_Bounds:
-    m_Center: {x: 0.011147499, y: 0.0000038146973, z: 0.015}
+    m_Center: {x: 0.011147499, y: 0.000002861023, z: 0.015}
     m_Extent: {x: 2.6455512, y: 8.470001, z: 0.015}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -425,7 +425,7 @@ MonoBehaviour:
   - {fileID: 5391158612325207877}
   - {fileID: 5868077931124834020}
   m_Bounds:
-    m_Center: {x: 0.003988266, y: 0.00000047683716, z: 0.015}
+    m_Center: {x: 0.003988266, y: 0, z: 0.015}
     m_Extent: {x: 2.8557296, y: 7.470001, z: 0.015}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -733,6 +733,7 @@ MonoBehaviour:
   inPresenceOfSkeleton: 0
   inPresenceOfTower: 0
   skeletonAttackRange: 0
+  anim: {fileID: 6878681797837856967}
 --- !u!1 &2637800101381907362
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,7 +1386,7 @@ MonoBehaviour:
   - {fileID: 5006960276282974860}
   - {fileID: 5868077931124834020}
   m_Bounds:
-    m_Center: {x: -0.0001988411, y: 0, z: 0.015}
+    m_Center: {x: -0.0001988411, y: 0.0000009536743, z: 0.015}
     m_Extent: {x: 2.4898405, y: 6.550002, z: 0.015}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -1483,6 +1484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7355910515533707334}
+  - component: {fileID: 6878681797837856967}
   m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
@@ -1514,6 +1516,26 @@ Transform:
   m_Father: {fileID: 2637800101041604218}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &6878681797837856967
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7425992693655370337}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 33d0ea612d814ef40a54fd7c38baa1ef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7675293978161084250
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,7 +1784,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 775752964354492996}
   m_Bounds:
-    m_Center: {x: 0.00043964386, y: -0.009434223, z: 0.03}
+    m_Center: {x: 0.00043964386, y: -0.009435654, z: 0.03}
     m_Extent: {x: 10.731319, y: 2.822259, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -1903,7 +1925,7 @@ MonoBehaviour:
   - {fileID: 6329835377994718319}
   - {fileID: 7140421128937422066}
   m_Bounds:
-    m_Center: {x: 0.0035073757, y: -0.00446558, z: 0.015}
+    m_Center: {x: 0.0035073757, y: -0.004465103, z: 0.015}
     m_Extent: {x: 3.57649, y: 7.8755293, z: 0.015}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -2044,7 +2066,7 @@ MonoBehaviour:
   - {fileID: 258369631789716598}
   - {fileID: 4382750504381913073}
   m_Bounds:
-    m_Center: {x: 0.0014593601, y: 0.037147522, z: 0}
+    m_Center: {x: 0.0014593601, y: 0.037148476, z: 0}
     m_Extent: {x: 2.3323998, y: 2.2671397, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -2234,7 +2256,7 @@ MonoBehaviour:
   - {fileID: 258369631789716598}
   - {fileID: 3854812647485286999}
   m_Bounds:
-    m_Center: {x: 2.5074992, y: -0.9104767, z: 0}
+    m_Center: {x: 2.5074992, y: -0.91047573, z: 0}
     m_Extent: {x: 5.897501, y: 10.363623, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1

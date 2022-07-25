@@ -1646,7 +1646,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 3074215781741353825}
   m_Bounds:
-    m_Center: {x: -0.007078171, y: -0.004888296, z: 0}
+    m_Center: {x: -0.0070786476, y: -0.004888296, z: 0}
     m_Extent: {x: 1.6270802, y: 2.8551097, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -2245,6 +2245,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8130055126737108611}
+  - component: {fileID: 7660906612305480912}
   m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
@@ -2286,6 +2287,26 @@ Transform:
   m_Father: {fileID: 2408243330235535584}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &7660906612305480912
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6925370490312287968}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 33d0ea612d814ef40a54fd7c38baa1ef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7126018093329453625
 GameObject:
   m_ObjectHideFlags: 0

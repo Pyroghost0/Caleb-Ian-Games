@@ -101,8 +101,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 5298074688445001615}
   m_Bounds:
-    m_Center: {x: 0.0017746687, y: 0.0048048496, z: 0.03}
-    m_Extent: {x: 1.4082249, y: 1.6401949, z: 0}
+    m_Center: {x: 0.0017728806, y: 0.0048029423, z: 0.03}
+    m_Extent: {x: 1.408225, y: 1.6401949, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -381,7 +381,7 @@ MonoBehaviour:
   - {fileID: 8789775052512684929}
   - {fileID: 579416642151007041}
   m_Bounds:
-    m_Center: {x: -0.0049505234, y: 0.0000014305115, z: 0.029999997}
+    m_Center: {x: -0.004951, y: 0.0000009536743, z: 0.029999997}
     m_Extent: {x: 4.4600506, y: 5.035001, z: 0.029999997}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -552,8 +552,8 @@ MonoBehaviour:
   - {fileID: 3962450381301378480}
   - {fileID: 8586387487094840744}
   m_Bounds:
-    m_Center: {x: 0.0044546127, y: 0.00061059, z: 0.089999996}
-    m_Extent: {x: 2.9605455, y: 1.82939, z: 0.030000001}
+    m_Center: {x: 0.004454136, y: 0.0006110668, z: 0.089999996}
+    m_Extent: {x: 2.9605458, y: 1.8293896, z: 0.030000001}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -692,8 +692,8 @@ MonoBehaviour:
   - {fileID: 7358178501624314403}
   - {fileID: 7653605191768255508}
   m_Bounds:
-    m_Center: {x: -0.00000047683716, y: 0.0000011920929, z: 0.03}
-    m_Extent: {x: 2.6549997, y: 0.795, z: 0}
+    m_Center: {x: 0, y: 0.00000166893, z: 0.03}
+    m_Extent: {x: 2.6550002, y: 0.795, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -815,6 +815,7 @@ MonoBehaviour:
   inPresenceOfSkeleton: 0
   inPresenceOfTower: 0
   skeletonAttackRange: 0
+  anim: {fileID: 591141778292454521}
 --- !u!1 &2268541534514454670
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,7 +1245,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 5298074688445001615}
   m_Bounds:
-    m_Center: {x: -0.0009797812, y: -0.008270562, z: 0.03}
+    m_Center: {x: -0.0009800792, y: -0.008271992, z: 0.03}
     m_Extent: {x: 0.7863599, y: 0.87572, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -1923,7 +1924,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 1271626318406578623}
   m_Bounds:
-    m_Center: {x: 0.000035136938, y: 0.0047808886, z: 0.03}
+    m_Center: {x: 0.00003501773, y: 0.004779935, z: 0.03}
     m_Extent: {x: 0.42557514, y: 1.1802201, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -2084,6 +2085,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7869114520929676634}
+  - component: {fileID: 591141778292454521}
   m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
@@ -2114,3 +2116,23 @@ Transform:
   m_Father: {fileID: 2268541534309483862}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &591141778292454521
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9078320211713258809}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2c6674feafbcfdf42ae0dbb74c05d3b4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
