@@ -55,6 +55,7 @@ public class SelectManager : MonoBehaviour
     public GameObject shovelUpgradeButton;
     public GameObject attackUpgradeButton;
     public GameObject defenceUpgradeButton;
+    public Transform stayPositionMarker;
 
     // Start is called before the first frame update
     void Start()
@@ -158,6 +159,7 @@ public class SelectManager : MonoBehaviour
                 {
                     selectedTroop.GetComponent<Skeleton>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
                 }
+                stayPositionMarker.gameObject.SetActive(false);
             }
             else if (selectedTroop.CompareTag("Minion"))
             {
@@ -176,6 +178,10 @@ public class SelectManager : MonoBehaviour
             {
                 selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
             }
+        }
+        else
+        {
+            troopUpgradeButton.gameObject.SetActive(false);
         }
         selectingObject = true;
         selectedTroop = newSelect;
@@ -228,6 +234,11 @@ public class SelectManager : MonoBehaviour
             skeletonStatus.gameObject.SetActive(true);
             minionStatus.gameObject.SetActive(false);
             skeletonStatus.sprite = skeleton.skeletonMode == SkeletonMode.left ? skeletonRun : (skeleton.skeletonMode == SkeletonMode.stay ? skeletonStay : skeletonAttack);
+            if (skeleton.skeletonMode == SkeletonMode.stay)
+            {
+                stayPositionMarker.gameObject.SetActive(true);
+                stayPositionMarker.position = skeleton.stayGoal;
+            }
         }
         else if (newSelect.CompareTag("Minion"))
         {
@@ -299,6 +310,7 @@ public class SelectManager : MonoBehaviour
             {
                 selectedTroop.GetComponent<Skeleton>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
             }
+            stayPositionMarker.gameObject.SetActive(false);
         }
         else if (selectedTroop.CompareTag("Minion"))
         {
@@ -706,6 +718,8 @@ public class SelectManager : MonoBehaviour
         skeleton.skeletonMode = SkeletonMode.stay;
         skeleton.stayGoal = selectedTroop.position;
         skeletonStatus.sprite = skeletonStay;
+        stayPositionMarker.gameObject.SetActive(true);
+        stayPositionMarker.position = selectedTroop.position;
     }
 
     public void UpgradeTroopCapasity()

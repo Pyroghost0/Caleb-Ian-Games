@@ -64,6 +64,7 @@ public class Skeleton : MonoBehaviour
         if (selectManager.selectingObject && selectManager.selectedTroop == transform)
         {
             selectManager.minionStatus.sprite = skeletonMode == SkeletonMode.left ?selectManager.skeletonRun : (skeletonMode == SkeletonMode.stay ? selectManager.skeletonStay : selectManager.skeletonAttack);
+            selectManager.stayPositionMarker.position = stayGoal;
         }
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         playerBase.numSkeletons++;

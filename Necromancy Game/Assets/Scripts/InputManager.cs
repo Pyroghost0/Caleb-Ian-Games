@@ -46,7 +46,10 @@ public class InputManager : MonoBehaviour
     public Image holdLeftButtonImage;
     public Image holdMiddleButtonImage;
     public Image holdRightButtonImage;
-
+    private bool movingCamera = false;
+    private bool doingSkeletonMouseCoroutine = false;
+    private float xHoldPosition;
+    private Vector3 startingXHoldPosition;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     public Camera camera;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
@@ -54,7 +57,7 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && allowInputs)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && allowInputs && !paused && !doingSkeletonMouseCoroutine)
         {
             RaycastHit2D hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             List<GameObject> hitObjects = new List<GameObject>();
@@ -117,10 +120,16 @@ public class InputManager : MonoBehaviour
                         selectManager.selectedTroop.GetComponent<Minion>().goal = hitObjects[lowestYIndex].transform.parent;
                         hitObjects[lowestYIndex].transform.parent.GetComponent<Enemy>().targetSelect.SetActive(true);
                     }
+                    else if (!selectManager.selectingObject)
+                    {
+                        xHoldPosition = selectManager.transform.position.x;
+                        startingXHoldPosition = Input.mousePosition;
+                        movingCamera = true;
+                    }
                 }
                 else if (hitObjects[lowestYIndex].CompareTag("Grave Select"))
                 {
-                    if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton"))
+                    if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton") && camera.ScreenToWorldPoint(Input.mousePosition).y < .9f)
                     {
                         if (selectManager.selectedTroop.GetComponent<Skeleton>().goal != null)
                         {
@@ -129,7 +138,9 @@ public class InputManager : MonoBehaviour
                         }
                         selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.stay;
                         selectManager.skeletonStatus.sprite = selectManager.skeletonStay;
-                        selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal = camera.ScreenToWorldPoint(Input.mousePosition);
+                        selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal = new Vector2(camera.ScreenToWorldPoint(Input.mousePosition).x, camera.ScreenToWorldPoint(Input.mousePosition).y);
+                        selectManager.stayPositionMarker.gameObject.SetActive(true);
+                        selectManager.stayPositionMarker.position = selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal;
                     }
                     else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Minion"))
                     {
@@ -150,9 +161,15 @@ public class InputManager : MonoBehaviour
                         selectManager.selectedTroop.GetComponent<Minion>().grave = hitObjects[lowestYIndex].transform.parent.GetComponent<Grave>();
                         hitObjects[lowestYIndex].transform.parent.GetComponent<Grave>().targetSelect.SetActive(true);
                     }
+                    else if (!selectManager.selectingObject)
+                    {
+                        xHoldPosition = selectManager.transform.position.x;
+                        startingXHoldPosition = Input.mousePosition;
+                        movingCamera = true;
+                    }
                 }
             }
-            else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton"))
+            else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton") && camera.ScreenToWorldPoint(Input.mousePosition).y < .9f)
             {
                 if (selectManager.selectedTroop.GetComponent<Skeleton>().goal != null)
                 {
@@ -161,7 +178,27 @@ public class InputManager : MonoBehaviour
                 }
                 selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.stay;
                 selectManager.skeletonStatus.sprite = selectManager.skeletonStay;
-                selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal = camera.ScreenToWorldPoint(Input.mousePosition);
+                selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal = new Vector2(camera.ScreenToWorldPoint(Input.mousePosition).x, camera.ScreenToWorldPoint(Input.mousePosition).y);
+                selectManager.stayPositionMarker.gameObject.SetActive(true);
+                selectManager.stayPositionMarker.position = selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal;
+            }
+            else if (!selectManager.selectingObject)
+            {
+                xHoldPosition = selectManager.transform.position.x;
+                startingXHoldPosition = Input.mousePosition;
+                movingCamera = true;
+            }
+        }
+        else if (movingCamera)
+        {
+            if (paused || !allowInputs || selectManager.selectingObject || !Input.GetKey(KeyCode.Mouse0))
+            {
+                movingCamera = false;
+            }
+            else
+            {
+                selectManager.transform.position = new Vector3(Mathf.Clamp(xHoldPosition + ((camera.ScreenToWorldPoint(startingXHoldPosition).x - camera.ScreenToWorldPoint(Input.mousePosition).x) * Time.deltaTime * -1.5f), selectManager.minX, selectManager.maxX), selectManager.transform.position.y, 0f);
+                xHoldPosition = selectManager.transform.position.x;
             }
         }
 
@@ -234,7 +271,7 @@ public class InputManager : MonoBehaviour
             {
                 buttonPressTimer = 0f;
                 buttonPressed = false;
-                if (!(Input.GetKey(leftButton) && Input.GetKey(middleButton)) && !(Input.GetKey(leftButton) && Input.GetKey(rightButton)) && !(Input.GetKey(middleButton) && Input.GetKey(rightButton)))
+                if (Input.GetKeyDown(KeyCode.Escape ) || (!(Input.GetKey(leftButton) && Input.GetKey(middleButton)) && !(Input.GetKey(leftButton) && Input.GetKey(rightButton)) && !(Input.GetKey(middleButton) && Input.GetKey(rightButton))))
                 {
                     if (Input.GetKey(leftButton))
                     {
@@ -271,7 +308,7 @@ public class InputManager : MonoBehaviour
             {
                 buttonPressTimer += Time.deltaTime;
             }
-            if (Input.GetKey(leftButton) && Input.GetKey(middleButton) && Input.GetKey(rightButton) && (Input.GetKeyDown(leftButton) || Input.GetKeyDown(middleButton) || Input.GetKeyDown(rightButton)))
+            if (Input.GetKeyDown(KeyCode.Escape) || (Input.GetKey(leftButton) && Input.GetKey(middleButton) && Input.GetKey(rightButton) && (Input.GetKeyDown(leftButton) || Input.GetKeyDown(middleButton) || Input.GetKeyDown(rightButton))))
             {
                 Pause();
             }
@@ -412,13 +449,31 @@ public class InputManager : MonoBehaviour
 
     IEnumerator MousePressDown()
     {
+        doingSkeletonMouseCoroutine = true;
         Transform selectedObject = selectManager.selectedTroop;
         float timer = 0f;
-        while (timer < buttonPressTime)
+        while (timer < buttonPressTime && allowInputs)
         {
             timer += Time.deltaTime;
             yield return new WaitForFixedUpdate();
             if (!Input.GetKey(KeyCode.Mouse0))
+            {
+                break;
+            }
+        }
+        if (timer < buttonPressTime && allowInputs)
+        {
+            while (timer < buttonPressTime && allowInputs)
+            {
+                timer += Time.deltaTime;
+                yield return new WaitForFixedUpdate();
+                if (Input.GetKey(KeyCode.Mouse0))
+                {
+                    Debug.Log("Special");
+                    break;
+                }
+            }
+            if (!Input.GetKey(KeyCode.Mouse0) && allowInputs)
             {
                 if (selectManager.selectingObject && selectedObject == selectManager.selectedTroop && allowInputs)
                 {
@@ -457,13 +512,13 @@ public class InputManager : MonoBehaviour
                         }
                     }
                 }
-                break;
             }
         }
-        if (Input.GetKey(KeyCode.Mouse0) && allowInputs)
+        else if (allowInputs)
         {
             selectManager.Deselect();
         }
+        doingSkeletonMouseCoroutine = false;
     }
 
     public void Pause()

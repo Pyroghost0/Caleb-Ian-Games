@@ -517,7 +517,8 @@ public class Minion : MonoBehaviour
     {
         playerBase.UpdateBones((short)-boneUpgradeAmount);
         upgradeLevel++;
-        //attack.attackPower = (short)(attack.attackPower * attackUpgradeFactor);
+        attack.attackPower = (short)(attack.attackPower * upgradeFactor);
+        diggingAttack.attackPower = (short)(attack.attackPower * upgradeFactor);
         if (upgradeLevel != 3)
         {
             boneUpgradeAmount *= 2;
