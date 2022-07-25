@@ -53,6 +53,10 @@ public class Minion : MonoBehaviour
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
         inDiggingMode = selectManager.currentMinionDigStatus;
+        if (selectManager.selectingObject && selectManager.selectedTroop == transform)
+        {
+            selectManager.minionStatus.sprite = inDiggingMode ? selectManager.minionDig : selectManager.minionAttack;
+        }
         rigidbody = GetComponent<Rigidbody2D>();
         playerBase.numSkeletons++;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;

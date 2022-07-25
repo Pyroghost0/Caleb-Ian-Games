@@ -54,7 +54,7 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && allowInputs)
         {
             RaycastHit2D hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             List<GameObject> hitObjects = new List<GameObject>();
@@ -77,38 +77,9 @@ public class InputManager : MonoBehaviour
                 }
                 if (hitObjects[lowestYIndex].CompareTag("Skeleton Select"))
                 {
-                    if (selectManager.selectedTroop == hitObjects[lowestYIndex].transform.parent)
+                    if (selectManager.selectingObject && selectManager.selectedTroop == hitObjects[lowestYIndex].transform.parent)
                     {
-                        if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton"))
-                        {
-                            if (selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode != SkeletonMode.left)
-                            {
-                                selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
-                            }
-                            else
-                            {
-                                selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
-                            }
-                        }
-                        else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Minion"))
-                        {
-                            if (selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode)
-                            {
-                                selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = false;
-                                if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
-                                {
-                                    selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(false);
-                                }
-                            }
-                            else
-                            {
-                                selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = true;
-                                if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
-                                {
-                                    selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
-                                }
-                            }
-                        }
+                        StartCoroutine(MousePressDown());
                     }
                     else
                     {
@@ -120,6 +91,7 @@ public class InputManager : MonoBehaviour
                     if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton"))
                     {
                         selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
+                        selectManager.skeletonStatus.sprite = selectManager.skeletonAttack;
                         if (selectManager.selectedTroop.GetComponent<Skeleton>().goal != null)
                         {
                             selectManager.selectedTroop.GetComponent<Skeleton>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
@@ -132,6 +104,7 @@ public class InputManager : MonoBehaviour
                         if (selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode)
                         {
                             selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = false;
+                            selectManager.minionStatus.sprite = selectManager.minionAttack;
                             if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
                             {
                                 selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(false);
@@ -155,6 +128,7 @@ public class InputManager : MonoBehaviour
                             selectManager.selectedTroop.GetComponent<Skeleton>().goal = null;
                         }
                         selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.stay;
+                        selectManager.skeletonStatus.sprite = selectManager.skeletonStay;
                         selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal = camera.ScreenToWorldPoint(Input.mousePosition);
                     }
                     else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Minion"))
@@ -169,6 +143,7 @@ public class InputManager : MonoBehaviour
                         else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
                         {
                             selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = true;
+                            selectManager.minionStatus.sprite = selectManager.minionDig;
                             selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
                         }
                         selectManager.selectedTroop.GetComponent<Minion>().goal = hitObjects[lowestYIndex].transform.parent;
@@ -185,6 +160,7 @@ public class InputManager : MonoBehaviour
                     selectManager.selectedTroop.GetComponent<Skeleton>().goal = null;
                 }
                 selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.stay;
+                selectManager.skeletonStatus.sprite = selectManager.skeletonStay;
                 selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal = camera.ScreenToWorldPoint(Input.mousePosition);
             }
         }
@@ -434,6 +410,62 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    IEnumerator MousePressDown()
+    {
+        Transform selectedObject = selectManager.selectedTroop;
+        float timer = 0f;
+        while (timer < buttonPressTime)
+        {
+            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+            if (!Input.GetKey(KeyCode.Mouse0))
+            {
+                if (selectManager.selectingObject && selectedObject == selectManager.selectedTroop && allowInputs)
+                {
+                    if (selectedObject.CompareTag("Skeleton"))
+                    {
+                        if (selectedObject.GetComponent<Skeleton>().skeletonMode != SkeletonMode.left)//Or behind part !!!! ADD LATER
+                        {
+                            selectedObject.GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
+                            selectManager.skeletonStatus.sprite = selectManager.skeletonRun;
+                        }
+                        else
+                        {
+                            selectedObject.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
+                            selectManager.skeletonStatus.sprite = selectManager.skeletonAttack;
+                        }
+                    }
+                    else if (selectedObject.CompareTag("Minion"))
+                    {
+                        if (selectedObject.GetComponent<Minion>().inDiggingMode)
+                        {
+                            selectedObject.GetComponent<Minion>().inDiggingMode = false;
+                            selectManager.minionStatus.sprite = selectManager.minionAttack;
+                            if (selectedObject.GetComponent<Minion>().goal != null)
+                            {
+                                selectedObject.GetComponent<Minion>().grave.targetSelect.SetActive(false);
+                            }
+                        }
+                        else
+                        {
+                            selectedObject.GetComponent<Minion>().inDiggingMode = true;
+                            selectManager.minionStatus.sprite = selectManager.minionDig;
+                            if (selectedObject.GetComponent<Minion>().goal != null)
+                            {
+                                selectedObject.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        if (Input.GetKey(KeyCode.Mouse0) && allowInputs)
+        {
+            selectManager.Deselect();
+        }
+    }
+
     public void Pause()
     {
         paused = true;
@@ -633,6 +665,7 @@ public class InputManager : MonoBehaviour
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[3]));
                     selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
+                    selectManager.skeletonStatus.sprite = selectManager.skeletonRun;
                 }
                 else if (type == ButtonPressed.middle)
                 {
@@ -643,6 +676,7 @@ public class InputManager : MonoBehaviour
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[5]));
                     selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
+                    selectManager.skeletonStatus.sprite = selectManager.skeletonAttack;
                 }
             }
             else if (selectManager.selectedTroop.CompareTag("Minion"))
@@ -708,15 +742,7 @@ public class InputManager : MonoBehaviour
                 if (type == ButtonPressed.left)
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[6]));
-                    if (selectManager.selectedTroop.GetComponent<Skeleton>().defenceBoneUpgradeAmount != -1 && playerBase.bones >= selectManager.selectedTroop.GetComponent<Skeleton>().defenceBoneUpgradeAmount)
-                    {
-                        selectManager.selectedTroop.GetComponent<Skeleton>().UpgradeDefence();
-                    }
-                    else
-                    {
-                        InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
-                        notice.textPosition.anchoredPosition = new Vector2(190f, 150f);
-                    }
+                    selectManager.UpgradeDefence();
                 }
                 else if (type == ButtonPressed.middle)
                 {
@@ -726,15 +752,7 @@ public class InputManager : MonoBehaviour
                 else /*if (type == ButtonPressed.right)*/
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[8]));
-                    if (selectManager.selectedTroop.GetComponent<Skeleton>().attackBoneUpgradeAmount != -1 && playerBase.bones >= selectManager.selectedTroop.GetComponent<Skeleton>().attackBoneUpgradeAmount)
-                    {
-                        selectManager.selectedTroop.GetComponent<Skeleton>().UpgradeAttack();
-                    }
-                    else
-                    {
-                        InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
-                        notice.textPosition.anchoredPosition = new Vector2(340f, 150f);
-                    }
+                    selectManager.UpgradeAttack();
                 }
             }
             else if (selectManager.selectedTroop.CompareTag("Minion"))
@@ -743,24 +761,18 @@ public class InputManager : MonoBehaviour
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[6]));
                     selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = true;
+                    selectManager.minionStatus.sprite = selectManager.minionDig;
                 }
                 else if (type == ButtonPressed.middle)
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[7]));
-                    if (selectManager.selectedTroop.GetComponent<Minion>().boneUpgradeAmount != -1 && playerBase.bones >= selectManager.selectedTroop.GetComponent<Minion>().boneUpgradeAmount)
-                    {
-                        selectManager.selectedTroop.GetComponent<Minion>().Upgrade();
-                    }
-                    else
-                    {
-                        InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
-                        notice.textPosition.anchoredPosition = new Vector2(265f, 150f);
-                    }
+                    selectManager.UpgradeShovel();
                 }
                 else /*if (type == ButtonPressed.right)*/
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[8]));
                     selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = false;
+                    selectManager.minionStatus.sprite = selectManager.minionAttack;
                 }
             }
             else /*if (selectManager.selectedTroop.CompareTag("Corpse"))*/
@@ -810,15 +822,7 @@ public class InputManager : MonoBehaviour
         else if (type == ButtonPressed.middle)
         {
             StartCoroutine(PressButtonVisually(buttonImages[7]));
-            if (playerBase.bones >= playerBase.maxSkeletonUpgradeAmount)
-            {
-                playerBase.UpgradeMaxSkeletons();
-            }
-            else
-            {
-                InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
-                notice.textPosition.anchoredPosition = new Vector2(265f, 150f);
-            }
+            selectManager.UpgradeShovel();
         }
         /*else /*if (type == ButtonPressed.right)*/
         /*{

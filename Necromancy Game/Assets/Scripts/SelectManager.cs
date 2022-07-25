@@ -44,6 +44,18 @@ public class SelectManager : MonoBehaviour
     private string[] selectMinionText = {"Select Left", "Deselect", "Select Right",       "All Mine", "q", "All Attack",         "Mine", "+Shovel Power", "Attack"};
     private string[] selectCorpseText = {"Select Left", "Deselect", "Select Right",       "All Minion", "All Tombstones", "All Skeleton",         "Minion", "Tombstones", "Skeleton"};
 
+    public Image skeletonStatus;
+    public Image minionStatus;
+    public Sprite skeletonRun;
+    public Sprite skeletonStay;
+    public Sprite skeletonAttack;
+    public Sprite minionDig;
+    public Sprite minionAttack;
+    public GameObject troopUpgradeButton;
+    public GameObject shovelUpgradeButton;
+    public GameObject attackUpgradeButton;
+    public GameObject defenceUpgradeButton;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -139,6 +151,8 @@ public class SelectManager : MonoBehaviour
         {
             if (selectedTroop.CompareTag("Skeleton"))
             {
+                defenceUpgradeButton.SetActive(false);
+                attackUpgradeButton.SetActive(false);
                 selectedTroop.GetComponent<Skeleton>().selectBars.SetActive(false);
                 if (selectedTroop.GetComponent<Skeleton>().goal != null)
                 {
@@ -147,6 +161,7 @@ public class SelectManager : MonoBehaviour
             }
             else if (selectedTroop.CompareTag("Minion"))
             {
+                shovelUpgradeButton.SetActive(false);
                 selectedTroop.GetComponent<Minion>().selectBars.SetActive(false);
                 if (selectedTroop.GetComponent<Minion>().goal != null && selectedTroop.GetComponent<Minion>().goal.CompareTag("Enemy"))
                 {
@@ -202,6 +217,17 @@ public class SelectManager : MonoBehaviour
             {
                 skeleton.goal.GetComponent<Enemy>().targetSelect.SetActive(true);
             }
+            if (skeleton.attackBoneUpgradeAmount != -1)
+            {
+                attackUpgradeButton.SetActive(true);
+            }
+            if (skeleton.defenceBoneUpgradeAmount != -1)
+            {
+                defenceUpgradeButton.SetActive(true);
+            }
+            skeletonStatus.gameObject.SetActive(true);
+            minionStatus.gameObject.SetActive(false);
+            skeletonStatus.sprite = skeleton.skeletonMode == SkeletonMode.left ? skeletonRun : (skeleton.skeletonMode == SkeletonMode.stay ? skeletonStay : skeletonAttack);
         }
         else if (newSelect.CompareTag("Minion"))
         {
@@ -235,6 +261,13 @@ public class SelectManager : MonoBehaviour
             {
                 minion.grave.targetSelect.SetActive(true);
             }
+            if (minion.boneUpgradeAmount != -1)
+            {
+                shovelUpgradeButton.SetActive(true);
+            }
+            skeletonStatus.gameObject.SetActive(false);
+            minionStatus.gameObject.SetActive(true);
+            minionStatus.sprite = minion.inDiggingMode ? minionDig : minionAttack;
         }
         else /*if (newSelect.CompareTag("Corpse"))*/
         {
@@ -250,6 +283,8 @@ public class SelectManager : MonoBehaviour
             boneCostObject2.SetActive(false);
             troopCapacity.anchoredPosition = new Vector3(265f, -25, 0f);
             selectedTroop.GetComponent<Corpse>().selectBars.SetActive(true);
+            skeletonStatus.gameObject.SetActive(false);
+            minionStatus.gameObject.SetActive(false);
         }
     }
 
@@ -257,6 +292,8 @@ public class SelectManager : MonoBehaviour
     {
         if (selectedTroop.CompareTag("Skeleton"))
         {
+            defenceUpgradeButton.SetActive(false);
+            attackUpgradeButton.SetActive(false);
             selectedTroop.GetComponent<Skeleton>().selectBars.SetActive(false);
             if (selectedTroop.GetComponent<Skeleton>().goal != null)
             {
@@ -265,6 +302,7 @@ public class SelectManager : MonoBehaviour
         }
         else if (selectedTroop.CompareTag("Minion"))
         {
+            shovelUpgradeButton.SetActive(false);
             selectedTroop.GetComponent<Minion>().selectBars.SetActive(false);
             if (selectedTroop.GetComponent<Minion>().goal != null && selectedTroop.GetComponent<Minion>().goal.CompareTag("Enemy"))
             {
@@ -279,6 +317,7 @@ public class SelectManager : MonoBehaviour
         {
             selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
         }
+        troopUpgradeButton.SetActive(true);
         selectingObject = false;
         selectedTroop = null;
         transform.position = new Vector3(cinemachine.transform.position.x, 0f, 0f);
@@ -297,6 +336,10 @@ public class SelectManager : MonoBehaviour
         boneCostObject1.SetActive(false);
         boneCostObject2.SetActive(false);
         troopCapacity.anchoredPosition = new Vector3(340f, -25, 0f);
+        skeletonStatus.gameObject.SetActive(true);
+        minionStatus.gameObject.SetActive(true);
+        skeletonStatus.sprite = currentSkeletonMode == SkeletonMode.left ? skeletonRun : (currentSkeletonMode == SkeletonMode.stay ? skeletonStay : skeletonAttack);
+        minionStatus.sprite = currentMinionDigStatus ? minionDig : minionAttack;
     }
 
     public void SelectLeftTroop()
@@ -447,6 +490,7 @@ public class SelectManager : MonoBehaviour
         {
             minions[i].GetComponent<Minion>().inDiggingMode = true;
         }
+        minionStatus.sprite = minionDig;
     }
 
     public void AllMinionsAttack()
@@ -457,6 +501,7 @@ public class SelectManager : MonoBehaviour
         {
             minions[i].GetComponent<Minion>().inDiggingMode = false;
         }
+        minionStatus.sprite = minionAttack;
     }
 
     public void AllCorpsesSpawnMinions()
@@ -626,6 +671,7 @@ public class SelectManager : MonoBehaviour
                 selectableObjects[i].GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
             }
         }
+        skeletonStatus.sprite = skeletonRun;
     }
 
     public void AllTroopsStay()
@@ -639,6 +685,7 @@ public class SelectManager : MonoBehaviour
                 skeleton.stayGoal = selectableObjects[i].position;
             }
         }
+        skeletonStatus.sprite = skeletonStay;
     }
 
     public void AllTroopsRight()
@@ -650,6 +697,7 @@ public class SelectManager : MonoBehaviour
                 selectableObjects[i].GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
             }
         }
+        skeletonStatus.sprite = skeletonAttack;
     }
 
     public void TroopStay()
@@ -657,6 +705,59 @@ public class SelectManager : MonoBehaviour
         Skeleton skeleton = selectedTroop.GetComponent<Skeleton>();
         skeleton.skeletonMode = SkeletonMode.stay;
         skeleton.stayGoal = selectedTroop.position;
+        skeletonStatus.sprite = skeletonStay;
+    }
+
+    public void UpgradeTroopCapasity()
+    {
+        if (playerBase.bones >= playerBase.maxSkeletonUpgradeAmount)
+        {
+            playerBase.UpgradeMaxSkeletons();
+        }
+        else
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.textPosition.anchoredPosition = new Vector2(265f, 150f);
+        }
+    }
+
+    public void UpgradeShovel()
+    {
+        if (selectedTroop.GetComponent<Minion>().boneUpgradeAmount != -1 && playerBase.bones >= selectedTroop.GetComponent<Minion>().boneUpgradeAmount)
+        {
+            selectedTroop.GetComponent<Minion>().Upgrade();
+        }
+        else
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.textPosition.anchoredPosition = new Vector2(265f, 150f);
+        }
+    }
+
+    public void UpgradeDefence()
+    {
+        if (selectedTroop.GetComponent<Skeleton>().defenceBoneUpgradeAmount != -1 && playerBase.bones >= selectedTroop.GetComponent<Skeleton>().defenceBoneUpgradeAmount)
+        {
+            selectedTroop.GetComponent<Skeleton>().UpgradeDefence();
+        }
+        else
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.textPosition.anchoredPosition = new Vector2(190f, 150f);
+        }
+    }
+
+    public void UpgradeAttack()
+    {
+        if (selectedTroop.GetComponent<Skeleton>().attackBoneUpgradeAmount != -1 && playerBase.bones >= selectedTroop.GetComponent<Skeleton>().attackBoneUpgradeAmount)
+        {
+            selectedTroop.GetComponent<Skeleton>().UpgradeAttack();
+        }
+        else
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.textPosition.anchoredPosition = new Vector2(340f, 150f);
+        }
     }
 
     public void SelectedTroopDestroyed()

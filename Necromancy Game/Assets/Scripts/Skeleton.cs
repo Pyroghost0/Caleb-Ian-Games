@@ -61,6 +61,10 @@ public class Skeleton : MonoBehaviour
         stayGoal = transform.position;
         selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
         skeletonMode = selectManager.currentSkeletonMode;
+        if (selectManager.selectingObject && selectManager.selectedTroop == transform)
+        {
+            selectManager.minionStatus.sprite = skeletonMode == SkeletonMode.left ?selectManager.skeletonRun : (skeletonMode == SkeletonMode.stay ? selectManager.skeletonStay : selectManager.skeletonAttack);
+        }
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         playerBase.numSkeletons++;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
@@ -180,6 +184,7 @@ public class Skeleton : MonoBehaviour
                     //inPresenceOfTower = true;
                     stayGoal = new Vector3(xGoal, transform.position.y, 0f);
                     skeletonMode = SkeletonMode.stay;
+                    selectManager.skeletonStatus.sprite = selectManager.skeletonStay;
                 }
                 else if (rigidbody.velocity.x < maxSpeed)
                 {
@@ -379,6 +384,7 @@ public class Skeleton : MonoBehaviour
             if (transform.position.x < xBaseGoal)
             {
                 skeletonMode = SkeletonMode.stay;
+                selectManager.skeletonStatus.sprite = selectManager.skeletonStay;
                 stayGoal = transform.position;
             }
             else
@@ -432,6 +438,7 @@ public class Skeleton : MonoBehaviour
         {
             defenceBoneUpgradeAmount = -1;
             selectManager.boneCostObject1.SetActive(false);
+            selectManager.defenceUpgradeButton.SetActive(false);
         }
     }
 
@@ -455,6 +462,7 @@ public class Skeleton : MonoBehaviour
         {
             attackBoneUpgradeAmount = -1;
             selectManager.boneCostObject2.SetActive(false);
+            selectManager.attackUpgradeButton.SetActive(false);
         }
     }
 
