@@ -70,4 +70,14 @@ public class PlayerBase : MonoBehaviour
         bones += bonesDifference;
         selectManager.boneValue.text = bones.ToString();
     }
+
+    public void HealAll()
+    {
+        Debug.Log("Heals");
+    }
+
+    public void ArrowAttack()
+    {
+        Debug.Log("Arrow Attack");
+    }
 }

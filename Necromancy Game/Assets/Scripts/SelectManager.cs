@@ -39,9 +39,9 @@ public class SelectManager : MonoBehaviour
     public GameObject boneCostObject2;
     public TextMeshProUGUI boneCostValue2;
     public TextMeshProUGUI[] buttonTexts;
-    private string[] unselectButtonsText = {"Special 1", "Select", "Special 2",       "All Retreat", "All Stay", "All Attack",         "Look Left", "+Troop Size", "Look Right"};
+    private string[] unselectButtonsText = {"Heal All", "Select", "Arrow Attack",       "All Retreat", "All Stay", "All Attack",         "Look Left", "+Troop Size", "Look Right"};
     private string[] selectSkeletonText = {"Select Left", "Deselect", "Select Right",       "Retreat", "Stay", "Attack",         "+Defence", "Special", "+Attack"};
-    private string[] selectMinionText = {"Select Left", "Deselect", "Select Right",       "All Mine", "q", "All Attack",         "Mine", "+Shovel Power", "Attack"};
+    private string[] selectMinionText = {"Select Left", "Deselect", "Select Right",       "All Mine", "Take Bones", "All Attack",         "Mine", "+Shovel", "Attack"};
     private string[] selectCorpseText = {"Select Left", "Deselect", "Select Right",       "All Minion", "All Tombstones", "All Skeleton",         "Minion", "Tombstones", "Skeleton"};
 
     public Image skeletonStatus;
@@ -55,6 +55,9 @@ public class SelectManager : MonoBehaviour
     public GameObject shovelUpgradeButton;
     public GameObject attackUpgradeButton;
     public GameObject defenceUpgradeButton;
+    public GameObject corpseMinionButton;
+    public GameObject corpseTombstoneButton;
+    public GameObject corpseSkeletonButton;
     public Transform stayPositionMarker;
 
     // Start is called before the first frame update
@@ -176,6 +179,9 @@ public class SelectManager : MonoBehaviour
             }
             else /*if (selectedTroop.CompareTag("Corpse"))*/
             {
+                corpseMinionButton.SetActive(false);
+                corpseTombstoneButton.SetActive(false);
+                corpseSkeletonButton.SetActive(false);
                 selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
             }
         }
@@ -294,6 +300,9 @@ public class SelectManager : MonoBehaviour
             boneCostObject2.SetActive(false);
             troopCapacity.anchoredPosition = new Vector3(265f, -25, 0f);
             selectedTroop.GetComponent<Corpse>().selectBars.SetActive(true);
+            corpseMinionButton.SetActive(true);
+            corpseTombstoneButton.SetActive(true);
+            corpseSkeletonButton.SetActive(true);
             skeletonStatus.gameObject.SetActive(false);
             minionStatus.gameObject.SetActive(false);
         }
@@ -327,6 +336,9 @@ public class SelectManager : MonoBehaviour
         }
         else /*if (selectedTroop.CompareTag("Corpse"))*/
         {
+            corpseMinionButton.SetActive(false);
+            corpseTombstoneButton.SetActive(false);
+            corpseSkeletonButton.SetActive(false);
             selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
         }
         troopUpgradeButton.SetActive(true);
@@ -710,6 +722,58 @@ public class SelectManager : MonoBehaviour
             }
         }
         skeletonStatus.sprite = skeletonAttack;
+    }
+
+    public void TakeMinionBones()
+    {
+        Minion minion = selectedTroop.GetComponent<Minion>();
+        if (minion.bonesStored > 0)
+        {
+            playerBase.UpdateBones(minion.bonesStored);
+            minion.bonesStored = 0;
+        }
+        else
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Minion Has No Bones";
+            notice.textPosition.anchoredPosition = new Vector2(0f, 150f);
+        }
+    }
+
+    public void CorpseSpawnMinion()
+    {
+        selectedTroop.GetComponent<Corpse>().SpawnMinion();
+        if (corpseActionFail)
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Max Troops Reached";
+            notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+            corpseActionFail = false;
+        }
+    }
+
+    public void CorpseSpawnTombstone()
+    {
+        selectedTroop.GetComponent<Corpse>().SpawnTombstones();
+        if (corpseActionFail)
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Graveyard Full";
+            notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+            corpseActionFail = false;
+        }
+    }
+
+    public void CorpseSpawnSkeleton()
+    {
+        selectedTroop.GetComponent<Corpse>().SpawnSkeleton();
+        if (corpseActionFail)
+        {
+            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Max Troops Reached";
+            notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+            corpseActionFail = false;
+        }
     }
 
     public void TroopStay()
