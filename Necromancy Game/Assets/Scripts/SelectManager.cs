@@ -60,6 +60,18 @@ public class SelectManager : MonoBehaviour
     public GameObject corpseSkeletonButton;
     public Transform stayPositionMarker;
 
+    public RectTransform rectHealCooldownBar;
+    public float rectHealCooldown;
+    public bool healCooldown = false;
+    private float healCooldownTimer = 0f;
+    public float healCooldownTime = 25f;
+    public RectTransform rectArrowCooldownBar;
+    public float rectArrowCooldown;
+    public bool arrowCooldown = false;
+    private float arrowCooldownTimer = 0f;
+    public float arrowCooldownTime = 25f;
+    public RectTransform rectSpecialCooldownBar;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +79,8 @@ public class SelectManager : MonoBehaviour
         boneCostValue0.text = "-" + playerBase.maxSkeletonUpgradeAmount.ToString();
         troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
         rectHealth = rectHealthBar.rect.width;
+        rectHealCooldown = rectHealCooldownBar.rect.width;
+        rectArrowCooldown = rectArrowCooldownBar.rect.width;
         GameObject[] skeletons = GameObject.FindGameObjectsWithTag("Skeleton");
         for (int i = 0; i < skeletons.Length; i++)
         {
@@ -187,6 +201,8 @@ public class SelectManager : MonoBehaviour
         }
         else
         {
+            rectHealCooldownBar.gameObject.SetActive(false);
+            rectArrowCooldownBar.gameObject.SetActive(false);
             troopUpgradeButton.gameObject.SetActive(false);
         }
         selectingObject = true;
@@ -341,6 +357,10 @@ public class SelectManager : MonoBehaviour
             corpseSkeletonButton.SetActive(false);
             selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
         }
+        rectHealCooldownBar.gameObject.SetActive(healCooldown);
+        rectHealCooldownBar.sizeDelta = new Vector2(((float)healCooldownTimer / healCooldownTime) * rectHealCooldown, rectHealCooldownBar.rect.height);
+        rectArrowCooldownBar.gameObject.SetActive(arrowCooldown);
+        rectArrowCooldownBar.sizeDelta = new Vector2(((float)arrowCooldownTimer / arrowCooldownTime) * rectArrowCooldown, rectArrowCooldownBar.rect.height);
         troopUpgradeButton.SetActive(true);
         selectingObject = false;
         selectedTroop = null;
@@ -421,6 +441,60 @@ public class SelectManager : MonoBehaviour
             notice.text.text = "Select Fail: Selecting Only Object";
             notice.textPosition.anchoredPosition = new Vector2(-340f, 150f);
         }
+    }
+
+    public void HealAllCooldown()
+    {
+        StartCoroutine(HealAllCooldownCoroutine());
+    }
+
+    IEnumerator HealAllCooldownCoroutine()
+    {
+        healCooldownTimer = 25f;
+        if (!selectingObject)
+        {
+            rectHealCooldownBar.gameObject.SetActive(true);
+            rectHealCooldownBar.sizeDelta = new Vector2(rectHealCooldown, rectHealCooldownBar.rect.height);
+        }
+        healCooldown = true;
+        for (int i = 0; i < 50; i++)
+        {
+            yield return new WaitForSeconds(.5f);
+            healCooldownTimer -= .5f;
+            if (!selectingObject)
+            {
+                rectHealCooldownBar.sizeDelta = new Vector2(((float)healCooldownTimer / healCooldownTime) * rectHealCooldown, rectHealCooldownBar.rect.height);
+            }
+        }
+        healCooldown = false;
+        rectHealCooldownBar.gameObject.SetActive(false);
+    }
+
+    public void ArrowAttackCooldown()
+    {
+        StartCoroutine(ArrowAttackCooldownCoroutine());
+    }
+
+    IEnumerator ArrowAttackCooldownCoroutine()
+    {
+        arrowCooldownTimer = 25f;
+        if (!selectingObject)
+        {
+            rectArrowCooldownBar.gameObject.SetActive(true);
+            rectArrowCooldownBar.sizeDelta = new Vector2(rectArrowCooldown, rectArrowCooldownBar.rect.height);
+        }
+        arrowCooldown = true;
+        for (int i = 0; i < 50; i++)
+        {
+            yield return new WaitForSeconds(.5f);
+            arrowCooldownTimer -= .5f;
+            if (!selectingObject)
+            {
+                rectArrowCooldownBar.sizeDelta = new Vector2(((float)arrowCooldownTimer / arrowCooldownTime) * rectArrowCooldown, rectArrowCooldownBar.rect.height);
+            }
+        }
+        arrowCooldown = false;
+        rectArrowCooldownBar.gameObject.SetActive(false);
     }
 
     public void SelectRightTroop()

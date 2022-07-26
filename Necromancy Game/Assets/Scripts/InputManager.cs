@@ -47,7 +47,7 @@ public class InputManager : MonoBehaviour
     public Image holdMiddleButtonImage;
     public Image holdRightButtonImage;
     private bool movingCamera = false;
-    private bool doingSkeletonMouseCoroutine = false;
+    private bool doingMouseCoroutine = false;
     private float xHoldPosition;
     private Vector3 startingXHoldPosition;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
@@ -57,16 +57,25 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && allowInputs && !paused && !doingSkeletonMouseCoroutine)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && allowInputs && !paused && !doingMouseCoroutine)
         {
             RaycastHit2D hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             List<GameObject> hitObjects = new List<GameObject>();
+            bool hitBase = false;
             while (hit.collider != null)
             {
-                hitObjects.Add(hit.collider.gameObject);
+                if (hit.collider.CompareTag("Player Base"))
+                {
+                    hitBase = true;
+                }
+                else
+                {
+                    hitObjects.Add(hit.collider.gameObject);
+                }
                 hit.collider.gameObject.layer = 2;
                 hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             }
+            playerBase.gameObject.layer = 0;
             if (hitObjects.Count != 0)
             {
                 int lowestYIndex = 0;
@@ -82,7 +91,7 @@ public class InputManager : MonoBehaviour
                 {
                     if (selectManager.selectingObject && selectManager.selectedTroop == hitObjects[lowestYIndex].transform.parent)
                     {
-                        StartCoroutine(MousePressDown());
+                        StartCoroutine(MousePressDownSkeleton());
                     }
                     else
                     {
@@ -181,6 +190,10 @@ public class InputManager : MonoBehaviour
                         movingCamera = true;
                     }
                 }
+            }
+            else if (hitBase)
+            {
+                StartCoroutine(MousePressDownBase());
             }
             else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton") && camera.ScreenToWorldPoint(Input.mousePosition).y < .9f)
             {
@@ -460,9 +473,9 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    IEnumerator MousePressDown()
+    IEnumerator MousePressDownSkeleton()
     {
-        doingSkeletonMouseCoroutine = true;
+        doingMouseCoroutine = true;
         Transform selectedObject = selectManager.selectedTroop;
         float timer = 0f;
         while (timer < buttonPressTime && allowInputs)
@@ -553,7 +566,31 @@ public class InputManager : MonoBehaviour
         {
             selectManager.Deselect();
         }
-        doingSkeletonMouseCoroutine = false;
+        doingMouseCoroutine = false;
+    }
+
+    IEnumerator MousePressDownBase()
+    {
+        doingMouseCoroutine = true;
+        float timer = 0f;
+        while (timer < buttonPressTime && allowInputs)
+        {
+            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+            if (!Input.GetKey(KeyCode.Mouse0))
+            {
+                break;
+            }
+        }
+        if (timer < buttonPressTime && allowInputs)
+        {
+            playerBase.ArrowAttack();
+        }
+        else if (allowInputs)
+        {
+            playerBase.HealAll();
+        }
+        doingMouseCoroutine = false;
     }
 
     public void Pause()
@@ -731,7 +768,7 @@ public class InputManager : MonoBehaviour
         else if (type == ButtonPressed.left)
         {
             StartCoroutine(PressButtonVisually(buttonImages[0]));
-            //selectManager.AllMinionsMine();
+            playerBase.HealAll();
         }
         else if (type == ButtonPressed.middle)
         {
@@ -741,7 +778,7 @@ public class InputManager : MonoBehaviour
         else /*if (type == ButtonPressed.right)*/
         {
             StartCoroutine(PressButtonVisually(buttonImages[2]));
-            //selectManager.AllMinionsAttack();
+            playerBase.ArrowAttack();
         }
     }
 
@@ -809,7 +846,7 @@ public class InputManager : MonoBehaviour
         else if (type == ButtonPressed.left)
         {
             StartCoroutine(PressButtonVisually(buttonImages[3]));
-            playerBase.HealAll();
+            selectManager.AllTroopsLeft();
         }
         else if (type == ButtonPressed.middle)
         {
@@ -819,7 +856,7 @@ public class InputManager : MonoBehaviour
         else /*if (type == ButtonPressed.right)*/
         {
             StartCoroutine(PressButtonVisually(buttonImages[5]));
-            playerBase.ArrowAttack();
+            selectManager.AllTroopsRight();
         }
     }
 

@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
     public bool reversedSprite = false;
     public bool dead = false;
     private float slopeGoal = 1.6f;
-    private float posYGoal = 6f;
+    private float posYGoal = 8f;
     public Transform goal;
     public bool inPresenceOfSkeleton = false;
     public bool inPresenceOfTower = false;

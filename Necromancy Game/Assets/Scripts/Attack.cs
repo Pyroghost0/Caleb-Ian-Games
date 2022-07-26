@@ -8,7 +8,8 @@ public enum AttackType
     Projectile = 1,
     Single = 2,
     Dig = 3,
-    RangedAOE = 4
+    RangedAOE = 4,
+    ArrowBarrage = 5
 }
 
 public class Attack : MonoBehaviour
@@ -29,11 +30,15 @@ public class Attack : MonoBehaviour
     private List<GameObject> targets = new List<GameObject>();
 
     private float slopeBase = 1.6f;
-    private float posYBase = 6f;
+    private float posYBase = 8f;
+    private bool sort = true;
 
     private void Update()
     {
-        spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
+        if (sort)
+        {
+            spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
+        }
     }
 
     public void StartAttack(AttackType attackType)
@@ -54,10 +59,14 @@ public class Attack : MonoBehaviour
         {
             StartCoroutine(StartRangedAOEAttackCorutine());
         }
-        else /*if (attackType == AttackType.Dig)*/
+        /*else if (attackType == AttackType.Dig)
         {
             //StartCoroutine(StartDigAttackCorutine());
         }
+        else if (attackType == AttackType.ArrowBarrage)
+        {
+
+        }*/
     }
 
     public void StartProjectileAttack()
@@ -246,13 +255,16 @@ public class Attack : MonoBehaviour
 
     IEnumerator StartRangedAOEAttackCorutine()
     {
+        Vector3 startPosition = transform.parent.localPosition;
+        gameObject.SetActive(true);
+        transform.parent.parent = null;
         currectlyAttacking = true;
         targets.Clear();
         if (source.CompareTag("Enemy"))
         {
             if (source.GetComponent<Enemy>().inPresenceOfTower)
             {
-                transform.position = new Vector3(source.transform.position.x, slopeBase * source.transform.position.x + posYBase, 0f);
+                transform.position = new Vector3((source.transform.position.y - posYBase) / slopeBase, source.transform.position.y, 0f);
             }
             else
             {
@@ -308,8 +320,18 @@ public class Attack : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(attackCooldown);
-        currectlyAttacking = false;
-        gameObject.SetActive(false);
+        if (source != null)
+        {
+            transform.parent.parent = source.transform;
+            transform.parent.transform.localPosition = startPosition;
+            transform.localPosition = Vector3.zero;
+            currectlyAttacking = false;
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            Destroy(transform.parent.gameObject);
+        }
     }
 
     public void StartDigAttack(short bonesNeeded, Grave target)
@@ -372,5 +394,81 @@ public class Attack : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void StartArrowBarrageAttack()
+    {
+        gameObject.SetActive(true);
+        StartCoroutine(StartArrowBarrageAttackCorutine());
+    }
+
+    IEnumerator StartArrowBarrageAttackCorutine()
+    {
+        Vector3 startPosition = transform.position;
+        sort = false;
+        spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
+        transform.rotation = Quaternion.Euler(0f, 0f, Random.Range(40f, 80f));
+        float rotation = Random.Range(40f, 80f);
+        attackSpeed = Random.Range(2.5f, 3.5f);
+        yield return new WaitForSeconds(Random.Range(0f, 1f));
+        //spriteRenderer.enabled = true;
+        if (GetComponent<Animator>())
+        {
+            GetComponent<Animator>().SetTrigger("Attack");
+        }
+        currectlyAttacking = true;
+        targets.Clear();
+        bool done = false;
+        while (!done && transform.position.y >= startPosition.y)
+        {
+            transform.Translate(Vector2.right * attackSpeed * Time.deltaTime);
+            if (transform.rotation.eulerAngles.z > -80f)
+            {
+                transform.rotation = Quaternion.Euler(0f, 0f, transform.rotation.eulerAngles.z - (rotation * Time.deltaTime));
+            }
+            for (int i = 0; i < targets.Count; i++)
+            {
+                if (targets[i] == null)
+                {
+
+                }
+                else if (affectsEnemies && targets[i].CompareTag("Enemy") && targets[i].transform.position.y < startPosition.y+3f && transform.position.y > startPosition.y - 1.5f)
+                {
+                    targets[i].GetComponent<Enemy>().Hit(transform.position, null, knockback, attackPower);
+                    done = true;
+                    break;
+                }
+                /*else if (affectsSkeletons)
+                {
+                    if (targets[i].CompareTag("Skeleton"))
+                    {
+                        targets[i].GetComponent<Skeleton>().Hit(transform.position, source == null || source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
+                        done = true;
+                        break;
+                    }
+                    else if (targets[i].CompareTag("Minion"))
+                    {
+                        targets[i].GetComponent<Minion>().Hit(transform.position, source == null || source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
+                        done = true;
+                        break;
+                    }
+                    /*else if (targets[i].CompareTag("Player Base"))
+                    {
+                        targets[i].GetComponent<PlayerBase>().Hit(attackPower);
+                        done = true;
+                        break;
+                    }*/
+                //}
+            }
+            yield return new WaitForFixedUpdate();
+        }
+        if (!done)
+        {
+            yield return new WaitForSeconds(.5f);
+        }
+        //spriteRenderer.enabled = false;
+        transform.position = startPosition;
+        currectlyAttacking = false;
+        gameObject.SetActive(false);
     }
 }
