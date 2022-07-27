@@ -52,6 +52,7 @@ public class Skeleton : MonoBehaviour
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+    public Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -159,9 +160,11 @@ public class Skeleton : MonoBehaviour
                 }
                 else if (destination.magnitude < enemyAttackRange)
                 {
+                    anim.SetBool("Running", false);
                     //Debug.Log("Attack");
                     if (!attack.currectlyAttacking)
                     {
+                        anim.SetTrigger("Attack");
                         attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         attack.gameObject.SetActive(true);
                         attack.StartAttack(attackType);
@@ -169,11 +172,13 @@ public class Skeleton : MonoBehaviour
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
                 {
+                    anim.SetBool("Running", true);
                     //Debug.Log("Lowest Speed");
                     rigidbody.velocity += ((maxSpeed / 3f) - rigidbody.velocity.magnitude) * destination.normalized;
                 }
                 else
                 {
+                    anim.SetBool("Running", true);
                     //Debug.Log("Normal Speed");
                     rigidbody.velocity += speedAcceleration * destination.normalized * Time.deltaTime;
                 }
@@ -182,6 +187,7 @@ public class Skeleton : MonoBehaviour
             {
                 if (transform.position.x >= xGoal)
                 {
+                    anim.SetBool("Running", false);
                     //inPresenceOfTower = true;
                     stayGoal = new Vector3(xGoal, transform.position.y, 0f);
                     skeletonMode = SkeletonMode.stay;
@@ -189,6 +195,7 @@ public class Skeleton : MonoBehaviour
                 }
                 else if (rigidbody.velocity.x < maxSpeed)
                 {
+                    anim.SetBool("Running", true);
                     rigidbody.velocity += speedAcceleration * Time.deltaTime * Vector2.right;
                     if (rigidbody.velocity.x >= maxSpeed)
                     {
@@ -197,6 +204,7 @@ public class Skeleton : MonoBehaviour
                 }
                 else if (rigidbody.velocity.x > maxSpeed)
                 {
+                    anim.SetBool("Running", true);
                     rigidbody.velocity -= speedAcceleration * Time.deltaTime * 3f * Vector2.left;
                     if (rigidbody.velocity.x <= maxSpeed)
                     {
@@ -238,9 +246,11 @@ public class Skeleton : MonoBehaviour
                 }
                 else if (destination.magnitude < enemyAttackRange)
                 {
+                    anim.SetBool("Running", false);
                     //Debug.Log("Attack");
                     if (!attack.currectlyAttacking)
                     {
+                        anim.SetTrigger("Attack");
                         attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         attack.gameObject.SetActive(true);
                         attack.StartAttack(attackType);
@@ -248,11 +258,13 @@ public class Skeleton : MonoBehaviour
                 }
                 else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
                 {
+                    anim.SetBool("Running", true);
                     //Debug.Log("Lowest Speed");
                     rigidbody.velocity += ((maxSpeed / 3f) - rigidbody.velocity.magnitude) * destination.normalized;
                 }
                 else
                 {
+                    anim.SetBool("Running", true);
                     //Debug.Log("Normal Speed");
                     rigidbody.velocity += speedAcceleration * destination.normalized * Time.deltaTime;
                 }
@@ -268,6 +280,7 @@ public class Skeleton : MonoBehaviour
                 bool walkX = false;
                 if (Mathf.Abs(rigidbody.velocity.x) < .1f && transform.position.x > stayGoal.x -.1f && transform.position.x < stayGoal.x + .1f)
                 {
+                    anim.SetBool("Running", false);
                     //Debug.Log("None");
                     x = -rigidbody.velocity.x;
                 }
@@ -280,6 +293,7 @@ public class Skeleton : MonoBehaviour
                     }
                     else
                     {
+                        anim.SetBool("Running", true);
                         //Debug.Log("Right: Walk");
                         walkX = true;
                     }
@@ -293,6 +307,7 @@ public class Skeleton : MonoBehaviour
                     }
                     else
                     {
+                        anim.SetBool("Running", true);
                         //Debug.Log("Left: Walk");
                         walkX = true;
                     }
@@ -302,6 +317,7 @@ public class Skeleton : MonoBehaviour
                 bool walkY = false;
                 if (Mathf.Abs(rigidbody.velocity.y) < .1f && transform.position.y > stayGoal.y - .1f && transform.position.y < stayGoal.y + .1f)
                 {
+                    anim.SetBool("Running", false);
                     y = -rigidbody.velocity.y;
                 }
                 else if (rigidbody.velocity.y > 0)
@@ -312,6 +328,7 @@ public class Skeleton : MonoBehaviour
                     }
                     else
                     {
+                        anim.SetBool("Running", true);
                         walkY = true;
                     }
                 }
@@ -323,6 +340,7 @@ public class Skeleton : MonoBehaviour
                     }
                     else
                     {
+                        anim.SetBool("Running", true);
                         walkY = true;
                     }
                 }

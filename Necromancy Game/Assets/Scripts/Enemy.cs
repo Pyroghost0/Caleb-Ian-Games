@@ -86,7 +86,6 @@ public class Enemy : MonoBehaviour
         }
         else if (inPresenceOfSkeleton)
         {
-            anim.SetBool("Running", false);
             if (rigidbody.velocity.magnitude != 0f)
             {
                 Vector2 norm = rigidbody.velocity.normalized;
@@ -109,6 +108,7 @@ public class Enemy : MonoBehaviour
             }
             else if (destination.magnitude < skeletonAttackRange)
             {
+                anim.SetBool("Running", false);
                 //Debug.Log("Attack");
                 if (!attack.currectlyAttacking)
                 {
@@ -120,11 +120,13 @@ public class Enemy : MonoBehaviour
             }
             else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
             {
+                anim.SetBool("Running", true);
                 //Debug.Log("Lowest Speed");
                 rigidbody.velocity += ((maxSpeed / 3f) - rigidbody.velocity.magnitude) * destination.normalized;
             }
             else
             {
+                anim.SetBool("Running", true);
                 //Debug.Log("Normal Speed");
                 rigidbody.velocity += speedAcceleration * destination.normalized * Time.deltaTime;
             }
