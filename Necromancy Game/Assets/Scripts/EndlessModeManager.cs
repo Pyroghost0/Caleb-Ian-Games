@@ -41,12 +41,6 @@ public class EndlessModeManager : MonoBehaviour
         StartCoroutine(EndlessSpawn());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     IEnumerator EndlessSpawn()
     {
         while (playerBase.health > 0)

@@ -72,6 +72,12 @@ public class SelectManager : MonoBehaviour
     public float arrowCooldownTime = 25f;
     public RectTransform rectSpecialCooldownBar;
 
+    public bool skeletonGoblins = true;
+    public bool skeletonWolves = true;
+    public bool skeletonWitches = true;
+    public bool skeletonOrcs = true;
+    public bool skeletonOgres = true;
+
     // Start is called before the first frame update
     void Start()
     {

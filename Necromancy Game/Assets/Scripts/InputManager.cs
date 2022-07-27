@@ -46,6 +46,7 @@ public class InputManager : MonoBehaviour
     public Image holdLeftButtonImage;
     public Image holdMiddleButtonImage;
     public Image holdRightButtonImage;
+    public bool returnToMap = false;
     private bool movingCamera = false;
     private bool doingMouseCoroutine = false;
     private float xHoldPosition;
@@ -655,6 +656,12 @@ public class InputManager : MonoBehaviour
             mainMenuManager.leftButtonText.text = mainMenuManager.leftButton.ToString();
             mainMenuManager.middleButtonText.text = mainMenuManager.middleButton.ToString();
             mainMenuManager.rightButtonText.text = mainMenuManager.rightButton.ToString();
+            if (returnToMap)
+            {
+                mainMenuManager.mainMenuScreen.anchoredPosition = new Vector2(mainMenuManager.mainMenuScreen.rect.x * 2f, 0);
+                mainMenuManager.mapScreen.anchoredPosition = Vector2.zero;
+                mainMenuManager.inMap = true;
+            }
             Time.timeScale = 1f;
             SceneManager.UnloadSceneAsync("Endless Mode");
         }
@@ -681,7 +688,7 @@ public class InputManager : MonoBehaviour
                 yield return new WaitUntil(() => !Input.anyKey);
                 for (int i = 0; i < 370; i++)
                 {
-                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != middleButton && (KeyCode)i != rightButton)
+                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != middleButton && (KeyCode)i != rightButton && (KeyCode)i != KeyCode.Mouse0 && (KeyCode)i != KeyCode.Escape)
                     {
                         newKey = (KeyCode)i;
                         break;
@@ -706,7 +713,7 @@ public class InputManager : MonoBehaviour
                 yield return new WaitUntil(() => !Input.anyKey);
                 for (int i = 0; i < 370; i++)
                 {
-                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != leftButton && (KeyCode)i != rightButton)
+                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != leftButton && (KeyCode)i != rightButton && (KeyCode)i != KeyCode.Mouse0 && (KeyCode)i != KeyCode.Escape)
                     {
                         newKey = (KeyCode)i;
                         break;
@@ -731,7 +738,7 @@ public class InputManager : MonoBehaviour
                 yield return new WaitUntil(() => !Input.anyKey);
                 for (int i = 0; i < 370; i++)
                 {
-                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != leftButton && (KeyCode)i != middleButton)
+                    if (Input.GetKeyDown((KeyCode)i) && (KeyCode)i != leftButton && (KeyCode)i != middleButton && (KeyCode)i != KeyCode.Mouse0 && (KeyCode)i != KeyCode.Escape)
                     {
                         newKey = (KeyCode)i;
                         break;
@@ -987,6 +994,54 @@ public class InputManager : MonoBehaviour
         else
         {
             holdRight = false;
+        }
+    }
+
+    public void ClickSinleButtonLeft()
+    {
+        if (allowInputs)
+        {
+            StartCoroutine(PauseSinglePress(ButtonPressed.left));
+        }
+    }
+
+    public void ClickSinleButtoMiddle()
+    {
+        if (allowInputs)
+        {
+            StartCoroutine(PauseSinglePress(ButtonPressed.middle));
+        }
+    }
+
+    public void ClickSinleButtonRight()
+    {
+        if (allowInputs)
+        {
+            StartCoroutine(PauseSinglePress(ButtonPressed.right));
+        }
+    }
+
+    public void ClickHoldButtonLeft()
+    {
+        if (allowInputs)
+        {
+            StartCoroutine(PauseHoldPress(ButtonPressed.left));
+        }
+    }
+
+    public void ClickHoldButtonMiddle()
+    {
+        if (allowInputs)
+        {
+            StartCoroutine(PauseHoldPress(ButtonPressed.middle));
+        }
+    }
+
+    public void ClickHoldButtonRight()
+    {
+        if (allowInputs)
+        {
+            StartCoroutine(PauseHoldPress(ButtonPressed.right));
         }
     }
 }
