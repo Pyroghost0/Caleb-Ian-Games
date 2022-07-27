@@ -402,6 +402,7 @@ public class Skeleton : MonoBehaviour
         {
             if (transform.position.x < xBaseGoal)
             {
+                anim.SetBool("Running", false);
                 skeletonMode = SkeletonMode.stay;
                 selectManager.skeletonStatus.sprite = selectManager.skeletonStay;
                 stayGoal = transform.position;
@@ -410,18 +411,22 @@ public class Skeleton : MonoBehaviour
             {
                 if (Mathf.Abs(rigidbody.velocity.y) < .1f)
                 {
+                    anim.SetBool("Running", true);
                     rigidbody.velocity += new Vector2(-speedAcceleration * Time.deltaTime, -rigidbody.velocity.y);
                 }
                 else if (rigidbody.velocity.y > 0)
                 {
+                    anim.SetBool("Running", true);
                     rigidbody.velocity += new Vector2(-speedAcceleration * Time.deltaTime, -speedAcceleration * 3f * Time.deltaTime);
                 }
                 else /*if(rigidbody.velocity.y <= 0)*/
                 {
+                    anim.SetBool("Running", true);
                     rigidbody.velocity += new Vector2(-speedAcceleration * Time.deltaTime, speedAcceleration * 3f * Time.deltaTime);
                 }
                 if (rigidbody.velocity.x < -maxSpeed)
                 {
+                    anim.SetBool("Running", true);
                     rigidbody.velocity *= new Vector2(-maxSpeed / rigidbody.velocity.x, 1f);
                 }
             }
