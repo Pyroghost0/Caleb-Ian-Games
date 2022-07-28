@@ -39,7 +39,6 @@ public class Minion : MonoBehaviour
     public Grave grave;
     private PlayerBase playerBase;
     public bool inPresenceOfEnemy = false;
-    private bool inPresenceOfTower = false;
     public float enemyAttackRange;
     SelectManager selectManager;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
@@ -367,119 +366,47 @@ public class Minion : MonoBehaviour
         //Attack Mode
         else
         {
-            /*if (inPresenceOfTower)
-            {//Dont forget boneSpeedReductionFactor
-                if (rigidbody.velocity.magnitude != 0f)
-                {
-                    Vector2 norm = rigidbody.velocity.normalized;
-                    rigidbody.velocity -= norm * speedAcceleration * usedBoneSpeedReductionFactor * 3f * Time.deltaTime;
-                    if (norm != rigidbody.velocity.normalized)
-                    {
-                        rigidbody.velocity = Vector2.zero;
-                    }
-                }
-                if (dead)
-                {
-
-                }
-                else if (transform.position.x > xGoal2)
-                {
-                    //Vector2 destination = goal.position - transform.position;
-                    //if (destination.magnitude < skeletonAttackRange)
-                    if (true)
-                    {
-                        if (!attack.currectlyAttacking)
-                        {
-                            attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, 180f));
-                            attack.gameObject.SetActive(true);
-                            attack.StartAOEAttack();
-                        }
-                    }
-                    else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
-                    {
-                        rigidbody.velocity += ((maxSpeed * usedBoneSpeedReductionFactor / 3f) - rigidbody.velocity.magnitude) * Vector2.right;
-                    }
-                    else
-                    {
-                        rigidbody.velocity += speedAcceleration * usedBoneSpeedReductionFactor * Vector2.right * Time.deltaTime;
-                    }
-                }
-                else if (transform.position.x > xGoal)
-                {
-                    if (rigidbody.velocity.magnitude < maxSpeed / 3f)
-                    {
-                        rigidbody.velocity += ((maxSpeed * usedBoneSpeedReductionFactor / 3f) - rigidbody.velocity.magnitude) * Vector2.right;
-                    }
-                    else
-                    {
-                        rigidbody.velocity += speedAcceleration * usedBoneSpeedReductionFactor * Vector2.right * Time.deltaTime;
-                    }
-                }
-                else
-                {
-                    inPresenceOfTower = false;
-                }
-            }
-            else*/ if (inPresenceOfEnemy)
-            {
-                if (rigidbody.velocity.magnitude != 0f)
-                {
-                    Vector2 norm = rigidbody.velocity.normalized;
-                    rigidbody.velocity -= norm * speedAcceleration * usedBoneSpeedReductionFactor * 3f * Time.deltaTime;
-                    if (norm != rigidbody.velocity.normalized)
-                    {
-                        rigidbody.velocity = Vector2.zero;
-                    }
-                }
-                Vector2 destination = goal.position - transform.position;
-                if (dead)
-                {
-                    //Debug.Log("Dead");
-                }
-                else if (goal == null || goal.GetComponent<Enemy>().dead)
-                {
-                    //Debug.Log("They Dead");
-                    inPresenceOfEnemy = false;
-                    goal = null;
-                }
-                else if (destination.magnitude < enemyAttackRange)
-                {
-                    //Debug.Log("Attack");
-                    if (!attack.currectlyAttacking)
-                    {
-                        attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
-                        attack.gameObject.SetActive(true);
-                        attack.StartSingleAttack();
-                    }
-                }
-                else if (rigidbody.velocity.magnitude < maxSpeed * usedBoneSpeedReductionFactor / 3f)
-                {
-                    //Debug.Log("Lowest Speed");
-                    rigidbody.velocity += ((maxSpeed * usedBoneSpeedReductionFactor / 3f) - rigidbody.velocity.magnitude) * destination.normalized;
-                }
-                else
-                {
-                    //Debug.Log("Normal Speed");
-                    rigidbody.velocity += speedAcceleration * usedBoneSpeedReductionFactor * destination.normalized * Time.deltaTime;
-                }
-            }
-            else
+            if (!inPresenceOfEnemy)
             {
                 if (transform.position.x >= xGoal)
                 {
-                    if(rigidbody.velocity.magnitude != 0f)
+                    if (transform.position.x >= xGoal+3f)
                     {
-                        Vector2 norm = rigidbody.velocity.normalized;
-                        rigidbody.velocity -= norm * speedAcceleration * usedBoneSpeedReductionFactor * 3f * Time.deltaTime;
-                        if (norm != rigidbody.velocity.normalized)
+                        anim.SetBool("Running", true);
+                        if (rigidbody.velocity.x > -maxSpeed)
                         {
-                            rigidbody.velocity = Vector2.zero;
+                            rigidbody.velocity += speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime * Vector2.left;
+                            if (rigidbody.velocity.x <= -maxSpeed * usedBoneSpeedReductionFactor)
+                            {
+                                rigidbody.velocity = new Vector2(-maxSpeed * usedBoneSpeedReductionFactor, rigidbody.velocity.y);
+                            }
+                        }
+                        else if (rigidbody.velocity.x < -maxSpeed * usedBoneSpeedReductionFactor)
+                        {
+                            rigidbody.velocity += speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime * 3f * Vector2.right;
+                            if (rigidbody.velocity.x >= -maxSpeed * usedBoneSpeedReductionFactor)
+                            {
+                                rigidbody.velocity = new Vector2(-maxSpeed * usedBoneSpeedReductionFactor, rigidbody.velocity.y);
+                            }
                         }
                     }
-                    //inPresenceOfTower = true;
+                    else
+                    {
+                        anim.SetBool("Running", false);
+                        if (rigidbody.velocity.magnitude != 0f)
+                        {
+                            Vector2 norm = rigidbody.velocity.normalized;
+                            rigidbody.velocity -= norm * speedAcceleration * usedBoneSpeedReductionFactor * 3f * Time.deltaTime;
+                            if (norm != rigidbody.velocity.normalized)
+                            {
+                                rigidbody.velocity = Vector2.zero;
+                            }
+                        }
+                    }
                 }
                 else if (rigidbody.velocity.x < maxSpeed * usedBoneSpeedReductionFactor)
                 {
+                    anim.SetBool("Running", true);
                     rigidbody.velocity += speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime * Vector2.right;
                     if (rigidbody.velocity.x >= maxSpeed * usedBoneSpeedReductionFactor)
                     {
@@ -488,10 +415,180 @@ public class Minion : MonoBehaviour
                 }
                 else if (rigidbody.velocity.x > maxSpeed * usedBoneSpeedReductionFactor)
                 {
+                    anim.SetBool("Running", true);
                     rigidbody.velocity -= speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime * 3f * Vector2.left;
                     if (rigidbody.velocity.x <= maxSpeed * usedBoneSpeedReductionFactor)
                     {
                         rigidbody.velocity = new Vector2(maxSpeed * usedBoneSpeedReductionFactor, rigidbody.velocity.y);
+                    }
+                }
+            }
+            else if (goal == null || goal.GetComponent<Enemy>().dead)
+            {
+                goal = null;
+                inPresenceOfEnemy = false;
+            }
+            else if ((transform.position - goal.position).magnitude < attack.attackRange)
+            {
+                if (rigidbody.velocity.magnitude != 0f)
+                {
+                    Vector2 norm = rigidbody.velocity.normalized;
+                    rigidbody.velocity -= norm * speedAcceleration * usedBoneSpeedReductionFactor * 3f * Time.deltaTime;
+                    if (norm != rigidbody.velocity.normalized)
+                    {
+                        rigidbody.velocity = Vector2.zero;
+                    }
+                }
+                anim.SetBool("Running", false);
+                if (dead)
+                {
+                    //Debug.Log("Dead");
+                }
+                if (!attack.currectlyAttacking)
+                {
+                    attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
+                    attack.gameObject.SetActive(true);
+                    attack.StartSingleAttack();
+                }
+            }
+            else /*if (inPresenceOfEnemy)*/
+            {
+                float futureX = (rigidbody.velocity.x * speedAcceleration / (6f * usedBoneSpeedReductionFactor)) + transform.position.x;
+                float futureY = (rigidbody.velocity.y * speedAcceleration / (6f * usedBoneSpeedReductionFactor)) + transform.position.y;
+                Vector2 futureDistence = new Vector3(futureX, futureY, 0f) - goal.position;
+
+                //Near Enemy
+                if (futureDistence.magnitude >= (transform.position - goal.position).magnitude / 2f)
+                {
+                    futureDistence = futureDistence.normalized * (attack.attackRange - .3f);
+                    float x = 0f;
+                    bool walkX = false;
+                    if (Mathf.Abs(rigidbody.velocity.x) < .1f && transform.position.x > goal.position.x - Mathf.Abs(futureDistence.x) - .1f && transform.position.x < goal.position.x + Mathf.Abs(futureDistence.x) + .1f)
+                    {
+                        x = -rigidbody.velocity.x;
+                    }
+                    else if (rigidbody.velocity.x > 0)
+                    {
+                        if (futureX >= goal.position.x - Mathf.Abs(futureDistence.x) - .1f)
+                        {
+                            x = -speedAcceleration * usedBoneSpeedReductionFactor * 3f * Time.deltaTime;
+                        }
+                        else
+                        {
+                            walkX = true;
+                        }
+                    }
+                    else /*if(rigidbody.velocity.x <= 0)*/
+                    {
+                        if (futureX <= goal.position.x + Mathf.Abs(futureDistence.x) + .1f)
+                        {
+                            x = speedAcceleration * usedBoneSpeedReductionFactor * 3f * Time.deltaTime;
+                        }
+                        else
+                        {
+                            walkX = true;
+                        }
+                    }
+
+                    float y = 0f;
+                    bool walkY = false;
+                    if (Mathf.Abs(rigidbody.velocity.y) < .1f && transform.position.y > goal.position.y - Mathf.Abs(futureDistence.y) - .1f && transform.position.y < goal.position.y + Mathf.Abs(futureDistence.y) + .1f)
+                    {
+                        y = -rigidbody.velocity.y;
+                    }
+                    else if (rigidbody.velocity.y > 0)
+                    {
+                        if (futureY >= goal.position.y - Mathf.Abs(futureDistence.y) - .1f)
+                        {
+                            y = -speedAcceleration * usedBoneSpeedReductionFactor * 3f * Time.deltaTime;
+                        }
+                        else
+                        {
+                            walkY = true;
+                        }
+                    }
+                    else /*if(rigidbody.velocity.y <= 0)*/
+                    {
+                        if (futureY <= goal.position.y + Mathf.Abs(futureDistence.y) + .1f)
+                        {
+                            y = speedAcceleration * usedBoneSpeedReductionFactor * 3f * Time.deltaTime;
+                        }
+                        else
+                        {
+                            walkY = true;
+                        }
+                    }
+
+                    anim.SetBool("Running", true);
+                    if (walkX && walkY)
+                    {
+                        Vector2 distenceMoved = new Vector2(goal.position.x - transform.position.x, goal.position.y - transform.position.y).normalized * speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime;
+                        rigidbody.velocity += distenceMoved;
+                        if ((distenceMoved.x > 0f && rigidbody.velocity.x > 0f) || (distenceMoved.x < 0f && rigidbody.velocity.x < 0f))
+                        {
+                            if ((distenceMoved.y > 0f && rigidbody.velocity.y > 0f) || (distenceMoved.y < 0f && rigidbody.velocity.y < 0f))
+                            {
+                                if (rigidbody.velocity.magnitude > maxSpeed * usedBoneSpeedReductionFactor)
+                                {
+                                    rigidbody.velocity *= maxSpeed * usedBoneSpeedReductionFactor / rigidbody.velocity.magnitude;
+                                }
+                            }
+                            else if (Mathf.Abs(rigidbody.velocity.x) > maxSpeed * usedBoneSpeedReductionFactor)
+                            {
+                                rigidbody.velocity *= new Vector2(maxSpeed * usedBoneSpeedReductionFactor * (distenceMoved.x > 0 ? 1f : -1f) / rigidbody.velocity.x, 1f);
+                            }
+                        }
+                        else if (((distenceMoved.y > 0f && rigidbody.velocity.y > 0f) || (distenceMoved.y < 0f && rigidbody.velocity.y < 0f)) && Mathf.Abs(rigidbody.velocity.y) > maxSpeed * usedBoneSpeedReductionFactor)
+                        {
+                            rigidbody.velocity *= new Vector2(1f, maxSpeed * usedBoneSpeedReductionFactor * (distenceMoved.y > 0 ? 1f : -1f) / rigidbody.velocity.y);
+                        }
+                    }
+                    else if (walkX)
+                    {
+                        x = goal.position.x - transform.position.x > 0f ? speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime : -speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime;
+                        rigidbody.velocity += new Vector2(x, y);
+                        if (((x > 0f && rigidbody.velocity.x > 0f) || (x < 0f && rigidbody.velocity.x < 0f)) && Mathf.Abs(rigidbody.velocity.x) > maxSpeed * usedBoneSpeedReductionFactor)
+                        {
+                            rigidbody.velocity *= new Vector2(maxSpeed * usedBoneSpeedReductionFactor * (x > 0 ? 1f : -1f) / rigidbody.velocity.x, 1f);
+                        }
+                    }
+                    else if (walkY)
+                    {
+                        y = goal.position.y - transform.position.y > 0f ? speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime : -speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime;
+                        rigidbody.velocity += new Vector2(x, y);
+                        if (((y > 0f && rigidbody.velocity.y > 0f) || (y < 0f && rigidbody.velocity.y < 0f)) && Mathf.Abs(rigidbody.velocity.y) > maxSpeed * usedBoneSpeedReductionFactor)
+                        {
+                            rigidbody.velocity *= new Vector2(1f, maxSpeed * usedBoneSpeedReductionFactor * (y > 0 ? 1f : -1f) / rigidbody.velocity.y);
+                        }
+                    }
+                    else
+                    {
+                        anim.SetBool("Running", false);
+                        rigidbody.velocity += new Vector2(x, y);
+                    }
+                }
+                else
+                {
+                    anim.SetBool("Running", true);
+                    Vector2 distenceMoved = new Vector2(goal.position.x - transform.position.x, goal.position.y - transform.position.y).normalized * speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime;
+                    rigidbody.velocity += distenceMoved;
+                    if ((distenceMoved.x > 0f && rigidbody.velocity.x > 0f) || (distenceMoved.x < 0f && rigidbody.velocity.x < 0f))
+                    {
+                        if ((distenceMoved.y > 0f && rigidbody.velocity.y > 0f) || (distenceMoved.y < 0f && rigidbody.velocity.y < 0f))
+                        {
+                            if (rigidbody.velocity.magnitude > maxSpeed * usedBoneSpeedReductionFactor)
+                            {
+                                rigidbody.velocity *= maxSpeed * usedBoneSpeedReductionFactor / rigidbody.velocity.magnitude;
+                            }
+                        }
+                        else if (Mathf.Abs(rigidbody.velocity.x) > maxSpeed * usedBoneSpeedReductionFactor)
+                        {
+                            rigidbody.velocity *= new Vector2(maxSpeed * usedBoneSpeedReductionFactor * (distenceMoved.x > 0 ? 1f : -1f) / rigidbody.velocity.x, 1f);
+                        }
+                    }
+                    else if (((distenceMoved.y > 0f && rigidbody.velocity.y > 0f) || (distenceMoved.y < 0f && rigidbody.velocity.y < 0f)) && Mathf.Abs(rigidbody.velocity.y) > maxSpeed * usedBoneSpeedReductionFactor)
+                    {
+                        rigidbody.velocity *= new Vector2(1f, maxSpeed * usedBoneSpeedReductionFactor * (distenceMoved.y > 0 ? 1f : -1f) / rigidbody.velocity.y);
                     }
                 }
             }

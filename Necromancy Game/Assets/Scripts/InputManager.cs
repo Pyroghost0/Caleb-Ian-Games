@@ -156,29 +156,16 @@ public class InputManager : MonoBehaviour
                     {
                         if (selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode)
                         {
-                            if (selectManager.selectedTroop.GetComponent<Minion>().goal != null && selectManager.selectedTroop.GetComponent<Minion>().goal.CompareTag("Grave"))
+                            if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
                             {
                                 selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(false);
-                                selectManager.selectedTroop.GetComponent<Minion>().grave = null;
-                            }
-                            else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null && selectManager.selectedTroop.GetComponent<Minion>().goal.CompareTag("Enemy"))
-                            {
-                                selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
                             }
                         }
                         else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
                         {
                             selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = true;
                             selectManager.minionStatus.sprite = selectManager.minionDig;
-                            if (selectManager.selectedTroop.GetComponent<Minion>().goal != null && selectManager.selectedTroop.GetComponent<Minion>().goal.CompareTag("Enemy"))
-                            {
-                                selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
-                            }
-                            else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null && selectManager.selectedTroop.GetComponent<Minion>().goal.CompareTag("Grave"))
-                            {
-                                selectManager.selectedTroop.GetComponent<Minion>().grave = selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Grave>();
-                                selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(true);
-                            }
+                            selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
                         }
                         selectManager.selectedTroop.GetComponent<Minion>().goal = hitObjects[lowestYIndex].transform.parent;
                         selectManager.selectedTroop.GetComponent<Minion>().grave = hitObjects[lowestYIndex].transform.parent.GetComponent<Grave>();
@@ -518,15 +505,19 @@ public class InputManager : MonoBehaviour
                 {
                     if (selectedObject.CompareTag("Skeleton"))
                     {
-                        if (selectedObject.GetComponent<Skeleton>().skeletonMode != SkeletonMode.left)//Or behind part !!!! ADD LATER
+                        if (selectedObject.GetComponent<Skeleton>().skeletonMode == SkeletonMode.stay)
                         {
-                            selectedObject.GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
-                            selectManager.skeletonStatus.sprite = selectManager.skeletonRun;
+                            selectManager.stayPositionMarker.gameObject.SetActive(false);
                         }
-                        else
+                        if (selectedObject.GetComponent<Skeleton>().skeletonMode == SkeletonMode.left || selectedObject.position.x < 3.5f)
                         {
                             selectedObject.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
                             selectManager.skeletonStatus.sprite = selectManager.skeletonAttack;
+                        }
+                        else
+                        {
+                            selectedObject.GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
+                            selectManager.skeletonStatus.sprite = selectManager.skeletonRun;
                         }
                     }
                     else if (selectedObject.CompareTag("Minion"))
@@ -539,10 +530,7 @@ public class InputManager : MonoBehaviour
                             {
                                 selectedObject.GetComponent<Minion>().grave.targetSelect.SetActive(false);
                                 selectedObject.GetComponent<Minion>().grave = null;
-                            }
-                            else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null && selectManager.selectedTroop.GetComponent<Minion>().goal.CompareTag("Enemy"))
-                            {
-                                selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(true);
+                                selectManager.selectedTroop.GetComponent<Minion>().goal = null;
                             }
                         }
                         else
@@ -552,11 +540,7 @@ public class InputManager : MonoBehaviour
                             if (selectedObject.GetComponent<Minion>().goal != null && selectedObject.GetComponent<Minion>().goal.CompareTag("Enemy"))
                             {
                                 selectedObject.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
-                            }
-                            else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null && selectManager.selectedTroop.GetComponent<Minion>().goal.CompareTag("Grave"))
-                            {
-                                selectManager.selectedTroop.GetComponent<Minion>().grave = selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Grave>();
-                                selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(true);
+                                selectManager.selectedTroop.GetComponent<Minion>().goal = null;
                             }
                         }
                     }
@@ -800,6 +784,7 @@ public class InputManager : MonoBehaviour
                     StartCoroutine(PressButtonVisually(buttonImages[3]));
                     selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
                     selectManager.skeletonStatus.sprite = selectManager.skeletonRun;
+                    selectManager.stayPositionMarker.gameObject.SetActive(false);
                 }
                 else if (type == ButtonPressed.middle)
                 {
@@ -811,6 +796,7 @@ public class InputManager : MonoBehaviour
                     StartCoroutine(PressButtonVisually(buttonImages[5]));
                     selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
                     selectManager.skeletonStatus.sprite = selectManager.skeletonAttack;
+                    selectManager.stayPositionMarker.gameObject.SetActive(false);
                 }
             }
             else if (selectManager.selectedTroop.CompareTag("Minion"))
@@ -898,11 +884,7 @@ public class InputManager : MonoBehaviour
                     if (selectManager.selectedTroop.GetComponent<Minion>().goal != null && selectManager.selectedTroop.GetComponent<Minion>().goal.CompareTag("Enemy"))
                     {
                         selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
-                    }
-                    else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null && selectManager.selectedTroop.GetComponent<Minion>().goal.CompareTag("Grave"))
-                    {
-                        selectManager.selectedTroop.GetComponent<Minion>().grave = selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Grave>();
-                        selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(true);
+                        selectManager.selectedTroop.GetComponent<Minion>().goal = null;
                     }
                     selectManager.minionStatus.sprite = selectManager.minionDig;
                 }
@@ -919,10 +901,7 @@ public class InputManager : MonoBehaviour
                     {
                         selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(false);
                         selectManager.selectedTroop.GetComponent<Minion>().grave = null;
-                    }
-                    else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null && selectManager.selectedTroop.GetComponent<Minion>().goal.CompareTag("Enemy"))
-                    {
-                        selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                        selectManager.selectedTroop.GetComponent<Minion>().goal = null;
                     }
                     selectManager.minionStatus.sprite = selectManager.minionAttack;
                 }

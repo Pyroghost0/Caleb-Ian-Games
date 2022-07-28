@@ -176,7 +176,7 @@ public class Attack : MonoBehaviour
                 }
                 else if (targets[i].CompareTag("Minion"))
                 {
-                    targets[i].GetComponent<Minion>().Hit(transform.position, source.CompareTag("Minion") ? null : source.transform, knockback, attackPower);
+                    targets[i].GetComponent<Minion>().Hit(transform.position, source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
                 }
                 else if (targets[i].CompareTag("Player Base"))
                 {
@@ -301,17 +301,17 @@ public class Attack : MonoBehaviour
             }
             else if (affectsEnemies && targets[i].CompareTag("Enemy"))
             {
-                targets[i].GetComponent<Enemy>().Hit(transform.position, source.CompareTag("Enemy") ? null : source.transform, knockback, attackPower);
+                targets[i].GetComponent<Enemy>().Hit(transform.position, source == null || source.CompareTag("Enemy") ? null : source.transform, knockback, attackPower);
             }
             else if (affectsSkeletons)
             {
                 if (targets[i].CompareTag("Skeleton"))
                 {
-                    targets[i].GetComponent<Skeleton>().Hit(transform.position, source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
+                    targets[i].GetComponent<Skeleton>().Hit(transform.position, source == null || source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
                 }
                 else if (targets[i].CompareTag("Minion"))
                 {
-                    targets[i].GetComponent<Minion>().Hit(transform.position, source.CompareTag("Minion") ? null : source.transform, knockback, attackPower);
+                    targets[i].GetComponent<Minion>().Hit(transform.position, source == null || source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
                 }
                 else if (targets[i].CompareTag("Player Base"))
                 {

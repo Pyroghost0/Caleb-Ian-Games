@@ -84,7 +84,248 @@ public class Enemy : MonoBehaviour
                 inPresenceOfTower = false;
             }
         }
-        else if (inPresenceOfSkeleton)
+        else if (!inPresenceOfSkeleton)
+        {
+            if (transform.position.y > (slopeGoal * (transform.position.x - attack.attackRange)) + posYGoal)
+            {
+                inPresenceOfTower = true;
+            }
+            else
+            {
+                anim.SetBool("Running", true);
+                if (rigidbody.velocity.x > -maxSpeed)
+                {
+                    rigidbody.velocity += speedAcceleration * Time.deltaTime * Vector2.left;
+                    if (rigidbody.velocity.x <= -maxSpeed)
+                    {
+                        rigidbody.velocity = new Vector2(-maxSpeed, rigidbody.velocity.y);
+                    }
+                }
+                else if (rigidbody.velocity.x < -maxSpeed)
+                {
+                    rigidbody.velocity += speedAcceleration * Time.deltaTime * 3f * Vector2.right;
+                    if (rigidbody.velocity.x >= -maxSpeed)
+                    {
+                        rigidbody.velocity = new Vector2(-maxSpeed, rigidbody.velocity.y);
+                    }
+                }
+            }
+        }
+        else if (goal == null || (goal.CompareTag("Skeleton") && goal.GetComponent<Skeleton>().dead) || (goal.CompareTag("Minion") && goal.GetComponent<Minion>().dead))
+        {
+            goal = null;
+            inPresenceOfSkeleton = false;
+        }
+        else if ((transform.position - goal.position).magnitude < attack.attackRange)
+        {
+            if (rigidbody.velocity.magnitude != 0f)
+            {
+                Vector2 norm = rigidbody.velocity.normalized;
+                rigidbody.velocity -= norm * speedAcceleration * 3f * Time.deltaTime;
+                if (norm != rigidbody.velocity.normalized)
+                {
+                    rigidbody.velocity = Vector2.zero;
+                }
+            }
+            anim.SetBool("Running", false);
+            if (dead)
+            {
+                //Debug.Log("Dead");
+            }
+            else if (!attack.currectlyAttacking)
+            {
+                anim.SetTrigger("Attack");
+                attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
+                attack.gameObject.SetActive(true);
+                attack.StartAttack(attackType);
+            }
+        }
+        else /*if (inPresenceOfSkeleton)*/
+        {
+            float futureX = (rigidbody.velocity.x * speedAcceleration / 6f) + transform.position.x;
+            float futureY = (rigidbody.velocity.y * speedAcceleration / 6f) + transform.position.y;
+            Vector2 futureDistence = new Vector3(futureX, futureY, 0f) - goal.position;
+
+            //Near Enemy
+            if (futureDistence.magnitude >= (transform.position - goal.position).magnitude / 2f)
+            {
+                futureDistence = futureDistence.normalized * (attack.attackRange - .3f);
+                float x = 0f;
+                bool walkX = false;
+                if (Mathf.Abs(rigidbody.velocity.x) < .1f && transform.position.x > goal.position.x - Mathf.Abs(futureDistence.x) - .1f && transform.position.x < goal.position.x + Mathf.Abs(futureDistence.x) + .1f)
+                {
+                    x = -rigidbody.velocity.x;
+                }
+                else if (rigidbody.velocity.x > 0)
+                {
+                    if (futureX >= goal.position.x - Mathf.Abs(futureDistence.x) - .1f)
+                    {
+                        x = -speedAcceleration * 3f * Time.deltaTime;
+                    }
+                    else
+                    {
+                        walkX = true;
+                    }
+                }
+                else /*if(rigidbody.velocity.x <= 0)*/
+                {
+                    if (futureX <= goal.position.x + Mathf.Abs(futureDistence.x) + .1f)
+                    {
+                        x = speedAcceleration * 3f * Time.deltaTime;
+                    }
+                    else
+                    {
+                        walkX = true;
+                    }
+                }
+
+                float y = 0f;
+                bool walkY = false;
+                if (Mathf.Abs(rigidbody.velocity.y) < .1f && transform.position.y > goal.position.y - Mathf.Abs(futureDistence.y) - .1f && transform.position.y < goal.position.y + Mathf.Abs(futureDistence.y) + .1f)
+                {
+                    y = -rigidbody.velocity.y;
+                }
+                else if (rigidbody.velocity.y > 0)
+                {
+                    if (futureY >= goal.position.y - Mathf.Abs(futureDistence.y) - .1f)
+                    {
+                        y = -speedAcceleration * 3f * Time.deltaTime;
+                    }
+                    else
+                    {
+                        walkY = true;
+                    }
+                }
+                else /*if(rigidbody.velocity.y <= 0)*/
+                {
+                    if (futureY <= goal.position.y + Mathf.Abs(futureDistence.y) + .1f)
+                    {
+                        y = speedAcceleration * 3f * Time.deltaTime;
+                    }
+                    else
+                    {
+                        walkY = true;
+                    }
+                }
+
+                anim.SetBool("Running", true);
+                if (walkX && walkY)
+                {
+                    Vector2 distenceMoved = new Vector2(goal.position.x - transform.position.x, goal.position.y - transform.position.y).normalized * speedAcceleration * Time.deltaTime;
+                    rigidbody.velocity += distenceMoved;
+                    if ((distenceMoved.x > 0f && rigidbody.velocity.x > 0f) || (distenceMoved.x < 0f && rigidbody.velocity.x < 0f))
+                    {
+                        if ((distenceMoved.y > 0f && rigidbody.velocity.y > 0f) || (distenceMoved.y < 0f && rigidbody.velocity.y < 0f))
+                        {
+                            if (rigidbody.velocity.magnitude > maxSpeed)
+                            {
+                                rigidbody.velocity *= maxSpeed / rigidbody.velocity.magnitude;
+                            }
+                        }
+                        else if (Mathf.Abs(rigidbody.velocity.x) > maxSpeed)
+                        {
+                            rigidbody.velocity *= new Vector2(maxSpeed * (distenceMoved.x > 0 ? 1f : -1f) / rigidbody.velocity.x, 1f);
+                        }
+                    }
+                    else if (((distenceMoved.y > 0f && rigidbody.velocity.y > 0f) || (distenceMoved.y < 0f && rigidbody.velocity.y < 0f)) && Mathf.Abs(rigidbody.velocity.y) > maxSpeed)
+                    {
+                        rigidbody.velocity *= new Vector2(1f, maxSpeed * (distenceMoved.y > 0 ? 1f : -1f) / rigidbody.velocity.y);
+                    }
+                }
+                else if (walkX)
+                {
+                    x = goal.position.x - transform.position.x > 0f ? speedAcceleration * Time.deltaTime : -speedAcceleration * Time.deltaTime;
+                    rigidbody.velocity += new Vector2(x, y);
+                    if (((x > 0f && rigidbody.velocity.x > 0f) || (x < 0f && rigidbody.velocity.x < 0f)) && Mathf.Abs(rigidbody.velocity.x) > maxSpeed)
+                    {
+                        rigidbody.velocity *= new Vector2(maxSpeed * (x > 0 ? 1f : -1f) / rigidbody.velocity.x, 1f);
+                    }
+                }
+                else if (walkY)
+                {
+                    y = goal.position.y - transform.position.y > 0f ? speedAcceleration * Time.deltaTime : -speedAcceleration * Time.deltaTime;
+                    rigidbody.velocity += new Vector2(x, y);
+                    if (((y > 0f && rigidbody.velocity.y > 0f) || (y < 0f && rigidbody.velocity.y < 0f)) && Mathf.Abs(rigidbody.velocity.y) > maxSpeed)
+                    {
+                        rigidbody.velocity *= new Vector2(1f, maxSpeed * (y > 0 ? 1f : -1f) / rigidbody.velocity.y);
+                    }
+                }
+                else
+                {
+                    anim.SetBool("Running", false);
+                    rigidbody.velocity += new Vector2(x, y);
+                }
+            }
+            else
+            {
+                anim.SetBool("Running", true);
+                Vector2 distenceMoved = new Vector2(goal.position.x - transform.position.x, goal.position.y - transform.position.y).normalized * speedAcceleration * Time.deltaTime;
+                rigidbody.velocity += distenceMoved;
+                if ((distenceMoved.x > 0f && rigidbody.velocity.x > 0f) || (distenceMoved.x < 0f && rigidbody.velocity.x < 0f))
+                {
+                    if ((distenceMoved.y > 0f && rigidbody.velocity.y > 0f) || (distenceMoved.y < 0f && rigidbody.velocity.y < 0f))
+                    {
+                        if (rigidbody.velocity.magnitude > maxSpeed)
+                        {
+                            rigidbody.velocity *= maxSpeed / rigidbody.velocity.magnitude;
+                        }
+                    }
+                    else if (Mathf.Abs(rigidbody.velocity.x) > maxSpeed)
+                    {
+                        rigidbody.velocity *= new Vector2(maxSpeed * (distenceMoved.x > 0 ? 1f : -1f) / rigidbody.velocity.x, 1f);
+                    }
+                }
+                else if (((distenceMoved.y > 0f && rigidbody.velocity.y > 0f) || (distenceMoved.y < 0f && rigidbody.velocity.y < 0f)) && Mathf.Abs(rigidbody.velocity.y) > maxSpeed)
+                {
+                    rigidbody.velocity *= new Vector2(1f, maxSpeed * (distenceMoved.y > 0 ? 1f : -1f) / rigidbody.velocity.y);
+                }
+            }
+            /*if (rigidbody.velocity.magnitude != 0f)
+            {
+                Vector2 norm = rigidbody.velocity.normalized;
+                rigidbody.velocity -= norm * speedAcceleration * 3f * Time.deltaTime;
+                if (norm != rigidbody.velocity.normalized)
+                {
+                    rigidbody.velocity = Vector2.zero;
+                }
+            }
+            Vector2 destination = goal != null ? goal.position - transform.position : Vector2.zero;
+            if (dead)
+            {
+                //Debug.Log("Dead");
+            }
+            else if (goal == null || goal.GetComponent<Enemy>().dead)
+            {
+                //Debug.Log("They Dead");
+                inPresenceOfEnemy = false;
+                goal = null;
+            }
+            else if (destination.magnitude < enemyAttackRange)
+            {
+                anim.SetBool("Running", false);
+                //Debug.Log("Attack");
+                if (!attack.currectlyAttacking)
+                {
+                    anim.SetTrigger("Attack");
+                    attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
+                    attack.gameObject.SetActive(true);
+                    attack.StartAttack(attackType);
+                }
+            }
+            else if (rigidbody.velocity.magnitude < maxSpeed / 3f)
+            {
+                anim.SetBool("Running", true);
+                //Debug.Log("Lowest Speed");
+                rigidbody.velocity += ((maxSpeed / 3f) - rigidbody.velocity.magnitude) * destination.normalized;
+            }
+            else
+            {
+                anim.SetBool("Running", true);
+                //Debug.Log("Normal Speed");
+                rigidbody.velocity += speedAcceleration * destination.normalized * Time.deltaTime;
+            }*/
+        }
+        /*else if (inPresenceOfSkeleton)
         {
             if (rigidbody.velocity.magnitude != 0f)
             {
@@ -156,7 +397,7 @@ public class Enemy : MonoBehaviour
                     rigidbody.velocity = new Vector2(-maxSpeed, rigidbody.velocity.y);
                 }
             }
-        }
+        }*/
 
         if (rigidbody.velocity.x > 0)
         {
