@@ -57,6 +57,7 @@ public class Skeleton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        anim.SetBool("Skeleton", true);
         spriteMultiplier = spriteBasisObject.localScale.y;
         rigidbody = GetComponent<Rigidbody2D>();
         stayGoal = transform.position;
