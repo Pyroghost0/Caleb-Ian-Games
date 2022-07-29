@@ -53,6 +53,13 @@ public class Skeleton : MonoBehaviour
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
     public Animator anim;
 
+    public float superWaitTime = 25f;
+    public float currentSuperWaitTime = 0f;
+    public Attack[] superAttack;
+    public bool instantSuper;
+    public AttackType superAttackType;
+    private bool nextAttackIsSuper;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -140,10 +147,22 @@ public class Skeleton : MonoBehaviour
                 }
                 else if (!attack.currectlyAttacking)
                 {
-                    anim.SetTrigger("Attack");
-                    attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
-                    attack.gameObject.SetActive(true);
-                    attack.StartAttack(attackType);
+                    if (nextAttackIsSuper)
+                    {
+                        nextAttackIsSuper = false;
+                        StartCoroutine(NextAttackIsSuperWait());
+                        for (int i = 0; i < superAttack.Length; i++)
+                        {
+                            superAttack[i].StartSuperAttack(superAttackType);
+                        }
+                    }
+                    else
+                    {
+                        anim.SetTrigger("Attack");
+                        attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
+                        attack.gameObject.SetActive(true);
+                        attack.StartAttack(attackType);
+                    }
                 }
             }
             else /*if (inPresenceOfEnemy)*/
@@ -470,10 +489,22 @@ public class Skeleton : MonoBehaviour
                 }
                 else if (!attack.currectlyAttacking)
                 {
-                    anim.SetTrigger("Attack");
-                    attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
-                    attack.gameObject.SetActive(true);
-                    attack.StartAttack(attackType);
+                    if (nextAttackIsSuper)
+                    {
+                        nextAttackIsSuper = false;
+                        StartCoroutine(NextAttackIsSuperWait());
+                        for (int i = 0; i < superAttack.Length; i++)
+                        {
+                            superAttack[i].StartSuperAttack(superAttackType);
+                        }
+                    }
+                    else
+                    {
+                        anim.SetTrigger("Attack");
+                        attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
+                        attack.gameObject.SetActive(true);
+                        attack.StartAttack(attackType);
+                    }
                 }
             }
             else /*if (inPresenceOfEnemy)*/
@@ -849,6 +880,112 @@ public class Skeleton : MonoBehaviour
         {
             sprite[i].sortingOrder = (int)(transform.position.y * -10) + spritePos[i];
         }
+    }
+
+    public void SpecialAttack()
+    {
+        if (currentSuperWaitTime == 0f)
+        {
+            selectManager.rectSpecialCooldownBar.gameObject.SetActive(true);
+            selectManager.rectSpecialCooldownBar.sizeDelta = new Vector2(selectManager.rectSpecialCooldown, selectManager.rectSpecialCooldownBar.rect.height);
+            currentSuperWaitTime = superWaitTime;
+            if (instantSuper)
+            {
+                StartCoroutine(WolfSuper());
+                StartCoroutine(SpecialAttackCoroutineCooldown());
+            }
+            else
+            {
+                nextAttackIsSuper = true;
+                StartCoroutine(NextAttackIsSuperWait());
+            }
+        }
+        else
+        {
+            InvalidNotice notice = Instantiate(selectManager.impossibleActionPrefab).GetComponent<InvalidNotice>();
+            notice.text.text = "Skeleton Super In Cooldown";
+            notice.textPosition.anchoredPosition = new Vector2(265f, 150f);
+        }
+    }
+
+    IEnumerator NextAttackIsSuperWait()
+    {
+        yield return new WaitForSeconds(5f + attack.attackCooldown);
+        if (nextAttackIsSuper)
+        {
+            nextAttackIsSuper = false;
+            StartCoroutine(SpecialAttackCoroutineCooldown());
+        }
+    }
+
+    IEnumerator SpecialAttackCoroutineCooldown()
+    {
+        /*if (selectManager.selectedTroop == transform)
+        {
+            selectManager.rectSpecialCooldownBar.gameObject.SetActive(true);
+            selectManager.rectSpecialCooldownBar.sizeDelta = new Vector2(selectManager.rectSpecialCooldown, selectManager.rectSpecialCooldownBar.rect.height);
+        }
+        currentSuperWaitTime = superWaitTime;*/
+        for (int i = 0; i < superWaitTime * 2; i++)
+        {
+            yield return new WaitForSeconds(.5f);
+            currentSuperWaitTime -= .5f;
+            if (selectManager.selectedTroop == transform)
+            {
+                selectManager.rectSpecialCooldownBar.sizeDelta = new Vector2(((float)currentSuperWaitTime / superWaitTime) * selectManager.rectSpecialCooldown, selectManager.rectSpecialCooldownBar.rect.height);
+            }
+        }
+        if (selectManager.selectedTroop == transform)
+        {
+            selectManager.rectSpecialCooldownBar.gameObject.SetActive(false);
+        }
+    }
+
+    IEnumerator WolfSuper()
+    {
+        float timer = 0f;
+        while (timer < 1f)
+        {
+            for (int i = 0; i < sprite.Length-1; i++)
+            {
+                sprite[i].color = new Color(1f - timer, 1f - timer, 1f - timer, 1f - timer);
+            }
+            sprite[sprite.Length-1].color = new Color(1f - timer, 1f - timer, 1f - timer, (1f - timer)/2f);
+            yield return new WaitForFixedUpdate();
+            timer += Time.deltaTime;
+        }
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        int leftmostEnemyIndex = 0;
+        for (int i = 1; i < enemies.Length; i++)
+        {
+            if (enemies[i].transform.position.x < enemies[leftmostEnemyIndex].transform.position.x)
+            {
+                leftmostEnemyIndex = i;
+            }
+        }
+        if (enemies.Length != 0)
+        {
+            goal = enemies[leftmostEnemyIndex].transform;
+            transform.position = new Vector3(goal.transform.position.x + goal.GetComponent<Enemy>().circleCollider.radius + circleCollider.radius + .5f, goal.position.y, 0f);
+        }
+
+        timer = 0f;
+        while (timer < 1f)
+        {
+            for (int i = 0; i < sprite.Length-1; i++)
+            {
+                sprite[i].color = new Color(timer, timer, timer, timer);
+            }
+            sprite[sprite.Length - 1].color = new Color(timer, timer, timer, timer / 2f);
+            yield return new WaitForFixedUpdate();
+            timer += Time.deltaTime;
+        }
+        for (int i = 0; i < sprite.Length-1; i++)
+        {
+            sprite[i].color = Color.white;
+        }
+        sprite[sprite.Length - 1].color = new Color(1f, 1f, 1f, .5f);
     }
 
     public void UpgradeDefence()

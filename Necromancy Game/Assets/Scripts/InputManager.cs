@@ -483,12 +483,11 @@ public class InputManager : MonoBehaviour
                 yield return new WaitForFixedUpdate();
                 if (Input.GetKey(KeyCode.Mouse0) && allowInputs)
                 {
-                    Debug.Log("Special");
                     if (selectManager.selectingObject && selectedObject == selectManager.selectedTroop)
                     {
                         if (selectedObject.CompareTag("Skeleton"))
                         {
-                            //selectedObject.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
+                            selectedObject.GetComponent<Skeleton>().SpecialAttack();
                         }
                         else if (selectedObject.CompareTag("Minion"))
                         {
@@ -867,7 +866,7 @@ public class InputManager : MonoBehaviour
                 else if (type == ButtonPressed.middle)
                 {
                     StartCoroutine(PressButtonVisually(buttonImages[7]));
-                    selectManager.selectedTroop.GetComponent<Skeleton>().TurnIntoTombstone();
+                    selectManager.selectedTroop.GetComponent<Skeleton>().SpecialAttack();
                 }
                 else /*if (type == ButtonPressed.right)*/
                 {

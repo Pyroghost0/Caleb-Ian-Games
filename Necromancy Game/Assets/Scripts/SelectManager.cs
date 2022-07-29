@@ -71,6 +71,7 @@ public class SelectManager : MonoBehaviour
     private float arrowCooldownTimer = 0f;
     public float arrowCooldownTime = 25f;
     public RectTransform rectSpecialCooldownBar;
+    public float rectSpecialCooldown;
 
     public bool skeletonGoblins = true;
     public bool skeletonWolves = true;
@@ -87,6 +88,7 @@ public class SelectManager : MonoBehaviour
         rectHealth = rectHealthBar.rect.width;
         rectHealCooldown = rectHealCooldownBar.rect.width;
         rectArrowCooldown = rectArrowCooldownBar.rect.width;
+        rectSpecialCooldown = rectSpecialCooldownBar.rect.width;
         GameObject[] skeletons = GameObject.FindGameObjectsWithTag("Skeleton");
         for (int i = 0; i < skeletons.Length; i++)
         {
@@ -183,6 +185,7 @@ public class SelectManager : MonoBehaviour
                     selectedTroop.GetComponent<Skeleton>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
                 }
                 stayPositionMarker.gameObject.SetActive(false);
+                rectSpecialCooldownBar.gameObject.SetActive(false);
             }
             else if (selectedTroop.CompareTag("Minion"))
             {
@@ -222,6 +225,11 @@ public class SelectManager : MonoBehaviour
                 buttonTexts[i].text = selectSkeletonText[i];
             }
             Skeleton skeleton = newSelect.GetComponent<Skeleton>();
+            if (skeleton.currentSuperWaitTime != 0f)
+            {
+                rectSpecialCooldownBar.gameObject.SetActive(true);
+                rectSpecialCooldownBar.sizeDelta = new Vector2(((float)skeleton.currentSuperWaitTime / skeleton.superWaitTime) * rectSpecialCooldown, rectSpecialCooldownBar.rect.height);
+            }
             selectedObjectName.text = skeleton.skeletonName;
             rectHealthBar.gameObject.SetActive(true);
             rectHealthBar.sizeDelta = new Vector2(((float)skeleton.health / skeleton.maxHealth) * rectHealth, rectHealthBar.rect.height);
@@ -342,6 +350,7 @@ public class SelectManager : MonoBehaviour
                 selectedTroop.GetComponent<Skeleton>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
             }
             stayPositionMarker.gameObject.SetActive(false);
+            rectSpecialCooldownBar.gameObject.SetActive(false);
         }
         else if (selectedTroop.CompareTag("Minion"))
         {

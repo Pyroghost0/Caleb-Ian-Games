@@ -9,7 +9,12 @@ public enum AttackType
     Single = 2,
     Dig = 3,
     RangedAOE = 4,
-    ArrowBarrage = 5
+    ArrowBarrage = 5,
+    SpecialGoblinArrow = 6,
+    SpecialWolfShadowMovement = 7,
+    SpecialWitchGravityAttack = 8,
+    SpecialOrc = 9,
+    SpecialOgre = 10
 }
 
 public class Attack : MonoBehaviour
@@ -38,6 +43,30 @@ public class Attack : MonoBehaviour
         if (sort)
         {
             spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
+        }
+    }
+
+    public void StartSuperAttack(AttackType attackType)
+    {
+        if (attackType == AttackType.SpecialGoblinArrow)
+        {
+            StartCoroutine(StartSpecialGoblinArrowAttack());
+        }
+        /*else if (attackType == AttackType.SpecialWolfShadowMovement)
+        {
+            StartCoroutine(());
+        }*/
+        else if (attackType == AttackType.SpecialWitchGravityAttack)
+        {
+            StartCoroutine(StartSpecialWitchGravityAttack());
+        }
+        else if (attackType == AttackType.SpecialOrc)
+        {
+            StartCoroutine(StartSpecialOrcAttack());
+        }
+        else /*if (attackType == AttackType.SpecialOgre)*/
+        {
+            StartCoroutine(StartSpecialOgreAttack());
         }
     }
 
@@ -470,5 +499,94 @@ public class Attack : MonoBehaviour
         transform.position = startPosition;
         currectlyAttacking = false;
         gameObject.SetActive(false);
+    }
+
+    IEnumerator StartSpecialGoblinArrowAttack()
+    {
+        source.GetComponent<Skeleton>().attack.currectlyAttacking = true;
+        Vector3 startPosition = transform.parent.localPosition;
+        gameObject.SetActive(true);
+        spriteRenderer.enabled = true;
+        if (GetComponent<Animator>())
+        {
+            GetComponent<Animator>().SetTrigger("Attack");
+        }
+        transform.parent.parent = null;
+        targets.Clear();
+        float timer = 0f;
+        bool done = false;
+        while (timer < attackTime && !done)
+        {
+            timer += Time.deltaTime;
+            transform.position += transform.right * -attackSpeed * Time.deltaTime;
+            for (int i = 0; i < targets.Count; i++)
+            {
+                if (targets[i] == null)
+                {
+
+                }
+                else if (affectsEnemies && targets[i].CompareTag("Enemy"))
+                {
+                    targets[i].GetComponent<Enemy>().Hit(transform.position, source == null || source.CompareTag("Enemy") ? null : source.transform, knockback, attackPower);
+                    done = true;
+                    break;
+                }
+                else if (affectsSkeletons)
+                {
+                    if (targets[i].CompareTag("Skeleton"))
+                    {
+                        targets[i].GetComponent<Skeleton>().Hit(transform.position, source == null || source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
+                        done = true;
+                        break;
+                    }
+                    else if (targets[i].CompareTag("Minion"))
+                    {
+                        targets[i].GetComponent<Minion>().Hit(transform.position, source == null || source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
+                        done = true;
+                        break;
+                    }
+                    else if (targets[i].CompareTag("Player Base"))
+                    {
+                        targets[i].GetComponent<PlayerBase>().Hit(attackPower);
+                        done = true;
+                        break;
+                    }
+                }
+            }
+            yield return new WaitForFixedUpdate();
+        }
+        spriteRenderer.enabled = false;
+        if (source != null)
+        {
+            transform.parent.parent = source.transform;
+            transform.parent.transform.localPosition = startPosition;
+            transform.localPosition = Vector3.zero;
+            if (timer < attackTime)
+            {
+                yield return new WaitForSeconds(attackTime - timer);
+            }
+            yield return new WaitForSeconds(attackCooldown);
+            source.GetComponent<Skeleton>().attack.currectlyAttacking = false;
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            Destroy(transform.parent.gameObject);
+        }
+    }
+
+    IEnumerator StartSpecialWitchGravityAttack()
+    {
+        yield return new WaitForSeconds(.5f);
+    }
+
+    IEnumerator StartSpecialOrcAttack()
+    {
+        yield return new WaitForSeconds(.5f);
+    }
+
+    IEnumerator StartSpecialOgreAttack()
+    {
+        yield return new WaitForSeconds(.5f);
     }
 }
