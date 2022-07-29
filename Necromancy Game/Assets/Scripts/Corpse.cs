@@ -11,6 +11,7 @@ public class Corpse : MonoBehaviour
     public GameObject minionPrefab;
     public short numTombstones = 3;
     public string corpseName = "Corpse";
+    public SpriteRenderer[] sprite;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +19,10 @@ public class Corpse : MonoBehaviour
         selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         selectManager.selectableObjects.Add(transform);
-        GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -10);
+        for (int i = 0; i < sprite.Length; i++)
+        {
+            sprite[i].sortingOrder += (int)(transform.position.y * -10);
+        }
     }
 
     public void SpawnMinion()
