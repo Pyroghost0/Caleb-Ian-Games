@@ -49,10 +49,9 @@ public class MainMenuManager : MonoBehaviour
     public int mapPointIndex;
     public RectTransform selector;
     private float clickTime;
-    public RectTransform map;
-    public Image mapImage;
-    public Sprite normalMap;
-    public Sprite darkMap;
+    public RectTransform scrollBar;//70 -> 300
+    public RectTransform map;//0 -> -750
+    public GameObject normalMap;
 
     public bool[] unlockedLevels;
 
@@ -67,14 +66,29 @@ public class MainMenuManager : MonoBehaviour
     {
         if (allowInputs)
         {
-            /*if (inMap)
+            if (inMap)
             {
-                if (Input.mouseScrollDelta.y > 0 && )
+                if (Input.mouseScrollDelta.y > 0 && map.anchoredPosition.y > -750f)
                 {
-
+                    map.anchoredPosition += new Vector2(0f, -Input.mouseScrollDelta.y * 10f);
+                    scrollBar.anchoredPosition += new Vector2(0f, Input.mouseScrollDelta.y * .3066667f * 10f);
+                    if (map.anchoredPosition.y < -750f)
+                    {
+                        map.anchoredPosition = new Vector2(0f, 750f);
+                        scrollBar.anchoredPosition += new Vector2(-20f, 300f);
+                    }
                 }
-                else
-            }*/
+                else if (Input.mouseScrollDelta.y < 0 && map.anchoredPosition.y < 0f)
+                {
+                    map.anchoredPosition += new Vector2(0f, -Input.mouseScrollDelta.y * 10f);
+                    scrollBar.anchoredPosition += new Vector2(0f, Input.mouseScrollDelta.y * .3066667f * 10f);
+                    if (map.anchoredPosition.y > 0f)
+                    {
+                        map.anchoredPosition = Vector2.zero;
+                        scrollBar.anchoredPosition += new Vector2(-20f, 70f);
+                    }
+                }
+            }
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 clickTime = 0f;

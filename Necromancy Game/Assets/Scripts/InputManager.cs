@@ -40,6 +40,8 @@ public class InputManager : MonoBehaviour
     public TextMeshProUGUI middleButtonText;
     public TextMeshProUGUI rightButtonText;
 
+    private float slopeBase = 1.6f;
+    private float posYBase = 8f;
     public Image leftButtonImage;
     public Image middleButtonImage;
     public Image rightButtonImage;
@@ -104,6 +106,7 @@ public class InputManager : MonoBehaviour
                     if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Skeleton"))
                     {
                         selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
+                        selectManager.stayPositionMarker.gameObject.SetActive(false);
                         selectManager.skeletonStatus.sprite = selectManager.skeletonAttack;
                         if (selectManager.selectedTroop.GetComponent<Skeleton>().goal != null)
                         {
@@ -508,7 +511,7 @@ public class InputManager : MonoBehaviour
                         {
                             selectManager.stayPositionMarker.gameObject.SetActive(false);
                         }
-                        if (selectedObject.GetComponent<Skeleton>().skeletonMode == SkeletonMode.left || selectedObject.position.x < 3.5f)
+                        if (selectedObject.GetComponent<Skeleton>().skeletonMode == SkeletonMode.left || selectedObject.position.y > (slopeBase * (selectedObject.position.x - 3f)) + posYBase)
                         {
                             selectedObject.GetComponent<Skeleton>().skeletonMode = SkeletonMode.right;
                             selectManager.skeletonStatus.sprite = selectManager.skeletonAttack;
@@ -550,12 +553,12 @@ public class InputManager : MonoBehaviour
         {
             selectManager.Deselect();
         }
+        yield return new WaitForFixedUpdate();
         doingMouseCoroutine = false;
     }
 
     IEnumerator MousePressDownBase()
     {
-        doingMouseCoroutine = true;
         float timer = 0f;
         while (timer < buttonPressTime && allowInputs)
         {
@@ -574,7 +577,6 @@ public class InputManager : MonoBehaviour
         {
             playerBase.HealAll();
         }
-        doingMouseCoroutine = false;
     }
 
     public void Pause()

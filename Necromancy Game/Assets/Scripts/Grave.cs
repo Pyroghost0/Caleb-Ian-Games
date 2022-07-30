@@ -22,7 +22,7 @@ public class Grave : MonoBehaviour
             bones -= bonesDug;
             if (bones <= 0)
             {
-                StartCoroutine(DestroyGrave());
+                StartCoroutine(DestroyGraveCoroutine());
                 return (short)(bonesDug + bones);
             }
             else
@@ -33,15 +33,22 @@ public class Grave : MonoBehaviour
         return 0;
     }
 
-    IEnumerator DestroyGrave()
+    public void DestroyGrave()
+    {
+        StartCoroutine(DestroyGraveCoroutine());
+    }
+
+    IEnumerator DestroyGraveCoroutine()
     {
         usedUp = true;
         targetSelect.SetActive(false);
         float timer = 0f;
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        while (timer < 1f)
+        SpriteRenderer spriteRenderer2 = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        while (timer < 2f)
         {
-            spriteRenderer.color = new Color(1f, 1f, 1f, 1f - timer);//Would rather it disappear into the ground, but fading also works
+            spriteRenderer.color = new Color(1f - (timer / 2f), 1f - (timer / 2f), 1f - (timer / 2f), 1f - (timer / 2f));//Would rather it disappear into the ground, but fading also works
+            spriteRenderer2.color = new Color(1f - (timer / 2f), 1f - (timer / 2f), 1f - (timer / 2f), 1f - (timer / 2f));
             yield return new WaitForFixedUpdate();
             timer += Time.deltaTime;
         }

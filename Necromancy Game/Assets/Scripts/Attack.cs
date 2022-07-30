@@ -60,10 +60,10 @@ public class Attack : MonoBehaviour
         {
             StartCoroutine(StartSpecialWitchGravityAttack());
         }
-        else if (attackType == AttackType.SpecialOrcUpgrade)
+        /*else if (attackType == AttackType.SpecialOrcUpgrade)
         {
             StartCoroutine(StartSpecialOrcAttack());
-        }
+        }*/
         else /*if (attackType == AttackType.SpecialOgreMultiattack)*/
         {
             StartCoroutine(StartSpecialOgreAttack());

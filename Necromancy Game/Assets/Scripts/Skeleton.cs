@@ -904,6 +904,42 @@ public class Skeleton : MonoBehaviour
                 else /*if(superAttackType == AttackType.SpecialOrcUpgrade)*/
                 {
                     GameObject[] graves = GameObject.FindGameObjectsWithTag("Grave");
+                    int closestGraveIndex = 0;
+                    for (int i = 1; i < graves.Length; i++)
+                    {
+                        if ((graves[i].transform.position - transform.position).magnitude < (graves[closestGraveIndex].transform.position - transform.position).magnitude)
+                        {
+                            closestGraveIndex = i;
+                        }
+                    }
+                    if (graves.Length > 0 && (graves[closestGraveIndex].transform.position - transform.position).magnitude < 3.5f)
+                    {
+                        graves[closestGraveIndex].GetComponent<Grave>().DestroyGrave();
+                        if (attackLevel == 1)
+                        {
+                            attack.attackPower += 10;
+                        }
+                        else if (attackLevel == 2)
+                        {
+                            attack.attackPower += 15;
+                        }
+                        else /*if (attackLevel == 3)*/
+                        {
+                            attack.attackPower += 23;
+                        }
+                        if (armorLevel == 1)
+                        {
+                            defence += 1;
+                        }
+                        else if (armorLevel == 2)
+                        {
+                            defence += 1;
+                        }
+                        else /*if (armorLevel == 3)*/
+                        {
+                            defence += 2;
+                        }
+                    }
                 }
                 StartCoroutine(SpecialAttackCoroutineCooldown());
             }
@@ -933,12 +969,6 @@ public class Skeleton : MonoBehaviour
 
     IEnumerator SpecialAttackCoroutineCooldown()
     {
-        /*if (selectManager.selectedTroop == transform)
-        {
-            selectManager.rectSpecialCooldownBar.gameObject.SetActive(true);
-            selectManager.rectSpecialCooldownBar.sizeDelta = new Vector2(selectManager.rectSpecialCooldown, selectManager.rectSpecialCooldownBar.rect.height);
-        }
-        currentSuperWaitTime = superWaitTime;*/
         for (int i = 0; i < superWaitTime * 2; i++)
         {
             yield return new WaitForSeconds(.5f);
