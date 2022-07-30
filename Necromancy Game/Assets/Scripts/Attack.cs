@@ -66,7 +66,7 @@ public class Attack : MonoBehaviour
         }*/
         else /*if (attackType == AttackType.SpecialOgreMultiattack)*/
         {
-            StartCoroutine(StartSpecialOgreAttack());
+            StartCoroutine(StartSpecialOgreMultiattack());
         }
     }
 
@@ -635,13 +635,39 @@ public class Attack : MonoBehaviour
         }
     }
 
-    IEnumerator StartSpecialOrcAttack()
+    IEnumerator StartSpecialOgreMultiattack()
     {
-        yield return new WaitForSeconds(.5f);
-    }
+        currectlyAttacking = true;
+        targets.Clear();
+        yield return new WaitForSeconds(attackTime);
+        for (int i = 0; i < targets.Count; i++)
+        {
+            if (targets[i] == null)
+            {
 
-    IEnumerator StartSpecialOgreAttack()
-    {
-        yield return new WaitForSeconds(.5f);
+            }
+            else if (targets[i].CompareTag("Enemy"))
+            {
+                targets[i].GetComponent<Enemy>().Hit(transform.position, source.CompareTag("Enemy") ? null : source.transform, knockback, attackPower);
+            }
+            else /*if (affectsSkeletons)*/
+            {
+                if (targets[i].CompareTag("Skeleton"))
+                {
+                    targets[i].GetComponent<Skeleton>().Hit(transform.position, source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
+                }
+                else if (targets[i].CompareTag("Minion"))
+                {
+                    targets[i].GetComponent<Minion>().Hit(transform.position, source.CompareTag("Skeleton") ? null : source.transform, knockback, attackPower);
+                }
+                else if (targets[i].CompareTag("Player Base"))
+                {
+                    targets[i].GetComponent<PlayerBase>().Hit(attackPower);
+                }
+            }
+        }
+        yield return new WaitForSeconds(attackCooldown);
+        currectlyAttacking = false;
+        gameObject.SetActive(false);
     }
 }
