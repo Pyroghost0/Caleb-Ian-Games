@@ -49,6 +49,10 @@ public class MainMenuManager : MonoBehaviour
     public int mapPointIndex;
     public RectTransform selector;
     private float clickTime;
+    public RectTransform map;
+    public Image mapImage;
+    public Sprite normalMap;
+    public Sprite darkMap;
 
     public bool[] unlockedLevels;
 
@@ -63,6 +67,14 @@ public class MainMenuManager : MonoBehaviour
     {
         if (allowInputs)
         {
+            /*if (inMap)
+            {
+                if (Input.mouseScrollDelta.y > 0 && )
+                {
+
+                }
+                else
+            }*/
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 clickTime = 0f;

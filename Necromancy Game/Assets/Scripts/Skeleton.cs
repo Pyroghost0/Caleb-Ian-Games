@@ -149,10 +149,13 @@ public class Skeleton : MonoBehaviour
                 {
                     if (nextAttackIsSuper)
                     {
+                        anim.SetTrigger("Attack");
+                        superAttack[0].transform.parent.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((superAttack[0].transform.parent.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         nextAttackIsSuper = false;
                         StartCoroutine(NextAttackIsSuperWait());
                         for (int i = 0; i < superAttack.Length; i++)
                         {
+                            superAttack[i].gameObject.SetActive(true);
                             superAttack[i].StartSuperAttack(superAttackType);
                         }
                     }
@@ -491,10 +494,13 @@ public class Skeleton : MonoBehaviour
                 {
                     if (nextAttackIsSuper)
                     {
+                        anim.SetTrigger("Attack");
+                        superAttack[0].transform.parent.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((superAttack[0].transform.parent.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         nextAttackIsSuper = false;
                         StartCoroutine(NextAttackIsSuperWait());
                         for (int i = 0; i < superAttack.Length; i++)
                         {
+                            superAttack[i].gameObject.SetActive(true);
                             superAttack[i].StartSuperAttack(superAttackType);
                         }
                     }
@@ -891,7 +897,14 @@ public class Skeleton : MonoBehaviour
             currentSuperWaitTime = superWaitTime;
             if (instantSuper)
             {
-                StartCoroutine(WolfSuper());
+                if (superAttackType == AttackType.SpecialWolfShadowMovement)
+                {
+                    StartCoroutine(WolfSuper());
+                }
+                else /*if(superAttackType == AttackType.SpecialOrcUpgrade)*/
+                {
+                    GameObject[] graves = GameObject.FindGameObjectsWithTag("Grave");
+                }
                 StartCoroutine(SpecialAttackCoroutineCooldown());
             }
             else

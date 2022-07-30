@@ -13,8 +13,8 @@ public enum AttackType
     SpecialGoblinArrow = 6,
     SpecialWolfShadowMovement = 7,
     SpecialWitchGravityAttack = 8,
-    SpecialOrc = 9,
-    SpecialOgre = 10
+    SpecialOrcUpgrade = 9,
+    SpecialOgreMultiattack = 10
 }
 
 public class Attack : MonoBehaviour
@@ -60,11 +60,11 @@ public class Attack : MonoBehaviour
         {
             StartCoroutine(StartSpecialWitchGravityAttack());
         }
-        else if (attackType == AttackType.SpecialOrc)
+        else if (attackType == AttackType.SpecialOrcUpgrade)
         {
             StartCoroutine(StartSpecialOrcAttack());
         }
-        else /*if (attackType == AttackType.SpecialOgre)*/
+        else /*if (attackType == AttackType.SpecialOgreMultiattack)*/
         {
             StartCoroutine(StartSpecialOgreAttack());
         }
@@ -577,7 +577,58 @@ public class Attack : MonoBehaviour
 
     IEnumerator StartSpecialWitchGravityAttack()
     {
-        yield return new WaitForSeconds(.5f);
+        Vector3 startPosition = transform.parent.localPosition;
+        gameObject.SetActive(true);
+        transform.parent.parent = null;
+        source.GetComponent<Skeleton>().attack.currectlyAttacking = true;
+        targets.Clear();
+        Transform target = source.GetComponent<Skeleton>().goal;
+        if (target != null)
+        {
+            transform.position = source.transform.position + ((target.position - source.transform.position).normalized * ((target.position - source.transform.position).magnitude + 2f));
+        }
+        float timer = 0f;
+        while (timer < attackTime)
+        {
+            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+            for (int i = 0; i < targets.Count; i++)
+            {
+                if (targets[i] == null)
+                {
+
+                }
+                else
+                {
+                    Vector3 targetPosition = targets[i].transform.position;
+                    Rigidbody2D targetRigidbody = targets[i].GetComponent<Rigidbody2D>();
+                    Vector2 curentDirection = new Vector2(targetPosition.x  - transform.position.x, targetPosition.y - transform.position.y);
+                    Vector2 futureDirection = curentDirection + targetRigidbody.velocity;//Position in 1s
+                    if (futureDirection.y < (-curentDirection.x / curentDirection.y) * futureDirection.x || futureDirection.magnitude < .5f)
+                    {
+                        targetRigidbody.velocity -= curentDirection.normalized * 4.5f * targets[i].GetComponent<Enemy>().speedAcceleration * Time.deltaTime;
+                    }
+                    else
+                    {
+                        targetRigidbody.velocity -= curentDirection.normalized * .5f * targets[i].GetComponent<Enemy>().speedAcceleration * Time.deltaTime;
+                    }
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(attackCooldown);
+        if (source != null)
+        {
+            transform.parent.parent = source.transform;
+            transform.parent.transform.localPosition = startPosition;
+            transform.localPosition = Vector3.zero;
+            source.GetComponent<Skeleton>().attack.currectlyAttacking = false;
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            Destroy(transform.parent.gameObject);
+        }
     }
 
     IEnumerator StartSpecialOrcAttack()
