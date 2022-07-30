@@ -152,7 +152,7 @@ public class Skeleton : MonoBehaviour
                         anim.SetTrigger("Attack");
                         superAttack[0].transform.parent.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((superAttack[0].transform.parent.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         nextAttackIsSuper = false;
-                        StartCoroutine(NextAttackIsSuperWait());
+                        StartCoroutine(SpecialAttackCoroutineCooldown());
                         for (int i = 0; i < superAttack.Length; i++)
                         {
                             superAttack[i].gameObject.SetActive(true);
@@ -497,7 +497,7 @@ public class Skeleton : MonoBehaviour
                         anim.SetTrigger("Attack");
                         superAttack[0].transform.parent.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((superAttack[0].transform.parent.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                         nextAttackIsSuper = false;
-                        StartCoroutine(NextAttackIsSuperWait());
+                        StartCoroutine(SpecialAttackCoroutineCooldown());
                         for (int i = 0; i < superAttack.Length; i++)
                         {
                             superAttack[i].gameObject.SetActive(true);

@@ -161,7 +161,7 @@ public class Attack : MonoBehaviour
         if (source != null)
         {
             transform.parent.parent = source.transform;
-            transform.parent.transform.localPosition = startPosition;
+            transform.parent.localPosition = startPosition;
             transform.localPosition = Vector3.zero;
             if (timer < attackTime)
             {
@@ -352,7 +352,7 @@ public class Attack : MonoBehaviour
         if (source != null)
         {
             transform.parent.parent = source.transform;
-            transform.parent.transform.localPosition = startPosition;
+            transform.parent.localPosition = startPosition;
             transform.localPosition = Vector3.zero;
             currectlyAttacking = false;
             gameObject.SetActive(false);
@@ -504,6 +504,7 @@ public class Attack : MonoBehaviour
     IEnumerator StartSpecialGoblinArrowAttack()
     {
         source.GetComponent<Skeleton>().attack.currectlyAttacking = true;
+        bool first = transform.parent.parent != null;
         Vector3 startPosition = transform.parent.localPosition;
         gameObject.SetActive(true);
         spriteRenderer.enabled = true;
@@ -558,14 +559,17 @@ public class Attack : MonoBehaviour
         spriteRenderer.enabled = false;
         if (source != null)
         {
-            transform.parent.parent = source.transform;
-            transform.parent.transform.localPosition = startPosition;
             transform.localPosition = Vector3.zero;
             if (timer < attackTime)
             {
                 yield return new WaitForSeconds(attackTime - timer);
             }
             yield return new WaitForSeconds(attackCooldown);
+            if (first)
+            {
+                transform.parent.parent = source.transform;
+                transform.parent.localPosition = startPosition;
+            }
             source.GetComponent<Skeleton>().attack.currectlyAttacking = false;
             gameObject.SetActive(false);
         }
@@ -620,7 +624,7 @@ public class Attack : MonoBehaviour
         if (source != null)
         {
             transform.parent.parent = source.transform;
-            transform.parent.transform.localPosition = startPosition;
+            transform.parent.localPosition = startPosition;
             transform.localPosition = Vector3.zero;
             source.GetComponent<Skeleton>().attack.currectlyAttacking = false;
             gameObject.SetActive(false);
