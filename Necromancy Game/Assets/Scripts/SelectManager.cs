@@ -73,11 +73,16 @@ public class SelectManager : MonoBehaviour
     public RectTransform rectSpecialCooldownBar;
     public float rectSpecialCooldown;
 
-    public bool skeletonGoblins = true;
-    public bool skeletonWolves = true;
-    public bool skeletonWitches = true;
-    public bool skeletonOrcs = true;
-    public bool skeletonOgres = true;
+    public bool spawnSkeletonGoblins = true;
+    public bool spawnSkeletonWolves = true;
+    public bool spawnSkeletonWitches = true;
+    public bool spawnSkeletonOrcs = true;
+    public bool spawnSkeletonOgres = true;
+    public bool specialGoblin = true;
+    public bool specialWolf = true;
+    public bool specialWitch = true;
+    public bool specialOrc = true;
+    public bool specialOgre = true;
 
     // Start is called before the first frame update
     void Start()
@@ -186,6 +191,7 @@ public class SelectManager : MonoBehaviour
                 }
                 stayPositionMarker.gameObject.SetActive(false);
                 rectSpecialCooldownBar.gameObject.SetActive(false);
+                inputManager.buttonImages[7].gameObject.SetActive(true);
             }
             else if (selectedTroop.CompareTag("Minion"))
             {
@@ -275,6 +281,10 @@ public class SelectManager : MonoBehaviour
                 stayPositionMarker.gameObject.SetActive(true);
                 stayPositionMarker.position = skeleton.stayGoal;
             }
+            if ((skeleton.specialAttackType == AttackType.SpecialGoblinArrow && !specialGoblin) || (skeleton.specialAttackType == AttackType.SpecialWolfShadowMovement && !specialWolf) || (skeleton.specialAttackType == AttackType.SpecialWitchGravityAttack && !specialWitch) || (skeleton.specialAttackType == AttackType.SpecialOrcUpgrade && !specialOrc) || (skeleton.specialAttackType == AttackType.SpecialOgreMultiattack && !specialOgre))
+            {
+                inputManager.buttonImages[7].gameObject.SetActive(false);
+            }
         }
         else if (newSelect.CompareTag("Minion"))
         {
@@ -351,6 +361,7 @@ public class SelectManager : MonoBehaviour
             }
             stayPositionMarker.gameObject.SetActive(false);
             rectSpecialCooldownBar.gameObject.SetActive(false);
+            inputManager.buttonImages[7].gameObject.SetActive(true);
         }
         else if (selectedTroop.CompareTag("Minion"))
         {

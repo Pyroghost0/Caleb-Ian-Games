@@ -57,7 +57,7 @@ public class Skeleton : MonoBehaviour
     public float currentSuperWaitTime = 0f;
     public Attack[] superAttack;
     public bool instantSuper;
-    public AttackType superAttackType;
+    public AttackType specialAttackType;
     private bool nextAttackIsSuper;
 
     // Start is called before the first frame update
@@ -156,7 +156,7 @@ public class Skeleton : MonoBehaviour
                         for (int i = 0; i < superAttack.Length; i++)
                         {
                             superAttack[i].gameObject.SetActive(true);
-                            superAttack[i].StartSuperAttack(superAttackType);
+                            superAttack[i].StartSuperAttack(specialAttackType);
                         }
                     }
                     else
@@ -501,7 +501,7 @@ public class Skeleton : MonoBehaviour
                         for (int i = 0; i < superAttack.Length; i++)
                         {
                             superAttack[i].gameObject.SetActive(true);
-                            superAttack[i].StartSuperAttack(superAttackType);
+                            superAttack[i].StartSuperAttack(specialAttackType);
                         }
                     }
                     else
@@ -890,18 +890,22 @@ public class Skeleton : MonoBehaviour
 
     public void SpecialAttack()
     {
-        if (currentSuperWaitTime == 0f)
+        if ((specialAttackType == AttackType.SpecialGoblinArrow && !selectManager.specialGoblin) || (specialAttackType == AttackType.SpecialWolfShadowMovement && !selectManager.specialWolf) || (specialAttackType == AttackType.SpecialWitchGravityAttack && !selectManager.specialWitch) || (specialAttackType == AttackType.SpecialOrcUpgrade && !selectManager.specialOrc) || (specialAttackType == AttackType.SpecialOgreMultiattack && !selectManager.specialOgre))
+        {
+
+        }
+        else if (currentSuperWaitTime == 0f)
         {
             selectManager.rectSpecialCooldownBar.gameObject.SetActive(true);
             selectManager.rectSpecialCooldownBar.sizeDelta = new Vector2(selectManager.rectSpecialCooldown, selectManager.rectSpecialCooldownBar.rect.height);
             currentSuperWaitTime = superWaitTime;
             if (instantSuper)
             {
-                if (superAttackType == AttackType.SpecialWolfShadowMovement)
+                if (specialAttackType == AttackType.SpecialWolfShadowMovement)
                 {
                     StartCoroutine(WolfSuper());
                 }
-                else /*if(superAttackType == AttackType.SpecialOrcUpgrade)*/
+                else /*if(specialAttackType == AttackType.SpecialOrcUpgrade)*/
                 {
                     GameObject[] graves = GameObject.FindGameObjectsWithTag("Grave");
                     int closestGraveIndex = 0;

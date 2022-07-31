@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
     public GameObject winMessage;
     public TextMeshProUGUI resumeText;
     public TextMeshProUGUI pauseText;
+    public int level = 1;
+    public bool altLevel = false;
 
     IEnumerator LevelSpawning()
     {
@@ -25,7 +27,19 @@ public class LevelManager : MonoBehaviour
             enemies = GameObject.FindGameObjectsWithTag("Enemy");
         }
         winMessage.SetActive(true);
-        yield return new WaitForSeconds(1f);
+        bool[] data = Data.Load();
+        if (altLevel)
+        {
+            data[(level + 5) * 2] = true;//Completed
+        }
+        else
+        {
+            data[(level - 1) * 2] = true;//Completed
+            data[(level * 2)+1] = true;//Next level available
+            data[((level + 5) * 2)+1] = true;//Alt level available
+        }
+        Data.Save(data);
+        yield return new WaitForSeconds(3f);
         InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
         inputManager.Pause();
         inputManager.allowResume = false;

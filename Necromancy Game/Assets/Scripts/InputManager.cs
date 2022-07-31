@@ -30,7 +30,7 @@ public class InputManager : MonoBehaviour
     public bool holdRight = false;
     public bool holdLeft = false;
 
-    private bool allowInputs = true;
+    public bool allowInputs = true;
     public bool paused = false;
     public bool allowResume = true;
     public GameObject pauseMenu;
@@ -60,7 +60,7 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && allowInputs && !paused && !doingMouseCoroutine)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && allowInputs && !paused && !doingMouseCoroutine && Input.mousePosition.y / Screen.height < .75f)
         {
             RaycastHit2D hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             List<GameObject> hitObjects = new List<GameObject>();
@@ -601,6 +601,11 @@ public class InputManager : MonoBehaviour
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
             holdInputWait = false;
+            if (gameObject.GetComponent<TutorialInputManager>() != null)
+            {
+                gameObject.GetComponent<TutorialInputManager>().enabled = true;
+                this.enabled = false;
+            }
         }
         else
         {
