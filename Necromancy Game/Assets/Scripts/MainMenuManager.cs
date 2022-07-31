@@ -52,14 +52,60 @@ public class MainMenuManager : MonoBehaviour
     public RectTransform scrollBar;//70 -> 300
     public RectTransform map;//0 -> -750
     public GameObject normalMap;
-
-    public bool[] unlockedLevels;
+    public GameObject saveDataMenu;
 
     void Start()
     {
         leftButtonText.text = leftButton.ToString();
         middleButtonText.text = middleButton.ToString();
         rightButtonText.text = rightButton.ToString();
+        if (Data.Load() == null)
+        {
+            Debug.Log("New Save");
+            bool[] newData = new bool[24];
+            newData[1] = true;
+            Data.Save(newData);
+        }
+        if (normalMap.activeSelf)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                if (Data.Load()[i * 2])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                }
+                else if (Data.Load()[(i * 2) + 1])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                }
+                else /*if (!Data.Load()[(i * 2) + 1])*/
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                if (Data.Load()[(i * 2) + 12])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                }
+                else if (Data.Load()[(i * 2) + 13])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                }
+                else if (!Data.Load()[(i * 2) + 1])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                }
+                else /*if (Data.Load()[(i * 2) + 1])*/
+                {
+                    mapPoints[i].GetComponent<Image>().color = new Color(1f, .46f, .08f);
+                }
+            }
+        }
     }
 
     public void Update()
@@ -101,8 +147,14 @@ public class MainMenuManager : MonoBehaviour
             {
                 buttonPressTimer += Time.deltaTime;
             }
-
-            if (Input.GetKeyDown(leftButton) && !Input.GetKey(middleButton) && !Input.GetKey(rightButton))
+            if (Input.GetKey(leftButton) && Input.GetKey(middleButton) && Input.GetKey(rightButton) && (Input.GetKeyDown(leftButton) || Input.GetKeyDown(middleButton) || Input.GetKeyDown(rightButton)))
+            {
+                saveDataMenu.SetActive(true);
+                allowInputs = false;
+                buttonPressTimer = 0f;
+                buttonPressed = false;
+            }
+            else if (Input.GetKeyDown(leftButton) && !Input.GetKey(middleButton) && !Input.GetKey(rightButton))
             {
                 if (!buttonPressed)
                 {
@@ -208,6 +260,21 @@ public class MainMenuManager : MonoBehaviour
                 }
             }
         }
+        else if (saveDataMenu.activeSelf)
+        {
+            if (Input.GetKeyDown(leftButton) && !Input.GetKey(middleButton) && !Input.GetKey(rightButton))
+            {
+                UnlockAll();
+            }
+            else if (Input.GetKeyDown(middleButton) && !Input.GetKey(leftButton) && !Input.GetKey(rightButton))
+            {
+                Cancel();
+            }
+            else if (Input.GetKeyDown(rightButton) && !Input.GetKey(leftButton) && !Input.GetKey(middleButton))
+            {
+                DeleteData();
+            }
+        }
     }
 
     public void ClickSinleButtonLeft()
@@ -248,29 +315,11 @@ public class MainMenuManager : MonoBehaviour
             }
             else if (type == ButtonPressed.middle)
             {
-                Debug.Log("Select Level");
-                /*allowInputs = false;
-                otherMiddleButtonImage.color = Color.gray;
-                loading.SetActive(true);
-                if (inOtherSelection)
-                {
-                    AsyncOperation ao = SceneManager.LoadSceneAsync(extraSceneName[mapPointIndex], LoadSceneMode.Additive);
-                    yield return new WaitUntil(() => ao.isDone);
-                }
-                else
-                {
-                    AsyncOperation ao = SceneManager.LoadSceneAsync(normalSceneName[mapPointIndex], LoadSceneMode.Additive);
-                    yield return new WaitUntil(() => ao.isDone);
-                }
-                InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
-                inputManager.leftButton = leftButton;
-                inputManager.middleButton = middleButton;
-                inputManager.rightButton = rightButton;
-                SceneManager.UnloadSceneAsync("Main Menu");*/
+                LoadLevel();
             }
             else /*if (type == ButtonPressed.right)*/
             {
-                if (mapPointIndex+1 < mapPoints.Length && unlockedLevels[mapPointIndex+1])
+                if (mapPointIndex+1 < mapPoints.Length && Data.Load()[(mapPointIndex*2)+3])
                 {
                     mapPointIndex++;
                     selector.anchoredPosition = mapPoints[mapPointIndex].anchoredPosition;
@@ -294,7 +343,6 @@ public class MainMenuManager : MonoBehaviour
             }
             else if (type == ButtonPressed.middle)
             {
-
                 allowInputs = false;
                 middleButtonImage.color = Color.gray;
                 loading.SetActive(true);
@@ -382,7 +430,7 @@ public class MainMenuManager : MonoBehaviour
             }
             else if (type == ButtonPressed.middle)
             {
-                Debug.Log("Changed To Special Missions");
+                ChangeMap();
             }
             else /*if (type == ButtonPressed.right)*/
             {
@@ -483,17 +531,17 @@ public class MainMenuManager : MonoBehaviour
 
     public void SelectLevel(int num)
     {
-        if (unlockedLevels[num])
+        if (Data.Load()[(num * 2) + 1])
         {
             if (num == mapPointIndex)
             {
                 if (clickTime < buttonPressTime)
                 {
-                    Debug.Log("Select Level");
+                    LoadLevel();
                 }
                 else
                 {
-                    Debug.Log("Side Missions");
+                    ChangeMap();
                 }
             }
             else
@@ -504,46 +552,144 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    /*public void RemoveData()
+    public void LoadLevel()
     {
-        SaveLoad.ClearData();
-        removeMenu.SetActive(false);
-        isData = false;
-        fullCompletion = false;
-        text100.SetActive(false);
-    }
-    public void FullUnlock()
-    {
-        SaveLoad.FullUnlock();
-        isData = true;
-        if (data == null)
+        Debug.Log("Load Level");
+        /*allowInputs = false;
+        otherMiddleButtonImage.color = Color.gray;
+        loading.SetActive(true);
+        if (inOtherSelection)
         {
-            data = new int[25];
-            data[0] = 0;
-            data[1] = 1;
-            data[2] = 0;
-            data[3] = 0;
-            for (int i = 4; i < 25; i++)
+            AsyncOperation ao = SceneManager.LoadSceneAsync(extraSceneName[mapPointIndex], LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao.isDone);
+        }
+        else
+        {
+            AsyncOperation ao = SceneManager.LoadSceneAsync(normalSceneName[mapPointIndex], LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao.isDone);
+        }
+        InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
+        inputManager.leftButton = leftButton;
+        inputManager.middleButton = middleButton;
+        inputManager.rightButton = rightButton;
+        SceneManager.UnloadSceneAsync("Main Menu");*/
+    }
+
+    public void ChangeMap()
+    {
+        if (normalMap.activeSelf)
+        {
+            normalMap.SetActive(false);
+            for (int i = 0; i < 6; i++)
             {
-                data[i] = 1;
+                if (Data.Load()[(i*2)+12])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                }
+                else if (Data.Load()[(i * 2)+ 13])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                }
+                else if (!Data.Load()[(i * 2) + 1])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                }
+                else /*if (Data.Load()[(i * 2) + 1])*/
+                {
+                    mapPoints[i].GetComponent<Image>().color = new Color(1f, .46f, .08f);
+                }
             }
         }
         else
         {
-            for (int i = 4; i < 25; i++)
+            normalMap.SetActive(true);
+            for (int i = 0; i < 6; i++)
             {
-                data[i] = 1;
+                if (Data.Load()[i * 2])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                }
+                else if (Data.Load()[(i * 2) + 1])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                }
+                else /*if (!Data.Load()[(i * 2) + 1])*/
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                }
             }
         }
-
-        unlockMenu.SetActive(false);
-        fullCompletion = true;
-        text100.SetActive(true);
     }
-    public void CloseMenu()
-    {
-        removeMenu.SetActive(false);
-        unlockMenu.SetActive(false);
-    }*/
 
+    public void UnlockAll()
+    {
+        Data.FullUnlock();
+        if (normalMap.activeSelf)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                if (Data.Load()[i * 2])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                }
+                else if (Data.Load()[(i * 2) + 1])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                }
+                else /*if (!Data.Load()[(i * 2) + 1])*/
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                if (Data.Load()[(i * 2) + 12])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                }
+                else if (Data.Load()[(i * 2) + 13])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                }
+                else if (!Data.Load()[(i * 2) + 1])
+                {
+                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                }
+                else /*if (Data.Load()[(i * 2) + 1])*/
+                {
+                    mapPoints[i].GetComponent<Image>().color = new Color(1f, .46f, .08f);
+                }
+            }
+        }
+        allowInputs = true;
+        saveDataMenu.SetActive(false);
+    }
+
+    public void Cancel()
+    {
+        allowInputs = true;
+        saveDataMenu.SetActive(false);
+    }
+
+    public void DeleteData()
+    {
+        Data.ClearData();
+        Debug.Log("New Save");
+        bool[] newData = new bool[24];
+        newData[1] = true;
+        Data.Save(newData);
+        selector.anchoredPosition = mapPoints[0].anchoredPosition;
+        mapPointIndex = 0;
+        normalMap.SetActive(true);
+        mapPoints[0].GetComponent<Image>().color = Color.blue;
+        for (int i = 1; i < 6; i++)
+        {
+            mapPoints[i].GetComponent<Image>().color = Color.red;
+        }
+        allowInputs = true;
+        saveDataMenu.SetActive(false);
+    }
 }

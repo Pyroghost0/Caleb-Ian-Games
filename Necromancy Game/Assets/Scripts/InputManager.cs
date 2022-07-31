@@ -226,7 +226,7 @@ public class InputManager : MonoBehaviour
             {
                 buttonPressTimer += Time.unscaledDeltaTime;
             }
-            if (Input.GetKey(leftButton) && Input.GetKey(middleButton) && Input.GetKey(rightButton) && (Input.GetKeyDown(leftButton) || Input.GetKeyDown(middleButton) || Input.GetKeyDown(rightButton)))
+            if ((Input.GetKey(leftButton) && Input.GetKey(middleButton) && Input.GetKey(rightButton) && (Input.GetKeyDown(leftButton) || Input.GetKeyDown(middleButton) || Input.GetKeyDown(rightButton))) || Input.GetKeyDown(KeyCode.Escape))
             {
                 Resume();
             }
