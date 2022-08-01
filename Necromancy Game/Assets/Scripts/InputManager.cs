@@ -30,9 +30,11 @@ public class InputManager : MonoBehaviour
     public bool holdRight = false;
     public bool holdLeft = false;
 
+    public bool resumeToTutorial = false;
     public bool allowInputs = true;
     public bool paused = false;
     public bool allowResume = true;
+    public GameObject pauseButton;
     public GameObject pauseMenu;
     public GameObject loading;
     public TextMeshProUGUI timeSurvivedText;
@@ -581,6 +583,7 @@ public class InputManager : MonoBehaviour
 
     public void Pause()
     {
+        pauseButton.SetActive(false);
         paused = true;
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
@@ -597,14 +600,16 @@ public class InputManager : MonoBehaviour
     {
         if (allowResume)
         {
+            pauseButton.SetActive(true);
             paused = false;
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
             holdInputWait = false;
-            if (gameObject.GetComponent<TutorialInputManager>() != null)
+            if (resumeToTutorial)
             {
                 gameObject.GetComponent<TutorialInputManager>().enabled = true;
                 this.enabled = false;
+                resumeToTutorial = false;
             }
         }
         else
@@ -616,14 +621,20 @@ public class InputManager : MonoBehaviour
     IEnumerator ReloadScene()
     {
         loading.SetActive(true);
+        GameObject levelManager = GameObject.FindGameObjectWithTag("Level Manager");
+        bool skipTutorial = levelManager == null ? false : levelManager.GetComponent<LevelManager>().tutorialBefore && playerBase.timeSurvived > 0f;
         DontDestroyOnLoad(gameObject);
-        AsyncOperation ao = SceneManager.LoadSceneAsync("Endless Mode", LoadSceneMode.Single);
+        AsyncOperation ao = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
         yield return new WaitUntil(() => ao.isDone);
         GameObject[] inputManagers = GameObject.FindGameObjectsWithTag("Input Manager");
         InputManager otherInputManager = inputManagers[0] == gameObject ? inputManagers[1].GetComponent<InputManager>() : inputManagers[0].GetComponent<InputManager>();
         otherInputManager.leftButton = leftButton;
         otherInputManager.middleButton = middleButton;
         otherInputManager.rightButton = rightButton;
+        if (skipTutorial)
+        {
+            GameObject.FindGameObjectWithTag("Level Manager").GetComponent<LevelManager>().SkipTutorial();
+        }
         Time.timeScale = 1f;
         Destroy(gameObject);
     }
@@ -637,6 +648,7 @@ public class InputManager : MonoBehaviour
         else if (type == ButtonPressed.middle)
         {
             loading.SetActive(true);
+            Scene activeScene = SceneManager.GetActiveScene();
             AsyncOperation ao = SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
             yield return new WaitUntil(() => ao.isDone);
             MainMenuManager mainMenuManager = GameObject.FindGameObjectWithTag("Main Menu Manager").GetComponent<MainMenuManager>();
@@ -653,7 +665,7 @@ public class InputManager : MonoBehaviour
                 mainMenuManager.inMap = true;
             }
             Time.timeScale = 1f;
-            SceneManager.UnloadSceneAsync("Endless Mode");
+            SceneManager.UnloadSceneAsync(activeScene);
         }
         else /*if (type == ButtonPressed.right)*/
         {
@@ -739,6 +751,20 @@ public class InputManager : MonoBehaviour
             rightButtonText.text = newKey.ToString();
             yield return new WaitForEndOfFrame();
             allowInputs = true;
+        }
+    }
+
+    public void PauseButtonPress()
+    {
+        if (!paused)
+        {
+            if (gameObject.GetComponent<TutorialInputManager>() != null && gameObject.GetComponent<TutorialInputManager>().enabled)
+            {
+                resumeToTutorial = true;
+                enabled = true;
+                gameObject.GetComponent<TutorialInputManager>().enabled = false;
+            }
+            Pause();
         }
     }
 
@@ -938,7 +964,7 @@ public class InputManager : MonoBehaviour
         else if (type == ButtonPressed.middle)
         {
             StartCoroutine(PressButtonVisually(buttonImages[7]));
-            selectManager.UpgradeShovel();
+            selectManager.UpgradeTroopCapasity();
         }
         /*else /*if (type == ButtonPressed.right)*/
         /*{

@@ -39,9 +39,9 @@ public class SelectManager : MonoBehaviour
     public GameObject boneCostObject2;
     public TextMeshProUGUI boneCostValue2;
     public TextMeshProUGUI[] buttonTexts;
-    private string[] unselectButtonsText = {"Heal All", "Select", "Arrow Attack",       "All Retreat", "All Stay", "All Attack",         "Look Left", "+Troop Size", "Look Right"};
-    private string[] selectSkeletonText = {"Select Left", "Deselect", "Select Right",       "Retreat", "Stay", "Attack",         "+Defence", "Special", "+Attack"};
-    private string[] selectMinionText = {"Select Left", "Deselect", "Select Right",       "All Mine", "Take Bones", "All Attack",         "Mine", "+Shovel", "Attack"};
+    private string[] unselectButtonsText = {"Heal All", "Select", "Arrow Attack",       "All Retreat", "All Stay", "All Attack",         "Look Left", "+ Troop Size", "Look Right"};
+    private string[] selectSkeletonText = {"Select Left", "Deselect", "Select Right",       "Retreat", "Stay", "Attack",         "+ Defence", "Special", "+ Attack"};
+    private string[] selectMinionText = {"Select Left", "Deselect", "Select Right",       "All Mine", "Take Bones", "All Attack",         "Mine", "+ Shovel", "Attack"};
     private string[] selectCorpseText = {"Select Left", "Deselect", "Select Right",       "All Minion", "All Tombstones", "All Skeleton",         "Minion", "Tombstones", "Skeleton"};
 
     public Image skeletonStatus;
@@ -212,6 +212,7 @@ public class SelectManager : MonoBehaviour
                 corpseTombstoneButton.SetActive(false);
                 corpseSkeletonButton.SetActive(false);
                 selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
+                inputManager.buttonImages[8].gameObject.SetActive(true);
             }
         }
         else
@@ -345,6 +346,11 @@ public class SelectManager : MonoBehaviour
             corpseSkeletonButton.SetActive(true);
             skeletonStatus.gameObject.SetActive(false);
             minionStatus.gameObject.SetActive(false);
+            AttackType type = newSelect.GetComponent<Corpse>().skeletonPrefab.GetComponent<Skeleton>().specialAttackType;
+            if ((type == AttackType.SpecialGoblinArrow && !spawnSkeletonGoblins) || (type == AttackType.SpecialWolfShadowMovement && !spawnSkeletonWolves) || (type == AttackType.SpecialWitchGravityAttack && !spawnSkeletonWitches) || (type == AttackType.SpecialOrcUpgrade && !spawnSkeletonOrcs) || (type == AttackType.SpecialOgreMultiattack && !spawnSkeletonOgres))
+            {
+                inputManager.buttonImages[8].gameObject.SetActive(false);
+            }
         }
     }
 
@@ -382,6 +388,7 @@ public class SelectManager : MonoBehaviour
             corpseTombstoneButton.SetActive(false);
             corpseSkeletonButton.SetActive(false);
             selectedTroop.GetComponent<Corpse>().selectBars.SetActive(false);
+            inputManager.buttonImages[8].gameObject.SetActive(true);
         }
         rectHealCooldownBar.gameObject.SetActive(healCooldown);
         rectHealCooldownBar.sizeDelta = new Vector2(((float)healCooldownTimer / healCooldownTime) * rectHealCooldown, rectHealCooldownBar.rect.height);

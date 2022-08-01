@@ -88,6 +88,7 @@ public class TutorialInputManager : MonoBehaviour
                     else if (allowMouseSelect)
                     {
                         selectManager.Select(hitObjects[lowestYIndex].transform.parent);
+                        tutorialManager.buttonPressed = true;
                     }
                 }
                 else if (hitObjects[lowestYIndex].CompareTag("Enemy Select"))
@@ -103,6 +104,7 @@ public class TutorialInputManager : MonoBehaviour
                         }
                         hitObjects[lowestYIndex].transform.parent.GetComponent<Enemy>().targetSelect.SetActive(true);
                         selectManager.selectedTroop.GetComponent<Skeleton>().goal = hitObjects[lowestYIndex].transform.parent;
+                        tutorialManager.buttonPressed = true;
                     }
                     else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Minion") && allowMousePressEnemies)
                     {
@@ -121,6 +123,7 @@ public class TutorialInputManager : MonoBehaviour
                         }
                         selectManager.selectedTroop.GetComponent<Minion>().goal = hitObjects[lowestYIndex].transform.parent;
                         hitObjects[lowestYIndex].transform.parent.GetComponent<Enemy>().targetSelect.SetActive(true);
+                        tutorialManager.buttonPressed = true;
                     }
                     else if (!selectManager.selectingObject && allowMouseMovement)
                     {
@@ -143,6 +146,7 @@ public class TutorialInputManager : MonoBehaviour
                         selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal = new Vector2(camera.ScreenToWorldPoint(Input.mousePosition).x, camera.ScreenToWorldPoint(Input.mousePosition).y);
                         selectManager.stayPositionMarker.gameObject.SetActive(true);
                         selectManager.stayPositionMarker.position = selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal;
+                        tutorialManager.buttonPressed = true;
                     }
                     else if (selectManager.selectingObject && selectManager.selectedTroop.CompareTag("Minion") && allowMousePressStayTarget)
                     {
@@ -162,6 +166,7 @@ public class TutorialInputManager : MonoBehaviour
                         selectManager.selectedTroop.GetComponent<Minion>().goal = hitObjects[lowestYIndex].transform.parent;
                         selectManager.selectedTroop.GetComponent<Minion>().grave = hitObjects[lowestYIndex].transform.parent.GetComponent<Grave>();
                         hitObjects[lowestYIndex].transform.parent.GetComponent<Grave>().targetSelect.SetActive(true);
+                        tutorialManager.buttonPressed = true;
                     }
                     else if (!selectManager.selectingObject && allowMouseMovement)
                     {
@@ -187,6 +192,7 @@ public class TutorialInputManager : MonoBehaviour
                 selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal = new Vector2(camera.ScreenToWorldPoint(Input.mousePosition).x, camera.ScreenToWorldPoint(Input.mousePosition).y);
                 selectManager.stayPositionMarker.gameObject.SetActive(true);
                 selectManager.stayPositionMarker.position = selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal;
+                tutorialManager.buttonPressed = true;
             }
             else if (!selectManager.selectingObject)
             {
@@ -217,8 +223,9 @@ public class TutorialInputManager : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                inputManager.Pause();
+                inputManager.resumeToTutorial = true;
                 inputManager.enabled = true;
+                inputManager.Pause();
                 this.enabled = false;
             }
             else if (Input.GetKeyDown(inputManager.leftButton) && !Input.GetKey(inputManager.middleButton) && !Input.GetKey(inputManager.rightButton))
@@ -401,6 +408,7 @@ public class TutorialInputManager : MonoBehaviour
                             selectManager.TakeMinionBones();
                         }
                     }
+                    tutorialManager.buttonPressed = true;
                     yield return new WaitForFixedUpdate();
                     break;
                 }
@@ -425,6 +433,7 @@ public class TutorialInputManager : MonoBehaviour
                             selectedObject.GetComponent<Skeleton>().skeletonMode = SkeletonMode.left;
                             selectManager.skeletonStatus.sprite = selectManager.skeletonRun;
                         }
+                        tutorialManager.buttonPressed = true;
                     }
                     else if (selectedObject.CompareTag("Minion"))
                     {
@@ -449,6 +458,7 @@ public class TutorialInputManager : MonoBehaviour
                                 selectManager.selectedTroop.GetComponent<Minion>().goal = null;
                             }
                         }
+                        tutorialManager.buttonPressed = true;
                     }
                 }
             }
@@ -476,10 +486,12 @@ public class TutorialInputManager : MonoBehaviour
         if (timer < buttonPressTime && inputManager.allowInputs && allowMouseBaseSingle)
         {
             playerBase.ArrowAttack();
+            tutorialManager.buttonPressed = true;
         }
         else if (inputManager.allowInputs && allowMouseBaseHold)
         {
             playerBase.HealAll();
+            tutorialManager.buttonPressed = true;
         }
     }
 
@@ -714,7 +726,7 @@ public class TutorialInputManager : MonoBehaviour
             else if (type == ButtonPressed.middle && allowMiddle)
             {
                 StartCoroutine(PressButtonVisually(buttonImages[7]));
-                selectManager.UpgradeShovel();
+                selectManager.UpgradeTroopCapasity();
                 tutorialManager.buttonPressed = true;
             }
             /*else /*if (type == ButtonPressed.right)*/

@@ -19,7 +19,7 @@ public class PlayerBase : MonoBehaviour
 
     public Attack[] arrowAttacks;
 
-    private SelectManager selectManager;
+    public SelectManager selectManager;
 
     // Start is called before the first frame update
     void Start()
