@@ -117,7 +117,7 @@ public class Skeleton : MonoBehaviour
                 else if (rigidbody.velocity.x > maxSpeed)
                 {
                     anim.SetBool("Running", true);
-                    rigidbody.velocity -= speedAcceleration * Time.deltaTime * 3f * Vector2.left;
+                    rigidbody.velocity += speedAcceleration * Time.deltaTime * 3f * Vector2.left;
                     if (rigidbody.velocity.x <= maxSpeed)
                     {
                         rigidbody.velocity = new Vector2(maxSpeed, rigidbody.velocity.y);

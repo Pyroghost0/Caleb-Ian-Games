@@ -194,7 +194,7 @@ public class TutorialInputManager : MonoBehaviour
                 selectManager.stayPositionMarker.position = selectManager.selectedTroop.GetComponent<Skeleton>().stayGoal;
                 tutorialManager.buttonPressed = true;
             }
-            else if (!selectManager.selectingObject)
+            else if (!selectManager.selectingObject && allowMouseMovement)
             {
                 xHoldPosition = selectManager.transform.position.x;
                 startingXHoldPosition = Input.mousePosition;

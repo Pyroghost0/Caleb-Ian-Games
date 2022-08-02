@@ -416,7 +416,7 @@ public class Minion : MonoBehaviour
                 else if (rigidbody.velocity.x > maxSpeed * usedBoneSpeedReductionFactor)
                 {
                     anim.SetBool("Running", true);
-                    rigidbody.velocity -= speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime * 3f * Vector2.left;
+                    rigidbody.velocity += speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime * 3f * Vector2.left;
                     if (rigidbody.velocity.x <= maxSpeed * usedBoneSpeedReductionFactor)
                     {
                         rigidbody.velocity = new Vector2(maxSpeed * usedBoneSpeedReductionFactor, rigidbody.velocity.y);
