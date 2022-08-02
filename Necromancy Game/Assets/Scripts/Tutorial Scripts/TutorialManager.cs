@@ -24,6 +24,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject tutorialObjectsLevel1Part2;
     public GameObject tutorialObjectsLevel2;
     public GameObject tutorialObjectsLevel2Part2;
+    public GameObject tutorialObjectsLevel2Part3;
 
     public TutorialInputManager tutorialInputManager;
     public InputManager inputManager;
@@ -101,7 +102,7 @@ public class TutorialManager : MonoBehaviour
         }
         else if (GameObject.FindGameObjectWithTag("Level Manager").GetComponent<LevelManager>().level == 2)
         {
-            StartCoroutine(Level1Tutorial());
+            StartCoroutine(Level2Tutorial());
         }
         else
         {
@@ -151,11 +152,11 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrow2.gameObject.SetActive(false);
-        arrow1.anchoredPosition = new Vector2(-25, -100f);
+        arrow1.anchoredPosition = new Vector2(-25f, -100f);
         mainText.text = "This shows the name of the selected object. Whenever nothing is selected, it shows your base's health, just make sure its doesn't fall to zero, or you lose!\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
-        arrow1.anchoredPosition = new Vector2(75, -100f);
+        arrow1.anchoredPosition = new Vector2(75f, -100f);
         mainText.text = "This shows your bones, the currency of this game.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
@@ -282,7 +283,7 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowRight = true;
         tutorialInputManager.allowMouseBaseSingle = true;
         arrow.gameObject.SetActive(true);
-        arrow.anchoredPosition = new Vector2(-265f, -180f);
+        arrow.anchoredPosition = new Vector2(-190f, -180f);
         mainText.text = "Oh... Your under attack, I wonder why? Lets fight back with some arrows of our own. Press the right button or click your base.";
         buttonPressed = false;
         selectManager.arrowCooldown = false;
@@ -313,7 +314,7 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowMouseBaseHold = false;
         arrow.gameObject.SetActive(false);
         continueButton.SetActive(true);
-        mainText.text = "Healing also heals all troups, but it still requires a cooldown. There is still more, but thats all you need to learn for the 1st level\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        mainText.text = "Healing also heals all troups, but it still requires a cooldown. There is still more, but thats all you need to learn for the 1st level\n\nTo End, Press All 3 Buttons Or Click The Bottom";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
 
@@ -331,6 +332,7 @@ public class TutorialManager : MonoBehaviour
         selectManager.Select(GameObject.FindGameObjectWithTag("Corpse").transform);
         PlayerBase playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         doubleButtons.SetActive(false);
+        continueButton.SetActive(false);
         arrowBasisObject.gameObject.SetActive(true);
         arrow.gameObject.SetActive(true);
         arrow1.gameObject.SetActive(false);
@@ -343,183 +345,136 @@ public class TutorialManager : MonoBehaviour
         selectManager.corpseTombstoneButton.SetActive(false);
         mainText.text = "Now that you defeated the goblin king, you can summon goblin skeletons from goblin corpses. Lets create a skeleton by holding down the right button or clicking on it.";
         yield return new WaitUntil(() => (playerBase.numSkeletons != 0));
-        mainText.text = "You can pause by holding the 3 buttons, pressing Esc, or the invisible pause button on the top left corner.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
-        yield return new WaitUntil(() => (allThreePressed));
-        yield return new WaitUntil(() => (!allThreePressed));
+        arrow4.gameObject.SetActive(true);
+        arrow4.anchoredPosition = new Vector2(190f, -180f);
+        playerBase.UpdateBones(25);
+        tutorialInputManager.allowLeft = true;
+        mainText.text = "You can upgrade both a skeleton's attack and defence 3 times each. Why don't you upgrade one by holding the left or right button clicking on it.";
+        yield return new WaitUntil(() => (selectManager.selectedTroop.GetComponent<Skeleton>().attack.attackPower != 75 || selectManager.selectedTroop.GetComponent<Skeleton>().defence != 4));
 
 
         //Skeleton
-        mainText.text = "This is the health bar of whatever you have selected. Next to it are the numbers that show the current health over the max health.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
-        yield return new WaitUntil(() => (allThreePressed));
-        yield return new WaitUntil(() => (!allThreePressed));
-        arrow2.gameObject.SetActive(false);
-        arrow1.anchoredPosition = new Vector2(-25, -100f);
-        mainText.text = "This shows the name of the selected object. Whenever nothing is selected, it shows your base's health, just make sure its doesn't fall to zero, or you lose!\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
-        yield return new WaitUntil(() => (allThreePressed));
-        yield return new WaitUntil(() => (!allThreePressed));
-        arrow1.anchoredPosition = new Vector2(75, -100f);
-        mainText.text = "This shows your bones, the currency of this game.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
-        yield return new WaitUntil(() => (allThreePressed));
-        yield return new WaitUntil(() => (!allThreePressed));
-        arrow1.anchoredPosition = new Vector2(340f, -100f);
-        mainText.text = "This shows the amount of active troops over the max number of troops you can have active at one time.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
-        yield return new WaitUntil(() => (allThreePressed));
-        yield return new WaitUntil(() => (!allThreePressed));
-
-
-        //Controls 1
-        arrow.gameObject.SetActive(true);
-        arrow.anchoredPosition = new Vector2(265f, -165f);
-        arrow1.anchoredPosition = new Vector2(190f, -180f);
+        arrow1.gameObject.SetActive(true);
         arrow2.gameObject.SetActive(true);
-        arrow2.anchoredPosition = new Vector2(340f, -180f);
-        selectManager.boneCostObject0.SetActive(true);
-        holdButtons.SetActive(true);
-        tutorialInputManager.enabled = true;
-        tutorialInputManager.allowMouseMovement = true;
-        continueButton.SetActive(false);
-        mainText.text = "These buttons are activated when held down. The middle button upgrades the max troop capacity for the price above. Upgrades can also be clicked on.\n\nUpgrade Your Troop Capasity";
-        playerBase.UpdateBones(50);
-        yield return new WaitUntil(() => (playerBase.maxSkeletons == 2));
-        arrow.anchoredPosition = new Vector2(340f, -180f);
-        arrow2.anchoredPosition = new Vector2(265f, -165f);
-        mainText.text = "Try moving the camera by holding the right button or holding the mouse down and moving right";//This can be skipped if the player moves the camera beforehand
-        yield return new WaitUntil(() => (inputManager.selectManager.transform.position.x > 3.5f));
-        arrow.anchoredPosition = new Vector2(-265f, -165f);
-        arrow1.anchoredPosition = new Vector2(-190f, -180f);
-        arrow2.anchoredPosition = new Vector2(-340f, -180f);
-        singleButtons.SetActive(true);
-        tutorialInputManager.allowSingle = true;
-        tutorialInputManager.allowMouseSelect = true;
-        mainText.text = "These buttons are activated when pressed once. For now, select a corpse by pressing the middle button or clicking on one.";
-        yield return new WaitUntil(() => (selectManager.selectingObject));
-
-
-        //Corpse & Selecting
-        tutorialInputManager.allowSingle = false;
-        tutorialInputManager.allowMiddle = false;
-        tutorialInputManager.allowRight = false;
-        tutorialInputManager.allowMouseSelect = false;
-        tutorialInputManager.allowHoldMovement = false;
-        inputManager.holdInputWait = true;
-        arrow1.gameObject.SetActive(false);
-        arrow2.gameObject.SetActive(false);
-        arrow.anchoredPosition = new Vector2(190f, -180f);
-        singleButtons.SetActive(false);
-        selectManager.corpseSkeletonButton.SetActive(false);
-        selectManager.corpseTombstoneButton.SetActive(false);
-        mainText.text = "Lets create a minion to gather some bones. Hold the left button to create one from a corpse or click the button to create one.";
-        yield return new WaitUntil(() => (playerBase.numSkeletons == 1));
-        arrow.anchoredPosition = new Vector2(-190f, -180f);
-        arrow4.gameObject.SetActive(true);
-        tutorialInputManager.allowRight = true;
-        tutorialInputManager.allowSingle = true;
-        tutorialInputManager.allowHold = false;
-        tutorialInputManager.allowMouseSelect = true;
-        singleButtons.SetActive(true);
-        holdButtons.SetActive(false);
-        GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().speedAcceleration = 0f;
-        selectManager.minionStatus.gameObject.SetActive(false);
-        mainText.text = "Oops... looks like the minion needs some tombstones first. While selecting something, you can switch what you are selecting by pressing the left or right button or clicking on the other corpse.\nSelect The Other Corpse To Continue";
-        Transform firstSelectedCorpse = selectManager.selectedTroop;//Since waituntil activates after Update() is called, we don't have to worry about the selected object being assigned after selectingObject is set to true
-        yield return new WaitUntil(() => (selectManager.selectedTroop != firstSelectedCorpse));
+        arrow3.gameObject.SetActive(true);
         arrow4.gameObject.SetActive(false);
-        tutorialInputManager.allowSingle = false;
-        tutorialInputManager.allowHold = true;
-        tutorialInputManager.allowLeft = false;
-        tutorialInputManager.allowMiddle = true;
+        arrow.anchoredPosition = new Vector2(-75f, -165f);
+        arrow1.anchoredPosition = new Vector2(0f, -180f);
+        arrow2.anchoredPosition = new Vector2(75f, -165f);
+        arrow3.anchoredPosition = new Vector2(150f, -100f);
+        doubleButtons.SetActive(true);
         tutorialInputManager.allowRight = false;
-        tutorialInputManager.allowMouseSelect = false;
-        arrow.anchoredPosition = new Vector2(265f, -165f);
-        holdButtons.SetActive(true);
-        selectManager.corpseSkeletonButton.SetActive(false);
-        selectManager.corpseMinionButton.SetActive(false);
-        mainText.text = "Minions slowly dig bones from graves, but currently, there isn't any. Lets spawn some using a corpse. Hold the middle button or click it to spawn some.";
-        yield return new WaitUntil(() => (GameObject.FindGameObjectsWithTag("Grave").Length != 0));
+        tutorialInputManager.allowHold = false;
+        tutorialInputManager.allowDouble = true;
+        tutorialInputManager.allowMouseSelectSingle = true;
+        mainText.text = "Skeletons have 3 modes, which is indicated above. Curently the skeleton is in stay mode, lets change it to retreat mode. To press these buttons, press them twice quickly, so press the left button twice. If your using a mouse, click the skeleton while in stay or attack mode.";
+        yield return new WaitUntil(() => (selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode == SkeletonMode.left));
+        tutorialInputManager.allowLeft = false;
+        tutorialInputManager.allowRight = true;
+        arrow3.gameObject.SetActive(false);
+        arrow.anchoredPosition = new Vector2(75f, -165f);
+        arrow2.anchoredPosition = new Vector2(-75f, -165f);
+        mainText.text = "In retreat mode, the skeleton runs toward the base ignoring enemies. Lets change it to attack mode where it runs right and stops to fight nearby enemies. Press the right button twice or click the enemy while in retreat mode to change the skeleton to attack mode.";
+        yield return new WaitUntil(() => (selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode == SkeletonMode.right));
+        arrow.anchoredPosition = new Vector2(0f, -180f);
+        arrow1.anchoredPosition = new Vector2(75f, -165f);
+        tutorialInputManager.allowMouseSelectSingle = false;
+        tutorialInputManager.allowRight = false;
+        tutorialInputManager.allowMiddle = true;
+        tutorialInputManager.allowMousePressStayTarget = true;
+        mainText.text = "Lets change the skeleton back to stay mode where the skeleton stays near a specified spot, indicated by a yellow marker, and attacks nearby enemies. To do it, press the middle button twice, or if your using mouse, click where you want the skeleton to stay.";
+        yield return new WaitUntil(() => (selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode == SkeletonMode.stay));
+        yield return new WaitForSeconds(.5f);
 
 
         //Minion
-        GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().speedAcceleration = 2f;
-        mainText.text = "You can also upgrade a minion's shovel, which upgrades the amount of bones they mine and their attack power. Lets try to upgrade it by holding the middle button or clicking on it.";
-        playerBase.UpdateBones(25);
-        yield return new WaitUntil(() => (GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().diggingAttack.attackPower != 6));
+        selectManager.selectableObjects.Remove(GameObject.FindGameObjectWithTag("Skeleton").transform);
+        Destroy(GameObject.FindGameObjectWithTag("Skeleton"));
+        playerBase.numSkeletons--;
+        selectManager.troopCapacityText.text = "0\n" + playerBase.maxSkeletons.ToString();
+        tutorialObjectsLevel2Part2.SetActive(true);
+        arrow4.gameObject.SetActive(true);
+        arrow.anchoredPosition = new Vector2(-75f, -165f);
+        arrow2.anchoredPosition = new Vector2(0f, -180f);
+        arrow4.anchoredPosition = new Vector2(190f, -165f);
         tutorialInputManager.allowMiddle = false;
-        tutorialInputManager.allowRight = true;
-        tutorialInputManager.allowMouseSelectSingle = true;
-        arrow1.gameObject.SetActive(true);
-        arrow1.anchoredPosition = new Vector2(190f, -100f);
-        arrow.anchoredPosition = new Vector2(340f, -180f);
-        selectManager.minionStatus.gameObject.SetActive(true);
-        mainText.text = "Minions have 2 modes, attack and dig, which is indicated above. Curently, the minion is in dig mode, hold the right button to change them into attack mode or click on the minion (clicking changes the minion back to dig mode too).";
+        tutorialInputManager.allowMousePressStayTarget = false;
+        tutorialInputManager.allowLeft = true;
+        selectManager.Select(GameObject.FindGameObjectWithTag("Corpse").transform);
+        selectManager.corpseSkeletonButton.SetActive(false);
+        selectManager.corpseTombstoneButton.SetActive(false);
+        mainText.text = "While you have a corpse selected, you can press the middle button twice to make all of them turn into minions. If your using a mouse, you can't do that, so, for now, just make a single minion instead.";
+        yield return new WaitUntil(() => (playerBase.numSkeletons != 0));
+        GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGraves(5);
+        selectManager.selectedTroop.GetComponent<Minion>().bonesStored = 6;
+        arrow4.gameObject.SetActive(false);
+        arrow1.gameObject.SetActive(false);
+        arrow2.gameObject.SetActive(false);
+        arrow.anchoredPosition = new Vector2(0f, -180f);
+        tutorialInputManager.allowLeft = false;
+        tutorialInputManager.allowMiddle = true;
+        tutorialInputManager.allowMouseSelectDouble = true;
+        mainText.text = "Minions get slightly weighed down if they carry bones, and when they are full, they have to go all the way back to the base to collect them. However, you can collect them yourself by pressing the middle button twice or double clicking the minion.";
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
-        arrow1.gameObject.SetActive(false);
-        tutorialInputManager.allowHold = false;
-        tutorialInputManager.allowRight = false;
-        tutorialInputManager.allowMouseSelectSingle = false;
+        GameObject[] minions = GameObject.FindGameObjectsWithTag("Minion");
+        for (int i = 0; i < minions.Length; i++)
+        {
+            minions[i].GetComponent<Minion>().defence = 100;
+        }
+        tutorialObjectsLevel2Part3.SetActive(true);
+        arrow.anchoredPosition = new Vector2(75f, -180f);
+        tutorialInputManager.allowMouseSelectDouble = false;
+        tutorialInputManager.allowMousePressEnemies = true;
+        tutorialInputManager.allowMiddle = false;
+        tutorialInputManager.allowRight = true;
+        mainText.text = "On keyboard, you can command all minions into one mode by pressing buttons twice. Alternitively, on mouse, you can select a target for the curently selected minion or skeleton (for minions, graves too). Either set all minions to attack mode or click the goblin to target it.";
+        yield return new WaitUntil(() => (!selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode));
+        yield return new WaitForSeconds(.5f);
+        //yield return new WaitUntil(() => (GameObject.FindGameObjectsWithTag("Enemy").Length == 0));
+
+
+        //End
+        tutorialInputManager.allowHold = true;
+        tutorialInputManager.allowLeft = true;
         tutorialInputManager.allowMiddle = true;
         tutorialInputManager.allowSingle = true;
+        tutorialInputManager.allowHold = true;
+        tutorialInputManager.allowHoldMovement = true;
+        tutorialInputManager.allowMouseSelect = true;
+        tutorialInputManager.allowMouseSelectSingle = true;
+        tutorialInputManager.allowMouseSelectDouble = true;
         tutorialInputManager.allowMouseSelectHold = true;
-        arrow.anchoredPosition = new Vector2(-265f, -165f);
-        mainText.text = "We're done with the minion for now, so lets deselect it.\nTo deselect objects, press the middle button once or hold the mouse on the selected object.";
-        yield return new WaitUntil(() => (!selectManager.selectingObject));
-        yield return new WaitForSeconds(.5f);
-        arrow.gameObject.SetActive(false);
-        tutorialInputManager.allowMiddle = false;
-        tutorialInputManager.allowSingle = false;
-        tutorialInputManager.allowMouseSelectHold = false;
-        selectManager.selectableObjects.Remove(GameObject.FindGameObjectWithTag("Minion").transform);
-        GameObject.FindGameObjectWithTag("Minion").SetActive(false);
-        tutorialObjectsLevel1Part2.SetActive(true);
-        selectManager.selectableObjects.Add(GameObject.FindGameObjectWithTag("Minion").transform);
-        selectManager.transform.position = new Vector3(0f, 0f, -10f);
-        mainText.text = "Lets see how a single minion does ageinst a goblin...";
-        yield return new WaitForFixedUpdate();
-        GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().inDiggingMode = false;
-        yield return new WaitUntil(() => (GameObject.FindGameObjectsWithTag("Minion").Length == 0));
-        yield return new WaitForSeconds(.5f);
-
-
-        //Ending
-        tutorialInputManager.allowSingle = true;
-        tutorialInputManager.allowRight = true;
         tutorialInputManager.allowMouseBaseSingle = true;
-        arrow.gameObject.SetActive(true);
-        arrow.anchoredPosition = new Vector2(-265f, -180f);
-        mainText.text = "Oh... Your under attack, I wonder why? Lets fight back with some arrows of our own. Press the right button or click your base.";
-        buttonPressed = false;
-        selectManager.arrowCooldown = false;
-        selectManager.healCooldown = false;
-        while (!buttonPressed)
-        {
-            if (playerBase.health < 950)
-            {
-                playerBase.defence = 100;
-            }
-            yield return new WaitForFixedUpdate();
-        }
-        if (playerBase.health > 989)
-        {
-            playerBase.Hit(25);
-        }
-        playerBase.defence = 100;
-        tutorialInputManager.allowRight = false;
-        tutorialInputManager.allowMouseBaseSingle = false;
-        tutorialInputManager.allowLeft = true;
         tutorialInputManager.allowMouseBaseHold = true;
-        arrow.anchoredPosition = new Vector2(-340f, -180f);
-        mainText.text = "Those arrows don't always garentee a kill and they require a cooldown so use them as a last ditch effort. Either way, you took some damage, so heal yourself by pressing the left button or holding down on the base.";
-        buttonPressed = false;
-        yield return new WaitUntil(() => (buttonPressed));
-        tutorialInputManager.allowSingle = false;
-        tutorialInputManager.allowLeft = false;
-        tutorialInputManager.allowMouseBaseHold = false;
-        arrow.gameObject.SetActive(false);
+        tutorialInputManager.allowMousePressGraves = true;
+        tutorialInputManager.allowMousePressStayTarget = true;
+        tutorialInputManager.allowMouseMovement = true;
+        inputManager.holdInputWait = false;
+        arrow1.gameObject.SetActive(true);//right
+        arrow2.gameObject.SetActive(true);//middle
+        arrow3.gameObject.SetActive(true);
+        arrow4.gameObject.SetActive(true);
+        arrow4.GetComponent<UnityEngine.UI.Image>().color = arrow1.GetComponent<UnityEngine.UI.Image>().color;
+        arrow.GetComponent<UnityEngine.UI.Image>().color = arrow1.GetComponent<UnityEngine.UI.Image>().color;
+        arrow.anchoredPosition = new Vector2(-75f, -180f);
+        arrow4.anchoredPosition = new Vector2(-190, -100f);
         continueButton.SetActive(true);
-        mainText.text = "Healing also heals all troups, but it still requires a cooldown. There is still more, but thats all you need to learn for the 1st level\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        selectManager.Deselect();
+        mainText.text = "Without anything selected, you can change all of your skeletons (not minions) modes using the double press buttons. You can see what the current default modes are set to above.\nTo Continue, Press All 3 Buttons Or Click The Bottom";
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
-
+        arrow.gameObject.SetActive(false);
+        arrow1.gameObject.SetActive(false);
+        arrow2.gameObject.SetActive(false);
+        arrow3.gameObject.SetActive(false);
+        arrow4.gameObject.SetActive(false);
+        mainText.text = "You have reached the end. To sum up the controls for keyboard, Single buttons = select, Double buttons = modes/affects all, Hold buttons = upgrade.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        yield return new WaitUntil(() => (allThreePressed));
+        yield return new WaitUntil(() => (!allThreePressed));
+        mainText.text = "To sum up the controls for mouse, Click things to select/target them, click top right to upgrade, click while selected to change modes.\n\nTo End, Press All 3 Buttons Or Click The Bottom";
+        yield return new WaitUntil(() => (allThreePressed));
+        yield return new WaitUntil(() => (!allThreePressed));
 
         //Reset
         playerBase.timeSurvived = 1f;
