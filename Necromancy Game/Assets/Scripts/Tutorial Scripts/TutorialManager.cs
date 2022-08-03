@@ -36,6 +36,7 @@ public class TutorialManager : MonoBehaviour
     private bool clickedContinue = false;
     private float timer = 0f;
     private float arrowTimer = 0f;
+    private Coroutine slowTextCoroutine;
 
     // Update is called once per frame
     void Update()
@@ -138,30 +139,35 @@ public class TutorialManager : MonoBehaviour
         doubleButtons.SetActive(false);
         holdButtons.SetActive(false);
         selectManager.minionStatus.gameObject.SetActive(false);
-        mainText.text = "First of all, thanks for playing.\nThis game can be played with a mouse or keyboard, but it is recomended to play with both.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        slowTextCoroutine = StartCoroutine(SlowText("First of all, thanks for playing.\nThis game can be played with a mouse or keyboard, but it is recomended to play with both.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
-        mainText.text = "You can pause by holding the 3 buttons, pressing Esc, or the invisible pause button on the top left corner.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("You can pause by holding the 3 buttons, pressing Esc, or the invisible pause button on the top left corner.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
 
 
         //Status
         arrowBasisObject.gameObject.SetActive(true);
-        mainText.text = "This is the health bar of whatever you have selected. Next to it are the numbers that show the current health over the max health.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("This is the health bar of whatever you have selected. Next to it are the numbers that show the current health over the max health.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrow2.gameObject.SetActive(false);
         arrow1.anchoredPosition = new Vector2(-25f, -100f);
-        mainText.text = "This shows the name of the selected object. Whenever nothing is selected, it shows your base's health, just make sure its doesn't fall to zero, or you lose!\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("This shows the name of the selected object. Whenever nothing is selected, it shows your base's health, just make sure its doesn't fall to zero, or you lose!\n\nTo Continue, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrow1.anchoredPosition = new Vector2(75f, -100f);
-        mainText.text = "This shows your bones, the currency of this game.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("This shows your bones, the currency of this game.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrow1.anchoredPosition = new Vector2(340f, -100f);
-        mainText.text = "This shows the amount of active troops over the max number of troops you can have active at one time.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("This shows the amount of active troops over the max number of troops you can have active at one time.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
 
@@ -177,12 +183,14 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.enabled = true;
         tutorialInputManager.allowMouseMovement = true;
         continueButton.SetActive(false);
-        mainText.text = "These buttons are activated when held down. The middle button upgrades the max troop capacity for the price above. Upgrades can also be clicked on.\n\nUpgrade Your Troop Capasity";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("These buttons are activated when held down. The middle button upgrades the max troop capacity for the price above. Upgrades can also be clicked on.\n\nUpgrade Your Troop Capasity"));
         playerBase.UpdateBones(50);
         yield return new WaitUntil(() => (playerBase.maxSkeletons == 2));
         arrow.anchoredPosition = new Vector2(340f, -180f);
         arrow2.anchoredPosition = new Vector2(265f, -165f);
-        mainText.text = "Try moving the camera by holding the right button or holding the mouse down and moving right";//This can be skipped if the player moves the camera beforehand
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Try moving the camera by holding the right button or holding the mouse down and moving right"));//This can be skipped if the player moves the camera beforehand
         yield return new WaitUntil(() => (inputManager.selectManager.transform.position.x > 3.5f));
         arrow.anchoredPosition = new Vector2(-265f, -165f);
         arrow1.anchoredPosition = new Vector2(-190f, -180f);
@@ -190,7 +198,8 @@ public class TutorialManager : MonoBehaviour
         singleButtons.SetActive(true);
         tutorialInputManager.allowSingle = true;
         tutorialInputManager.allowMouseSelect = true;
-        mainText.text = "These buttons are activated when pressed once. For now, select a corpse by pressing the middle button or clicking on one.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("These buttons are activated when pressed once. For now, select a corpse by pressing the middle button or clicking on one."));
         yield return new WaitUntil(() => (selectManager.selectingObject));
 
 
@@ -207,7 +216,8 @@ public class TutorialManager : MonoBehaviour
         singleButtons.SetActive(false);
         selectManager.corpseSkeletonButton.SetActive(false);
         selectManager.corpseTombstoneButton.SetActive(false);
-        mainText.text = "Lets create a minion to gather some bones. Hold the left button to create one from a corpse or click the button to create one.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Lets create a minion to gather some bones. Hold the left button to create one from a corpse or click the button to create one."));
         yield return new WaitUntil(() => (playerBase.numSkeletons == 1));
         arrow.anchoredPosition = new Vector2(-190f, -180f);
         arrow4.gameObject.SetActive(true);
@@ -219,7 +229,8 @@ public class TutorialManager : MonoBehaviour
         holdButtons.SetActive(false);
         GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().speedAcceleration = 0f;
         selectManager.minionStatus.gameObject.SetActive(false);
-        mainText.text = "Oops... looks like the minion needs some tombstones first. While selecting something, you can switch what you are selecting by pressing the left or right button or clicking on the other corpse.\nSelect The Other Corpse To Continue";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Oops... looks like the minion needs some tombstones first. While selecting something, you can switch what you are selecting by pressing the left or right button or clicking on the other corpse.\nSelect The Other Corpse To Continue"));
         Transform firstSelectedCorpse = selectManager.selectedTroop;//Since waituntil activates after Update() is called, we don't have to worry about the selected object being assigned after selectingObject is set to true
         yield return new WaitUntil(() => (selectManager.selectedTroop != firstSelectedCorpse));
         arrow4.gameObject.SetActive(false);
@@ -232,13 +243,15 @@ public class TutorialManager : MonoBehaviour
         arrow.anchoredPosition = new Vector2(265f, -165f);
         holdButtons.SetActive(true);
         selectManager.corpseMinionButton.SetActive(false);
-        mainText.text = "Minions slowly dig bones from graves, but currently, there isn't any. Lets spawn some using a corpse. Hold the middle button or click it to spawn some.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Minions slowly dig bones from graves, but currently, there isn't any. Lets spawn some using a corpse. Hold the middle button or click it to spawn some."));
         yield return new WaitUntil(() => (GameObject.FindGameObjectsWithTag("Grave").Length != 0));
 
 
         //Minion
         GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().speedAcceleration = 2f;
-        mainText.text = "You can also upgrade a minion's shovel, which upgrades the amount of bones they mine and their attack power. Lets try to upgrade it by holding the middle button or clicking on it.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("You can also upgrade a minion's shovel, which upgrades the amount of bones they mine and their attack power. Lets try to upgrade it by holding the middle button or clicking on it."));
         playerBase.UpdateBones(25);
         yield return new WaitUntil(() => (GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().diggingAttack.attackPower != 6));
         tutorialInputManager.allowMiddle = false;
@@ -248,7 +261,8 @@ public class TutorialManager : MonoBehaviour
         arrow1.anchoredPosition = new Vector2(190f, -100f);
         arrow.anchoredPosition = new Vector2(340f, -180f);
         selectManager.minionStatus.gameObject.SetActive(true);
-        mainText.text = "Minions have 2 modes, attack and dig, which is indicated above. Curently, the minion is in dig mode, hold the right button to change them into attack mode or click on the minion (clicking changes the minion back to dig mode too).";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Minions have 2 modes, attack and dig, which are indicated above. Curently, the minion is in dig mode, hold the right button to change them into attack mode or click on the minion (clicking changes the minion back to dig mode too)."));
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
         arrow1.gameObject.SetActive(false);
@@ -259,7 +273,8 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowSingle = true;
         tutorialInputManager.allowMouseSelectHold = true;
         arrow.anchoredPosition = new Vector2(-265f, -165f);
-        mainText.text = "We're done with the minion for now, so lets deselect it.\nTo deselect objects, press the middle button once or hold the mouse on the selected object.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("We're done with the minion for now, so lets deselect it.\nTo deselect objects, press the middle button once or hold the mouse on the selected object."));
         yield return new WaitUntil(() => (!selectManager.selectingObject));
         yield return new WaitForSeconds(.5f);
         arrow.gameObject.SetActive(false);
@@ -271,7 +286,8 @@ public class TutorialManager : MonoBehaviour
         tutorialObjectsLevel1Part2.SetActive(true);
         selectManager.selectableObjects.Add(GameObject.FindGameObjectWithTag("Minion").transform);
         selectManager.transform.position = new Vector3(0f, 0f, -10f);
-        mainText.text = "Lets see how a single minion does ageinst a goblin...";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Lets see how a single minion does ageinst a goblin..."));
         yield return new WaitForFixedUpdate();
         GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().inDiggingMode = false;
         yield return new WaitUntil(() => (GameObject.FindGameObjectsWithTag("Minion").Length == 0));
@@ -284,7 +300,8 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowMouseBaseSingle = true;
         arrow.gameObject.SetActive(true);
         arrow.anchoredPosition = new Vector2(-190f, -180f);
-        mainText.text = "Oh... Your under attack, I wonder why? Lets fight back with some arrows of our own. Press the right button or click your base.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Oh... Your under attack, I wonder why? Lets fight back with some arrows of our own. Press the right button or click your base."));
         buttonPressed = false;
         selectManager.arrowCooldown = false;
         selectManager.healCooldown = false;
@@ -306,7 +323,8 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowLeft = true;
         tutorialInputManager.allowMouseBaseHold = true;
         arrow.anchoredPosition = new Vector2(-340f, -180f);
-        mainText.text = "Those arrows don't always garentee a kill and they require a cooldown so use them as a last ditch effort. Either way, you took some damage, so heal yourself by pressing the left button or holding down on the base.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Those arrows don't always garentee a kill and they require a cooldown so use them as a last ditch effort. Either way, you took some damage, so heal yourself by pressing the left button or holding down on the base."));
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
         tutorialInputManager.allowSingle = false;
@@ -314,7 +332,8 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowMouseBaseHold = false;
         arrow.gameObject.SetActive(false);
         continueButton.SetActive(true);
-        mainText.text = "Healing also heals all troups, but it still requires a cooldown. There is still more, but thats all you need to learn for the 1st level\n\nTo End, Press All 3 Buttons Or Click The Bottom";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Healing also heals all troups, but it still requires a cooldown. There is still more, but thats all you need to learn for the 1st level\n\nTo End, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
 
@@ -343,13 +362,14 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowHoldMovement = false;
         selectManager.corpseMinionButton.SetActive(false);
         selectManager.corpseTombstoneButton.SetActive(false);
-        mainText.text = "Now that you defeated the goblin king, you can summon goblin skeletons from goblin corpses. Lets create a skeleton by holding down the right button or clicking on it.";
+        slowTextCoroutine = StartCoroutine(SlowText("Now that you defeated the goblin king, you can summon goblin skeletons from goblin corpses. Lets create a skeleton by holding down the right button or clicking on it."));
         yield return new WaitUntil(() => (playerBase.numSkeletons != 0));
         arrow4.gameObject.SetActive(true);
         arrow4.anchoredPosition = new Vector2(190f, -180f);
         playerBase.UpdateBones(25);
         tutorialInputManager.allowLeft = true;
-        mainText.text = "You can upgrade both a skeleton's attack and defence 3 times each. Why don't you upgrade one by holding the left or right button clicking on it.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("You can upgrade both a skeleton's attack and defence 3 times each. Why don't you upgrade one by holding the left or right button clicking on it."));
         yield return new WaitUntil(() => (selectManager.selectedTroop.GetComponent<Skeleton>().attack.attackPower != 75 || selectManager.selectedTroop.GetComponent<Skeleton>().defence != 4));
 
 
@@ -367,14 +387,16 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowHold = false;
         tutorialInputManager.allowDouble = true;
         tutorialInputManager.allowMouseSelectSingle = true;
-        mainText.text = "Skeletons have 3 modes, which is indicated above. Curently the skeleton is in stay mode, lets change it to retreat mode. To press these buttons, press them twice quickly, so press the left button twice. If your using a mouse, click the skeleton while in stay or attack mode.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Skeletons have 3 modes, which are indicated above. Curently the skeleton is in stay mode, lets change it to retreat mode. To press these buttons, press them twice quickly, so press the left button twice. If your using a mouse, click the skeleton while in stay or attack mode."));
         yield return new WaitUntil(() => (selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode == SkeletonMode.left));
         tutorialInputManager.allowLeft = false;
         tutorialInputManager.allowRight = true;
         arrow3.gameObject.SetActive(false);
         arrow.anchoredPosition = new Vector2(75f, -165f);
         arrow2.anchoredPosition = new Vector2(-75f, -165f);
-        mainText.text = "In retreat mode, the skeleton runs toward the base ignoring enemies. Lets change it to attack mode where it runs right and stops to fight nearby enemies. Press the right button twice or click the enemy while in retreat mode to change the skeleton to attack mode.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("In retreat mode, the skeleton runs toward the base ignoring enemies. Lets change it to attack mode where it runs right and stops to fight nearby enemies. Press the right button twice or click the enemy while in retreat mode to change the skeleton to attack mode."));
         yield return new WaitUntil(() => (selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode == SkeletonMode.right));
         arrow.anchoredPosition = new Vector2(0f, -180f);
         arrow1.anchoredPosition = new Vector2(75f, -165f);
@@ -382,7 +404,8 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowRight = false;
         tutorialInputManager.allowMiddle = true;
         tutorialInputManager.allowMousePressStayTarget = true;
-        mainText.text = "Lets change the skeleton back to stay mode where the skeleton stays near a specified spot, indicated by a yellow marker, and attacks nearby enemies. To do it, press the middle button twice, or if your using mouse, click where you want the skeleton to stay.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Lets change the skeleton back to stay mode where the skeleton stays near a specified spot, indicated by a yellow marker, and attacks nearby enemies. To do it, press the middle button twice, or if your using mouse, click where you want the skeleton to stay."));
         yield return new WaitUntil(() => (selectManager.selectedTroop.GetComponent<Skeleton>().skeletonMode == SkeletonMode.stay));
         yield return new WaitForSeconds(.5f);
 
@@ -403,7 +426,8 @@ public class TutorialManager : MonoBehaviour
         selectManager.Select(GameObject.FindGameObjectWithTag("Corpse").transform);
         selectManager.corpseSkeletonButton.SetActive(false);
         selectManager.corpseTombstoneButton.SetActive(false);
-        mainText.text = "While you have a corpse selected, you can press the middle button twice to make all of them turn into minions. If your using a mouse, you can't do that, so, for now, just make a single minion instead.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("While you have a corpse selected, you can press the middle button twice to make all of them turn into minions. If your using a mouse, you can't do that, so, for now, just make a single minion instead."));
         yield return new WaitUntil(() => (playerBase.numSkeletons != 0));
         GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGraves(5);
         selectManager.selectedTroop.GetComponent<Minion>().bonesStored = 6;
@@ -414,7 +438,8 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowLeft = false;
         tutorialInputManager.allowMiddle = true;
         tutorialInputManager.allowMouseSelectDouble = true;
-        mainText.text = "Minions get slightly weighed down if they carry bones, and when they are full, they have to go all the way back to the base to collect them. However, you can collect them yourself by pressing the middle button twice or double clicking the minion.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Minions get slightly weighed down if they carry bones, and when they are full, they have to go all the way back to the base to collect them. However, you can collect them yourself by pressing the middle button twice or double clicking the minion."));
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
         GameObject[] minions = GameObject.FindGameObjectsWithTag("Minion");
@@ -428,7 +453,8 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowMousePressEnemies = true;
         tutorialInputManager.allowMiddle = false;
         tutorialInputManager.allowRight = true;
-        mainText.text = "On keyboard, you can command all minions into one mode by pressing buttons twice. Alternitively, on mouse, you can select a target for the curently selected minion or skeleton (for minions, graves too). Either set all minions to attack mode or click the goblin to target it.";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("On keyboard, you can command all minions into one mode by pressing buttons twice. Alternitively, on mouse, you can select a target for the curently selected minion or skeleton (for minions, graves too). Either set all minions to attack mode or click the goblin to target it."));
         yield return new WaitUntil(() => (!selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode));
         yield return new WaitForSeconds(.5f);
         //yield return new WaitUntil(() => (GameObject.FindGameObjectsWithTag("Enemy").Length == 0));
@@ -458,10 +484,11 @@ public class TutorialManager : MonoBehaviour
         arrow4.GetComponent<UnityEngine.UI.Image>().color = arrow1.GetComponent<UnityEngine.UI.Image>().color;
         arrow.GetComponent<UnityEngine.UI.Image>().color = arrow1.GetComponent<UnityEngine.UI.Image>().color;
         arrow.anchoredPosition = new Vector2(-75f, -180f);
-        arrow4.anchoredPosition = new Vector2(-190, -100f);
+        arrow4.anchoredPosition = new Vector2(190, -100f);
         continueButton.SetActive(true);
         selectManager.Deselect();
-        mainText.text = "Without anything selected, you can change all of your skeletons (not minions) modes using the double press buttons. You can see what the current default modes are set to above.\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("Without anything selected, you can change all of your skeletons (not minions) modes using the double press buttons. You can see what the current default modes are set to above.\nTo Continue, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrow.gameObject.SetActive(false);
@@ -469,10 +496,12 @@ public class TutorialManager : MonoBehaviour
         arrow2.gameObject.SetActive(false);
         arrow3.gameObject.SetActive(false);
         arrow4.gameObject.SetActive(false);
-        mainText.text = "You have reached the end. To sum up the controls for keyboard, Single buttons = select, Double buttons = modes/affects all, Hold buttons = upgrade.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("You have reached the end. To sum up the controls for keyboard, Single buttons = select, Double buttons = modes/affects all, Hold buttons = upgrade.\n\nTo Continue, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
-        mainText.text = "To sum up the controls for mouse, Click things to select/target them, click top right to upgrade, click while selected to change modes.\n\nTo End, Press All 3 Buttons Or Click The Bottom";
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("To sum up the controls for mouse, Click things to select/target them, click top right to upgrade, click while selected to change modes.\n\nTo End, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
 
@@ -488,26 +517,38 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitUntil(() => (allThreePressed));
     }
 
+    IEnumerator SlowText(string text)
+    {
+
+        mainText.text = "";
+        for (int i = 0; i < text.Length; i++)
+        {
+            yield return new WaitForSeconds(.025f);
+            mainText.text += text[i];
+        }
+        
+    }
+
     /*IEnumerator Tutorial()
     {
         //Status
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrowBasisObject.gameObject.SetActive(true);
-        mainText.text = "This is the health bar of whatever you have selected. Next to it are the numbers that show the current health over the max health.\n\nPress All 3 Buttons To Continue";
+        slowTextCoroutine = StartCoroutine(SlowText("This is the health bar of whatever you have selected. Next to it are the numbers that show the current health over the max health.\n\nPress All 3 Buttons To Continue"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrow2.gameObject.SetActive(false);
         arrow1.anchoredPosition = new Vector2(-25, -100f);
-        mainText.text = "This shows the name of the selected object. Whenever nothing is selected, it shows your base's health, just make sure its doesn't fall to zero, or you lose!\n\nPress All 3 Buttons To Continue";
+        slowTextCoroutine = StartCoroutine(SlowText("This shows the name of the selected object. Whenever nothing is selected, it shows your base's health, just make sure its doesn't fall to zero, or you lose!\n\nPress All 3 Buttons To Continue"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrow1.anchoredPosition = new Vector2(75, -100f);
-        mainText.text = "This shows your bones, the currency of this game.\n\nPress All 3 Buttons To Continue";
+        slowTextCoroutine = StartCoroutine(SlowText("This shows your bones, the currency of this game.\n\nPress All 3 Buttons To Continue"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrow1.anchoredPosition = new Vector2(340f, -100f);
-        mainText.text = "This shows the amount of active troops over the max number of troops you can have active at one time.\n\nPress All 3 Buttons To Continue";
+        slowTextCoroutine = StartCoroutine(SlowText("This shows the amount of active troops over the max number of troops you can have active at one time.\n\nPress All 3 Buttons To Continue"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
 
@@ -520,19 +561,19 @@ public class TutorialManager : MonoBehaviour
         selectManager.boneCostObject0.SetActive(true);
         holdButtons.SetActive(true);
         tutorialInputManager.enabled = true;
-        mainText.text = "These buttons are activated when held down. The middle button upgrades the max troop capacity for the price at the top.\n\nPress All 3 Buttons To Continue";
+        slowTextCoroutine = StartCoroutine(SlowText("These buttons are activated when held down. The middle button upgrades the max troop capacity for the price at the top.\n\nPress All 3 Buttons To Continue"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrow.anchoredPosition = new Vector2(340f, -180f);
         arrow2.anchoredPosition = new Vector2(265f, -165f);
-        mainText.text = "Try moving the camera by holding the right button";//This can be skipped if the player moves the camera
+        slowTextCoroutine = StartCoroutine(SlowText("Try moving the camera by holding the right button"));//This can be skipped if the player moves the camera
         yield return new WaitUntil(() => (inputManager.selectManager.transform.position.x > 3.5f));
         arrow.anchoredPosition = new Vector2(-265f, -165f);
         arrow1.anchoredPosition = new Vector2(-190f, -180f);
         arrow2.anchoredPosition = new Vector2(-340f, -180f);
         singleButtons.SetActive(true);
         tutorialInputManager.allowSingle = true;
-        mainText.text = "These buttons are activated when pressed once. For now, select a corpse by pressing the middle button.";
+        slowTextCoroutine = StartCoroutine(SlowText("These buttons are activated when pressed once. For now, select a corpse by pressing the middle button."));
         yield return new WaitUntil(() => (selectManager.selectingObject));
 
         //Corpse
@@ -545,7 +586,7 @@ public class TutorialManager : MonoBehaviour
         inputManager.holdInputWait = true;
         tutorialInputManager.allowMiddle = false;
         holdButtons.SetActive(false);
-        mainText.text = "While selecting something, you can switch what you are selecting by pressing the left or right button. Select the other corpse.";
+        slowTextCoroutine = StartCoroutine(SlowText("While selecting something, you can switch what you are selecting by pressing the left or right button. Select the other corpse."));
         Transform firstSelectedCorpse = selectManager.selectedTroop;//Since waituntil activates after Update() is called, we don't have to worry about the selected object being assigned after selectingObject is set to true
         yield return new WaitUntil(() => (selectManager.selectedTroop != firstSelectedCorpse));
         tutorialInputManager.allowHold = true;
@@ -555,13 +596,13 @@ public class TutorialManager : MonoBehaviour
         arrow4.gameObject.SetActive(false);
         arrow.anchoredPosition = new Vector2(190f, -180f);
         holdButtons.SetActive(true);
-        mainText.text = "Lets create a minion to gather bones. Hold the left button to create one from a corpse.";
+        slowTextCoroutine = StartCoroutine(SlowText("Lets create a minion to gather bones. Hold the left button to create one from a corpse."));
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
         tutorialInputManager.allowLeft = false;
         tutorialInputManager.allowMiddle = true;
         arrow.anchoredPosition = new Vector2(265f, -165f);
-        mainText.text = "Minions slowly dig bones from graves, but currently, there isn't any. Lets spawn some using a corpse. Hold the middle button to spawn some.";
+        slowTextCoroutine = StartCoroutine(SlowText("Minions slowly dig bones from graves, but currently, there isn't any. Lets spawn some using a corpse. Hold the middle button to spawn some."));
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
 
@@ -571,7 +612,7 @@ public class TutorialManager : MonoBehaviour
         arrow.anchoredPosition = new Vector2(-265, -165f);
         Instantiate(corpsePrefab, new Vector3(3f, 0, 0f), corpsePrefab.transform.rotation);
         Instantiate(corpsePrefab, new Vector3(7f, -.5f, 0f), corpsePrefab.transform.rotation);
-        mainText.text = "Minions have 2 modes, attack and dig. Minions can't be selected individually, and all follow the same command, which is set by pressing left or right when nothing is selected. I spawned more corpses for you, select one when you are ready.";
+        slowTextCoroutine = StartCoroutine(SlowText("Minions have 2 modes, attack and dig. Minions can't be selected individually, and all follow the same command, which is set by pressing left or right when nothing is selected. I spawned more corpses for you, select one when you are ready."));
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
         doubleButtons.SetActive(true);
@@ -580,7 +621,7 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowRight = true;
         tutorialInputManager.allowMiddle = false;
         arrow.anchoredPosition = new Vector2(75f, -165f);
-        mainText.text = "You can press buttons twice to select these options. We could use some skeletons to attack for us, so hit the right button twice to change all corpses into skeletons.";
+        slowTextCoroutine = StartCoroutine(SlowText("You can press buttons twice to select these options. We could use some skeletons to attack for us, so hit the right button twice to change all corpses into skeletons."));
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
 
@@ -594,7 +635,7 @@ public class TutorialManager : MonoBehaviour
         arrow1.anchoredPosition = new Vector2(190f, -180f);
         arrow2.gameObject.SetActive(true);
         arrow2.anchoredPosition = new Vector2(340f, -180f);
-        mainText.text = "Skeletons can be upgraded by spending bones (using the amount indicated above). If you want the skeleton to die for whatever reason, you can do so holding the middle button.\nKILL THE NEWBORN...";
+        slowTextCoroutine = StartCoroutine(SlowText("Skeletons can be upgraded by spending bones (using the amount indicated above). If you want the skeleton to die for whatever reason, you can do so holding the middle button.\nKILL THE NEWBORN..."));
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
         tutorialInputManager.allowSingle = true;
@@ -604,19 +645,19 @@ public class TutorialManager : MonoBehaviour
         arrow2.anchoredPosition = new Vector2(0f, -180f);
         arrow3.gameObject.SetActive(true);
         arrow3.anchoredPosition = new Vector2(75f, -165f);
-        mainText.text = "Skeletons have three modes. Retreat make them return home ignoring enemies. Stay makes them stay in place, attacking enemies that get near. Attack makes them charge to the right, attacking any enemies. Deselect the skeleton by pressing the middle button";
+        slowTextCoroutine = StartCoroutine(SlowText("Skeletons have three modes. Retreat make them return home ignoring enemies. Stay makes them stay in place, attacking enemies that get near. Attack makes them charge to the right, attacking any enemies. Deselect the skeleton by pressing the middle button"));
         buttonPressed = false;
         yield return new WaitUntil(() => (buttonPressed));
         tutorialInputManager.allowSingle = false;
         tutorialInputManager.allowMiddle = false;
         arrow.gameObject.SetActive(false);
-        mainText.text = "You can control the mode all your skeletons are in when deselected.\n\nPress All 3 Buttons To Continue";
+        slowTextCoroutine = StartCoroutine(SlowText("You can control the mode all your skeletons are in when deselected.\n\nPress All 3 Buttons To Continue"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         arrow1.gameObject.SetActive(false);
         arrow2.gameObject.SetActive(false);
         arrow3.gameObject.SetActive(false);
-        mainText.text = "This marks the end of the tutorial. In the real game, press all 3 buttons to pause the game.\n\nPress All 3 Buttons To Stay And Test Out The Controls\nHold All 3 Buttons To Return To Main Menu Any Time";
+        slowTextCoroutine = StartCoroutine(SlowText("This marks the end of the tutorial. In the real game, press all 3 buttons to pause the game.\n\nPress All 3 Buttons To Stay And Test Out The Controls\nHold All 3 Buttons To Return To Main Menu Any Time"));
         yield return new WaitUntil(() => (allThreePressed));
         yield return new WaitUntil(() => (!allThreePressed));
         tutorialInputManager.allowLeft = true;
