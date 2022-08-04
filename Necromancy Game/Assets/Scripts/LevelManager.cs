@@ -14,23 +14,36 @@ public class LevelManager : MonoBehaviour
     public int level = 1;
     public bool altLevel = false;
     public bool tutorialBefore = false;
-    public bool tutorialAfter = false;
     public GameObject tutorialPopup;
     public int numGravesForLevelIfTutorial = 0;
     public InputManager inputManager;
     public TutorialManager tutorialManager;
+    public bool defeatedNewLevel = false;
+
     public GameObject startingCorpsesIfTutorial;
+    public GameObject doubleButtonsForLevel1;
 
     void Start()
     {
-        if (tutorialBefore)
+        if (tutorialBefore && ((level == 1 && !Data.Load()[0]) || (level == 2 && !Data.Load()[2])))
         {
             StartCoroutine(TutorialPopupRoutine());
         }
         else
         {
+            if (tutorialBefore)
+            {
+                tutorialPopup.SetActive(false);
+                if (level == 1 && Data.Load()[0])
+                {
+                    doubleButtonsForLevel1.SetActive(true);
+                }
+                startingCorpsesIfTutorial.SetActive(true);
+                inputManager.enabled = true;
+                GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().enabled = true;
+                GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGraves(numGravesForLevelIfTutorial);
+            }
             StartCoroutine(LevelSpawning());
-            gameObject.SetActive(false);
         }
     }
 
@@ -65,9 +78,13 @@ public class LevelManager : MonoBehaviour
 
     public void StartLevel()
     {
+        if (level == 1 && Data.Load()[0])
+        {
+            doubleButtonsForLevel1.SetActive(true);
+        }
         startingCorpsesIfTutorial.SetActive(true);
-        GameObject.FindGameObjectWithTag("Input Manager").SetActive(true);
-        GameObject.FindGameObjectWithTag("Player Base").SetActive(true);
+        inputManager.enabled = true;
+        GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().enabled = true;
         GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGraves(numGravesForLevelIfTutorial);
         StartCoroutine(LevelSpawning());
     }
@@ -86,20 +103,28 @@ public class LevelManager : MonoBehaviour
             enemies = GameObject.FindGameObjectsWithTag("Enemy");
         }
         winMessage.SetActive(true);
+        GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().enabled = false;
         bool[] data = Data.Load();
+        bool altLevelSpecialTutorial = false;
         if (altLevel)
         {
+            altLevelSpecialTutorial = level != 6 && !data[12] && !data[14] && !data[16] && !data[18] && !data[20];
             data[(level + 5) * 2] = true;//Completed
         }
         else
         {
+            if (!data[(level - 1) * 2])
+            {
+                defeatedNewLevel = true;
+            }
             data[(level - 1) * 2] = true;//Completed
             data[(level * 2)+1] = true;//Next level available
             data[((level + 5) * 2)+1] = true;//Alt level available
         }
         Data.Save(data);
-        if (tutorialAfter)
+        if (altLevelSpecialTutorial)
         {
+            yield return new WaitForSeconds(1f);
             tutorialPopup.SetActive(true);
         }
         else
@@ -136,22 +161,7 @@ public class LevelManager : MonoBehaviour
 
     public void MainMenu()
     {
-        StartCoroutine(LoadMainMenu());
-    }
-
-    IEnumerator LoadMainMenu()
-    {
-        inputManager.loading.SetActive(true);
-        Scene curentScene = SceneManager.GetActiveScene();
-        AsyncOperation ao = SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
-        yield return new WaitUntil(() => ao.isDone);
-        MainMenuManager mainMenuManager = GameObject.FindGameObjectWithTag("Main Menu Manager").GetComponent<MainMenuManager>();
-        mainMenuManager.leftButton = inputManager.leftButton;
-        mainMenuManager.middleButton = inputManager.middleButton;
-        mainMenuManager.rightButton = inputManager.rightButton;
-        mainMenuManager.leftButtonText.text = mainMenuManager.leftButton.ToString();
-        mainMenuManager.middleButtonText.text = mainMenuManager.middleButton.ToString();
-        mainMenuManager.rightButtonText.text = mainMenuManager.rightButton.ToString();
-        SceneManager.UnloadSceneAsync(curentScene);
+        inputManager.enabled = true;
+        inputManager.MainMenu();
     }
 }

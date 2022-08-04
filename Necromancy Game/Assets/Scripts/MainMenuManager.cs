@@ -7,8 +7,6 @@ using TMPro;
 
 public class MainMenuManager : MonoBehaviour
 {
-    //public GameObject[] buttons1;
-    //public GameObject[] buttons2;
     public GameObject loading;
     public TextMeshProUGUI leftButtonText;
     public TextMeshProUGUI middleButtonText;
@@ -43,6 +41,7 @@ public class MainMenuManager : MonoBehaviour
     public TextMeshProUGUI singleRightButtonText;
     public RectTransform mainMenuScreen;
     public RectTransform mapScreen;
+    public float[] mapYPositions;
     public string[] normalSceneName;
     public string[] extraSceneName;
     public RectTransform[] mapPoints;
@@ -53,6 +52,20 @@ public class MainMenuManager : MonoBehaviour
     public RectTransform map;//0 -> -750
     public GameObject normalMap;
     public GameObject saveDataMenu;
+
+    public bool firstTime;
+    private bool secondPartText = false;
+    public GameObject detailsMenu;
+    public TextMeshProUGUI startingText;
+    public TextMeshProUGUI buttonText;
+    public TextMeshProUGUI levelText;
+    public TextMeshProUGUI detailsText;
+    private string[] levelDetailsText = { "Goblins surround the outskirts of the kingdom because they are the most common monster and can suround the kingdom with their massive numbers. After killing a few goblins, you find where the goblin chief lives.",
+    "Wolves have always been a natural enemy of the kingdom, but the wolves were somehow tamed by the monsters. It is now your turn to use the wolves by finding and killing the pack leader to gain the ability to summon skeleton wolves.",
+    "Witches are one of your natural enemies, but they didn't interfere in the war. However, you've heard rumors that the monsters have befriended them in preporation ageinst you. You need to kill the Witch Queen before you face them elsewhere, and can't summon any skeletons.",
+    "Orcs were perhaps the monster that killed the most during the war. They had high number, had high attack, and high defence. Now they lay inside, wilting away from the past years of peace. Now that you've arrived at the tower and pepaired countermeasures, kill the Orc chief.",
+    "Ogres are the strongest monsters by far. Even a smaller, inexperienced ogre can easily kill a human. Thankfully, you aren't fighting with humans. Kill the one in charge, and finish what you came here to do.",
+    "To your suprise, you find a way up while on the roof of the tower. After climbing, you see a man who says, \"So you are the one killing all my troops.\" Realising he is the one responsible for so much carnage, you decide to show him that your necromancy skills are superior to his skills."};
 
     void Start()
     {
@@ -106,6 +119,7 @@ public class MainMenuManager : MonoBehaviour
                 }
             }
         }
+        firstTime = !Data.Load()[0] && !inMap;
     }
 
     public void Update()
@@ -121,7 +135,7 @@ public class MainMenuManager : MonoBehaviour
                     if (map.anchoredPosition.y < -750f)
                     {
                         map.anchoredPosition = new Vector2(0f, 750f);
-                        scrollBar.anchoredPosition += new Vector2(-20f, 300f);
+                        scrollBar.anchoredPosition = new Vector2(-20f, 300f);
                     }
                 }
                 else if (Input.mouseScrollDelta.y < 0 && map.anchoredPosition.y < 0f)
@@ -131,7 +145,7 @@ public class MainMenuManager : MonoBehaviour
                     if (map.anchoredPosition.y > 0f)
                     {
                         map.anchoredPosition = Vector2.zero;
-                        scrollBar.anchoredPosition += new Vector2(-20f, 70f);
+                        scrollBar.anchoredPosition = new Vector2(-20f, 70f);
                     }
                 }
             }
@@ -275,6 +289,20 @@ public class MainMenuManager : MonoBehaviour
                 DeleteData();
             }
         }
+        else if (detailsMenu.activeSelf)
+        {
+            if (Input.GetKey(leftButton) && Input.GetKey(middleButton) && Input.GetKey(rightButton) && (Input.GetKeyDown(leftButton) || Input.GetKeyDown(middleButton) || Input.GetKeyDown(rightButton)))
+            {
+                saveDataMenu.SetActive(true);
+                allowInputs = false;
+                buttonPressTimer = 0f;
+                buttonPressed = false;
+            }
+            else if (Input.GetKeyDown(middleButton) && !Input.GetKey(leftButton) && !Input.GetKey(rightButton))
+            {
+                DetailsMenuButtonClick();
+            }
+        }
     }
 
     public void ClickSinleButtonLeft()
@@ -311,11 +339,13 @@ public class MainMenuManager : MonoBehaviour
                 {//Don't need to check if unlocked
                     mapPointIndex--;
                     selector.anchoredPosition = mapPoints[mapPointIndex].anchoredPosition;
+                    map.anchoredPosition = new Vector2(0f, mapYPositions[mapPointIndex]);
+                    scrollBar.anchoredPosition = new Vector2(-20f, mapYPositions[mapPointIndex] * -.3066667f + 70f);
                 }
             }
             else if (type == ButtonPressed.middle)
             {
-                LoadLevel();
+                StartCoroutine(LoadLevel());
             }
             else /*if (type == ButtonPressed.right)*/
             {
@@ -323,6 +353,8 @@ public class MainMenuManager : MonoBehaviour
                 {
                     mapPointIndex++;
                     selector.anchoredPosition = mapPoints[mapPointIndex].anchoredPosition;
+                    map.anchoredPosition = new Vector2(0f, mapYPositions[mapPointIndex]);
+                    scrollBar.anchoredPosition = new Vector2(-20f, mapYPositions[mapPointIndex] * -.3066667f + 70f);
                 }
             }
         }
@@ -379,6 +411,15 @@ public class MainMenuManager : MonoBehaviour
                 mapScreen.anchoredPosition = Vector2.zero;
                 allowInputs = true;
                 inMap = true;
+                if (firstTime)
+                {
+                    detailsMenu.SetActive(true);
+                    allowInputs = false;
+                    startingText.gameObject.SetActive(true);
+                    levelText.gameObject.SetActive(false);
+                    detailsText.gameObject.SetActive(false);
+                    buttonText.text = "Continue";
+                }
             }
             else if (type == ButtonPressed.middle)
             {
@@ -426,7 +467,7 @@ public class MainMenuManager : MonoBehaviour
         {
             if (type == ButtonPressed.left)
             {
-                Debug.Log("More Details");
+                OpenDetailsMenu();
             }
             else if (type == ButtonPressed.middle)
             {
@@ -537,7 +578,7 @@ public class MainMenuManager : MonoBehaviour
             {
                 if (clickTime < buttonPressTime)
                 {
-                    LoadLevel();
+                    StartCoroutine(LoadLevel());
                 }
                 else
                 {
@@ -548,31 +589,33 @@ public class MainMenuManager : MonoBehaviour
             {
                 mapPointIndex = num;
                 selector.anchoredPosition = mapPoints[num].anchoredPosition;
+                map.anchoredPosition = new Vector2(0f, mapYPositions[num]);
+                scrollBar.anchoredPosition = new Vector2(-20f, mapYPositions[num] * -.3066667f + 70f);
             }
         }
     }
 
-    public void LoadLevel()
+    IEnumerator LoadLevel()
     {
-        Debug.Log("Load Level");
-        /*allowInputs = false;
+        allowInputs = false;
         otherMiddleButtonImage.color = Color.gray;
         loading.SetActive(true);
-        if (inOtherSelection)
-        {
-            AsyncOperation ao = SceneManager.LoadSceneAsync(extraSceneName[mapPointIndex], LoadSceneMode.Additive);
-            yield return new WaitUntil(() => ao.isDone);
-        }
-        else
+        if (normalMap.active)
         {
             AsyncOperation ao = SceneManager.LoadSceneAsync(normalSceneName[mapPointIndex], LoadSceneMode.Additive);
             yield return new WaitUntil(() => ao.isDone);
         }
+        else
+        {
+            AsyncOperation ao = SceneManager.LoadSceneAsync(extraSceneName[mapPointIndex], LoadSceneMode.Additive);
+            yield return new WaitUntil(() => ao.isDone);
+        }
+        
         InputManager inputManager = GameObject.FindGameObjectWithTag("Input Manager").GetComponent<InputManager>();
         inputManager.leftButton = leftButton;
         inputManager.middleButton = middleButton;
         inputManager.rightButton = rightButton;
-        SceneManager.UnloadSceneAsync("Main Menu");*/
+        SceneManager.UnloadSceneAsync("Main Menu");
     }
 
     public void ChangeMap()
@@ -670,7 +713,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void Cancel()
     {
-        allowInputs = true;
+        allowInputs = !detailsMenu.activeSelf;
         saveDataMenu.SetActive(false);
     }
 
@@ -682,6 +725,8 @@ public class MainMenuManager : MonoBehaviour
         newData[1] = true;
         Data.Save(newData);
         selector.anchoredPosition = mapPoints[0].anchoredPosition;
+        map.anchoredPosition = new Vector2(0f, mapYPositions[0]);
+        scrollBar.anchoredPosition = new Vector2(-20f, mapYPositions[0] * -.3066667f + 70f);
         mapPointIndex = 0;
         normalMap.SetActive(true);
         mapPoints[0].GetComponent<Image>().color = Color.blue;
@@ -689,7 +734,47 @@ public class MainMenuManager : MonoBehaviour
         {
             mapPoints[i].GetComponent<Image>().color = Color.red;
         }
-        allowInputs = true;
+        allowInputs = !detailsMenu.activeSelf;
         saveDataMenu.SetActive(false);
+        if (!inMap)
+        {
+            firstTime = true;
+            secondPartText = false;
+            startingText.text = "Welcome to the campaign. Here you fight enemies to take back territory that has been long since forgotten about after enemies such as goblins, orcs, and ogres flooded the land. After years of learning necromancy, its time to use their numbers ageinst them.";
+            levelText.text = "Level 1";
+            detailsText.text = levelDetailsText[0];
+        }
+    }
+
+    public void OpenDetailsMenu()
+    {
+        detailsMenu.SetActive(true);
+        allowInputs = !detailsMenu.activeSelf;
+        levelText.text = "Level " + (mapPointIndex + 1);
+        detailsText.text = levelDetailsText[mapPointIndex];
+    }
+
+    public void DetailsMenuButtonClick()
+    {
+        if (firstTime)
+        {
+            if (secondPartText) {
+                startingText.gameObject.SetActive(false);
+                levelText.gameObject.SetActive(true);
+                detailsText.gameObject.SetActive(true);
+                firstTime = false;
+                buttonText.text = "Close";
+            }
+            else
+            {
+                startingText.text = "To select a level, use the buttons indicated above, or click on the level. There is also an alternative challenge available once you defeat a level. You can access them by using the buttons above, or clicking and holding your current level.";
+                secondPartText = true;
+            }
+        }
+        else
+        {
+            detailsMenu.SetActive(false);
+            allowInputs = true;
+        }
     }
 }

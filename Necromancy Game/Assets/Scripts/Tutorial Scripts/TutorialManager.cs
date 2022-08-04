@@ -25,6 +25,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject tutorialObjectsLevel2;
     public GameObject tutorialObjectsLevel2Part2;
     public GameObject tutorialObjectsLevel2Part3;
+    public GameObject tutorialObjectsSpecialLevel;
 
     public TutorialInputManager tutorialInputManager;
     public InputManager inputManager;
@@ -97,17 +98,38 @@ public class TutorialManager : MonoBehaviour
         this.enabled = true;
         inputManager.holdInputWait = true;
         selectManager.boneCostObject0.SetActive(false);
-        if (GameObject.FindGameObjectWithTag("Level Manager").GetComponent<LevelManager>().level == 1)
+        LevelManager levelManager = GameObject.FindGameObjectWithTag("Level Manager").GetComponent<LevelManager>();
+        if (levelManager.altLevel)
+        {
+            if (levelManager.level == 1)
+            {
+                selectManager.specialGoblin = true;
+            }
+            else if (levelManager.level == 2)
+            {
+                selectManager.specialWolf = true;
+            }
+            else if (levelManager.level == 3)
+            {
+                selectManager.specialWitch = true;
+            }
+            else if (levelManager.level == 4)
+            {
+                selectManager.specialOrc = true;
+            }
+            else /*if (levelManager.level == 5)*/
+            {
+                selectManager.specialOgre = true;
+            }
+            StartCoroutine(SpecialTutorial());
+        }
+        else if (levelManager.level == 1)
         {
             StartCoroutine(Level1Tutorial());
         }
-        else if (GameObject.FindGameObjectWithTag("Level Manager").GetComponent<LevelManager>().level == 2)
+        else /*if (GameObject.FindGameObjectWithTag("Level Manager").GetComponent<LevelManager>().level == 2)*/
         {
             StartCoroutine(Level2Tutorial());
-        }
-        else
-        {
-            StartCoroutine(SpecialTutorial());
         }
     }
 
@@ -362,7 +384,7 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.allowHoldMovement = false;
         selectManager.corpseMinionButton.SetActive(false);
         selectManager.corpseTombstoneButton.SetActive(false);
-        slowTextCoroutine = StartCoroutine(SlowText("Now that you defeated the goblin king, you can summon goblin skeletons from goblin corpses. Lets create a skeleton by holding down the right button or clicking on it."));
+        slowTextCoroutine = StartCoroutine(SlowText("Now that you defeated the goblin chief, you can summon goblin skeletons from goblin corpses. Lets create a skeleton by holding down the right button or clicking on it."));
         yield return new WaitUntil(() => (playerBase.numSkeletons != 0));
         arrow4.gameObject.SetActive(true);
         arrow4.anchoredPosition = new Vector2(190f, -180f);
@@ -513,8 +535,46 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator SpecialTutorial()
     {
-        //Status
+        //Start
+        if (selectManager.selectedTroop)
+        {
+            selectManager.Deselect();
+        }
+        while (selectManager.selectableObjects.Count != 0)
+        {
+            GameObject.Destroy(selectManager.selectableObjects[0].gameObject);
+            selectManager.selectableObjects.RemoveAt(0);
+        }
+        tutorialObjectsSpecialLevel.SetActive(true);
+        PlayerBase playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
+        playerBase.numSkeletons = 0;
+        selectManager.troopCapacityText.text = "0\n" + playerBase.maxSkeletons;
+        selectManager.Select(GameObject.FindGameObjectWithTag("Skeleton").transform);
+        arrowBasisObject.gameObject.SetActive(true);
+        arrow.gameObject.SetActive(true);
+        arrow1.gameObject.SetActive(false);
+        arrow2.gameObject.SetActive(false);
+        arrow.anchoredPosition = new Vector2(265f, -165f);
+        tutorialInputManager.allowLeft = false;
+        tutorialInputManager.allowRight = false;
+        tutorialInputManager.allowHoldMovement = false;
+        tutorialInputManager.allowMouseSelectDouble = true;
+        selectManager.attackUpgradeButton.SetActive(false);
+        selectManager.defenceUpgradeButton.SetActive(false);
+        slowTextCoroutine = StartCoroutine(SlowText("After defeating a special challenge for the level, you unlock a special ability for the main enemy. Lets try it out by holding down the middle button or clicking the skeleton twice."));
+        yield return new WaitUntil(() => (buttonPressed));
+        arrow.gameObject.SetActive(false);
+        yield return new WaitForSeconds(3f);
+        continueButton.SetActive(true);
+        StopCoroutine(slowTextCoroutine);
+        slowTextCoroutine = StartCoroutine(SlowText("As you can see special abilities have a cooldown, but the cooldown only aplies to that skeleton, so multiple skelton's abilities can be activated at once.\n\nTo End, Press All 3 Buttons Or Click The Bottom"));
         yield return new WaitUntil(() => (allThreePressed));
+        yield return new WaitUntil(() => (!allThreePressed));
+
+        //Reset
+        playerBase.timeSurvived = 1f;
+        inputManager.enabled = true;
+        inputManager.MainMenu();
     }
 
     IEnumerator SlowText(string text)

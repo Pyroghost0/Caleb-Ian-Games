@@ -492,7 +492,11 @@ public class InputManager : MonoBehaviour
                     {
                         if (selectedObject.CompareTag("Skeleton"))
                         {
-                            selectedObject.GetComponent<Skeleton>().SpecialAttack();
+                            Skeleton skeleton = selectManager.selectedTroop.GetComponent<Skeleton>();
+                            if ((skeleton.specialAttackType == AttackType.SpecialGoblinArrow && !selectManager.specialGoblin) || (skeleton.specialAttackType == AttackType.SpecialWolfShadowMovement && !selectManager.specialWolf) || (skeleton.specialAttackType == AttackType.SpecialWitchGravityAttack && !selectManager.specialWitch) || (skeleton.specialAttackType == AttackType.SpecialOrcUpgrade && !selectManager.specialOrc) || (skeleton.specialAttackType == AttackType.SpecialOgreMultiattack && !selectManager.specialOgre))
+                            {
+                                skeleton.SpecialAttack();
+                            }
                         }
                         else if (selectedObject.CompareTag("Minion"))
                         {
@@ -648,6 +652,10 @@ public class InputManager : MonoBehaviour
         else if (type == ButtonPressed.middle)
         {
             loading.SetActive(true);
+            LevelManager levelManager = GameObject.FindGameObjectWithTag("Level Manager").GetComponent<LevelManager>();
+            bool newLevel = levelManager.defeatedNewLevel;
+            bool altLevel = levelManager.altLevel;
+            int level = newLevel ? levelManager.level : levelManager.level - 1;
             Scene activeScene = SceneManager.GetActiveScene();
             AsyncOperation ao = SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
             yield return new WaitUntil(() => ao.isDone);
@@ -663,6 +671,19 @@ public class InputManager : MonoBehaviour
                 mainMenuManager.mainMenuScreen.anchoredPosition = new Vector2(mainMenuManager.mainMenuScreen.rect.x * 2f, 0);
                 mainMenuManager.mapScreen.anchoredPosition = Vector2.zero;
                 mainMenuManager.inMap = true;
+                mainMenuManager.firstTime = false;
+                mainMenuManager.selector.anchoredPosition = mainMenuManager.mapPoints[level].anchoredPosition;
+                mainMenuManager.mapPointIndex = level;
+                mainMenuManager.map.anchoredPosition = new Vector2(0f, mainMenuManager.mapYPositions[level]);
+                mainMenuManager.scrollBar.anchoredPosition = new Vector2(-20f, mainMenuManager.mapYPositions[level] * -.3066667f + 70f);
+                if (newLevel)
+                {
+                    mainMenuManager.OpenDetailsMenu();
+                }
+                else if (altLevel)
+                {
+                    mainMenuManager.ChangeMap();
+                }
             }
             Time.timeScale = 1f;
             SceneManager.UnloadSceneAsync(activeScene);
@@ -673,6 +694,11 @@ public class InputManager : MonoBehaviour
             Debug.Log("Quit Game");
             Application.Quit();
         }
+    }
+
+    public void MainMenu()
+    {
+        StartCoroutine(PauseSinglePress(ButtonPressed.middle));
     }
 
     IEnumerator PauseHoldPress(ButtonPressed type)

@@ -104,6 +104,11 @@ public class SelectManager : MonoBehaviour
         {
             selectableObjects.Add(minions[i].transform);
         }
+        specialGoblin = specialGoblin || Data.Load()[12];
+        specialWolf = specialWolf || Data.Load()[14];
+        specialWitch = specialWitch || Data.Load()[16];
+        specialOrc = specialOrc || Data.Load()[18];
+        specialOgre = specialOgre || Data.Load()[20];
     }
 
     // Update is called once per frame
