@@ -290,7 +290,7 @@ RectTransform:
   m_Children:
   - {fileID: 1186387187}
   m_Father: {fileID: 347573025}
-  m_RootOrder: 3
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1472,10 +1472,10 @@ RectTransform:
   - {fileID: 796628570}
   - {fileID: 240966759}
   - {fileID: 1183604071}
-  - {fileID: 96446143}
   - {fileID: 2076002785}
   - {fileID: 811242618}
   - {fileID: 1257236839}
+  - {fileID: 96446143}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3369,7 +3369,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 347573025}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -3744,6 +3744,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 823914510}
   m_CullTransparentMesh: 1
+--- !u!114 &835864144 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2011582219643169638, guid: 320692867aae37d438668ebce74f58c1, type: 3}
+  m_PrefabInstance: {fileID: 1600566490}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32cedd5ed343e8b4c929662427198fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &868139648
 GameObject:
   m_ObjectHideFlags: 0
@@ -3857,7 +3868,7 @@ MonoBehaviour:
   - {fileID: 2070721817}
   - {fileID: 1356734178}
   - {fileID: 710539553}
-  playerBase: {fileID: 0}
+  playerBase: {fileID: 835864144}
 --- !u!4 &986417989
 Transform:
   m_ObjectHideFlags: 0
@@ -5645,7 +5656,7 @@ RectTransform:
   - {fileID: 1205404719}
   - {fileID: 1114560779}
   m_Father: {fileID: 347573025}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5667,7 +5678,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.87058824}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_RaycastPadding: {x: -200, y: -200, z: -200, w: -200}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5755,7 +5766,7 @@ MonoBehaviour:
   rightButton: 100
   buttonPressed: 0
   impossibleActionPrefab: {fileID: 2710029271421347445, guid: 236f8d845ad447d499da2f2f9f997331, type: 3}
-  playerBase: {fileID: 0}
+  playerBase: {fileID: 835864144}
   selectManager: {fileID: 1843335953}
   buttonImages:
   - {fileID: 1210220841}
@@ -8317,7 +8328,7 @@ MonoBehaviour:
   selectedTroop: {fileID: 0}
   currentMinionDigStatus: 1
   currentSkeletonMode: 1
-  playerBase: {fileID: 0}
+  playerBase: {fileID: 835864144}
   impossibleActionPrefab: {fileID: 2710029271421347445, guid: 236f8d845ad447d499da2f2f9f997331, type: 3}
   corpseActionFail: 0
   rectHealthBar: {fileID: 1684878505}
@@ -9481,7 +9492,7 @@ RectTransform:
   - {fileID: 160287178}
   - {fileID: 1235248786}
   m_Father: {fileID: 347573025}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

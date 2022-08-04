@@ -424,7 +424,7 @@ public class MainMenuManager : MonoBehaviour
             else if (type == ButtonPressed.middle)
             {
                 singleLeftButtonText.text = "Endless Mode";
-                singleMiddleButtonText.text = "Tutorial";
+                singleMiddleButtonText.text = "Tutorials";
                 singleRightButtonText.text = "Back";
                 inOtherSelection = true;
             }

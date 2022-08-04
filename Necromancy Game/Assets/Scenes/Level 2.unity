@@ -304,7 +304,7 @@ RectTransform:
   m_Children:
   - {fileID: 573631820}
   m_Father: {fileID: 386582173}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -720,7 +720,7 @@ RectTransform:
   m_Children:
   - {fileID: 852043791}
   m_Father: {fileID: 386582173}
-  m_RootOrder: 3
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2415,14 +2415,14 @@ RectTransform:
   - {fileID: 360489594}
   - {fileID: 2647056}
   - {fileID: 1205981452}
-  - {fileID: 130957937}
   - {fileID: 1627305957}
   - {fileID: 24092236}
   - {fileID: 2013514005}
   - {fileID: 1780682029}
-  - {fileID: 1683320589}
   - {fileID: 2003069537}
+  - {fileID: 1683320589}
   - {fileID: 1599628155}
+  - {fileID: 130957937}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4782,10 +4782,15 @@ MonoBehaviour:
   tutorialObjectsLevel2: {fileID: 22720689}
   tutorialObjectsLevel2Part2: {fileID: 956106753}
   tutorialObjectsLevel2Part3: {fileID: 1453229451}
+  tutorialObjectsSpecialLevel: {fileID: 0}
   tutorialInputManager: {fileID: 517238795}
   inputManager: {fileID: 517238793}
   selectManager: {fileID: 1616177996}
   buttonPressed: 0
+  isTutorialScene: 0
+  controlsMenu: {fileID: 0}
+  startTutorialMenu: {fileID: 0}
+  skeletonContainObject: {fileID: 0}
 --- !u!4 &894061270
 Transform:
   m_ObjectHideFlags: 0
@@ -8901,7 +8906,7 @@ RectTransform:
   - {fileID: 1846436225}
   - {fileID: 2039840278}
   m_Father: {fileID: 386582173}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8923,7 +8928,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.87058824}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_RaycastPadding: {x: -200, y: -200, z: -200, w: -200}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -9191,7 +9196,7 @@ RectTransform:
   - {fileID: 927883957}
   - {fileID: 1765209353}
   m_Father: {fileID: 386582173}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -10400,7 +10405,7 @@ RectTransform:
   - {fileID: 1099760658}
   - {fileID: 1891576792}
   m_Father: {fileID: 386582173}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11599,7 +11604,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 386582173}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -11733,7 +11738,7 @@ RectTransform:
   - {fileID: 1098227440}
   - {fileID: 920576384}
   m_Father: {fileID: 386582173}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -12350,12 +12355,13 @@ MonoBehaviour:
   level: 2
   altLevel: 0
   tutorialBefore: 1
-  tutorialAfter: 0
   tutorialPopup: {fileID: 1683320588}
   numGravesForLevelIfTutorial: 0
   inputManager: {fileID: 517238793}
   tutorialManager: {fileID: 894061269}
+  defeatedNewLevel: 0
   startingCorpsesIfTutorial: {fileID: 1182241345}
+  doubleButtonsForLevel1: {fileID: 0}
 --- !u!4 &2067110584
 Transform:
   m_ObjectHideFlags: 0

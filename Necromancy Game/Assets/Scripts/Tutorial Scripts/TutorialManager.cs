@@ -39,57 +39,204 @@ public class TutorialManager : MonoBehaviour
     private float arrowTimer = 0f;
     private Coroutine slowTextCoroutine;
 
+    public bool isTutorialScene = false;
+    public GameObject controlsMenu;
+    public GameObject startTutorialMenu;
+    public GameObject skeletonContainObject;
+    private float buttonPressTimer = 0f;
+    private bool buttonPressedStart = false;
+    private float buttonPressTime = .4f;
+    private ButtonPressed buttonType;
+
     // Update is called once per frame
     void Update()
     {
-        arrowTimer += Time.deltaTime;
-        if (arrowTimer > Mathf.PI) {
-            arrowTimer -= Mathf.PI;
-        }
-        arrowBasisObject.anchoredPosition = new Vector3(0f, 10f * Mathf.Sin(arrowTimer * 4f), 0f);
-        if (allThreePressed && !inputManager.paused && !clickedContinue && !waitDueToPause)
+        if (controlsMenu != null && controlsMenu.activeSelf)
         {
-            if (!Input.GetKey(inputManager.leftButton) || !Input.GetKey(inputManager.middleButton) || !Input.GetKey(inputManager.rightButton))
+            if (Input.GetKeyDown(inputManager.middleButton) && !Input.GetKey(inputManager.leftButton) && !Input.GetKey(inputManager.rightButton))
             {
-                allThreePressed = false;
-                timer = 0f;
+                controlsMenu.SetActive(false);
             }
-            else
+        }
+        else if (startTutorialMenu != null && startTutorialMenu.activeSelf)
+        {
+            if (buttonPressedStart)
             {
-                timer += Time.deltaTime;
-                if (timer >= .5f)
+                buttonPressTimer += Time.deltaTime;
+            }
+            if (Input.GetKeyDown(inputManager.leftButton) && !Input.GetKey(inputManager.middleButton) && !Input.GetKey(inputManager.rightButton))
+            {
+                if (!buttonPressedStart)
                 {
-                    inputManager.resumeToTutorial = true;
-                    inputManager.enabled = true;
-                    inputManager.Pause();
-                    tutorialInputManager.enabled = false;
-                    waitDueToPause = true;
-                    timer = 0f;
+                    buttonPressedStart = true;
+                    buttonType = ButtonPressed.left;
+                }
+                else if (buttonType == ButtonPressed.middle)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressedStart = false;
+                }
+                else if (buttonType == ButtonPressed.right)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressedStart = false;
+                }
+            }
+            else if (Input.GetKeyDown(inputManager.middleButton) && !Input.GetKey(inputManager.leftButton) && !Input.GetKey(inputManager.rightButton))
+            {
+                if (!buttonPressedStart)
+                {
+                    buttonPressedStart = true;
+                    buttonType = ButtonPressed.middle;
+                }
+                else if (buttonType == ButtonPressed.left)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressedStart = false;
+                }
+                else if (buttonType == ButtonPressed.right)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressedStart = false;
+                }
+            }
+            else if (Input.GetKeyDown(inputManager.rightButton) && !Input.GetKey(inputManager.leftButton) && !Input.GetKey(inputManager.middleButton))
+            {
+                if (!buttonPressedStart)
+                {
+                    buttonPressedStart = true;
+                    buttonType = ButtonPressed.right;
+                }
+                else if (buttonType == ButtonPressed.left)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressedStart = false;
+                }
+                else if (buttonType == ButtonPressed.middle)
+                {
+                    buttonPressTimer = 0f;
+                    buttonPressedStart = false;
+                }
+            }
+            else if (buttonPressTimer >= buttonPressTime)
+            {
+                buttonPressTimer = 0f;
+                buttonPressedStart = false;
+                if (!(Input.GetKey(inputManager.leftButton) && Input.GetKey(inputManager.middleButton)) && !(Input.GetKey(inputManager.leftButton) && Input.GetKey(inputManager.rightButton)) && !(Input.GetKey(inputManager.middleButton) && Input.GetKey(inputManager.rightButton)))
+                {
+                    if (Input.GetKey(inputManager.leftButton))
+                    {
+                        LeftButtonHold();
+                    }
+                    else if (buttonType == ButtonPressed.left)
+                    {
+                        LeftButton();
+                    }
+                    else if (Input.GetKey(inputManager.middleButton))
+                    {
+                        MiddleButtonHold();
+                    }
+                    else if (buttonType == ButtonPressed.middle)
+                    {
+                        MiddleButton();
+                    }
+                    else if (Input.GetKey(inputManager.rightButton))
+                    {
+                        RightButtonHold();
+                    }
+                    else if (buttonType == ButtonPressed.right)
+                    {
+                        RightButton();
+                    }
                 }
             }
         }
-        else if ((Input.GetKey(inputManager.leftButton) && Input.GetKey(inputManager.middleButton) && Input.GetKey(inputManager.rightButton)) && (Input.GetKeyDown(inputManager.leftButton) || Input.GetKeyDown(inputManager.middleButton) || Input.GetKeyDown(inputManager.rightButton)))
+        else
         {
-            allThreePressed = true;
-            waitDueToPause = false;
+            arrowTimer += Time.deltaTime;
+            if (arrowTimer > Mathf.PI)
+            {
+                arrowTimer -= Mathf.PI;
+            }
+            arrowBasisObject.anchoredPosition = new Vector3(0f, 10f * Mathf.Sin(arrowTimer * 4f), 0f);
+            if (allThreePressed && !inputManager.paused && !clickedContinue && !waitDueToPause)
+            {
+                if (!Input.GetKey(inputManager.leftButton) || !Input.GetKey(inputManager.middleButton) || !Input.GetKey(inputManager.rightButton))
+                {
+                    allThreePressed = false;
+                    timer = 0f;
+                }
+                else
+                {
+                    timer += Time.deltaTime;
+                    if (timer >= .5f)
+                    {
+                        inputManager.resumeToTutorial = true;
+                        inputManager.enabled = true;
+                        inputManager.Pause();
+                        tutorialInputManager.enabled = false;
+                        waitDueToPause = true;
+                        timer = 0f;
+                    }
+                }
+            }
+            else if ((Input.GetKey(inputManager.leftButton) && Input.GetKey(inputManager.middleButton) && Input.GetKey(inputManager.rightButton)) && (Input.GetKeyDown(inputManager.leftButton) || Input.GetKeyDown(inputManager.middleButton) || Input.GetKeyDown(inputManager.rightButton)))
+            {
+                allThreePressed = true;
+                waitDueToPause = false;
+            }
         }
     }
 
-    /*IEnumerator LoadMainMenu()
+    public void LeftButton()
     {
-        loading.SetActive(true);
-        Scene curentScene = SceneManager.GetActiveScene();
-        AsyncOperation ao = SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
-        yield return new WaitUntil(() => ao.isDone);
-        MainMenuManager mainMenuManager = GameObject.FindGameObjectWithTag("Main Menu Manager").GetComponent<MainMenuManager>();
-        mainMenuManager.leftButton = inputManager.leftButton;
-        mainMenuManager.middleButton = inputManager.middleButton;
-        mainMenuManager.rightButton = inputManager.rightButton;
-        mainMenuManager.leftButtonText.text = mainMenuManager.leftButton.ToString();
-        mainMenuManager.middleButtonText.text = mainMenuManager.middleButton.ToString();
-        mainMenuManager.rightButtonText.text = mainMenuManager.rightButton.ToString();
-        SceneManager.UnloadSceneAsync(curentScene);
-    }*/
+        controlsMenu.SetActive(true);
+    }
+
+    public void MiddleButton()
+    {
+        inputManager.enabled = true;
+        inputManager.MainMenu();
+    }
+
+    public void RightButton()
+    {
+        Debug.Log("Quit Game");
+        Application.Quit();
+    }
+
+    public void ControlsMenuClose()
+    {
+        controlsMenu.SetActive(false);
+    }
+
+    public void LeftButtonHold()
+    {
+        startTutorialMenu.SetActive(false);
+        skeletonContainObject.SetActive(false);
+        textBox.SetActive(true);
+        tutorialInputManager.enabled = true;
+        inputManager.holdInputWait = true;
+        StartCoroutine(Level1Tutorial());
+    }
+
+    public void MiddleButtonHold()
+    {
+        startTutorialMenu.SetActive(false);
+        textBox.SetActive(true);
+        tutorialInputManager.enabled = true;
+        inputManager.holdInputWait = true;
+        StartCoroutine(Level2Tutorial());
+    }
+
+    public void RightButtonHold()
+    {
+        startTutorialMenu.SetActive(false);
+        textBox.SetActive(true);
+        tutorialInputManager.enabled = true;
+        inputManager.holdInputWait = true;
+        StartCoroutine(SpecialTutorial());
+    }
 
     public void StartTutorial()
     {
@@ -97,7 +244,6 @@ public class TutorialManager : MonoBehaviour
         tutorialInputManager.enabled = true;
         this.enabled = true;
         inputManager.holdInputWait = true;
-        selectManager.boneCostObject0.SetActive(false);
         LevelManager levelManager = GameObject.FindGameObjectWithTag("Level Manager").GetComponent<LevelManager>();
         if (levelManager.altLevel)
         {
@@ -157,6 +303,7 @@ public class TutorialManager : MonoBehaviour
         selectManager.healCooldown = true;
         selectManager.arrowCooldown = true;
         selectManager.troopCapacityText.text = "0\n1";
+        selectManager.boneCostObject0.SetActive(false);
         singleButtons.SetActive(false);
         doubleButtons.SetActive(false);
         holdButtons.SetActive(false);
@@ -329,7 +476,7 @@ public class TutorialManager : MonoBehaviour
         selectManager.healCooldown = false;
         while (!buttonPressed)
         {
-            if (playerBase.health < 950)
+            if (playerBase.health < 1000)
             {
                 playerBase.defence = 100;
             }
@@ -572,9 +719,17 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitUntil(() => (!allThreePressed));
 
         //Reset
-        playerBase.timeSurvived = 1f;
-        inputManager.enabled = true;
-        inputManager.MainMenu();
+        if (isTutorialScene)
+        {
+            inputManager.allowResume = false;
+            inputManager.Resume();
+        }
+        else
+        {
+            playerBase.timeSurvived = 1f;
+            inputManager.enabled = true;
+            inputManager.MainMenu();
+        }
     }
 
     IEnumerator SlowText(string text)

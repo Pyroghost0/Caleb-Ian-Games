@@ -652,10 +652,10 @@ public class InputManager : MonoBehaviour
         else if (type == ButtonPressed.middle)
         {
             loading.SetActive(true);
-            LevelManager levelManager = GameObject.FindGameObjectWithTag("Level Manager").GetComponent<LevelManager>();
-            bool newLevel = levelManager.defeatedNewLevel;
-            bool altLevel = levelManager.altLevel;
-            int level = newLevel ? levelManager.level : levelManager.level - 1;
+            LevelManager levelManager = GameObject.FindGameObjectWithTag("Level Manager") == null ? null : GameObject.FindGameObjectWithTag("Level Manager").GetComponent<LevelManager>();
+            bool newLevel = levelManager == null ? false : levelManager.defeatedNewLevel;
+            bool altLevel = levelManager == null ? false : levelManager.altLevel;
+            int level = levelManager == null ? 0 : (newLevel ? levelManager.level : levelManager.level - 1);
             Scene activeScene = SceneManager.GetActiveScene();
             AsyncOperation ao = SceneManager.LoadSceneAsync("Main Menu", LoadSceneMode.Additive);
             yield return new WaitUntil(() => ao.isDone);
