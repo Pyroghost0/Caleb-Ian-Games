@@ -92,6 +92,8 @@ public class Skeleton : MonoBehaviour
         {
             if (!inPresenceOfEnemy)
             {
+                spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
+                sightObject.localScale = new Vector3(1f, 1f, 1f);
                 if (transform.position.x >= xGoal)
                 {
                     anim.SetBool("Running", false);
@@ -129,8 +131,18 @@ public class Skeleton : MonoBehaviour
                 goal = null;
                 inPresenceOfEnemy = false;
             }
-            else if ((transform.position - goal.position).magnitude < attack.attackRange)
+            else if ((transform.position - goal.position).magnitude < enemyAttackRange)
             {
+                if (goal.position.x - transform.position.x > 0)
+                {
+                    spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
+                    sightObject.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else
+                {
+                    spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
+                    sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                }
                 if (rigidbody.velocity.magnitude != 0f)
                 {
                     Vector2 norm = rigidbody.velocity.normalized;
@@ -173,11 +185,21 @@ public class Skeleton : MonoBehaviour
                 float futureX = (rigidbody.velocity.x * speedAcceleration / 6f) + transform.position.x;
                 float futureY = (rigidbody.velocity.y * speedAcceleration / 6f) + transform.position.y;
                 Vector2 futureDistence = new Vector3(futureX, futureY, 0f) - goal.position;
+                if (goal.position.x - transform.position.x > 0)
+                {
+                    spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
+                    sightObject.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else
+                {
+                    spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
+                    sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                }
 
                 //Near Enemy
                 if (futureDistence.magnitude >= (transform.position - goal.position).magnitude / 2f)
                 {
-                    futureDistence = futureDistence.normalized * (attack.attackRange - .3f);
+                    futureDistence = futureDistence.normalized * (enemyAttackRange - .3f);
                     float x = 0f;
                     bool walkX = false;
                     if (Mathf.Abs(rigidbody.velocity.x) < .1f && transform.position.x > goal.position.x - Mathf.Abs(futureDistence.x) - .1f && transform.position.x < goal.position.x + Mathf.Abs(futureDistence.x) + .1f)
@@ -286,6 +308,16 @@ public class Skeleton : MonoBehaviour
                 }
                 else
                 {
+                    if (goal.position.x - transform.position.x > 0)
+                    {
+                        spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
+                        sightObject.localScale = new Vector3(1f, 1f, 1f);
+                    }
+                    else
+                    {
+                        spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
+                        sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                    }
                     anim.SetBool("Running", true);
                     Vector2 distenceMoved = new Vector2(goal.position.x - transform.position.x, goal.position.y - transform.position.y).normalized * speedAcceleration * Time.deltaTime;
                     rigidbody.velocity += distenceMoved;
@@ -362,6 +394,16 @@ public class Skeleton : MonoBehaviour
             {
                 float futureX = (rigidbody.velocity.x * speedAcceleration / 6f) + transform.position.x;
                 float futureY = (rigidbody.velocity.y * speedAcceleration / 6f) + transform.position.y;
+                if (stayGoal.x - transform.position.x > 0)
+                {
+                    spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
+                    sightObject.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else
+                {
+                    spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
+                    sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                }
 
                 float x = 0f;
                 bool walkX = false;
@@ -474,8 +516,18 @@ public class Skeleton : MonoBehaviour
                 goal = null;
                 inPresenceOfEnemy = false;
             }
-            else if ((transform.position - goal.position).magnitude < attack.attackRange)
+            else if ((transform.position - goal.position).magnitude < enemyAttackRange)
             {
+                if (goal.position.x - transform.position.x > 0)
+                {
+                    spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
+                    sightObject.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else
+                {
+                    spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
+                    sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                }
                 if (rigidbody.velocity.magnitude != 0f)
                 {
                     Vector2 norm = rigidbody.velocity.normalized;
@@ -518,11 +570,21 @@ public class Skeleton : MonoBehaviour
                 float futureX = (rigidbody.velocity.x * speedAcceleration / 6f) + transform.position.x;
                 float futureY = (rigidbody.velocity.y * speedAcceleration / 6f) + transform.position.y;
                 Vector2 futureDistence = new Vector3(futureX, futureY, 0f) - goal.position;
+                if (goal.position.x - transform.position.x > 0)
+                {
+                    spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
+                    sightObject.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else
+                {
+                    spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
+                    sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                }
 
                 //Near Enemy
                 if (futureDistence.magnitude >= (transform.position - goal.position).magnitude / 2f)
                 {
-                    futureDistence = futureDistence.normalized * (attack.attackRange - .3f);
+                    futureDistence = futureDistence.normalized * (enemyAttackRange - .3f);
                     float x = 0f;
                     bool walkX = false;
                     if (Mathf.Abs(rigidbody.velocity.x) < .1f && transform.position.x > goal.position.x - Mathf.Abs(futureDistence.x) - .1f && transform.position.x < goal.position.x + Mathf.Abs(futureDistence.x) + .1f)
@@ -631,6 +693,16 @@ public class Skeleton : MonoBehaviour
                 }
                 else
                 {
+                    if (goal.position.x - transform.position.x > 0)
+                    {
+                        spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
+                        sightObject.localScale = new Vector3(1f, 1f, 1f);
+                    }
+                    else
+                    {
+                        spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
+                        sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                    }
                     anim.SetBool("Running", true);
                     Vector2 distenceMoved = new Vector2(goal.position.x - transform.position.x, goal.position.y - transform.position.y).normalized * speedAcceleration * Time.deltaTime;
                     rigidbody.velocity += distenceMoved;
@@ -852,6 +924,8 @@ public class Skeleton : MonoBehaviour
             }
             else
             {
+                spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
+                sightObject.localScale = new Vector3(-1f, 1f, 1f);
                 anim.SetBool("Running", true);
                 if (Mathf.Abs(rigidbody.velocity.y) < .1f)
                 {
@@ -870,17 +944,6 @@ public class Skeleton : MonoBehaviour
                     rigidbody.velocity *= new Vector2(-maxSpeed / rigidbody.velocity.x, 1f);
                 }
             }
-        }
-
-        if (rigidbody.velocity.x > 0)
-        {
-            spriteBasisObject.localScale = new Vector3(spriteMultiplier, spriteMultiplier, 1f);
-            sightObject.localScale = new Vector3(1f, 1f, 1f);
-        }
-        else if (rigidbody.velocity.x < 0)
-        {
-            spriteBasisObject.localScale = new Vector3(-spriteMultiplier, spriteMultiplier, 1f);
-            sightObject.localScale = new Vector3(-1f, 1f, 1f);
         }
         for (int i = 0; i < sprite.Length; i++)
         {

@@ -71,6 +71,8 @@ public class Enemy : MonoBehaviour
             }
             else if (transform.position.y > (slopeGoal * (transform.position.x - attack.attackRange)) + posYGoal)
             {
+                spriteBasisObject.localScale = new Vector3(reversedSprite ? -spriteMultiplier : spriteMultiplier, spriteMultiplier, 1f);
+                sightObject.localScale = new Vector3(reversedSprite ? -1f : 1f, 1f, 1f);
                 if (!attack.currectlyAttacking)
                 {
                     anim.SetTrigger("Attack");
@@ -92,6 +94,8 @@ public class Enemy : MonoBehaviour
             }
             else
             {
+                spriteBasisObject.localScale = new Vector3(reversedSprite ? -spriteMultiplier : spriteMultiplier, spriteMultiplier, 1f);
+                sightObject.localScale = new Vector3(reversedSprite ? -1f : 1f, 1f, 1f);
                 anim.SetBool("Running", true);
                 if (rigidbody.velocity.x > -maxSpeed)
                 {
@@ -116,8 +120,18 @@ public class Enemy : MonoBehaviour
             goal = null;
             inPresenceOfSkeleton = false;
         }
-        else if ((transform.position - goal.position).magnitude < attack.attackRange)
+        else if ((transform.position - goal.position).magnitude < skeletonAttackRange)
         {
+            if ((transform.position - goal.position).x < 0)
+            {
+                spriteBasisObject.localScale = new Vector3(reversedSprite ? spriteMultiplier : -spriteMultiplier, spriteMultiplier, 1f);
+                sightObject.localScale = new Vector3(reversedSprite ? 1f : -1f, 1f, 1f);
+            }
+            else
+            {
+                spriteBasisObject.localScale = new Vector3(reversedSprite ? -spriteMultiplier : spriteMultiplier, spriteMultiplier, 1f);
+                sightObject.localScale = new Vector3(reversedSprite ? -1f : 1f, 1f, 1f);
+            }
             if (rigidbody.velocity.magnitude != 0f)
             {
                 Vector2 norm = rigidbody.velocity.normalized;
@@ -142,6 +156,16 @@ public class Enemy : MonoBehaviour
         }
         else /*if (inPresenceOfSkeleton)*/
         {
+            if ((transform.position - goal.position).x < 0)
+            {
+                spriteBasisObject.localScale = new Vector3(reversedSprite ? spriteMultiplier : -spriteMultiplier, spriteMultiplier, 1f);
+                sightObject.localScale = new Vector3(reversedSprite ? 1f : -1f, 1f, 1f);
+            }
+            else
+            {
+                spriteBasisObject.localScale = new Vector3(reversedSprite ? -spriteMultiplier : spriteMultiplier, spriteMultiplier, 1f);
+                sightObject.localScale = new Vector3(reversedSprite ? -1f : 1f, 1f, 1f);
+            }
             float futureX = (rigidbody.velocity.x * speedAcceleration / 6f) + transform.position.x;
             float futureY = (rigidbody.velocity.y * speedAcceleration / 6f) + transform.position.y;
             Vector2 futureDistence = new Vector3(futureX, futureY, 0f) - goal.position;
@@ -149,7 +173,7 @@ public class Enemy : MonoBehaviour
             //Near Enemy
             if (futureDistence.magnitude >= (transform.position - goal.position).magnitude / 2f)
             {
-                futureDistence = futureDistence.normalized * (attack.attackRange - .3f);
+                futureDistence = futureDistence.normalized * (skeletonAttackRange - .3f);
                 float x = 0f;
                 bool walkX = false;
                 if (Mathf.Abs(rigidbody.velocity.x) < .1f && transform.position.x > goal.position.x - Mathf.Abs(futureDistence.x) - .1f && transform.position.x < goal.position.x + Mathf.Abs(futureDistence.x) + .1f)
@@ -398,17 +422,6 @@ public class Enemy : MonoBehaviour
                 }
             }
         }*/
-
-        if (rigidbody.velocity.x > 0)
-        {
-            spriteBasisObject.localScale = new Vector3(reversedSprite ? spriteMultiplier : -spriteMultiplier, spriteMultiplier, 1f);
-            sightObject.localScale = new Vector3(reversedSprite ? 1f : -1f, 1f, 1f);
-        }
-        else if (rigidbody.velocity.x < 0)
-        {
-            spriteBasisObject.localScale = new Vector3(reversedSprite ? -spriteMultiplier : spriteMultiplier, spriteMultiplier, 1f);
-            sightObject.localScale = new Vector3(reversedSprite ? -1f : 1f, 1f, 1f);
-        }
         for (int i = 0; i < sprite.Length; i++)
         {
             sprite[i].sortingOrder = (int)(transform.position.y * -10) + spritePos[i];

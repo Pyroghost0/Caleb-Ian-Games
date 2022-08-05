@@ -74,6 +74,16 @@ public class Minion : MonoBehaviour
         {
             if (bonesStored < maxBones && goal != null)
             {
+                if (goal.position.x - transform.position.x > 0)
+                {
+                    spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+                    sightObject.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else
+                {
+                    spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+                    sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                }
                 float futureX = (rigidbody.velocity.x * speedAcceleration / (usedBoneSpeedReductionFactor * 6f)) + transform.position.x;
                 float futureY = (rigidbody.velocity.y * speedAcceleration / (usedBoneSpeedReductionFactor * 6f)) + transform.position.y;
                 Vector2 futureDistence = new Vector3(futureX, futureY, 0f) - goal.position;
@@ -301,6 +311,8 @@ public class Minion : MonoBehaviour
                 //At Base
                 if (transform.position.x < xBaseGoal)
                 {
+                    spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+                    sightObject.localScale = new Vector3(1f, 1f, 1f);
                     if (bonesStored > 0)
                     {
                         playerBase.UpdateBones(bonesStored);
@@ -343,6 +355,8 @@ public class Minion : MonoBehaviour
                 //Full and moving back
                 else
                 {
+                    spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+                    sightObject.localScale = new Vector3(-1f, 1f, 1f);
                     if (Mathf.Abs(rigidbody.velocity.y) < .1f)
                     {
                         rigidbody.velocity += new Vector2(-speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime, -rigidbody.velocity.y);
@@ -368,10 +382,14 @@ public class Minion : MonoBehaviour
         {
             if (!inPresenceOfEnemy)
             {
+                spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+                sightObject.localScale = new Vector3(1f, 1f, 1f);
                 if (transform.position.x >= xGoal)
                 {
                     if (transform.position.x >= xGoal+3f)
                     {
+                        spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+                        sightObject.localScale = new Vector3(-1f, 1f, 1f);
                         anim.SetBool("Running", true);
                         if (rigidbody.velocity.x > -maxSpeed)
                         {
@@ -428,8 +446,18 @@ public class Minion : MonoBehaviour
                 goal = null;
                 inPresenceOfEnemy = false;
             }
-            else if ((transform.position - goal.position).magnitude < attack.attackRange)
+            else if ((transform.position - goal.position).magnitude < enemyAttackRange)
             {
+                if (goal.position.x - transform.position.x > 0)
+                {
+                    spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+                    sightObject.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else
+                {
+                    spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+                    sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                }
                 if (rigidbody.velocity.magnitude != 0f)
                 {
                     Vector2 norm = rigidbody.velocity.normalized;
@@ -456,11 +484,21 @@ public class Minion : MonoBehaviour
                 float futureX = (rigidbody.velocity.x * speedAcceleration / (6f * usedBoneSpeedReductionFactor)) + transform.position.x;
                 float futureY = (rigidbody.velocity.y * speedAcceleration / (6f * usedBoneSpeedReductionFactor)) + transform.position.y;
                 Vector2 futureDistence = new Vector3(futureX, futureY, 0f) - goal.position;
+                if (goal.position.x - transform.position.x > 0)
+                {
+                    spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+                    sightObject.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else
+                {
+                    spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+                    sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                }
 
                 //Near Enemy
                 if (futureDistence.magnitude >= (transform.position - goal.position).magnitude / 2f)
                 {
-                    futureDistence = futureDistence.normalized * (attack.attackRange - .3f);
+                    futureDistence = futureDistence.normalized * (enemyAttackRange - .3f);
                     float x = 0f;
                     bool walkX = false;
                     if (Mathf.Abs(rigidbody.velocity.x) < .1f && transform.position.x > goal.position.x - Mathf.Abs(futureDistence.x) - .1f && transform.position.x < goal.position.x + Mathf.Abs(futureDistence.x) + .1f)
@@ -593,17 +631,6 @@ public class Minion : MonoBehaviour
                 }
             }
         }
-
-        if (rigidbody.velocity.x > 0)
-        {
-            spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
-            sightObject.localScale = new Vector3(1f, 1f, 1f);
-        }
-        else if (rigidbody.velocity.x < 0)
-        {
-            spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
-            sightObject.localScale = new Vector3(-1f, 1f, 1f);
-        }
         for (int i = 0; i < sprite.Length; i++)
         {
             sprite[i].sortingOrder = (int)(transform.position.y * -10) + spritePos[i];
@@ -615,7 +642,7 @@ public class Minion : MonoBehaviour
         playerBase.UpdateBones((short)-boneUpgradeAmount);
         upgradeLevel++;
         attack.attackPower = (short)(attack.attackPower * upgradeFactor);
-        diggingAttack.attackPower = (short)(attack.attackPower * upgradeFactor);
+        diggingAttack.attackPower += 2;
         if (upgradeLevel != 3)
         {
             boneUpgradeAmount *= 2;
