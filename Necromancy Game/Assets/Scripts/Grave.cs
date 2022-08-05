@@ -12,7 +12,10 @@ public class Grave : MonoBehaviour
     private void Start()
     {
         GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -10);
-        transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -10) + 1;
+        if (transform.childCount == 3)
+        {
+            transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -10) + 1;
+        }
     }
 
     public short DigBones(short bonesDug)
@@ -45,10 +48,17 @@ public class Grave : MonoBehaviour
         float timer = 0f;
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         SpriteRenderer spriteRenderer2 = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        if (transform.childCount == 3)
+        {
+            spriteRenderer2 = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        }
         while (timer < 2f)
         {
             spriteRenderer.color = new Color(1f - (timer / 2f), 1f - (timer / 2f), 1f - (timer / 2f), 1f - (timer / 2f));//Would rather it disappear into the ground, but fading also works
-            spriteRenderer2.color = new Color(1f - (timer / 2f), 1f - (timer / 2f), 1f - (timer / 2f), 1f - (timer / 2f));
+            if (spriteRenderer2 != null)
+            {
+                spriteRenderer2.color = new Color(1f - (timer / 2f), 1f - (timer / 2f), 1f - (timer / 2f), 1f - (timer / 2f));
+            }
             yield return new WaitForFixedUpdate();
             timer += Time.deltaTime;
         }

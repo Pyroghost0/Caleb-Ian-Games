@@ -689,7 +689,7 @@ public class Minion : MonoBehaviour
         yield return new WaitForSeconds(deathTime);
         playerBase.numSkeletons--;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
-        GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGrave((short)(graveBones+bonesStored), transform.position);
+        GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnCoffin((short)(graveBones+bonesStored), transform.position);
         Destroy(gameObject);
     }
 }

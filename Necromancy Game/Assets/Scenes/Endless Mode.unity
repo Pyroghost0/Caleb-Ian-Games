@@ -2017,6 +2017,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540038341}
   m_CullTransparentMesh: 1
+--- !u!60 &565185498 stripped
+PolygonCollider2D:
+  m_CorrespondingSourceObject: {fileID: 2011582218769719324, guid: 320692867aae37d438668ebce74f58c1, type: 3}
+  m_PrefabInstance: {fileID: 1600566490}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &568658423
 GameObject:
   m_ObjectHideFlags: 0
@@ -7821,6 +7826,10 @@ MonoBehaviour:
   - {fileID: 3803328252247418492, guid: 17953257ec7407f4ebbac91b7c2836d6, type: 3}
   - {fileID: 3944066057055433265, guid: 13d6df818a694d1459fbbc1c78dbd1e3, type: 3}
   - {fileID: 3944066057055433265, guid: 093a71e9f7ba80248a01f33cb8a6bbca, type: 3}
+  coffinPrefabs:
+  - {fileID: 8420947652408743218, guid: 48af4ca343b4bca4da31bc22a7e23722, type: 3}
+  - {fileID: 8420947652408743218, guid: dd00000c8ed7ff748a10e20f05d4e41b, type: 3}
+  - {fileID: 8420947652408743218, guid: 73caae49e6b946e41bc7e4315785de30, type: 3}
   startGraveAmount: 6
 --- !u!4 &1718611213
 Transform:
@@ -8532,7 +8541,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.7793335, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -8553,7 +8562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BoundingShape2D: {fileID: 0}
+  m_BoundingShape2D: {fileID: 565185498}
   m_Damping: 0
   m_MaxWindowSize: 0
 --- !u!1 &1894247715

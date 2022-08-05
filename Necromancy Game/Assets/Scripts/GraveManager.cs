@@ -6,6 +6,7 @@ public class GraveManager : MonoBehaviour
 {
     public List<Transform> graveAssistants = new List<Transform>();
     public GameObject[] gravePrefabs;
+    public GameObject[] coffinPrefabs;
     public short startGraveAmount = 6;
 
     // Start is called before the first frame update
@@ -26,10 +27,10 @@ public class GraveManager : MonoBehaviour
         }
     }
 
-    public void SpawnGrave(short customBoneAmount, Vector3 position)
+    public void SpawnCoffin(short customBoneAmount, Vector3 position)
     {
-        int prefabNum = Random.Range(0, gravePrefabs.Length);
-        GameObject grave = Instantiate(gravePrefabs[prefabNum], position, transform.rotation);
-        grave.GetComponent<Grave>().bones = customBoneAmount;
+        int prefabNum = Random.Range(0, coffinPrefabs.Length);
+        GameObject coffin = Instantiate(coffinPrefabs[prefabNum], position, transform.rotation);
+        coffin.GetComponent<Grave>().bones = customBoneAmount;
     }
 }

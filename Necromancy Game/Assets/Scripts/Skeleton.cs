@@ -1141,7 +1141,7 @@ public class Skeleton : MonoBehaviour
         yield return new WaitForSeconds(deathTime);
         playerBase.numSkeletons--;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
-        GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnGrave((short)(graveBones * (1f + (health / maxHealth))), transform.position);
+        GameObject.FindGameObjectWithTag("Grave Manager").GetComponent<GraveManager>().SpawnCoffin((short)(graveBones * (1f + (health / maxHealth))), transform.position);
         Destroy(gameObject);
     }
 }

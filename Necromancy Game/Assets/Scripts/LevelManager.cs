@@ -78,7 +78,11 @@ public class LevelManager : MonoBehaviour
 
     public void StartLevel()
     {
-        if (level == 1 && Data.Load()[0])
+        if (level == 1 && Data.Load()[0] && !altLevel)
+        {
+            doubleButtonsForLevel1.SetActive(true);
+        }
+        else if (level == 1 && Data.Load()[2] && altLevel)
         {
             doubleButtonsForLevel1.SetActive(true);
         }
