@@ -1174,7 +1174,7 @@ public class Skeleton : MonoBehaviour
         float timer = 0f;
         Vector2 knockbackVector = new Vector2(transform.position.x - attackCenter.x, transform.position.y - attackCenter.y) * (knockback / knockbackResistence);
         //Debug.Log("Attack Center: " + attackCenter + "\t\t\tKnockback: " + knockback + "\t\t\tKnockback Vector: " + knockbackVector);
-        float knockbackTime = knockbackVector.magnitude / 2f;
+        float knockbackTime = knockbackVector.magnitude / 5f;
         while (timer < knockbackTime)
         {
             yield return new WaitForFixedUpdate();

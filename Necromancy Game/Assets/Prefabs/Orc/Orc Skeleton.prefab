@@ -1434,13 +1434,13 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   defence: 5
-  knockbackResistence: 3
-  speedAcceleration: 1
+  knockbackResistence: 6
+  speedAcceleration: 1.5
   maxSpeed: 2
   deathTime: 0.5
-  graveBones: 15
-  attackBoneUpgradeAmount: 20
-  defenceBoneUpgradeAmount: 20
+  graveBones: 20
+  attackBoneUpgradeAmount: 25
+  defenceBoneUpgradeAmount: 25
   skeletonName: Orc Skeleton
   attackType: 2
   circleCollider: {fileID: 5098792931233784465}
@@ -1475,7 +1475,7 @@ MonoBehaviour:
   inPresenceOfEnemy: 0
   enemyAttackRange: 0
   anim: {fileID: 7963288557850500148}
-  superWaitTime: 25
+  superWaitTime: 300
   currentSuperWaitTime: 0
   superAttack: []
   instantSuper: 1
@@ -1553,19 +1553,19 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1.860398, y: 3.5051112}
-      - {x: 0.13912249, y: 4.9909263}
-      - {x: -2.1054778, y: 4.632022}
-      - {x: -3.2057207, y: 2.4400215}
-      - {x: -3.8071275, y: -0.07339668}
-      - {x: -2.9771774, y: -3.1637092}
-      - {x: -1.6585861, y: -4.608718}
-      - {x: -0.2363143, y: -4.9295573}
-      - {x: 0.686955, y: -4.7870636}
-      - {x: 1.6585858, y: -3.7572865}
-      - {x: 2.3466148, y: -1.8982121}
-      - {x: 2.655318, y: -0.026676893}
-      - {x: 2.4980354, y: 1.593976}
+    - - {x: 1.7853127, y: 4.8779845}
+      - {x: -0.27885556, y: 5.2481437}
+      - {x: -2.1751914, y: 4.9370165}
+      - {x: -3.810904, y: 3.0152166}
+      - {x: -4.7347355, y: 0.3642338}
+      - {x: -3.8333287, y: -2.5586474}
+      - {x: -2.2333598, y: -4.3251777}
+      - {x: -0.10992861, y: -4.81393}
+      - {x: 2.1953068, y: -4.311841}
+      - {x: 4.0480523, y: -2.6295428}
+      - {x: 4.569374, y: 0.48327374}
+      - {x: 3.91965, y: 2.5975244}
+      - {x: 2.7372184, y: 4.2324877}
 --- !u!1 &5098792932950176491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1663,12 +1663,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb0a2ecb8b213348afe59cc1d78fa34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPower: 100
-  attackTime: 1
+  attackPower: 70
+  attackTime: 0.5
   attackSpeed: 1
-  attackCooldown: 0.4
-  attackRange: 1.25
-  knockback: 3
+  attackCooldown: 0.75
+  attackRange: 1
+  knockback: 15
   affectsEnemies: 1
   affectsSkeletons: 0
   source: {fileID: 5098792931233784558}

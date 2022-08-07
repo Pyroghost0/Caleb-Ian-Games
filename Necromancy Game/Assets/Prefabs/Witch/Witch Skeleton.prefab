@@ -858,12 +858,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb0a2ecb8b213348afe59cc1d78fa34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPower: 50
+  attackPower: 45
   attackTime: 1
   attackSpeed: 1
-  attackCooldown: 0.4
-  attackRange: 5
-  knockback: 2.5
+  attackCooldown: 1
+  attackRange: 3.5
+  knockback: -10
   affectsEnemies: 1
   affectsSkeletons: 0
   source: {fileID: 3579263437286936696}
@@ -1010,19 +1010,19 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1.860398, y: 3.5051112}
+    - - {x: 2.2032907, y: 4.2670946}
       - {x: 0.13912249, y: 4.9909263}
-      - {x: -2.1054778, y: 4.632022}
-      - {x: -3.2057207, y: 2.4400215}
-      - {x: -3.8071275, y: -0.07339668}
-      - {x: -2.9771774, y: -3.1637092}
-      - {x: -1.6585861, y: -4.608718}
-      - {x: -0.2363143, y: -4.9295573}
-      - {x: 0.686955, y: -4.7870636}
-      - {x: 1.6585858, y: -3.7572865}
-      - {x: 2.3466148, y: -1.8982121}
-      - {x: 2.655318, y: -0.026676893}
-      - {x: 2.4980354, y: 1.593976}
+      - {x: -3.8471055, y: 4.4868865}
+      - {x: -6.5438395, y: 3.3688903}
+      - {x: -7.4355187, y: 0.04271224}
+      - {x: -6.373351, y: -4.0054955}
+      - {x: -3.4872956, y: -5.4505043}
+      - {x: 0.08298445, y: -6.003561}
+      - {x: 2.9348054, y: -5.244254}
+      - {x: 4.401726, y: -3.9477828}
+      - {x: 5.0516562, y: -1.0600306}
+      - {x: 4.3697815, y: 1.9544808}
+      - {x: 3.412415, y: 3.460835}
 --- !u!1 &3579263437286936696
 GameObject:
   m_ObjectHideFlags: 0
@@ -1115,13 +1115,13 @@ MonoBehaviour:
   health: 50
   maxHealth: 50
   defence: 3
-  knockbackResistence: 2
+  knockbackResistence: 3
   speedAcceleration: 2
   maxSpeed: 2
   deathTime: 0.5
   graveBones: 15
   attackBoneUpgradeAmount: 20
-  defenceBoneUpgradeAmount: 20
+  defenceBoneUpgradeAmount: 10
   skeletonName: Witch Skeleton
   attackType: 4
   circleCollider: {fileID: 3579263437286936583}

@@ -282,7 +282,7 @@ MonoBehaviour:
   - {fileID: 8388621069971454235}
   - {fileID: 6951741935041570163}
   m_Bounds:
-    m_Center: {x: -0.0000006556511, y: 0.0013210773, z: 0}
+    m_Center: {x: -0.0000006556511, y: 0.0013208389, z: 0}
     m_Extent: {x: 0.975, y: 2.6436791, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -687,8 +687,8 @@ MonoBehaviour:
   - {fileID: 2558588753047549175}
   - {fileID: 4153183224129111215}
   m_Bounds:
-    m_Center: {x: 0.2811399, y: 0.0015010834, z: 0.01}
-    m_Extent: {x: 0.8601609, y: 3.3684993, z: 0}
+    m_Center: {x: 0.2811399, y: 0.0015013218, z: 0.01}
+    m_Extent: {x: 0.8601609, y: 3.3685002, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1137,8 +1137,8 @@ MonoBehaviour:
   - {fileID: 6446909256948267434}
   - {fileID: 8691909997578168277}
   m_Bounds:
-    m_Center: {x: 0.0016860962, y: 0.002429247, z: 0.01}
-    m_Extent: {x: 0.80331624, y: 3.2275712, z: 0}
+    m_Center: {x: 0.0016860962, y: 0.0024306774, z: 0.01}
+    m_Extent: {x: 0.80331624, y: 3.2275703, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1348,8 +1348,8 @@ MonoBehaviour:
   - {fileID: 7663231386768088595}
   - {fileID: 3249558987304602139}
   m_Bounds:
-    m_Center: {x: 0.0002655983, y: 0.002099514, z: 0.05}
-    m_Extent: {x: 6.7297344, y: 3.4579024, z: 0.05}
+    m_Center: {x: 0.0002655983, y: 0.002100706, z: 0.05}
+    m_Extent: {x: 6.7297344, y: 3.457902, z: 0.05}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1848,8 +1848,8 @@ MonoBehaviour:
   - {fileID: 3253487883290303536}
   - {fileID: 2432101855642850401}
   m_Bounds:
-    m_Center: {x: 0.0029303432, y: -0.00000071525574, z: 0}
-    m_Extent: {x: 0.982071, y: 3.0100017, z: 0}
+    m_Center: {x: 0.0029303432, y: 0, z: 0}
+    m_Extent: {x: 0.982071, y: 3.0100007, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -2049,19 +2049,19 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 2.962917, y: 4.0563707}
-      - {x: 0.13912249, y: 4.9909263}
-      - {x: -2.3504825, y: 4.295141}
-      - {x: -3.450725, y: 2.531898}
-      - {x: -3.8683782, y: 0.14098212}
-      - {x: -3.222181, y: -2.8574533}
-      - {x: -2.1792207, y: -4.4249644}
-      - {x: -0.2363143, y: -4.9295573}
-      - {x: 0.686955, y: -4.7870636}
-      - {x: 2.5161004, y: -4.3697968}
-      - {x: 3.908517, y: -2.2657185}
-      - {x: 4.3090973, y: 0.034574047}
-      - {x: 4.0599375, y: 1.8083545}
+    - - {x: -2.203291, y: 4.2670946}
+      - {x: -0.1391225, y: 4.9909263}
+      - {x: 3.847106, y: 4.4868865}
+      - {x: 6.543839, y: 3.3688903}
+      - {x: 7.435519, y: 0.04271224}
+      - {x: 6.373351, y: -4.0054955}
+      - {x: 3.487296, y: -5.4505043}
+      - {x: -0.08298445, y: -6.003561}
+      - {x: -2.934805, y: -5.244254}
+      - {x: -4.401726, y: -3.9477828}
+      - {x: -5.051656, y: -1.0600306}
+      - {x: -4.369781, y: 1.9544808}
+      - {x: -3.412415, y: 3.460835}
 --- !u!1 &8902200210112102537
 GameObject:
   m_ObjectHideFlags: 0
@@ -2153,11 +2153,11 @@ MonoBehaviour:
   health: 75
   maxHealth: 75
   defence: 4
-  knockbackResistence: 3
-  speedAcceleration: 3
+  knockbackResistence: 2
+  speedAcceleration: 3.5
   maxSpeed: 3
   deathTime: 0.5
-  enemyValue: 8
+  enemyValue: 7
   attackType: 2
   targetSelect: {fileID: 3841051799525014501}
   corpsePrefab: {fileID: 8033592183153776830, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
@@ -2277,12 +2277,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb0a2ecb8b213348afe59cc1d78fa34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPower: 125
-  attackTime: 1
+  attackPower: 80
+  attackTime: 0.75
   attackSpeed: 4
-  attackCooldown: 0.4
-  attackRange: 1
-  knockback: 1
+  attackCooldown: 1
+  attackRange: 0.5
+  knockback: -10
   affectsEnemies: 0
   affectsSkeletons: 1
   source: {fileID: 8902200210112102537}

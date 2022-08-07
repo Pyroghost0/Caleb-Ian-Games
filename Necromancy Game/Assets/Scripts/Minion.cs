@@ -687,7 +687,7 @@ public class Minion : MonoBehaviour
     {
         float timer = 0f;
         Vector2 knockbackVector = new Vector2(transform.position.x - attackCenter.x, transform.position.y - attackCenter.y) * (knockback / knockbackResistence);
-        float knockbackTime = knockbackVector.magnitude / 2f;
+        float knockbackTime = knockbackVector.magnitude / 5f;
         while (timer < knockbackTime)
         {
             yield return new WaitForFixedUpdate();

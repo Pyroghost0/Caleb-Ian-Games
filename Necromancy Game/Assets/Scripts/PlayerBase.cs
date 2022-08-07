@@ -40,7 +40,7 @@ public class PlayerBase : MonoBehaviour
     {
         UpdateBones((short)-maxSkeletonUpgradeAmount);
         maxSkeletons++;
-        maxSkeletonUpgradeAmount += 50;
+        maxSkeletonUpgradeAmount += 25;
         selectManager.boneCostValue0.text = "-" + maxSkeletonUpgradeAmount;
         selectManager.troopCapacityText.text = numSkeletons + "\n" + maxSkeletons;
     }

@@ -932,12 +932,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb0a2ecb8b213348afe59cc1d78fa34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPower: 125
-  attackTime: 1
+  attackPower: 85
+  attackTime: 0.75
   attackSpeed: 1
-  attackCooldown: 0.4
-  attackRange: 1.25
-  knockback: 1
+  attackCooldown: 1
+  attackRange: 0.5
+  knockback: -10
   affectsEnemies: 1
   affectsSkeletons: 0
   source: {fileID: 2243242107653041615}
@@ -1066,13 +1066,13 @@ MonoBehaviour:
   health: 75
   maxHealth: 75
   defence: 4
-  knockbackResistence: 3
-  speedAcceleration: 3
+  knockbackResistence: 2
+  speedAcceleration: 3.5
   maxSpeed: 3
   deathTime: 0.5
   graveBones: 15
-  attackBoneUpgradeAmount: 20
-  defenceBoneUpgradeAmount: 20
+  attackBoneUpgradeAmount: 25
+  defenceBoneUpgradeAmount: 15
   skeletonName: Wolf Skeleton
   attackType: 2
   circleCollider: {fileID: 2243242107653041584}
@@ -1099,7 +1099,7 @@ MonoBehaviour:
   inPresenceOfEnemy: 0
   enemyAttackRange: 0
   anim: {fileID: 3923732070784797568}
-  superWaitTime: 25
+  superWaitTime: 15
   currentSuperWaitTime: 0
   superAttack: []
   instantSuper: 1
@@ -1177,19 +1177,19 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 2.7589254, y: 3.7470222}
+    - - {x: 2.2032907, y: 4.2670946}
       - {x: 0.13912249, y: 4.9909263}
-      - {x: -2.3128302, y: 4.113641}
-      - {x: -3.48219, y: 3.0275197}
-      - {x: -4.2563915, y: -0.07339668}
-      - {x: -3.702911, y: -2.29974}
-      - {x: -2.3152027, y: -3.9521022}
-      - {x: -0.2363143, y: -4.9295573}
-      - {x: 1.2744529, y: -4.5451527}
-      - {x: 2.3843184, y: -3.549934}
-      - {x: 2.9341128, y: -2.5893862}
-      - {x: 3.4501693, y: -0.23402934}
-      - {x: 3.4656804, y: 1.421182}
+      - {x: -3.8471055, y: 4.4868865}
+      - {x: -6.5438395, y: 3.3688903}
+      - {x: -7.4355187, y: 0.04271224}
+      - {x: -6.373351, y: -4.0054955}
+      - {x: -3.4872956, y: -5.4505043}
+      - {x: 0.08298445, y: -6.003561}
+      - {x: 2.9348054, y: -5.244254}
+      - {x: 4.401726, y: -3.9477828}
+      - {x: 5.0516562, y: -1.0600306}
+      - {x: 4.3697815, y: 1.9544808}
+      - {x: 3.412415, y: 3.460835}
 --- !u!1 &2649697514522539869
 GameObject:
   m_ObjectHideFlags: 0

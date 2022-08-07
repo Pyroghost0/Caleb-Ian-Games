@@ -548,12 +548,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb0a2ecb8b213348afe59cc1d78fa34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPower: 100
-  attackTime: 1
+  attackPower: 70
+  attackTime: 0.5
   attackSpeed: 4
-  attackCooldown: 0.4
-  attackRange: 1.25
-  knockback: 3
+  attackCooldown: 0.75
+  attackRange: 1
+  knockback: 15
   affectsEnemies: 0
   affectsSkeletons: 1
   source: {fileID: 68661542718789904}
@@ -650,11 +650,11 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   defence: 5
-  knockbackResistence: 3
-  speedAcceleration: 1
+  knockbackResistence: 6
+  speedAcceleration: 1.5
   maxSpeed: 2
   deathTime: 0.5
-  enemyValue: 9
+  enemyValue: 10
   attackType: 2
   targetSelect: {fileID: 479714739}
   corpsePrefab: {fileID: 1105854830939021426, guid: d865e0575236cc342af3839172843c40, type: 3}
@@ -704,7 +704,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 68661543023329876}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -752,19 +752,19 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1.860398, y: 3.5051112}
-      - {x: 0.13912249, y: 4.9909263}
-      - {x: -2.1054778, y: 4.632022}
-      - {x: -3.2057207, y: 2.4400215}
-      - {x: -3.8071275, y: -0.07339668}
-      - {x: -2.9771774, y: -3.1637092}
-      - {x: -1.6585861, y: -4.608718}
-      - {x: -0.2363143, y: -4.9295573}
-      - {x: 0.686955, y: -4.7870636}
-      - {x: 1.6585858, y: -3.7572865}
-      - {x: 2.3466148, y: -1.8982121}
-      - {x: 2.655318, y: -0.026676893}
-      - {x: 2.4980354, y: 1.593976}
+    - - {x: -1.785313, y: 4.8779845}
+      - {x: 0.2788556, y: 5.2481437}
+      - {x: 2.175191, y: 4.9370165}
+      - {x: 3.810904, y: 3.0152166}
+      - {x: 4.734735, y: 0.3642338}
+      - {x: 3.833329, y: -2.5586474}
+      - {x: 2.23336, y: -4.3251777}
+      - {x: 0.1099286, y: -4.81393}
+      - {x: -2.195307, y: -4.311841}
+      - {x: -4.048052, y: -2.6295428}
+      - {x: -4.569374, y: 0.48327374}
+      - {x: -3.91965, y: 2.5975244}
+      - {x: -2.737218, y: 4.2324877}
 --- !u!1 &68661543784220547
 GameObject:
   m_ObjectHideFlags: 0
