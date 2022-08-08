@@ -15,6 +15,8 @@ public class LevelManager : MonoBehaviour
     public bool altLevel = false;
     public bool tutorialBefore = false;
     public GameObject tutorialPopup;
+    public GameObject specialStartPopup;
+    public GameObject newSpecialPopup;
     public int numGravesForLevelIfTutorial = 0;
     public InputManager inputManager;
     public TutorialManager tutorialManager;
@@ -22,10 +24,15 @@ public class LevelManager : MonoBehaviour
 
     public GameObject startingCorpsesIfTutorial;
     public GameObject doubleButtonsForLevel1;
+    public GameObject skeletonStatusForLevel1;
 
     void Start()
     {
-        if (tutorialBefore && ((level == 1 && !Data.Load()[0]) || (level == 2 && !Data.Load()[2])))
+        if (altLevel)
+        {
+            StartCoroutine(SpecialLevelPopupRoutine());
+        }
+        else if (tutorialBefore && ((level == 1 && !Data.Load()[0]) || (level == 2 && !Data.Load()[2])))
         {
             StartCoroutine(TutorialPopupRoutine());
         }
@@ -37,6 +44,7 @@ public class LevelManager : MonoBehaviour
                 if (level == 1 && Data.Load()[0])
                 {
                     doubleButtonsForLevel1.SetActive(true);
+                    skeletonStatusForLevel1.SetActive(true);
                 }
                 startingCorpsesIfTutorial.SetActive(true);
                 inputManager.enabled = true;
@@ -47,8 +55,69 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    IEnumerator SpecialLevelPopupRoutine()
+    {
+        yield return new WaitUntil(() => (!Input.GetKey(inputManager.leftButton) && !Input.GetKey(inputManager.middleButton) && !Input.GetKey(inputManager.rightButton)));
+        yield return new WaitUntil(() => (Input.GetKey(inputManager.leftButton) || Input.GetKey(inputManager.middleButton) || Input.GetKey(inputManager.rightButton)));
+        if (Input.GetKey(inputManager.leftButton))
+        {
+            yield return new WaitUntil(() => (Input.GetKeyUp(inputManager.leftButton)));
+            if (specialStartPopup.activeSelf)
+            {
+                StartSpecialLevel();
+            }
+        }
+        else if (Input.GetKey(inputManager.middleButton))
+        {
+            yield return new WaitUntil(() => (Input.GetKeyUp(inputManager.middleButton)));
+            if (specialStartPopup.activeSelf)
+            {
+                MainMenu();
+            }
+        }
+        else /*if (Input.GetKey(inputManager.rightButton))*/
+        {
+            yield return new WaitUntil(() => (Input.GetKeyUp(inputManager.rightButton)));
+            if (specialStartPopup.activeSelf)
+            {
+                QuiGame();
+            }
+        }
+    }
+
+    IEnumerator NewSpecialPopupRoutine()
+    {
+        yield return new WaitUntil(() => (!Input.GetKey(inputManager.leftButton) && !Input.GetKey(inputManager.middleButton) && !Input.GetKey(inputManager.rightButton)));
+        yield return new WaitUntil(() => (Input.GetKey(inputManager.leftButton) || Input.GetKey(inputManager.middleButton) || Input.GetKey(inputManager.rightButton)));
+        if (Input.GetKey(inputManager.leftButton))
+        {
+            yield return new WaitUntil(() => (Input.GetKeyUp(inputManager.leftButton)));
+            if (newSpecialPopup.activeSelf)
+            {
+                PlayAgain();
+            }
+        }
+        else if (Input.GetKey(inputManager.middleButton))
+        {
+            yield return new WaitUntil(() => (Input.GetKeyUp(inputManager.middleButton)));
+            if (newSpecialPopup.activeSelf)
+            {
+                MainMenu();
+            }
+        }
+        else /*if (Input.GetKey(inputManager.rightButton))*/
+        {
+            yield return new WaitUntil(() => (Input.GetKeyUp(inputManager.rightButton)));
+            if (newSpecialPopup.activeSelf)
+            {
+                QuiGame();
+            }
+        }
+    }
+
     IEnumerator TutorialPopupRoutine()
     {
+        yield return new WaitUntil(() => (!Input.GetKey(inputManager.leftButton) && !Input.GetKey(inputManager.middleButton) && !Input.GetKey(inputManager.rightButton)));
         yield return new WaitUntil(() => (Input.GetKey(inputManager.leftButton) || Input.GetKey(inputManager.middleButton) || Input.GetKey(inputManager.rightButton)));
         if (Input.GetKey(inputManager.leftButton))
         {
@@ -78,13 +147,10 @@ public class LevelManager : MonoBehaviour
 
     public void StartLevel()
     {
-        if (level == 1 && Data.Load()[0] && !altLevel)
+        if (level == 1 && Data.Load()[0])
         {
             doubleButtonsForLevel1.SetActive(true);
-        }
-        else if (level == 1 && Data.Load()[2] && altLevel)
-        {
-            doubleButtonsForLevel1.SetActive(true);
+            skeletonStatusForLevel1.SetActive(true);
         }
         startingCorpsesIfTutorial.SetActive(true);
         inputManager.enabled = true;
@@ -109,27 +175,219 @@ public class LevelManager : MonoBehaviour
         winMessage.SetActive(true);
         GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().enabled = false;
         bool[] data = Data.Load();
-        bool altLevelSpecialTutorial = false;
-        if (altLevel)
+        if (!data[(level - 1) * 2])
         {
-            altLevelSpecialTutorial = level != 6 && !data[12] && !data[14] && !data[16] && !data[18] && !data[20];
-            data[(level + 5) * 2] = true;//Completed
+            defeatedNewLevel = true;
+        }
+        data[(level - 1) * 2] = true;//Completed
+        data[(level * 2) + 1] = true;//Next level available
+        data[((level + 5) * 2) + 1] = true;//Alt level available
+        Data.Save(data);
+        yield return new WaitForSeconds(3f);
+        inputManager.Pause();
+        inputManager.allowResume = false;
+        resumeText.text = "Play Again";
+        pauseText.text = "You Win!";
+    }
+
+    IEnumerator SpecialLevel1()
+    {//Survive with one left
+        if (Data.Load()[2])
+        {
+            doubleButtonsForLevel1.SetActive(true);
+            skeletonStatusForLevel1.SetActive(true);
+        }
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        while (enemies.Length != 0)
+        {
+            yield return new WaitForSeconds(.5f);
+            enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        }
+        if (GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().numSkeletons == 1)
+        {
+            StartCoroutine(WinSpecialLevel());
         }
         else
         {
-            if (!data[(level - 1) * 2])
-            {
-                defeatedNewLevel = true;
-            }
-            data[(level - 1) * 2] = true;//Completed
-            data[(level * 2)+1] = true;//Next level available
-            data[((level + 5) * 2)+1] = true;//Alt level available
+            inputManager.Pause();
+            inputManager.allowResume = false;
+            resumeText.text = "Retry";
+            pauseText.text = "You Failed...";
+            GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().timeSurvived = 0f;
         }
+    }
+
+    IEnumerator SpecialLevel2()
+    {//Mine all tombstones
+        for (int i = 0; i < enemySpawns.Length; i++)
+        {
+            yield return new WaitForSeconds(spawnWaitTimes[i]);
+            enemySpawns[i].SetActive(true);
+            if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
+            {
+                break;
+            }
+        }
+        yield return new WaitUntil(() => (GameObject.FindGameObjectsWithTag("Grave").Length == 0));
+        StartCoroutine(WinSpecialLevel());
+    }
+
+    IEnumerator SpecialLevel3()
+    {//Random corpses, defeat all
+        for (int i = 0; i < enemySpawns.Length; i++)
+        {
+            yield return new WaitForSeconds(spawnWaitTimes[i]);
+            enemySpawns[i].SetActive(true);
+        }
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        while (enemies.Length != 0)
+        {
+            yield return new WaitForSeconds(.5f);
+            enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        }
+        StartCoroutine(WinSpecialLevel());
+    }
+
+    IEnumerator SpecialLevel4()
+    {//Invincible skeletons defeat level in cerain time
+        PlayerBase playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
+        playerBase.enabled = false;
+        yield return new WaitUntil(() => (playerBase.numSkeletons == 1));
+        float acceloration;
+        GameObject skeleton1 = GameObject.FindGameObjectWithTag("Skeleton");
+        bool isSkeleton = false;
+        if (GameObject.FindGameObjectWithTag("Skeleton") != null)
+        {
+            skeleton1.GetComponent<Skeleton>().defence = 200;
+            acceloration = skeleton1.GetComponent<Skeleton>().speedAcceleration;
+            skeleton1.GetComponent<Skeleton>().speedAcceleration = 0f;
+            isSkeleton = true;
+        }
+        else
+        {
+            skeleton1.GetComponent<Minion>().defence = 200;
+            acceloration = skeleton1.GetComponent<Minion>().speedAcceleration;
+            skeleton1.GetComponent<Minion>().speedAcceleration = 0f;
+        }
+        yield return new WaitUntil(() => (playerBase.numSkeletons == 2));
+        if (isSkeleton)
+        {
+            if (GameObject.FindGameObjectsWithTag("Skeleton").Length == 2)
+            {
+                GameObject skeleton2 = GameObject.FindGameObjectsWithTag("Skeleton")[0] == skeleton1 ? GameObject.FindGameObjectsWithTag("Skeleton")[1] : GameObject.FindGameObjectsWithTag("Skeleton")[0];
+                skeleton2.GetComponent<Skeleton>().defence = 200;
+                skeleton1.GetComponent<Skeleton>().speedAcceleration = acceloration;
+            }
+            else
+            {
+                GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().defence = 200;
+                skeleton1.GetComponent<Skeleton>().speedAcceleration = acceloration;
+            }
+        }
+        else
+        {
+            if (GameObject.FindGameObjectWithTag("Skeleton") != null)
+            {
+                GameObject.FindGameObjectWithTag("Skeleton").GetComponent<Skeleton>().defence = 200;
+                skeleton1.GetComponent<Minion>().speedAcceleration = acceloration;
+            }
+            else
+            {
+                GameObject skeleton2 = GameObject.FindGameObjectsWithTag("Minion")[0] == skeleton1 ? GameObject.FindGameObjectsWithTag("Minion")[1] : GameObject.FindGameObjectsWithTag("Minion")[0];
+                skeleton2.GetComponent<Minion>().defence = 200;
+                skeleton1.GetComponent<Minion>().speedAcceleration = acceloration;
+            }
+        }
+        playerBase.enabled = true;
+        bool won = false;
+        for (int i = 0; i < 120; i++)
+        {
+            yield return new WaitForSeconds(.5f);
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
+            {
+                won = true;
+                break;
+            }
+        }
+        if (won)
+        {
+            StartCoroutine(WinSpecialLevel());
+        }
+        else
+        {
+            inputManager.Pause();
+            inputManager.allowResume = false;
+            resumeText.text = "Retry";
+            pauseText.text = "You Failed...";
+            GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().timeSurvived = 0f;
+        }
+    }
+
+    IEnumerator SpecialLevel5()
+    {//No skeletons die part
+        PlayerBase playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
+        int previousNumSkeletons = playerBase.numSkeletons;
+        //GameObject[] skeletons = GameObject.FindGameObjectsWithTag("Skeleton");
+        //GameObject[] minions = GameObject.FindGameObjectsWithTag("Minion");
+        Coroutine coroutine = StartCoroutine(SpecialLevel3());//Level 3 is just a normal spawning coroutine
+        while (!winMessage.activeSelf)
+        {
+            yield return new WaitForEndOfFrame();
+            if (playerBase.numSkeletons > previousNumSkeletons)
+            {
+                previousNumSkeletons++;
+            }
+            else if (playerBase.numSkeletons < previousNumSkeletons)
+            {
+                StopCoroutine(coroutine);
+                inputManager.Pause();
+                inputManager.allowResume = false;
+                resumeText.text = "Retry";
+                pauseText.text = "You Failed...";
+                GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().timeSurvived = 0f;
+            }
+        }
+    }
+
+    IEnumerator SpecialLevel6()
+    {//Skeletons slowly take damage
+        Coroutine coroutine = StartCoroutine(SpecialLevel3());//Level 3 is just a normal spawning coroutine
+        while (!winMessage.activeSelf)
+        {
+            yield return new WaitForSeconds(.5f);
+            GameObject[] skeletons = GameObject.FindGameObjectsWithTag("Skeleton");
+            GameObject[] minions = GameObject.FindGameObjectsWithTag("Minion");
+            for (int i = 0; i < skeletons.Length; i++)
+            {
+                skeletons[i].GetComponent<Skeleton>().Hit(Vector3.zero, null, 0f, 1);
+            }
+            for (int i = 0; i < minions.Length; i++)
+            {
+                minions[i].GetComponent<Minion>().Hit(Vector3.zero, null, 0f, 1);
+            }
+        }
+    }
+
+    IEnumerator WinSpecialLevel()
+    {
+        winMessage.SetActive(true);
+        GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().enabled = false;
+        bool[] data = Data.Load();
+        bool altLevelSpecialTutorial = !data[12] && !data[14] && !data[16] && !data[18] && !data[20] && level != 6;
+        bool newSpecial = !data[(level + 5) * 2] && level != 6;
+        data[(level + 5) * 2] = true;//Completed
         Data.Save(data);
         if (altLevelSpecialTutorial)
         {
             yield return new WaitForSeconds(1f);
             tutorialPopup.SetActive(true);
+        }
+        else if (newSpecial)
+        {
+            yield return new WaitForSeconds(1f);
+            specialStartPopup.SetActive(true);
+            inputManager.enabled = false;
+            StartCoroutine(NewSpecialPopupRoutine());
         }
         else
         {
@@ -141,9 +399,48 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void StartSpecialLevel()
+    {
+        specialStartPopup.SetActive(false);
+        inputManager.enabled = true;
+        GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>().enabled = true;
+        if (level == 1)
+        {
+            StartCoroutine(SpecialLevel1());
+        }
+        else if (level == 2)
+        {
+            StartCoroutine(SpecialLevel2());
+        }
+        else if (level == 3)
+        {
+            StartCoroutine(SpecialLevel3());
+        }
+        else if (level == 4)
+        {
+            StartCoroutine(SpecialLevel4());
+        }
+        else if (level == 5)
+        {
+            StartCoroutine(SpecialLevel5());
+        }
+        else /*if (level == 6)*/
+        {
+            StartCoroutine(SpecialLevel6());
+        }
+    }
+
+    public void PlayAgain()
+    {
+        inputManager.enabled = true;
+        inputManager.allowResume = false;
+        inputManager.Resume();
+    }
+
     public void PlayTutorial()
     {
         tutorialPopup.SetActive(false);
+        winMessage.SetActive(false);
         tutorialManager.StartTutorial();
     }
 
@@ -167,5 +464,11 @@ public class LevelManager : MonoBehaviour
     {
         inputManager.enabled = true;
         inputManager.MainMenu();
+    }
+
+    public void QuiGame()
+    {
+        Debug.Log("Quit");
+        Application.Quit();
     }
 }

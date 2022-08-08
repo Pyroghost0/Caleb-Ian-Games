@@ -17,7 +17,7 @@ public class TutorialManager : MonoBehaviour
     public RectTransform arrow2;
     public RectTransform arrow3;
     public RectTransform arrow4;
-    public GameObject corpsePrefab;
+    //public GameObject corpsePrefab;
     public GameObject textBox;
     public GameObject loading;
     public GameObject tutorialObjectsLevel1;
