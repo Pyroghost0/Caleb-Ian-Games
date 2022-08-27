@@ -1116,11 +1116,11 @@ public class Skeleton : MonoBehaviour
         }
     }
 
-    public void TurnIntoTombstone()
+    /*public void TurnIntoTombstone()
     {
         dead = true;
         StartCoroutine(Death());
-    }
+    }*/
 
     public void UpgradeAttack()
     {

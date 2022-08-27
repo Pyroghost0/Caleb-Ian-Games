@@ -134,7 +134,7 @@ public class MainMenuManager : MonoBehaviour
                     scrollBar.anchoredPosition += new Vector2(0f, Input.mouseScrollDelta.y * .3066667f * 10f);
                     if (map.anchoredPosition.y < -750f)
                     {
-                        map.anchoredPosition = new Vector2(0f, 750f);
+                        map.anchoredPosition = new Vector2(0f, -750f);
                         scrollBar.anchoredPosition = new Vector2(-20f, 300f);
                     }
                 }
@@ -600,7 +600,7 @@ public class MainMenuManager : MonoBehaviour
         allowInputs = false;
         otherMiddleButtonImage.color = Color.gray;
         loading.SetActive(true);
-        if (normalMap.active)
+        if (normalMap.activeSelf)
         {
             AsyncOperation ao = SceneManager.LoadSceneAsync(normalSceneName[mapPointIndex], LoadSceneMode.Additive);
             yield return new WaitUntil(() => ao.isDone);

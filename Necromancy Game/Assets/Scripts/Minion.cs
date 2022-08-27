@@ -652,6 +652,7 @@ public class Minion : MonoBehaviour
         {
             boneUpgradeAmount = -1;
             selectManager.boneCostObject0.SetActive(false);
+            selectManager.shovelUpgradeButton.SetActive(false);
         }
     }
 
