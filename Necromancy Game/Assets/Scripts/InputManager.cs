@@ -673,6 +673,7 @@ public class InputManager : MonoBehaviour
                 mainMenuManager.inMap = true;
                 mainMenuManager.firstTime = false;
                 mainMenuManager.selector.anchoredPosition = mainMenuManager.mapPoints[level].anchoredPosition;
+                mainMenuManager.levelTypeText.text = mainMenuManager.levelTypeTexts[level];
                 mainMenuManager.mapPointIndex = level;
                 mainMenuManager.map.anchoredPosition = new Vector2(0f, mainMenuManager.mapYPositions[level]);
                 mainMenuManager.scrollBar.anchoredPosition = new Vector2(-20f, mainMenuManager.mapYPositions[level] * -.3066667f + 70f);

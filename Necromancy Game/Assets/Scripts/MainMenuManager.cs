@@ -39,6 +39,7 @@ public class MainMenuManager : MonoBehaviour
     public TextMeshProUGUI singleLeftButtonText;
     public TextMeshProUGUI singleMiddleButtonText;
     public TextMeshProUGUI singleRightButtonText;
+    public TextMeshProUGUI levelTypeText;
     public RectTransform mainMenuScreen;
     public RectTransform mapScreen;
     public float[] mapYPositions;
@@ -52,6 +53,7 @@ public class MainMenuManager : MonoBehaviour
     public RectTransform map;//0 -> -750
     public GameObject normalMap;
     public GameObject saveDataMenu;
+    public string[] levelTypeTexts = { "Goblin Level", "Wolf Level", "Witch Level", "Orc Level", "Ogre Level", "??? Level" };
 
     public bool firstTime;
     private bool secondPartText = false;
@@ -85,15 +87,15 @@ public class MainMenuManager : MonoBehaviour
             {
                 if (Data.Load()[i * 2])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.17f, .575f, .17f, .65f);
                 }
                 else if (Data.Load()[(i * 2) + 1])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.3f, .35f, .7f, .65f);
                 }
                 else /*if (!Data.Load()[(i * 2) + 1])*/
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.425f, .1f, .125f, .65f);
                 }
             }
         }
@@ -103,15 +105,15 @@ public class MainMenuManager : MonoBehaviour
             {
                 if (Data.Load()[(i * 2) + 12])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.17f, .575f, .17f, .65f); ;
                 }
                 else if (Data.Load()[(i * 2) + 13])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.3f, .35f, .7f, .65f);
                 }
                 else if (!Data.Load()[(i * 2) + 1])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.425f, .1f, .125f, .65f);
                 }
                 else /*if (Data.Load()[(i * 2) + 1])*/
                 {
@@ -339,6 +341,7 @@ public class MainMenuManager : MonoBehaviour
                 {//Don't need to check if unlocked
                     mapPointIndex--;
                     selector.anchoredPosition = mapPoints[mapPointIndex].anchoredPosition;
+                    levelTypeText.text = levelTypeTexts[mapPointIndex];
                     map.anchoredPosition = new Vector2(0f, mapYPositions[mapPointIndex]);
                     scrollBar.anchoredPosition = new Vector2(-20f, mapYPositions[mapPointIndex] * -.3066667f + 70f);
                 }
@@ -353,6 +356,7 @@ public class MainMenuManager : MonoBehaviour
                 {
                     mapPointIndex++;
                     selector.anchoredPosition = mapPoints[mapPointIndex].anchoredPosition;
+                    levelTypeText.text = levelTypeTexts[mapPointIndex];
                     map.anchoredPosition = new Vector2(0f, mapYPositions[mapPointIndex]);
                     scrollBar.anchoredPosition = new Vector2(-20f, mapYPositions[mapPointIndex] * -.3066667f + 70f);
                 }
@@ -589,6 +593,7 @@ public class MainMenuManager : MonoBehaviour
             {
                 mapPointIndex = num;
                 selector.anchoredPosition = mapPoints[num].anchoredPosition;
+                levelTypeText.text = levelTypeTexts[num];
                 map.anchoredPosition = new Vector2(0f, mapYPositions[num]);
                 scrollBar.anchoredPosition = new Vector2(-20f, mapYPositions[num] * -.3066667f + 70f);
             }
@@ -627,15 +632,15 @@ public class MainMenuManager : MonoBehaviour
             {
                 if (Data.Load()[(i*2)+12])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.17f, .575f, .17f, .65f); ;
                 }
                 else if (Data.Load()[(i * 2)+ 13])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.3f, .35f, .7f, .65f);
                 }
                 else if (!Data.Load()[(i * 2) + 1])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.425f, .1f, .125f, .65f);
                 }
                 else /*if (Data.Load()[(i * 2) + 1])*/
                 {
@@ -650,15 +655,15 @@ public class MainMenuManager : MonoBehaviour
             {
                 if (Data.Load()[i * 2])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.17f, .575f, .17f, .65f); ;
                 }
                 else if (Data.Load()[(i * 2) + 1])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.3f, .35f, .7f, .65f);
                 }
                 else /*if (!Data.Load()[(i * 2) + 1])*/
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.425f, .1f, .125f, .65f);
                 }
             }
         }
@@ -673,15 +678,15 @@ public class MainMenuManager : MonoBehaviour
             {
                 if (Data.Load()[i * 2])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.17f, .575f, .17f, .65f); ;
                 }
                 else if (Data.Load()[(i * 2) + 1])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.3f, .35f, .7f, .65f);
                 }
                 else /*if (!Data.Load()[(i * 2) + 1])*/
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.425f, .1f, .125f, .65f);
                 }
             }
         }
@@ -691,15 +696,15 @@ public class MainMenuManager : MonoBehaviour
             {
                 if (Data.Load()[(i * 2) + 12])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.green;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.17f, .575f, .17f, .65f); ;
                 }
                 else if (Data.Load()[(i * 2) + 13])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.blue;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.3f, .35f, .7f, .65f);
                 }
                 else if (!Data.Load()[(i * 2) + 1])
                 {
-                    mapPoints[i].GetComponent<Image>().color = Color.red;
+                    mapPoints[i].GetComponent<Image>().color = new Color(.425f, .1f, .125f, .65f);
                 }
                 else /*if (Data.Load()[(i * 2) + 1])*/
                 {
@@ -725,14 +730,15 @@ public class MainMenuManager : MonoBehaviour
         newData[1] = true;
         Data.Save(newData);
         selector.anchoredPosition = mapPoints[0].anchoredPosition;
+        levelTypeText.text = levelTypeTexts[0];
         map.anchoredPosition = new Vector2(0f, mapYPositions[0]);
         scrollBar.anchoredPosition = new Vector2(-20f, mapYPositions[0] * -.3066667f + 70f);
         mapPointIndex = 0;
         normalMap.SetActive(true);
-        mapPoints[0].GetComponent<Image>().color = Color.blue;
+        mapPoints[0].GetComponent<Image>().color = new Color(.3f, .35f, .7f, .65f);
         for (int i = 1; i < 6; i++)
         {
-            mapPoints[i].GetComponent<Image>().color = Color.red;
+            mapPoints[i].GetComponent<Image>().color = new Color(.425f, .1f, .125f, .65f);
         }
         allowInputs = !detailsMenu.activeSelf;
         saveDataMenu.SetActive(false);
