@@ -769,8 +769,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4555724999007500247, guid: 9a3b27328c30ae9458f697b2593f76fc, type: 3}
+      propertyPath: health
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555724999007500247, guid: 9a3b27328c30ae9458f697b2593f76fc, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555724999007500247, guid: 9a3b27328c30ae9458f697b2593f76fc, type: 3}
+      propertyPath: maxHealth
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4555724999007500247, guid: 9a3b27328c30ae9458f697b2593f76fc, type: 3}
       propertyPath: pauseText
@@ -14250,6 +14258,7 @@ MonoBehaviour:
   inputManager: {fileID: 517238793}
   tutorialManager: {fileID: 894061269}
   defeatedNewLevel: 0
+  minionAttack: 0
   startingCorpsesIfTutorial: {fileID: 0}
   doubleButtonsForLevel1: {fileID: 0}
   skeletonStatusForLevel1: {fileID: 0}

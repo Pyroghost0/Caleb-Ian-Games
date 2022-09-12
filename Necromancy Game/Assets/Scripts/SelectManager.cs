@@ -354,6 +354,7 @@ public class SelectManager : MonoBehaviour
             AttackType type = newSelect.GetComponent<Corpse>().skeletonPrefab.GetComponent<Skeleton>().specialAttackType;
             if ((type == AttackType.SpecialGoblinArrow && !spawnSkeletonGoblins) || (type == AttackType.SpecialWolfShadowMovement && !spawnSkeletonWolves) || (type == AttackType.SpecialWitchGravityAttack && !spawnSkeletonWitches) || (type == AttackType.SpecialOrcUpgrade && !spawnSkeletonOrcs) || (type == AttackType.SpecialOgreMultiattack && !spawnSkeletonOgres))
             {
+                corpseSkeletonButton.SetActive(false);
                 inputManager.buttonImages[8].gameObject.SetActive(false);
             }
         }
@@ -731,14 +732,23 @@ public class SelectManager : MonoBehaviour
     {
         if (playerBase.numSkeletons + 1 == playerBase.maxSkeletons)
         {
-            selectedTroop.GetComponent<Corpse>().SpawnSkeleton();
+            AttackType type = selectedTroop.GetComponent<Corpse>().skeletonPrefab.GetComponent<Skeleton>().specialAttackType;
+            if ((type == AttackType.SpecialGoblinArrow && spawnSkeletonGoblins) || (type == AttackType.SpecialWolfShadowMovement && spawnSkeletonWolves) || (type == AttackType.SpecialWitchGravityAttack && spawnSkeletonWitches) || (type == AttackType.SpecialOrcUpgrade && spawnSkeletonOrcs) || (type == AttackType.SpecialOgreMultiattack && spawnSkeletonOgres))
+            {
+                selectedTroop.GetComponent<Corpse>().SpawnSkeleton();
+            }
+            else
+            {
+                InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                notice.text.text = "All Corpses Impossible Summons";
+                notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+            }
         }
         else if (playerBase.numSkeletons == playerBase.maxSkeletons)
         {
             InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
             notice.text.text = "Max Troops Reached";
             notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
-            corpseActionFail = false;
         }
         else
         {
@@ -747,15 +757,32 @@ public class SelectManager : MonoBehaviour
             {
                 Transform previouslySelectedTroop = selectedTroop;
                 short numSpawned = 0;
+                bool spawned = false;
                 for (int i = 0; i < corpses.Length && playerBase.numSkeletons + numSpawned + 1 < playerBase.maxSkeletons; i++)
                 {
                     if (previouslySelectedTroop != corpses[i].transform)
                     {
                         numSpawned++;
-                        corpses[i].GetComponent<Corpse>().SpawnSkeleton();
+                        AttackType monType = corpses[i].GetComponent<Corpse>().skeletonPrefab.GetComponent<Skeleton>().specialAttackType;
+                        if ((monType == AttackType.SpecialGoblinArrow && spawnSkeletonGoblins) || (monType == AttackType.SpecialWolfShadowMovement && spawnSkeletonWolves) || (monType == AttackType.SpecialWitchGravityAttack && spawnSkeletonWitches) || (monType == AttackType.SpecialOrcUpgrade && spawnSkeletonOrcs) || (monType == AttackType.SpecialOgreMultiattack && spawnSkeletonOgres))
+                        {
+                            spawned = true;
+                            corpses[i].GetComponent<Corpse>().SpawnSkeleton();
+                        }
                     }
                 }
-                previouslySelectedTroop.GetComponent<Corpse>().SpawnSkeleton();
+                AttackType type = previouslySelectedTroop.GetComponent<Corpse>().skeletonPrefab.GetComponent<Skeleton>().specialAttackType;
+                if ((type == AttackType.SpecialGoblinArrow && spawnSkeletonGoblins) || (type == AttackType.SpecialWolfShadowMovement && spawnSkeletonWolves) || (type == AttackType.SpecialWitchGravityAttack && spawnSkeletonWitches) || (type == AttackType.SpecialOrcUpgrade && spawnSkeletonOrcs) || (type == AttackType.SpecialOgreMultiattack && spawnSkeletonOgres))
+                {
+                    spawned = true;
+                    previouslySelectedTroop.GetComponent<Corpse>().SpawnSkeleton();
+                }
+                if (!spawned)
+                {
+                    InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                    notice.text.text = "All Corpses Impossible Summons";
+                    notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+                }
             }
             else
             {
@@ -773,27 +800,49 @@ public class SelectManager : MonoBehaviour
                     }
                 }
                 short numSpawned = 0;
-                for (int i = 0; i < corpses.Length && playerBase.numSkeletons + numSpawned + 1 < playerBase.maxSkeletons; i++)
+                bool spawned = false;
+                short selectIsSpawnable = 0;
+                AttackType type = previouslySelectedTroop.GetComponent<Corpse>().skeletonPrefab.GetComponent<Skeleton>().specialAttackType;
+                if ((type == AttackType.SpecialGoblinArrow && spawnSkeletonGoblins) || (type == AttackType.SpecialWolfShadowMovement && spawnSkeletonWolves) || (type == AttackType.SpecialWitchGravityAttack && spawnSkeletonWitches) || (type == AttackType.SpecialOrcUpgrade && spawnSkeletonOrcs) || (type == AttackType.SpecialOgreMultiattack && spawnSkeletonOgres))
+                {
+                    selectIsSpawnable = 1;
+                }
+                for (int i = 0; i < corpses.Length && playerBase.numSkeletons + numSpawned + selectIsSpawnable < playerBase.maxSkeletons; i++)
                 {
                     if (previouslySelectedTroop != corpses[i].transform)
                     {
-                        numSpawned++;
-                        corpses[i].GetComponent<Corpse>().SpawnSkeleton();
+                        AttackType monType = corpses[i].GetComponent<Corpse>().skeletonPrefab.GetComponent<Skeleton>().specialAttackType;
+                        if ((monType == AttackType.SpecialGoblinArrow && spawnSkeletonGoblins) || (monType == AttackType.SpecialWolfShadowMovement && spawnSkeletonWolves) || (monType == AttackType.SpecialWitchGravityAttack && spawnSkeletonWitches) || (monType == AttackType.SpecialOrcUpgrade && spawnSkeletonOrcs) || (monType == AttackType.SpecialOgreMultiattack && spawnSkeletonOgres))
+                        {
+                            numSpawned++;
+                            spawned = true;
+                            corpses[i].GetComponent<Corpse>().SpawnSkeleton();
+                        }
                     }
-                    if (((numSpawned == i && i + 2 < corpses.Length) || (numSpawned != i && i + 1 < corpses.Length)) && playerBase.numSkeletons + numSpawned + 1 == playerBase.maxSkeletons)
+                    /*if (((numSpawned == i && i + 2 < corpses.Length) || (numSpawned != i && i + 1 < corpses.Length)) && playerBase.numSkeletons + numSpawned + selectIsSpawnable == playerBase.maxSkeletons)
                     {
                         corpseActionFail = true;
                         break;
-                    }
+                    }*/
                 }
-                previouslySelectedTroop.GetComponent<Corpse>().SpawnSkeleton();
-                if (corpseActionFail)
+                if (selectIsSpawnable == 1)
+                {
+                    spawned = true;
+                    previouslySelectedTroop.GetComponent<Corpse>().SpawnSkeleton();
+                }
+                if (!spawned)
+                {
+                    InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                    notice.text.text = "All Corpses Impossible Summons";
+                    notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+                }
+                /*else if (corpseActionFail)
                 {
                     InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
                     notice.text.text = "Max Troops Reached";
                     notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
                     corpseActionFail = false;
-                }
+                }*/
             }
         }
     }
@@ -878,13 +927,17 @@ public class SelectManager : MonoBehaviour
 
     public void CorpseSpawnSkeleton()
     {
-        selectedTroop.GetComponent<Corpse>().SpawnSkeleton();
-        if (corpseActionFail)
+        AttackType type = selectedTroop.GetComponent<Corpse>().skeletonPrefab.GetComponent<Skeleton>().specialAttackType;
+        if ((type == AttackType.SpecialGoblinArrow && spawnSkeletonGoblins) || (type == AttackType.SpecialWolfShadowMovement && spawnSkeletonWolves) || (type == AttackType.SpecialWitchGravityAttack && spawnSkeletonWitches) || (type == AttackType.SpecialOrcUpgrade && spawnSkeletonOrcs) || (type == AttackType.SpecialOgreMultiattack && spawnSkeletonOgres))
         {
-            InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
-            notice.text.text = "Max Troops Reached";
-            notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
-            corpseActionFail = false;
+            selectedTroop.GetComponent<Corpse>().SpawnSkeleton();
+            if (corpseActionFail)
+            {
+                InvalidNotice notice = Instantiate(impossibleActionPrefab).GetComponent<InvalidNotice>();
+                notice.text.text = "Max Troops Reached";
+                notice.textPosition.anchoredPosition = new Vector2(75f, 150f);
+                corpseActionFail = false;
+            }
         }
     }
 

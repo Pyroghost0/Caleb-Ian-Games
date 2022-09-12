@@ -683,6 +683,7 @@ public class TutorialManager : MonoBehaviour
     IEnumerator SpecialTutorial()
     {
         //Start
+        selectManager.currentSkeletonMode = SkeletonMode.stay;
         if (selectManager.selectedTroop)
         {
             selectManager.Deselect();

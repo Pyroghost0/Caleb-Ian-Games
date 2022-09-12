@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
     public InputManager inputManager;
     public TutorialManager tutorialManager;
     public bool defeatedNewLevel = false;
+    public bool minionAttack = false;
 
     public GameObject startingCorpsesIfTutorial;
     public GameObject doubleButtonsForLevel1;
@@ -161,6 +162,11 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator LevelSpawning()
     {
+        if (minionAttack)
+        {
+            inputManager.selectManager.currentMinionDigStatus = false;
+            inputManager.selectManager.minionStatus.sprite = inputManager.selectManager.minionAttack;
+        }
         for (int i = 0; i < enemySpawns.Length; i++)
         {
             yield return new WaitForSeconds(spawnWaitTimes[i]);

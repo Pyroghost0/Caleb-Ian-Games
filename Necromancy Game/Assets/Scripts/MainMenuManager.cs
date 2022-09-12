@@ -773,7 +773,7 @@ public class MainMenuManager : MonoBehaviour
             }
             else
             {
-                startingText.text = "To select a level, use the buttons indicated above, or click on the level. There is also an alternative challenge available once you defeat a level. You can access them by using the buttons above, or clicking and holding your current level.";
+                startingText.text = "To select a level, use the buttons indicated above, or click on the level. There are also alternative challenges available after defeating levels, which is assessable using the buttons above, clicking and holding your current level.";
                 secondPartText = true;
             }
         }
