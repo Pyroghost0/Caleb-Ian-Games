@@ -227,12 +227,32 @@ public class LevelManager : MonoBehaviour
     {//Mine all tombstones
         for (int i = 0; i < enemySpawns.Length; i++)
         {
-            yield return new WaitForSeconds(spawnWaitTimes[i]);
-            enemySpawns[i].SetActive(true);
+            yield return new WaitForSeconds(spawnWaitTimes[i] / 5f);
             if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
             {
                 break;
             }
+            yield return new WaitForSeconds(spawnWaitTimes[i] / 5f);
+            if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
+            {
+                break;
+            }
+            yield return new WaitForSeconds(spawnWaitTimes[i] / 5f);
+            if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
+            {
+                break;
+            }
+            yield return new WaitForSeconds(spawnWaitTimes[i] / 5f);
+            if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
+            {
+                break;
+            }
+            yield return new WaitForSeconds(spawnWaitTimes[i] / 5f);
+            if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
+            {
+                break;
+            }
+            enemySpawns[i].SetActive(true);
         }
         yield return new WaitUntil(() => (GameObject.FindGameObjectsWithTag("Grave").Length == 0));
         StartCoroutine(WinSpecialLevel());
@@ -305,6 +325,7 @@ public class LevelManager : MonoBehaviour
             }
         }
         playerBase.enabled = true;
+        enemySpawns[0].SetActive(true);
         bool won = false;
         for (int i = 0; i < 120; i++)
         {
