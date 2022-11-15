@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Walker enemy behavior: Bulky enemy that slowly walks toward player
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

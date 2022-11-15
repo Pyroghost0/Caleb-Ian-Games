@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Ian Connors
+ * Qualms
+ * Manages the text in the cutscene with the boss when meeting them and killing them
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

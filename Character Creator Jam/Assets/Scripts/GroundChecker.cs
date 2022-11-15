@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Checks if in ground / ice
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

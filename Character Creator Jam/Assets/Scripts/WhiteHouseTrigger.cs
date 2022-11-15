@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Ian Connors
+ * Qualms
+ * Changes the audio in the white house scene
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

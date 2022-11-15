@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Equipment type: Used in player status
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

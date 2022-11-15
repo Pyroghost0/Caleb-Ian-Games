@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Connects scenes by loading player scene by getting reference to player objects
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;

@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Slider text for sound effects option
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;

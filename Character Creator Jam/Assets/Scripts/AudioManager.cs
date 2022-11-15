@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Ian Connors
+ * Qualms
+ * Manages the audio levels in audio objects
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

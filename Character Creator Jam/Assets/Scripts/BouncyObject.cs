@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Bouncy objects that act like a trampoline
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

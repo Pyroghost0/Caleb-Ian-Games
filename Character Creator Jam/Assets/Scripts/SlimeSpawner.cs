@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Spawns slimes constantly until a specific number is reached.
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

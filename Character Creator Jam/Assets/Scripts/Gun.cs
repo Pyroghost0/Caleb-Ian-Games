@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Succ gun object that sucks up slimes and other object, shoots slime bullets, and auto aim
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

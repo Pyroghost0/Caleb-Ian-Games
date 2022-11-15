@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Bullet that moves contantly and hits objects
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

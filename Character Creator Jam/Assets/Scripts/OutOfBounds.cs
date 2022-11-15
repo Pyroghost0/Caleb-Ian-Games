@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Respawns player and other objects when hitting trigger
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

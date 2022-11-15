@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Flyer enemy: slowly floats toward player. affected by suck
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

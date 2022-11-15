@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Saves checkpoint to respawn to
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

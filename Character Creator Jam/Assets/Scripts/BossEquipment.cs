@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Ian Connors
+ * Qualms
+ * Equips boss with whatever equipment the player isn't wearing
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Ian Connors
+ * Qualms
+ * Customizes the dress up room scene depending on progress
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;

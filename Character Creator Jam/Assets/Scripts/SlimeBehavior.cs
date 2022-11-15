@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Enemy slime behaivior: suckable, and jump toward player
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

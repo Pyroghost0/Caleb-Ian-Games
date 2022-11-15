@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Moves the player with keyboard inputs depending on what terrain they are in
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

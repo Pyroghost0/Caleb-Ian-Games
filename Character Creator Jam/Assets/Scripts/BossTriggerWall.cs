@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Starts boss fight when entering trigger
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

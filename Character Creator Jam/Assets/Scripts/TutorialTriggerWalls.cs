@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Triggers in the tutorial for i.e. when to turn on slime spawner
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

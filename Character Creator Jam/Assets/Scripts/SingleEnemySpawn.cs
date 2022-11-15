@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Coded by Caleb Kahn
+ * Qualms
+ * Manages enemies by respawning them if they die
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
