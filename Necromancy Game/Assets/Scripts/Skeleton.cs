@@ -35,6 +35,11 @@ public class Skeleton : MonoBehaviour
     public Transform sightObject;
     public Transform spriteBasisObject;
     public SpriteRenderer[] sprite;
+    public SpriteRenderer[] armorSpriteLevel2;
+    public SpriteRenderer[] armorSpriteLevel3;
+    public SpriteRenderer[] weaponSprite;
+    public SpriteRenderer[] weaponSpriteLevel2;
+    public SpriteRenderer[] weaponSpriteLevel3;
     private int[] spritePos;
 
     private float spriteMultiplier;
