@@ -5045,6 +5045,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5581430291414571517, guid: 98e35969ff3f865478734181c4ed9456, type: 3}
+      propertyPath: health
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 5581430291414571517, guid: 98e35969ff3f865478734181c4ed9456, type: 3}
+      propertyPath: maxHealth
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 5581430291414571517, guid: 98e35969ff3f865478734181c4ed9456, type: 3}
       propertyPath: pauseText
       value: 
       objectReference: {fileID: 720811277}
@@ -11787,6 +11795,7 @@ MonoBehaviour:
   tutorialManager: {fileID: 0}
   defeatedNewLevel: 0
   minionAttack: 0
+  SkeletonPrefabsIfSpecial3: []
   startingCorpsesIfTutorial: {fileID: 0}
   doubleButtonsForLevel1: {fileID: 0}
   skeletonStatusForLevel1: {fileID: 0}

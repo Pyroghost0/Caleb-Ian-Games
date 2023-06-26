@@ -42,7 +42,7 @@ public class Attack : MonoBehaviour
     {
         if (sort)
         {
-            spriteRenderer.sortingOrder = (int)(transform.position.y * -10);
+            spriteRenderer.sortingOrder = (int)(transform.position.y * -100);
         }
     }
 
@@ -265,7 +265,7 @@ public class Attack : MonoBehaviour
         else /*if (source.CompareTag("Minion"))*/
         {
             Transform target = source.GetComponent<Minion>().goal;
-            if (target != null && (target.position - transform.position).magnitude < attackRange + target.GetComponent<Enemy>().circleCollider.radius + .1f)
+            if (target != null && target.GetComponent<Enemy>() != null && (target.position - transform.position).magnitude < attackRange + target.GetComponent<Enemy>().circleCollider.radius + .1f)
             {
                 if (target.CompareTag("Enemy"))
                 {

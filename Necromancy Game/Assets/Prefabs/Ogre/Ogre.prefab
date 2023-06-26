@@ -4157,7 +4157,7 @@ MonoBehaviour:
   attackSpeed: 4
   attackCooldown: 1.4
   attackRange: 2
-  knockback: 20
+  knockback: 40
   affectsEnemies: 0
   affectsSkeletons: 1
   source: {fileID: 8878702303485905977}
@@ -4191,7 +4191,7 @@ GameObject:
   - component: {fileID: 8878702303485905972}
   - component: {fileID: 8878702303485905979}
   - component: {fileID: 8878702303485905978}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Ogre
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -4274,7 +4274,7 @@ MonoBehaviour:
   speedAcceleration: 0.9
   maxSpeed: 1.5
   deathTime: 0.5
-  enemyValue: 13
+  enemyValue: 15
   attackType: 0
   targetSelect: {fileID: 8914711879977015230}
   corpsePrefab: {fileID: 5165828461996608682, guid: 8f3b99ec5b01bb0478afbf2473576255, type: 3}
@@ -4293,7 +4293,6 @@ MonoBehaviour:
   - {fileID: 1823901564438741868}
   - {fileID: 3159594551096078296}
   reversedSprite: 1
-  dead: 0
   goal: {fileID: 0}
   inPresenceOfSkeleton: 0
   inPresenceOfTower: 0

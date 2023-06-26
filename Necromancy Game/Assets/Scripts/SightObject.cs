@@ -28,7 +28,7 @@ public class SightObject : MonoBehaviour
         }
         else if (skeleton != null)
         {
-            if ((collision.CompareTag("Enemy") && !collision.GetComponent<Enemy>().dead) && !skeleton.inPresenceOfEnemy)
+            if (collision.CompareTag("Enemy") && !skeleton.inPresenceOfEnemy)
             {
                 skeleton.goal = collision.transform;
                 skeleton.inPresenceOfEnemy = true;
@@ -41,7 +41,7 @@ public class SightObject : MonoBehaviour
         }
         else /*if (minion != null)*/
         {
-            if ((collision.CompareTag("Enemy") && !collision.GetComponent<Enemy>().dead) && !minion.inDiggingMode && !minion.inPresenceOfEnemy)
+            if (collision.CompareTag("Enemy") && !minion.inDiggingMode && !minion.inPresenceOfEnemy)
             {
                 minion.goal = collision.transform;
                 minion.inPresenceOfEnemy = true;

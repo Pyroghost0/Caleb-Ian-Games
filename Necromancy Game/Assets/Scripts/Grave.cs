@@ -5,6 +5,7 @@ using UnityEngine;
 public class Grave : MonoBehaviour
 {
     public short bones = 50;
+    public bool coffin = false;
     public bool usedUp = false;
     public Transform graveAssistant;
     public GameObject targetSelect;
@@ -14,7 +15,7 @@ public class Grave : MonoBehaviour
         GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -10);
         if (transform.childCount == 3)
         {
-            transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -10) + 1;
+            transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = (int)(transform.position.y * -100) + 1;
         }
     }
 

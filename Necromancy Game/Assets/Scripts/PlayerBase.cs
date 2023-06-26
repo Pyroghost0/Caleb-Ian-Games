@@ -25,6 +25,7 @@ public class PlayerBase : MonoBehaviour
     void Start()
     {
         selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
+        selectManager.boneValue.text = bones.ToString();
     }
 
     // Update is called once per frame

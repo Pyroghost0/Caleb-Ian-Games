@@ -64,7 +64,7 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && allowInputs && !paused && !doingMouseCoroutine && Input.mousePosition.y / Screen.height < .75f)
         {
-            RaycastHit2D hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            RaycastHit2D hit = Physics2D.Raycast(camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 100f, (1 << 0));//Only want layer 0 se bitshift it left by 1
             List<GameObject> hitObjects = new List<GameObject>();
             bool hitBase = false;
             while (hit.collider != null)
@@ -166,11 +166,14 @@ public class InputManager : MonoBehaviour
                                 selectManager.selectedTroop.GetComponent<Minion>().grave.targetSelect.SetActive(false);
                             }
                         }
-                        else if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
+                        else
                         {
                             selectManager.selectedTroop.GetComponent<Minion>().inDiggingMode = true;
                             selectManager.minionStatus.sprite = selectManager.minionDig;
-                            selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                            if (selectManager.selectedTroop.GetComponent<Minion>().goal != null)
+                            {
+                                selectManager.selectedTroop.GetComponent<Minion>().goal.GetComponent<Enemy>().targetSelect.SetActive(false);
+                            }
                         }
                         selectManager.selectedTroop.GetComponent<Minion>().goal = hitObjects[lowestYIndex].transform.parent;
                         selectManager.selectedTroop.GetComponent<Minion>().grave = hitObjects[lowestYIndex].transform.parent.GetComponent<Grave>();

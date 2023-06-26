@@ -11682,9 +11682,9 @@ MonoBehaviour:
   rectSpecialCooldown: 0
   spawnSkeletonGoblins: 1
   spawnSkeletonWolves: 1
-  spawnSkeletonWitches: 0
-  spawnSkeletonOrcs: 0
-  spawnSkeletonOgres: 0
+  spawnSkeletonWitches: 1
+  spawnSkeletonOrcs: 1
+  spawnSkeletonOgres: 1
   specialGoblin: 0
   specialWolf: 0
   specialWitch: 0
@@ -15143,42 +15143,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 49860901}
     m_Modifications:
-    - target: {fileID: 5174625983301163943, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: m_Bounds.m_Center.x
-      value: 0.002929747
-      objectReference: {fileID: 0}
-    - target: {fileID: 5174625983301163943, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: m_Bounds.m_Extent.x
-      value: 0.9820718
-      objectReference: {fileID: 0}
-    - target: {fileID: 5930939537354980176, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: m_Bounds.m_Center.y
-      value: 0.0021004677
-      objectReference: {fileID: 0}
-    - target: {fileID: 6029891340984483212, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: m_Bounds.m_Center.x
-      value: 0.28114069
-      objectReference: {fileID: 0}
-    - target: {fileID: 6029891340984483212, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: m_Bounds.m_Center.y
-      value: 0.0015010834
-      objectReference: {fileID: 0}
-    - target: {fileID: 6029891340984483212, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: m_Bounds.m_Extent.x
-      value: 0.8601607
-      objectReference: {fileID: 0}
-    - target: {fileID: 7796263894845837097, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: m_Bounds.m_Center.x
-      value: -0.0000008940697
-      objectReference: {fileID: 0}
-    - target: {fileID: 7796263894845837097, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: m_Bounds.m_Center.y
-      value: 0.0013210773
-      objectReference: {fileID: 0}
-    - target: {fileID: 8033592183153776802, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: skeletonPrefab
-      value: 
-      objectReference: {fileID: 5098792931233784558, guid: 5f97d25fb18afa249bd1204994b0b77d, type: 3}
     - target: {fileID: 8033592183153776829, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -15226,14 +15190,6 @@ PrefabInstance:
     - target: {fileID: 8033592183153776830, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
       propertyPath: m_Name
       value: Wolf Corpse
-      objectReference: {fileID: 0}
-    - target: {fileID: 8622030003707945127, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: m_Bounds.m_Center.x
-      value: 0.0016869307
-      objectReference: {fileID: 0}
-    - target: {fileID: 8622030003707945127, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-      propertyPath: m_Bounds.m_Extent.x
-      value: 0.8033161
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
@@ -16067,6 +16023,8 @@ MonoBehaviour:
   - 15
   - 5
   winMessage: {fileID: 24092235}
+  specialResumeText: {fileID: 671216069}
+  specialMainText: {fileID: 48385823}
   resumeText: {fileID: 1386582619}
   pauseText: {fileID: 720811277}
   level: 3
@@ -16080,6 +16038,13 @@ MonoBehaviour:
   tutorialManager: {fileID: 894061269}
   defeatedNewLevel: 0
   minionAttack: 0
+  SkeletonPrefabsIfSpecial3:
+  - {fileID: 2534362278550397990, guid: cf3b6a74144ed1c4798b206c31238a0e, type: 3}
+  - {fileID: 5612151863628971991, guid: b5a6509587194a64eaf14153d6ecd27c, type: 3}
+  - {fileID: 8335210993672071315, guid: 4be2a3ba2b49f7c49998fd89f8dbdd5e, type: 3}
+  - {fileID: 7656942628517900457, guid: 8e1b841c5e0920a4a9aaff0320aaeb05, type: 3}
+  - {fileID: 4174122462965069872, guid: 5f97d25fb18afa249bd1204994b0b77d, type: 3}
+  - {fileID: 5961870037498401172, guid: 6b6a1d7a00add0844a0e7cf6908926e5, type: 3}
   startingCorpsesIfTutorial: {fileID: 0}
   doubleButtonsForLevel1: {fileID: 0}
   skeletonStatusForLevel1: {fileID: 0}

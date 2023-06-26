@@ -9,6 +9,8 @@ public class LevelManager : MonoBehaviour
     public GameObject[] enemySpawns;
     public float[] spawnWaitTimes;
     public GameObject winMessage;
+    public TextMeshProUGUI specialResumeText;
+    public TextMeshProUGUI specialMainText;
     public TextMeshProUGUI resumeText;
     public TextMeshProUGUI pauseText;
     public int level = 1;
@@ -23,6 +25,7 @@ public class LevelManager : MonoBehaviour
     public bool defeatedNewLevel = false;
     public bool minionAttack = false;
 
+    public GameObject[] SkeletonPrefabsIfSpecial3;
     public GameObject startingCorpsesIfTutorial;
     public GameObject doubleButtonsForLevel1;
     public GameObject skeletonStatusForLevel1;
@@ -203,6 +206,8 @@ public class LevelManager : MonoBehaviour
             doubleButtonsForLevel1.SetActive(true);
             skeletonStatusForLevel1.SetActive(true);
         }
+        yield return new WaitForSeconds(spawnWaitTimes[0]);
+        enemySpawns[0].SetActive(true);
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         while (enemies.Length != 0)
         {
@@ -228,38 +233,52 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < enemySpawns.Length; i++)
         {
             yield return new WaitForSeconds(spawnWaitTimes[i] / 5f);
-            if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
+            if (Special2Complete())
             {
                 break;
             }
             yield return new WaitForSeconds(spawnWaitTimes[i] / 5f);
-            if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
+            if (Special2Complete())
             {
                 break;
             }
             yield return new WaitForSeconds(spawnWaitTimes[i] / 5f);
-            if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
+            if (Special2Complete())
             {
                 break;
             }
             yield return new WaitForSeconds(spawnWaitTimes[i] / 5f);
-            if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
+            if (Special2Complete())
             {
                 break;
             }
             yield return new WaitForSeconds(spawnWaitTimes[i] / 5f);
-            if (GameObject.FindGameObjectsWithTag("Grave").Length == 0)
+            if (Special2Complete())
             {
                 break;
             }
             enemySpawns[i].SetActive(true);
         }
-        yield return new WaitUntil(() => (GameObject.FindGameObjectsWithTag("Grave").Length == 0));
+        yield return new WaitUntil(() => (Special2Complete()));
         StartCoroutine(WinSpecialLevel());
+    }
+
+    private bool Special2Complete()
+    {
+        GameObject[] graves = GameObject.FindGameObjectsWithTag("Grave");
+        foreach (GameObject grave in graves)
+        {
+            if (!grave.GetComponent<Grave>().coffin)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     IEnumerator SpecialLevel3()
     {//Random corpses, defeat all
+        StartCoroutine(AllRandom());
         for (int i = 0; i < enemySpawns.Length; i++)
         {
             yield return new WaitForSeconds(spawnWaitTimes[i]);
@@ -272,6 +291,19 @@ public class LevelManager : MonoBehaviour
             enemies = GameObject.FindGameObjectsWithTag("Enemy");
         }
         StartCoroutine(WinSpecialLevel());
+    }
+
+    IEnumerator AllRandom()
+    {
+        while (true)
+        {
+            GameObject[] corpses = GameObject.FindGameObjectsWithTag("Corpse");
+            foreach (GameObject corpse in corpses)
+            {
+                corpse.GetComponent<Corpse>().skeletonPrefab = SkeletonPrefabsIfSpecial3[Random.Range(0, 6)];
+            }
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     IEnumerator SpecialLevel4()
@@ -414,6 +446,9 @@ public class LevelManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
             specialStartPopup.SetActive(true);
             inputManager.enabled = false;
+            specialResumeText.text = "Play Again";
+            specialMainText.text = "Congradulations! You unlocked the " + (level == 1 ? "Goblin" : level == 1 ? "Wolf" : level == 1 ? "Witch" : level == 1 ? "Orc" : "Ogre") + " special ability\n"
+                + (level == 1 ? "Goblin shoots 3 arrows." : level == 1 ? "Wolf teleports to enemy closest to your base." : level == 1 ? "Witch gravitates enemies together." : level == 1 ? "Orc increases defences in exchange for the closest tombstone." : "Ogre hits all nearby enemies.");
             StartCoroutine(NewSpecialPopupRoutine());
         }
         else

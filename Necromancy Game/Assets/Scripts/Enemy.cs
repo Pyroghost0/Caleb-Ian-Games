@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public short health = 100;
+    [HideInInspector] public short health = 100;
     public short maxHealth = 100;
     public short defence = 10;
     public float knockbackResistence = 1f;
@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
 
     private float spriteMultiplier;
     public bool reversedSprite = false;
-    public bool dead = false;
+    //public bool dead = false;
     private float slopeGoal = 1.6f;
     private float posYGoal = 8f;
     public Transform goal;
@@ -41,6 +41,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        health = maxHealth;
         spriteMultiplier = spriteBasisObject.localScale.y;
         rigidbody = GetComponent<Rigidbody2D>();
         spritePos = new int[sprite.Length];
@@ -65,11 +66,11 @@ public class Enemy : MonoBehaviour
                     rigidbody.velocity = Vector2.zero;
                 }
             }
-            if (dead)
+            /*if (dead)
             {
                 
             }
-            else if (transform.position.y > (slopeGoal * (transform.position.x - attack.attackRange)) + posYGoal)
+            else*/ if (transform.position.y > (slopeGoal * (transform.position.x - attack.attackRange)) + posYGoal)
             {
                 spriteBasisObject.localScale = new Vector3(reversedSprite ? -spriteMultiplier : spriteMultiplier, spriteMultiplier, 1f);
                 sightObject.localScale = new Vector3(reversedSprite ? -1f : 1f, 1f, 1f);
@@ -142,11 +143,11 @@ public class Enemy : MonoBehaviour
                 }
             }
             anim.SetBool("Running", false);
-            if (dead)
+            /*if (dead)
             {
                 //Debug.Log("Dead");
             }
-            else if (!attack.currectlyAttacking)
+            else*/ if (!attack.currectlyAttacking)
             {
                 anim.SetTrigger("Attack");
                 attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((attackBasisObject.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
@@ -424,7 +425,7 @@ public class Enemy : MonoBehaviour
         }*/
         for (int i = 0; i < sprite.Length; i++)
         {
-            sprite[i].sortingOrder = (int)(transform.position.y * -10) + spritePos[i];
+            sprite[i].sortingOrder = (int)(transform.position.y * -100) + spritePos[i];
         }
     }
 
@@ -438,11 +439,14 @@ public class Enemy : MonoBehaviour
                 inPresenceOfSkeleton = true;
                 goal = source;
                 skeletonAttackRange = attack.attackRange + (source.CompareTag("Skeleton") ? source.GetComponent<Skeleton>().circleCollider.radius : source.GetComponent<Minion>().circleCollider.radius);
-        }
+            }
             health -= (short) (damage / defence);
             if (health <= 0)
             {
-                StartCoroutine(Death());
+                //dead = true;
+                targetSelect.SetActive(false);
+                Instantiate(corpsePrefab, transform.position, transform.rotation);
+                Destroy(gameObject);
             }
         }
     }
@@ -451,7 +455,7 @@ public class Enemy : MonoBehaviour
     {
         float timer = 0f;
         Vector2 knockbackVector = new Vector2(transform.position.x - attackCenter.x, transform.position.y - attackCenter.y) * (knockback / knockbackResistence);
-        float knockbackTime = knockbackVector.magnitude / 5f;
+        float knockbackTime = Mathf.Pow((knockback / knockbackResistence), .25f) / 4f;
         while (timer < knockbackTime)
         {
             yield return new WaitForFixedUpdate();
@@ -460,11 +464,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    IEnumerator Death()
+    /*IEnumerator Death()
     {
         targetSelect.SetActive(false);
         yield return new WaitForSeconds(deathTime);
         Instantiate(corpsePrefab, transform.position, transform.rotation);
         Destroy(gameObject);
-    }
+    }*/
 }

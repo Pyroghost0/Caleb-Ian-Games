@@ -131,7 +131,7 @@ public class Skeleton : MonoBehaviour
                     }
                 }
             }
-            else if (goal == null || goal.GetComponent<Enemy>().dead)
+            else if (goal == null)// || goal.GetComponent<Enemy>().dead)
             {
                 goal = null;
                 inPresenceOfEnemy = false;
@@ -516,7 +516,7 @@ public class Skeleton : MonoBehaviour
                     rigidbody.velocity += new Vector2(x, y);
                 }
             }
-            else if (goal == null || goal.GetComponent<Enemy>().dead || Mathf.Abs(goal.position.x - transform.position.x) > 8f)
+            else if (goal == null || Mathf.Abs(goal.position.x - transform.position.x) > 8f)
             {
                 goal = null;
                 inPresenceOfEnemy = false;
@@ -952,7 +952,7 @@ public class Skeleton : MonoBehaviour
         }
         for (int i = 0; i < sprite.Length; i++)
         {
-            sprite[i].sortingOrder = (int)(transform.position.y * -10) + spritePos[i];
+            sprite[i].sortingOrder = (int)(transform.position.y * -100) + spritePos[i];
         }
     }
 
@@ -1132,10 +1132,10 @@ public class Skeleton : MonoBehaviour
         playerBase.UpdateBones((short)-attackBoneUpgradeAmount);
         attackLevel++;
         attack.attackPower = (short)(attack.attackPower * attackUpgradeFactor);
-        if (armorLevel != 3)
+        if (attackLevel != 3)
         {
             attackBoneUpgradeAmount *= 2;
-            selectManager.boneCostValue2.text = "-" + defenceBoneUpgradeAmount.ToString();
+            selectManager.boneCostValue2.text = "-" + attackBoneUpgradeAmount.ToString();
         }
         else
         {
@@ -1179,7 +1179,7 @@ public class Skeleton : MonoBehaviour
         float timer = 0f;
         Vector2 knockbackVector = new Vector2(transform.position.x - attackCenter.x, transform.position.y - attackCenter.y) * (knockback / knockbackResistence);
         //Debug.Log("Attack Center: " + attackCenter + "\t\t\tKnockback: " + knockback + "\t\t\tKnockback Vector: " + knockbackVector);
-        float knockbackTime = knockbackVector.magnitude / 5f;
+        float knockbackTime = Mathf.Pow((knockback / knockbackResistence), .25f) / 4f;
         while (timer < knockbackTime)
         {
             yield return new WaitForFixedUpdate();

@@ -441,7 +441,7 @@ public class Minion : MonoBehaviour
                     }
                 }
             }
-            else if (goal == null || goal.GetComponent<Enemy>().dead)
+            else if (goal == null)
             {
                 goal = null;
                 inPresenceOfEnemy = false;
@@ -633,7 +633,7 @@ public class Minion : MonoBehaviour
         }
         for (int i = 0; i < sprite.Length; i++)
         {
-            sprite[i].sortingOrder = (int)(transform.position.y * -10) + spritePos[i];
+            sprite[i].sortingOrder = (int)(transform.position.y * -100) + spritePos[i];
         }
     }
 
@@ -646,7 +646,7 @@ public class Minion : MonoBehaviour
         if (upgradeLevel != 3)
         {
             boneUpgradeAmount *= 2;
-            selectManager.boneCostValue2.text = "-" + boneUpgradeAmount.ToString();
+            selectManager.boneCostValue0.text = "-" + boneUpgradeAmount.ToString();
         }
         else
         {
@@ -688,7 +688,7 @@ public class Minion : MonoBehaviour
     {
         float timer = 0f;
         Vector2 knockbackVector = new Vector2(transform.position.x - attackCenter.x, transform.position.y - attackCenter.y) * (knockback / knockbackResistence);
-        float knockbackTime = knockbackVector.magnitude / 5f;
+        float knockbackTime = Mathf.Pow((knockback / knockbackResistence), .25f) / 4f;
         while (timer < knockbackTime)
         {
             yield return new WaitForFixedUpdate();

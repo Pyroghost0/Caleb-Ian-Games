@@ -21,7 +21,7 @@ public class Corpse : MonoBehaviour
         selectManager.selectableObjects.Add(transform);
         for (int i = 0; i < sprite.Length; i++)
         {
-            sprite[i].sortingOrder += (int)(transform.position.y * -10);
+            sprite[i].sortingOrder += (int)(transform.position.y * -100);
         }
     }
 

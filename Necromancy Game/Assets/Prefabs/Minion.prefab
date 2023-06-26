@@ -618,7 +618,7 @@ MonoBehaviour:
   attackPower: 70
   attackTime: 0.75
   attackSpeed: 4
-  attackCooldown: 0.5
+  attackCooldown: 0.25
   attackRange: 1.25
   knockback: 10
   affectsEnemies: 1
@@ -638,7 +638,7 @@ GameObject:
   - component: {fileID: 2534362278550397977}
   - component: {fileID: 2534362278550397976}
   - component: {fileID: 2534362278550397991}
-  m_Layer: 2
+  m_Layer: 7
   m_Name: Minion
   m_TagString: Minion
   m_Icon: {fileID: 0}
@@ -717,9 +717,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 60
   maxHealth: 60
-  defence: 3
+  defence: 4
   knockbackResistence: 2
-  speedAcceleration: 1
+  speedAcceleration: 2
   maxSpeed: 0.8
   boneSpeedReductionFactor: 0.45
   deathTime: 0.5
@@ -833,19 +833,19 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1.860398, y: 3.5051112}
-      - {x: 0.13912249, y: 4.9909263}
-      - {x: -2.1054778, y: 4.632022}
-      - {x: -3.2057207, y: 2.4400215}
-      - {x: -3.8071275, y: -0.07339668}
-      - {x: -2.9771774, y: -3.1637092}
-      - {x: -1.6585861, y: -4.608718}
-      - {x: -0.2363143, y: -4.9295573}
-      - {x: 0.686955, y: -4.7870636}
-      - {x: 1.6585858, y: -3.7572865}
-      - {x: 2.3466148, y: -1.8982121}
-      - {x: 2.655318, y: -0.026676893}
-      - {x: 2.4980354, y: 1.593976}
+    - - {x: -2.985374, y: 4.71674}
+      - {x: 0.2788556, y: 5.2481437}
+      - {x: 2.175191, y: 4.9370165}
+      - {x: 4.702895, y: 3.0152166}
+      - {x: 5.364376, y: 0.25929457}
+      - {x: 4.56791, y: -2.7160575}
+      - {x: 3.125351, y: -4.430118}
+      - {x: 0.1099286, y: -4.81393}
+      - {x: -3.834826, y: -4.3908877}
+      - {x: -5.471309, y: -2.3866575}
+      - {x: -5.908218, y: 0.14463583}
+      - {x: -5.30774, y: 2.8506486}
+      - {x: -3.546831, y: 4.312241}
 --- !u!1 &2534362279164090826
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,10 +975,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb0a2ecb8b213348afe59cc1d78fa34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPower: 5
+  attackPower: 8
   attackTime: 1
   attackSpeed: 4
-  attackCooldown: 1
+  attackCooldown: 0.5
   attackRange: 0.5
   knockback: 1
   affectsEnemies: 0
