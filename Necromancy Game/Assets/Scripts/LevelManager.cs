@@ -278,7 +278,10 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator SpecialLevel3()
     {//Random corpses, defeat all
-        StartCoroutine(AllRandom());
+        if (level == 3)
+        {
+            StartCoroutine(AllRandom());
+        }
         for (int i = 0; i < enemySpawns.Length; i++)
         {
             yield return new WaitForSeconds(spawnWaitTimes[i]);
@@ -300,7 +303,7 @@ public class LevelManager : MonoBehaviour
             GameObject[] corpses = GameObject.FindGameObjectsWithTag("Corpse");
             foreach (GameObject corpse in corpses)
             {
-                corpse.GetComponent<Corpse>().skeletonPrefab = SkeletonPrefabsIfSpecial3[Random.Range(0, 6)];
+                corpse.GetComponent<Corpse>().skeletonPrefab = SkeletonPrefabsIfSpecial3[Random.Range(0, 5)];
             }
             yield return new WaitForFixedUpdate();
         }
@@ -359,7 +362,7 @@ public class LevelManager : MonoBehaviour
         playerBase.enabled = true;
         enemySpawns[0].SetActive(true);
         bool won = false;
-        for (int i = 0; i < 120; i++)
+        for (int i = 0; i < 60; i++)
         {
             yield return new WaitForSeconds(.5f);
             if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
@@ -410,7 +413,7 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator SpecialLevel6()
     {//Skeletons slowly take damage
-        Coroutine coroutine = StartCoroutine(SpecialLevel3());//Level 3 is just a normal spawning coroutine
+        StartCoroutine(SpecialLevel3());//Level 3 is just a normal spawning coroutine
         while (!winMessage.activeSelf)
         {
             yield return new WaitForSeconds(.5f);
@@ -418,11 +421,11 @@ public class LevelManager : MonoBehaviour
             GameObject[] minions = GameObject.FindGameObjectsWithTag("Minion");
             for (int i = 0; i < skeletons.Length; i++)
             {
-                skeletons[i].GetComponent<Skeleton>().Hit(Vector3.zero, null, 0f, 1);
+                skeletons[i].GetComponent<Skeleton>().Hit(Vector3.zero, null, 0f, skeletons[i].GetComponent<Skeleton>().defence);
             }
             for (int i = 0; i < minions.Length; i++)
             {
-                minions[i].GetComponent<Minion>().Hit(Vector3.zero, null, 0f, 1);
+                minions[i].GetComponent<Minion>().Hit(Vector3.zero, null, 0f, skeletons[i].GetComponent<Minion>().defence);
             }
         }
     }
@@ -447,7 +450,7 @@ public class LevelManager : MonoBehaviour
             specialStartPopup.SetActive(true);
             inputManager.enabled = false;
             specialResumeText.text = "Play Again";
-            specialMainText.text = "Congradulations! You unlocked the " + (level == 1 ? "Goblin" : level == 1 ? "Wolf" : level == 1 ? "Witch" : level == 1 ? "Orc" : "Ogre") + " special ability\n"
+            specialMainText.text = "Congradulations! You unlocked the " + (level == 1 ? "Goblin" : level == 1 ? "Wolf" : level == 1 ? "Witch" : level == 1 ? "Orc" : "Ogre") + " special...\n"
                 + (level == 1 ? "Goblin shoots 3 arrows." : level == 1 ? "Wolf teleports to enemy closest to your base." : level == 1 ? "Witch gravitates enemies together." : level == 1 ? "Orc increases defences in exchange for the closest tombstone." : "Ogre hits all nearby enemies.");
             StartCoroutine(NewSpecialPopupRoutine());
         }

@@ -23,8 +23,8 @@ public class Skeleton : MonoBehaviour
     public short defenceBoneUpgradeAmount = 25;
     private float attackUpgradeFactor = 1.5f;
     private float defenceUpgradeFactor = 1.5f;
-    private short attackLevel = 1;
-    private short armorLevel = 1;
+    [HideInInspector] public short attackLevel = 1;
+    [HideInInspector] public short armorLevel = 1;
     public string skeletonName = "Skeleton";
     public AttackType attackType = AttackType.AOE;
 
@@ -68,6 +68,21 @@ public class Skeleton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        armorLevel = attackLevel;
+        for (int i = 1; i < attackLevel; i++) {
+            attack.attackPower = (short)(attack.attackPower * attackUpgradeFactor);
+            defence = (short)(defence * defenceUpgradeFactor);
+            if (i != 2)
+            {
+                attackBoneUpgradeAmount *= 2;
+                defenceBoneUpgradeAmount *= 2;
+            }
+            else
+            {
+                attackBoneUpgradeAmount = -1;
+                defenceBoneUpgradeAmount = -1;
+            }
+        }
         anim.SetBool("Skeleton", true);
         spriteMultiplier = spriteBasisObject.localScale.y;
         rigidbody = GetComponent<Rigidbody2D>();
@@ -78,6 +93,26 @@ public class Skeleton : MonoBehaviour
         {
             selectManager.minionStatus.sprite = skeletonMode == SkeletonMode.left ?selectManager.skeletonRun : (skeletonMode == SkeletonMode.stay ? selectManager.skeletonStay : selectManager.skeletonAttack);
             selectManager.stayPositionMarker.position = stayGoal;
+            if (defenceBoneUpgradeAmount == -1)
+            {
+                selectManager.boneCostObject1.SetActive(false);
+            }
+            else
+            {
+                selectManager.boneCostObject1.SetActive(true);
+                selectManager.boneCostValue1.text = "-" + defenceBoneUpgradeAmount.ToString();
+            }
+            if (attackBoneUpgradeAmount == -1)
+            {
+                selectManager.boneCostObject2.SetActive(false);
+            }
+            else
+            {
+                selectManager.boneCostObject2.SetActive(true);
+                selectManager.boneCostValue2.text = "-" + attackBoneUpgradeAmount.ToString();
+            }
+            selectManager.attackUpgradeButton.SetActive(attackBoneUpgradeAmount != -1);
+            selectManager.defenceUpgradeButton.SetActive(attackBoneUpgradeAmount != -1);
         }
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         playerBase.numSkeletons++;

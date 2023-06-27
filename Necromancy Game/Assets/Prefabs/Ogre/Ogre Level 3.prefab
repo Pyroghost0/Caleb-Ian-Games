@@ -2879,7 +2879,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -2903,11 +2903,12 @@ MonoBehaviour:
   health: 150
   maxHealth: 150
   defence: 6
-  knockbackResistence: 10
+  knockbackResistence: 20
   speedAcceleration: 0.9
   maxSpeed: 1.5
   deathTime: 0.5
   enemyValue: 30
+  enemyLevel: 3
   attackType: 0
   targetSelect: {fileID: 5329542336200553300}
   corpsePrefab: {fileID: 5165828461996608682, guid: 8f3b99ec5b01bb0478afbf2473576255, type: 3}

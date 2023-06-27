@@ -9,6 +9,7 @@ public class Corpse : MonoBehaviour
     public GameObject selectBars;
     public GameObject skeletonPrefab;
     public GameObject minionPrefab;
+    public short enemyLevel = 1;
     public short numTombstones = 3;
     public string corpseName = "Corpse";
     public SpriteRenderer[] sprite;
@@ -45,6 +46,7 @@ public class Corpse : MonoBehaviour
                 }
             }
             Transform addedMinion = Instantiate(minionPrefab, transform.position, transform.rotation).transform;
+            addedMinion.GetComponent<Minion>().upgradeLevel = enemyLevel;
             selectManager.selectableObjects.Add(addedMinion);
             selectManager.Select(addedMinion);
             Destroy(gameObject);
@@ -75,7 +77,7 @@ public class Corpse : MonoBehaviour
                     break;
                 }
             }
-            graveManager.SpawnGraves(numTombstones);
+            graveManager.SpawnGraves((int)(numTombstones * (.5f + (enemyLevel / 2f))));
             Destroy(gameObject);
         }
         else
@@ -118,6 +120,7 @@ public class Corpse : MonoBehaviour
                 }
             }
             Transform addedSkeleton = Instantiate(skeletonPrefab, transform.position, transform.rotation).transform;
+            addedSkeleton.GetComponent<Skeleton>().attackLevel = enemyLevel;
             selectManager.selectableObjects.Add(addedSkeleton);
             selectManager.Select(addedSkeleton);
             Destroy(gameObject);

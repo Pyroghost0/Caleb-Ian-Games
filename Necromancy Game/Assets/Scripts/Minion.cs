@@ -15,7 +15,7 @@ public class Minion : MonoBehaviour
     public short graveBones = 25;
     public short boneUpgradeAmount = 25;//-1 for maxed out
     private float upgradeFactor = 1.5f;
-    private short upgradeLevel = 1;
+    [HideInInspector] public short upgradeLevel = 1;
     public short bonesStored = 0;
     public short maxBones = 25;
 
@@ -49,12 +49,35 @@ public class Minion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 1; i < upgradeLevel; i++)
+        {
+            attack.attackPower = (short)(attack.attackPower * upgradeFactor);
+            diggingAttack.attackPower += 4;
+            if (i != 2)
+            {
+                boneUpgradeAmount *= 2;
+            }
+            else
+            {
+                boneUpgradeAmount = -1;
+            }
+        }
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         selectManager = GameObject.FindGameObjectWithTag("Select Manager").GetComponent<SelectManager>();
         inDiggingMode = selectManager.currentMinionDigStatus;
         if (selectManager.selectingObject && selectManager.selectedTroop == transform)
         {
             selectManager.minionStatus.sprite = inDiggingMode ? selectManager.minionDig : selectManager.minionAttack;
+            if (boneUpgradeAmount == -1)
+            {
+                selectManager.boneCostObject0.SetActive(false);
+            }
+            else
+            {
+                selectManager.boneCostObject0.SetActive(true);
+                selectManager.boneCostValue0.text = "-" + boneUpgradeAmount.ToString();
+            }
+            selectManager.shovelUpgradeButton.SetActive(boneUpgradeAmount != -1);
         }
         rigidbody = GetComponent<Rigidbody2D>();
         playerBase.numSkeletons++;
@@ -642,7 +665,7 @@ public class Minion : MonoBehaviour
         playerBase.UpdateBones((short)-boneUpgradeAmount);
         upgradeLevel++;
         attack.attackPower = (short)(attack.attackPower * upgradeFactor);
-        diggingAttack.attackPower += 2;
+        diggingAttack.attackPower += 4;
         if (upgradeLevel != 3)
         {
             boneUpgradeAmount *= 2;

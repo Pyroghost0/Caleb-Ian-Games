@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     public float maxSpeed = 2f;
     public float deathTime = .5f;
     public short enemyValue = 5;
+    public short enemyLevel = 1;
     public AttackType attackType = AttackType.AOE;
 
     public GameObject targetSelect;
@@ -445,7 +446,7 @@ public class Enemy : MonoBehaviour
             {
                 //dead = true;
                 targetSelect.SetActive(false);
-                Instantiate(corpsePrefab, transform.position, transform.rotation);
+                Instantiate(corpsePrefab, transform.position, transform.rotation).GetComponent<Corpse>().enemyLevel = enemyLevel;
                 Destroy(gameObject);
             }
         }

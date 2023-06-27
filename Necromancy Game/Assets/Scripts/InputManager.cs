@@ -590,6 +590,7 @@ public class InputManager : MonoBehaviour
 
     public void Pause()
     {
+        timeSurvivedText.text = "Time Survived: " + ((int)playerBase.timeSurvived) + " Seconds";
         pauseButton.SetActive(false);
         paused = true;
         pauseMenu.SetActive(true);
@@ -597,7 +598,6 @@ public class InputManager : MonoBehaviour
         holdInputWait = true;
         buttonPressed = false;
         buttonPressTimer = 0f;
-        timeSurvivedText.text = "Time Survived: " + ((int)playerBase.timeSurvived) + " Seconds";
         leftButtonText.text = leftButton.ToString();
         middleButtonText.text = middleButton.ToString();
         rightButtonText.text = rightButton.ToString();

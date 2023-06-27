@@ -94,6 +94,8 @@ public class SelectManager : MonoBehaviour
         rectHealCooldown = rectHealCooldownBar.rect.width;
         rectArrowCooldown = rectArrowCooldownBar.rect.width;
         rectSpecialCooldown = rectSpecialCooldownBar.rect.width;
+        minionStatus.sprite = currentMinionDigStatus ? minionDig : minionAttack;
+        skeletonStatus.sprite = currentSkeletonMode == SkeletonMode.left ? skeletonRun : currentSkeletonMode == SkeletonMode.stay ? skeletonStay : skeletonAttack;
         GameObject[] skeletons = GameObject.FindGameObjectsWithTag("Skeleton");
         for (int i = 0; i < skeletons.Length; i++)
         {
