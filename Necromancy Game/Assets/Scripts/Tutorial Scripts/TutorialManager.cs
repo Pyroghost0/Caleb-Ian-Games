@@ -300,6 +300,8 @@ public class TutorialManager : MonoBehaviour
         tutorialObjectsLevel1.SetActive(true);
         PlayerBase playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         playerBase.maxSkeletons = 1;
+        playerBase.bones = 0;
+        selectManager.AllMinionsMine();
         selectManager.healCooldown = true;
         selectManager.arrowCooldown = true;
         selectManager.troopCapacityText.text = "0\n1";
@@ -422,7 +424,7 @@ public class TutorialManager : MonoBehaviour
         StopCoroutine(slowTextCoroutine);
         slowTextCoroutine = StartCoroutine(SlowText("You can also upgrade a minion's shovel, which upgrades the amount of bones they mine and their attack power. Lets try to upgrade it by holding the middle button or clicking on it."));
         playerBase.UpdateBones(25);
-        yield return new WaitUntil(() => (GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().diggingAttack.attackPower != 6));
+        yield return new WaitUntil(() => (GameObject.FindGameObjectWithTag("Minion").GetComponent<Minion>().diggingAttack.attackPower != 8));
         tutorialInputManager.allowMiddle = false;
         tutorialInputManager.allowRight = true;
         tutorialInputManager.allowMouseSelectSingle = true;

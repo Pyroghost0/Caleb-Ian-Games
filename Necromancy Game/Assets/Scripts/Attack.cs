@@ -610,11 +610,11 @@ public class Attack : MonoBehaviour
                     Vector2 futureDirection = curentDirection + targetRigidbody.velocity;//Position in 1s
                     if (futureDirection.y < (-curentDirection.x / curentDirection.y) * futureDirection.x || futureDirection.magnitude < .5f)
                     {
-                        targetRigidbody.velocity -= curentDirection.normalized * 4.5f * targets[i].GetComponent<Enemy>().speedAcceleration * Time.deltaTime;
+                        targetRigidbody.velocity -= curentDirection.normalized * 15f * targets[i].GetComponent<Enemy>().speedAcceleration * Time.deltaTime;
                     }
                     else
                     {
-                        targetRigidbody.velocity -= curentDirection.normalized * .5f * targets[i].GetComponent<Enemy>().speedAcceleration * Time.deltaTime;
+                        targetRigidbody.velocity -= curentDirection.normalized * 15f * targets[i].GetComponent<Enemy>().speedAcceleration * Time.deltaTime;
                     }
                 }
             }
