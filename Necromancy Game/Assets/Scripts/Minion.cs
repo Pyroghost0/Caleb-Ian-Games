@@ -28,6 +28,9 @@ public class Minion : MonoBehaviour
     public Transform sightObject;
     public Transform spriteBasisObject;
     public SpriteRenderer[] sprite;
+    public SpriteRenderer[] weaponSprite;
+    public SpriteRenderer[] weaponSpriteLevel2;
+    public SpriteRenderer[] weaponSpriteLevel3;
     private int[] spritePos;
 
     private float usedBoneSpeedReductionFactor;
@@ -82,11 +85,14 @@ public class Minion : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         playerBase.numSkeletons++;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
-        spritePos = new int[sprite.Length];
-        for (int i = 0; i < sprite.Length; i++)
+        spritePos = new int[sprite.Length + 3];
+        for (int i = 0; i < spritePos.Length - 3; i++)
         {
             spritePos[i] = sprite[i].sortingOrder;
         }
+        spritePos[spritePos.Length - 3] = weaponSprite[0].sortingOrder;
+        spritePos[spritePos.Length - 2] = weaponSpriteLevel2[0].sortingOrder;
+        spritePos[spritePos.Length - 1] = weaponSpriteLevel3[0].sortingOrder;
     }
 
     // Update is called once per frame
@@ -99,12 +105,12 @@ public class Minion : MonoBehaviour
             {
                 if (goal.position.x - transform.position.x > 0)
                 {
-                    spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+                    spriteBasisObject.localScale = new Vector3(0.15f, 0.15f, 1f);
                     sightObject.localScale = new Vector3(1f, 1f, 1f);
                 }
                 else
                 {
-                    spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+                    spriteBasisObject.localScale = new Vector3(-0.15f, 0.15f, 1f);
                     sightObject.localScale = new Vector3(-1f, 1f, 1f);
                 }
                 float futureX = (rigidbody.velocity.x * speedAcceleration / (usedBoneSpeedReductionFactor * 6f)) + transform.position.x;
@@ -334,7 +340,7 @@ public class Minion : MonoBehaviour
                 //At Base
                 if (transform.position.x < xBaseGoal)
                 {
-                    spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+                    spriteBasisObject.localScale = new Vector3(0.15f, 0.15f, 1f);
                     sightObject.localScale = new Vector3(1f, 1f, 1f);
                     if (bonesStored > 0)
                     {
@@ -378,8 +384,9 @@ public class Minion : MonoBehaviour
                 //Full and moving back
                 else
                 {
-                    spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+                    spriteBasisObject.localScale = new Vector3(-0.15f, 0.15f, 1f);
                     sightObject.localScale = new Vector3(-1f, 1f, 1f);
+                    anim.SetBool("Running", true);
                     if (Mathf.Abs(rigidbody.velocity.y) < .1f)
                     {
                         rigidbody.velocity += new Vector2(-speedAcceleration * usedBoneSpeedReductionFactor * Time.deltaTime, -rigidbody.velocity.y);
@@ -405,13 +412,13 @@ public class Minion : MonoBehaviour
         {
             if (!inPresenceOfEnemy)
             {
-                spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+                spriteBasisObject.localScale = new Vector3(0.15f, 0.15f, 1f);
                 sightObject.localScale = new Vector3(1f, 1f, 1f);
                 if (transform.position.x >= xGoal)
                 {
                     if (transform.position.x >= xGoal+3f)
                     {
-                        spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+                        spriteBasisObject.localScale = new Vector3(-0.15f, 0.15f, 1f);
                         sightObject.localScale = new Vector3(-1f, 1f, 1f);
                         anim.SetBool("Running", true);
                         if (rigidbody.velocity.x > -maxSpeed)
@@ -473,12 +480,12 @@ public class Minion : MonoBehaviour
             {
                 if (goal.position.x - transform.position.x > 0)
                 {
-                    spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+                    spriteBasisObject.localScale = new Vector3(0.15f, 0.15f, 1f);
                     sightObject.localScale = new Vector3(1f, 1f, 1f);
                 }
                 else
                 {
-                    spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+                    spriteBasisObject.localScale = new Vector3(-0.15f, 0.15f, 1f);
                     sightObject.localScale = new Vector3(-1f, 1f, 1f);
                 }
                 if (rigidbody.velocity.magnitude != 0f)
@@ -497,6 +504,7 @@ public class Minion : MonoBehaviour
                 }
                 if (!attack.currectlyAttacking)
                 {
+                    anim.SetTrigger("Attack");
                     attackBasisObject.rotation = Quaternion.Euler(new Vector3(0f, 0f, Mathf.Atan2((transform.position - goal.position).y, (transform.position - goal.position).x) * 57.2958f));
                     attack.gameObject.SetActive(true);
                     attack.StartSingleAttack();
@@ -509,12 +517,12 @@ public class Minion : MonoBehaviour
                 Vector2 futureDistence = new Vector3(futureX, futureY, 0f) - goal.position;
                 if (goal.position.x - transform.position.x > 0)
                 {
-                    spriteBasisObject.localScale = new Vector3(1f, 1f, 1f);
+                    spriteBasisObject.localScale = new Vector3(0.15f, 0.15f, 1f);
                     sightObject.localScale = new Vector3(1f, 1f, 1f);
                 }
                 else
                 {
-                    spriteBasisObject.localScale = new Vector3(-1f, 1f, 1f);
+                    spriteBasisObject.localScale = new Vector3(-0.15f, 0.15f, 1f);
                     sightObject.localScale = new Vector3(-1f, 1f, 1f);
                 }
 
@@ -654,10 +662,13 @@ public class Minion : MonoBehaviour
                 }
             }
         }
-        for (int i = 0; i < sprite.Length; i++)
+        for (int i = 0; i < spritePos.Length - 3; i++)
         {
             sprite[i].sortingOrder = (int)(transform.position.y * -100) + spritePos[i];
         }
+        weaponSprite[0].sortingOrder = (int)(transform.position.y * -100) + spritePos[spritePos.Length - 3];
+        weaponSpriteLevel2[0].sortingOrder = (int)(transform.position.y * -100) + spritePos[spritePos.Length - 2];
+        weaponSpriteLevel3[0].sortingOrder = (int)(transform.position.y * -100) + spritePos[spritePos.Length - 1];
     }
 
     public void Upgrade()
@@ -668,11 +679,17 @@ public class Minion : MonoBehaviour
         diggingAttack.attackPower += 4;
         if (upgradeLevel != 3)
         {
+            weaponSprite[0].gameObject.SetActive(false);
+            weaponSpriteLevel2[0].gameObject.SetActive(true);
+
             boneUpgradeAmount *= 2;
             selectManager.boneCostValue0.text = "-" + boneUpgradeAmount.ToString();
         }
         else
         {
+            weaponSpriteLevel2[0].gameObject.SetActive(false);
+            weaponSpriteLevel3[0].gameObject.SetActive(true);
+
             boneUpgradeAmount = -1;
             selectManager.boneCostObject0.SetActive(false);
             selectManager.shovelUpgradeButton.SetActive(false);

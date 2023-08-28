@@ -117,11 +117,20 @@ public class Skeleton : MonoBehaviour
         playerBase = GameObject.FindGameObjectWithTag("Player Base").GetComponent<PlayerBase>();
         playerBase.numSkeletons++;
         selectManager.troopCapacityText.text = playerBase.numSkeletons + "\n" + playerBase.maxSkeletons;
-        spritePos = new int[sprite.Length];
-        for (int i = 0; i < sprite.Length; i++)
+        spritePos = new int[sprite.Length + armorSpriteLevel2.Length + armorSpriteLevel3.Length + 3];
+        for (int i = 0; i < spritePos.Length - 3; i++)
         {
-            spritePos[i] = sprite[i].sortingOrder;
+            if (i < sprite.Length){
+                spritePos[i] = sprite[i].sortingOrder;
+            }else if (i < sprite.Length + armorSpriteLevel2.Length){
+                spritePos[i] = armorSpriteLevel2[i - sprite.Length].sortingOrder;
+            }else{
+                spritePos[i] = armorSpriteLevel3[i - sprite.Length - armorSpriteLevel2.Length].sortingOrder;
+            }
         }
+        spritePos[spritePos.Length - 3] = weaponSprite[0].sortingOrder;
+        spritePos[spritePos.Length - 2] = weaponSpriteLevel2[0].sortingOrder;
+        spritePos[spritePos.Length - 1] = weaponSpriteLevel3[0].sortingOrder;
     }
 
     // Update is called once per frame
@@ -985,10 +994,19 @@ public class Skeleton : MonoBehaviour
                 }
             }
         }
-        for (int i = 0; i < sprite.Length; i++)
+        for (int i = 0; i < spritePos.Length - 3; i++)
         {
-            sprite[i].sortingOrder = (int)(transform.position.y * -100) + spritePos[i];
+            if (i < sprite.Length){
+                sprite[i].sortingOrder = (int)(transform.position.y * -100) + spritePos[i];
+            }else if (i < sprite.Length + armorSpriteLevel2.Length){
+                armorSpriteLevel2[i - sprite.Length].sortingOrder = (int)(transform.position.y * -100) + spritePos[i];
+            }else{
+                armorSpriteLevel3[i - sprite.Length - armorSpriteLevel2.Length].sortingOrder = (int)(transform.position.y * -100) + spritePos[i];
+            }
         }
+        weaponSprite[0].sortingOrder = (int)(transform.position.y * -100) + spritePos[spritePos.Length - 3];
+        weaponSpriteLevel2[0].sortingOrder = (int)(transform.position.y * -100) + spritePos[spritePos.Length - 2];
+        weaponSpriteLevel3[0].sortingOrder = (int)(transform.position.y * -100) + spritePos[spritePos.Length - 1];
     }
 
     public void SpecialAttack()
@@ -1145,11 +1163,20 @@ public class Skeleton : MonoBehaviour
         defence =(short) (defence * defenceUpgradeFactor);
         if (armorLevel != 3)
         {
+            foreach(SpriteRenderer sr in armorSpriteLevel2){
+                sr.gameObject.SetActive(true);
+            }
             defenceBoneUpgradeAmount *= 2;
             selectManager.boneCostValue1.text = "-" + defenceBoneUpgradeAmount.ToString();
         }
         else
         {
+            foreach(SpriteRenderer sr in armorSpriteLevel2){
+                sr.gameObject.SetActive(false);
+            }
+            foreach(SpriteRenderer sr in armorSpriteLevel3){
+                sr.gameObject.SetActive(true);
+            }
             defenceBoneUpgradeAmount = -1;
             selectManager.boneCostObject1.SetActive(false);
             selectManager.defenceUpgradeButton.SetActive(false);
@@ -1169,11 +1196,18 @@ public class Skeleton : MonoBehaviour
         attack.attackPower = (short)(attack.attackPower * attackUpgradeFactor);
         if (attackLevel != 3)
         {
+            
+            weaponSprite[0].gameObject.SetActive(false);
+            weaponSpriteLevel2[0].gameObject.SetActive(true);
+
             attackBoneUpgradeAmount *= 2;
             selectManager.boneCostValue2.text = "-" + attackBoneUpgradeAmount.ToString();
         }
         else
         {
+            weaponSpriteLevel2[0].gameObject.SetActive(false);
+            weaponSpriteLevel3[0].gameObject.SetActive(true);
+
             attackBoneUpgradeAmount = -1;
             selectManager.boneCostObject2.SetActive(false);
             selectManager.attackUpgradeButton.SetActive(false);
