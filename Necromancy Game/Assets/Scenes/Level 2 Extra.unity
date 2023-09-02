@@ -678,7 +678,7 @@ MonoBehaviour:
   - {fileID: 8420947652408743218, guid: 48af4ca343b4bca4da31bc22a7e23722, type: 3}
   - {fileID: 8420947652408743218, guid: dd00000c8ed7ff748a10e20f05d4e41b, type: 3}
   - {fileID: 8420947652408743218, guid: 73caae49e6b946e41bc7e4315785de30, type: 3}
-  startGraveAmount: 20
+  startGraveAmount: 15
 --- !u!4 &63044016
 Transform:
   m_ObjectHideFlags: 0
@@ -3207,7 +3207,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'You Unlocked A New Special:
 
-    Goblins Shoot 3 Arrows'
+    Wolves teleport to enemy closest to base'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4873,6 +4873,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1442250006}
     m_Modifications:
+    - target: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.93
+      objectReference: {fileID: 0}
     - target: {fileID: 7810518575416313645, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
       propertyPath: m_Name
       value: Goblin Corpse
@@ -4923,6 +4931,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+--- !u!4 &686724994 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+  m_PrefabInstance: {fileID: 686724993}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &720811276
 GameObject:
   m_ObjectHideFlags: 0
@@ -5218,6 +5231,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1442250006}
     m_Modifications:
+    - target: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.34
+      objectReference: {fileID: 0}
     - target: {fileID: 7810518575416313645, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
       propertyPath: m_Name
       value: Goblin Corpse (1)
@@ -5270,7 +5295,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
 --- !u!4 &728075730 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7810518575416313646, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
   m_PrefabInstance: {fileID: 728075729}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &733434279
@@ -9484,6 +9509,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1442250006}
     m_Modifications:
+    - target: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.05
+      objectReference: {fileID: 0}
     - target: {fileID: 8033592183153776829, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -9536,7 +9573,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
 --- !u!4 &1350209025 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 8033592183153776829, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
   m_PrefabInstance: {fileID: 1350209024}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1364196245
@@ -10340,6 +10377,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1442250006}
     m_Modifications:
+    - target: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.34
+      objectReference: {fileID: 0}
     - target: {fileID: 8033592183153776829, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -10392,7 +10441,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
 --- !u!4 &1439597382 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 8033592183153776829, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
   m_PrefabInstance: {fileID: 1439597381}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1442250005
@@ -10423,7 +10472,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1591558964}
+  - {fileID: 686724994}
   - {fileID: 728075730}
   - {fileID: 1350209025}
   - {fileID: 1439597382}
@@ -11700,11 +11749,6 @@ Transform:
   m_Father: {fileID: 63044016}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1591558964 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7810518575416313646, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
-  m_PrefabInstance: {fileID: 686724993}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1599628154
 GameObject:
   m_ObjectHideFlags: 0

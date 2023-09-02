@@ -1391,6 +1391,11 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1873940367}
+--- !u!4 &215704056 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239926188751956019, guid: d865e0575236cc342af3839172843c40, type: 3}
+  m_PrefabInstance: {fileID: 1123249452}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &223753745
 GameObject:
   m_ObjectHideFlags: 0
@@ -2878,7 +2883,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'You Unlocked A New Special:
 
-    Goblins Shoot 3 Arrows'
+    Orcs use a nearby grave for perminent
+    stat boost'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3891,6 +3897,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598359374}
   m_CullTransparentMesh: 1
+--- !u!4 &607106204 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+  m_PrefabInstance: {fileID: 1741130753}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &618689929
 GameObject:
   m_ObjectHideFlags: 0
@@ -5954,13 +5965,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Witch Corpse
       objectReference: {fileID: 0}
+    - target: {fileID: 3039456803955004593, guid: f0b2d44a23d53f248818aeac93385ba9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039456803955004593, guid: f0b2d44a23d53f248818aeac93385ba9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.03
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0b2d44a23d53f248818aeac93385ba9, type: 3}
---- !u!4 &990892709 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1267274878192417, guid: f0b2d44a23d53f248818aeac93385ba9, type: 3}
-  m_PrefabInstance: {fileID: 990892708}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &996576377
 GameObject:
   m_ObjectHideFlags: 0
@@ -6208,6 +6222,11 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!4 &1044470570 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+  m_PrefabInstance: {fileID: 2109506339}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1053924386
 GameObject:
   m_ObjectHideFlags: 0
@@ -6975,13 +6994,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Orc Corpse
       objectReference: {fileID: 0}
+    - target: {fileID: 2239926188751956019, guid: d865e0575236cc342af3839172843c40, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239926188751956019, guid: d865e0575236cc342af3839172843c40, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239926188751956019, guid: d865e0575236cc342af3839172843c40, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.61
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d865e0575236cc342af3839172843c40, type: 3}
---- !u!4 &1123249453 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1105854830939021425, guid: d865e0575236cc342af3839172843c40, type: 3}
-  m_PrefabInstance: {fileID: 1123249452}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1126298454
 GameObject:
   m_ObjectHideFlags: 0
@@ -8203,6 +8229,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1438836022}
     m_Modifications:
+    - target: {fileID: 4896659298015963593, guid: 8f3b99ec5b01bb0478afbf2473576255, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896659298015963593, guid: 8f3b99ec5b01bb0478afbf2473576255, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896659298015963593, guid: 8f3b99ec5b01bb0478afbf2473576255, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.23
+      objectReference: {fileID: 0}
     - target: {fileID: 5165828461996608681, guid: 8f3b99ec5b01bb0478afbf2473576255, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -8253,11 +8291,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f3b99ec5b01bb0478afbf2473576255, type: 3}
---- !u!4 &1282068837 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5165828461996608681, guid: 8f3b99ec5b01bb0478afbf2473576255, type: 3}
-  m_PrefabInstance: {fileID: 1282068836}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1332484905
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9344,11 +9377,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1741130754}
-  - {fileID: 2109506340}
-  - {fileID: 990892709}
-  - {fileID: 1123249453}
-  - {fileID: 1282068837}
+  - {fileID: 1829737219}
+  - {fileID: 215704056}
+  - {fileID: 1520934374}
+  - {fileID: 607106204}
+  - {fileID: 1044470570}
   m_Father: {fileID: 2067110584}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9504,6 +9537,11 @@ RectTransform:
   m_AnchoredPosition: {x: 120, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!4 &1520934374 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4896659298015963593, guid: 8f3b99ec5b01bb0478afbf2473576255, type: 3}
+  m_PrefabInstance: {fileID: 1282068836}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1526610351
 GameObject:
   m_ObjectHideFlags: 0
@@ -11492,6 +11530,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1438836022}
     m_Modifications:
+    - target: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 3555892505101601606, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.42
+      objectReference: {fileID: 0}
     - target: {fileID: 7810518575416313645, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
       propertyPath: m_Name
       value: Goblin Corpse
@@ -11542,11 +11592,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
---- !u!4 &1741130754 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7810518575416313646, guid: 66ba51e41055b8d46aef4d704b20cf5e, type: 3}
-  m_PrefabInstance: {fileID: 1741130753}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1747759864
 GameObject:
   m_ObjectHideFlags: 0
@@ -12512,6 +12557,11 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!4 &1829737219 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3039456803955004593, guid: f0b2d44a23d53f248818aeac93385ba9, type: 3}
+  m_PrefabInstance: {fileID: 990892708}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1846436224
 GameObject:
   m_ObjectHideFlags: 0
@@ -14898,6 +14948,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1438836022}
     m_Modifications:
+    - target: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 7873704467371264001, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.04
+      objectReference: {fileID: 0}
     - target: {fileID: 8033592183153776829, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -14948,11 +15010,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
---- !u!4 &2109506340 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8033592183153776829, guid: 00b8f2f08b62fbb47b727e75f4ace4a0, type: 3}
-  m_PrefabInstance: {fileID: 2109506339}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2109946041
 GameObject:
   m_ObjectHideFlags: 0

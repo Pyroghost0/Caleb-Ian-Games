@@ -1196,21 +1196,20 @@ public class Skeleton : MonoBehaviour
         attack.attackPower = (short)(attack.attackPower * attackUpgradeFactor);
         if (attackLevel != 3)
         {
-            
-            weaponSprite[0].gameObject.SetActive(false);
-            weaponSpriteLevel2[0].gameObject.SetActive(true);
-
             attackBoneUpgradeAmount *= 2;
             selectManager.boneCostValue2.text = "-" + attackBoneUpgradeAmount.ToString();
+
+            weaponSprite[0].gameObject.SetActive(false);
+            weaponSpriteLevel2[0].gameObject.SetActive(true);
         }
         else
         {
-            weaponSpriteLevel2[0].gameObject.SetActive(false);
-            weaponSpriteLevel3[0].gameObject.SetActive(true);
-
             attackBoneUpgradeAmount = -1;
             selectManager.boneCostObject2.SetActive(false);
             selectManager.attackUpgradeButton.SetActive(false);
+
+            weaponSpriteLevel2[0].gameObject.SetActive(false);
+            weaponSpriteLevel3[0].gameObject.SetActive(true);
         }
     }
 

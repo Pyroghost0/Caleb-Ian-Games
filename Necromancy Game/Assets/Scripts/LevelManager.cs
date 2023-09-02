@@ -450,8 +450,8 @@ public class LevelManager : MonoBehaviour
             specialStartPopup.SetActive(true);
             inputManager.enabled = false;
             specialResumeText.text = "Play Again";
-            specialMainText.text = "Congradulations! You unlocked the " + (level == 1 ? "Goblin" : level == 1 ? "Wolf" : level == 1 ? "Witch" : level == 1 ? "Orc" : "Ogre") + " special...\n"
-                + (level == 1 ? "Goblin shoots 3 arrows." : level == 1 ? "Wolf teleports to enemy closest to your base." : level == 1 ? "Witch gravitates enemies together." : level == 1 ? "Orc increases defences in exchange for the closest tombstone." : "Ogre hits all nearby enemies.");
+            specialMainText.text = "Congradulations! You unlocked the " + (level == 1 ? "Goblin" : level == 2 ? "Wolf" : level == 3 ? "Witch" : level == 4 ? "Orc" : "Ogre") + " special...\n"
+                + (level == 1 ? "Goblin shoots 3 arrows." : level == 2 ? "Wolf teleports to enemy closest to your base." : level == 3 ? "Witch gravitates enemies together." : level == 4 ? "Orc increases defences in exchange for the closest tombstone." : "Ogre hits all nearby enemies.");
             StartCoroutine(NewSpecialPopupRoutine());
         }
         else
